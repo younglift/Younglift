@@ -74,3 +74,4 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-12: **Kūrėjo pasaulis (A4): su skirtukais Pieces / Journal / About** (žmogus pats renkasi, ką žiūri, nereikia scrollinti iki apačios). Viršuje: nuotrauka → vardas, aprašymas, faktai, Follow/Message → horizontali video/nuotraukų juosta → skirtukai. Pieces: filtrai + tinklelis + „Want something personal?“ (šviesiai žalia #4fe061, juodas tekstas).
 - 2026-11-12: **Journal = trumpos kūrėjo užrašų kortelės**, ne Instagram: idėjos, atradimai, trumpos istorijos. Daugiausia tekstas (kartais citata dideliu šriftu), su data ir tipu (DISCOVERED / SKETCHBOOK / NEXT IDEA). Rodom tik kelis naujausius, kad neperpildytų.
 - 2026-11-12: **Skirtukai (tabs):** pasirinktas rodomas dideliu Anton šriftu didžiosiomis raidėmis (PIECES), kiti mažais pilkais (Journal, About). Be žalio pabraukimo.
+- 2026-11-12: **Video/nuotraukų juosta rodoma tik Pieces skirtuke** (ne Journal ir ne About). Skirtukai eina iškart po Follow/Message.
