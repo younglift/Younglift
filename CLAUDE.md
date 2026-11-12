@@ -3,8 +3,8 @@
 Marketplace for handmade makers (jewellery, ceramics, crochet and more). Two founders work in this repo: Justinas and Matas.
 
 ## Current state
-- `index.html` + `img/` is the clickable prototype (Round 2, all 12 steps locked). Vercel serves it as a static site.
-- Next step: the real app on Next.js + Supabase + Stripe Connect + Resend, built from this prototype.
+- `prototype/index.html` + `prototype/img/` is the clickable prototype (Round 2, all 12 steps locked) and the source of truth for screens.
+- The app is Next.js (App Router, TypeScript). UI gets data only from `@/lib/data` (mock today, Supabase later). See `docs/ai/SHARED.md`.
 
 ## Design rules (LOCKED, do not change without the founders' explicit OK)
 - Fonts: Anton (display headings), Archivo (UI, buttons), Geist (meta / grey text), IBM Plex Mono (prices).
