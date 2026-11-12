@@ -66,15 +66,9 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 6. Jei kada naudosim sheet: matomas ✕, telefono „atgal“ gestas jį uždaro, sheetų vienas ant kito nekraunam.
 
 ## Atviri UX klausimai (dar padaryti)
-- Pirmo karto užuominos: „swipe up = kitas kūrėjas“, taškiukai ant nuotraukos vieną kartą švelniai pulsuoja.
-- Stiklo burbuliukai ant tamsių nuotraukų: tamsesnis variantas, kad tekstas visada būtų skaitomas.
-- Taškiukų ant vienos nuotraukos daugiausia 4.
-- Video: subtitrai (daug kas žiūri be garso), autoplay be garso.
-- Produktui: dydžio/varianto pasirinkimas (žiedams), „SOLD“ būsena („Ask for something similar“), bendra kaina su pristatymu prieš krepšelį.
 - Pasitikėjimas: ženklas „Approved by Young Lift“ (atranka), saugus mokėjimas, grąžinimai.
 - ES DSA: prekyvietė turi rodyti pardavėjo (verslo) duomenis kūrėjo puslapyje. Pasitikrinti su teisininku.
-- Kraunasi / tuščia / klaida būsenos (C3).
-- Prieinamumas: tekstas ne blankesnis nei #8b8a85 ant juodo fono (4.5:1), mygtukai ≥ 44px.
+- Klaidų / tuščios / kraunasi būsenos (C3), **vėliau**.
 
 ## Sprendimų žurnalas
 *(čia rašom, ką nusprendėm, kad abiejų AI žinotų)*
@@ -95,3 +89,7 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-12: **Skirtukai (tabs):** pasirinktas rodomas dideliu Anton šriftu didžiosiomis raidėmis (PIECES), kiti mažais pilkais (Journal, About). Be žalio pabraukimo.
 - 2026-11-12: **Video/nuotraukų juosta rodoma tik Pieces skirtuke** (ne Journal ir ne About). Skirtukai eina iškart po Follow/Message.
 - 2026-11-12: Produktas lieka pilnu ekranu. Atgal mygtukas su vardu („‹ Mara“). Neaktyvūs navigacijos punktai #8b8a85 (kontrastas).
+- 2026-11-12: **Pirmo karto užuominos** (rodomos tik vieną kartą, naujam žmogui): ekranas pritemsta, taškiukai 3 kartus švelniai pulsuoja, stikliniai burbuliukai „Tap a dot to see the name and price“, „Tap the sides for her story and more pieces“, „↑ Swipe up for the next maker“, mygtukas „Got it“ (paspaudus bet kur užsidaro).
+- 2026-11-12: **Tamsus stiklas** burbuliukams ant tamsių nuotraukų: rgba(18,20,18,.48) + blur, baltas tekstas. Kodas parenka šviesų ar tamsų pagal nuotraukos šviesumą (arba kūrėjas pasirenka įkeldamas).
+- 2026-11-12: **Video subtitrai** įjungti pagal nutylėjimą (balti ant pusiau juodo fono, centre apačioje), „CC“ mygtukas viršuje dešinėje juos išjungia. Kūrėjas įkeldamas video turi pridėti subtitrus (arba sugeneruojam automatiškai).
+- 2026-11-12: **Produkto būsenos:** (1) paruoštas siųsti: kaina + „+ 4,90 € shipping to Lithuania · 82,90 € total“ iškart po kaina; (2) **dydžiai** (žiedai): EU dydžių mygtukai, išparduotas perbrauktas, kol nepasirinktas dydis mygtukas „CHOOSE A SIZE“ pilkas, pasirinkus tampa „ADD TO BAG“; „Not sure? Ask Inez“; (3) **parduotas**: pilka kaina, „This piece has found a home“, apačioje „ASK FOR SOMETHING SIMILAR“. Gamina pagal užsakymą: oranžinis taškas „Made to order · ready in 1–2 weeks“.
