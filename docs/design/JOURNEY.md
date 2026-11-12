@@ -25,7 +25,7 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 | A2 | Skonio pasirinkimas (3 žingsniai) | Pasirenka, kas jam patinka | ⬜ |
 | A3 | **Discover feed** | Scrollina kūrėjus po vieną (širdis) | ✅ |
 | A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | ✅ |
-| A5 | Produktas | Apžiūri kūrinį, renkasi variantą | ⬜ |
+| A5 | Produktas | Apžiūri kūrinį, renkasi variantą | 🟡 |
 | A6 | Explore / paieška | Ieško kažko konkretaus | ⬜ |
 | A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | ⬜ |
 | A8 | Following | Mato sekamus kūrėjus | ⬜ |
