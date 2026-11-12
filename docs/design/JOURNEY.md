@@ -24,7 +24,7 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 | A1 | Pirmas atidarymas / Welcome | Supranta, kas tai, ir nori pradėti | ⬜ |
 | A2 | Skonio pasirinkimas (3 žingsniai) | Pasirenka, kas jam patinka | ⬜ |
 | A3 | **Discover feed** | Scrollina kūrėjus po vieną (širdis) | ✅ |
-| A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | 🟡 |
+| A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | ✅ |
 | A5 | Produktas | Apžiūri kūrinį, renkasi variantą | ⬜ |
 | A6 | Explore / paieška | Ieško kažko konkretaus | ⬜ |
 | A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | ⬜ |
@@ -71,5 +71,5 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-12: **Kūrėjo žymė ant nuotraukos (neprivaloma):** kūrėjas gali pridėti vieną trumpą užrašą prie kūrinio (pvz. „1 OF 1“, „SPECIAL WAX USED“), rodoma apačioje kairėje. Daugiausia 1 žymė kūriniui, iki ~20 simbolių, ne ant visų. Justinai: `products` reikės lauko `label text` (nullable), Studio formoje laukelis.
 - 2026-11-12: **Kūrėją seki (Follow), kūrinį išsaugai (bookmark ženkliukas).** Kūrėjo kortelėje širdutės nėra, tik „+ Follow“. Ant kūrinių vietoj širdutės: išsaugojimo ženkliukas (kaip Instagram „Save“), jis deda į Saved ir lentas. Širdutės platformoje nenaudojam.
 - 2026-11-12: **„X looking now“ žymė** kūrėjo kortelės viršuje kairėje (maža, stiklinė, su žaliu tašku). Rodoma **tik pirmame kadre** ir **tik kai kūrėją tuo metu žiūri daugiau nei 50 žmonių**, kitaip jos nėra. Skaičius turi būti tikras (ES draudžia netikrą „social proof“). Justinai: reikės realaus laiko skaičiavimo, pvz. Supabase Realtime Presence pagal kūrėją.
-- 2026-11-12: **Kūrėjo pasaulis (A4): be skirtukų (tabs).** Viskas viename scrolle: nuotrauka → vardas, aprašymas, faktai, Follow/Message → horizontali video/nuotraukų juosta → PIECES (filtrai + tinklelis) → „Want something personal?“ (šviesiai žalia #4fe061, juodas tekstas) → JOURNAL → ABOUT.
+- 2026-11-12: **Kūrėjo pasaulis (A4): su skirtukais Pieces / Journal / About** (žmogus pats renkasi, ką žiūri, nereikia scrollinti iki apačios). Viršuje: nuotrauka → vardas, aprašymas, faktai, Follow/Message → horizontali video/nuotraukų juosta → skirtukai. Pieces: filtrai + tinklelis + „Want something personal?“ (šviesiai žalia #4fe061, juodas tekstas).
 - 2026-11-12: **Journal = trumpos kūrėjo užrašų kortelės**, ne Instagram: idėjos, atradimai, trumpos istorijos. Daugiausia tekstas (kartais citata dideliu šriftu), su data ir tipu (DISCOVERED / SKETCHBOOK / NEXT IDEA). Rodom tik kelis naujausius, kad neperpildytų.
