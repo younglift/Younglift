@@ -1,0 +1,15 @@
+/* Design tokens copied from prototype/index.html (LOCKED, see CLAUDE.md).
+   Owned by Matas after day 1: component styles go in CSS Modules. */
+:root{
+  --ink:#141414; --grey:#6e6e73; --grey2:#4a4a4f; --white:#ffffff; --paper:#f3f2ee; --paper2:#f5f4f0;
+  --line:#ecebe6; --line2:#d9d7d0; --lift:#4fe061; --amber:#e7a33b; --ok:#d9f7dc; --err:#c0392b;
+  --display:var(--font-anton), Anton, Impact, "Arial Narrow", sans-serif; --body:var(--font-archivo), Archivo, "Helvetica Neue", Arial, sans-serif;
+  --meta:var(--font-geist-sans), Geist, Archivo, "Helvetica Neue", Arial, sans-serif; --mono:var(--font-plex-mono), "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--body);font-size:15px}
+a{color:inherit}
+button{font:inherit;color:inherit}
+img{max-width:100%}
