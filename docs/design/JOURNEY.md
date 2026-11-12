@@ -25,7 +25,7 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 | A2 | Skonio pasirinkimas (3 žingsniai) | Pasirenka, kas jam patinka | ⬜ |
 | A3 | **Discover feed** | Scrollina kūrėjus po vieną (širdis) | ✅ |
 | A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | ✅ |
-| A5 | Produktas | Apžiūri kūrinį, renkasi variantą | 🟡 |
+| A5 | Produktas | Apžiūri kūrinį, renkasi variantą | ✅ |
 | A6 | Explore / paieška | Ieško kažko konkretaus | ⬜ |
 | A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | ⬜ |
 | A8 | Following | Mato sekamus kūrėjus | ⬜ |
@@ -57,6 +57,25 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 
 ---
 
+## Navigacijos taisyklės (privaloma abiem AI)
+1. **Atgal = visada vienas žingsnis atgal.** Niekada nešokinėti per kelis ekranus.
+2. **Atgal mygtukas sako, kur veda:** „‹ Discover“, „‹ Mara“, „‹ Saved“ ir t.t.
+3. **Paspaudus aktyvų skirtuką apatinėje navigacijoje (pvz. Discover), grįžtama į to skirtuko pradžią,** o Discover atveju į **tą patį kūrėją ir tą patį kadrą**, kur žmogus buvo.
+4. **Feed prisimena vietą:** grįžus iš kūrėjo ar produkto, žmogus yra ten pat, ne sąrašo viršuje.
+5. **Produktas = pilnas ekranas** (ne bottom sheet). Turi savo nuorodą (URL), kad kūrėjai galėtų dalintis.
+6. Jei kada naudosim sheet: matomas ✕, telefono „atgal“ gestas jį uždaro, sheetų vienas ant kito nekraunam.
+
+## Atviri UX klausimai (dar padaryti)
+- Pirmo karto užuominos: „swipe up = kitas kūrėjas“, taškiukai ant nuotraukos vieną kartą švelniai pulsuoja.
+- Stiklo burbuliukai ant tamsių nuotraukų: tamsesnis variantas, kad tekstas visada būtų skaitomas.
+- Taškiukų ant vienos nuotraukos daugiausia 4.
+- Video: subtitrai (daug kas žiūri be garso), autoplay be garso.
+- Produktui: dydžio/varianto pasirinkimas (žiedams), „SOLD“ būsena („Ask for something similar“), bendra kaina su pristatymu prieš krepšelį.
+- Pasitikėjimas: ženklas „Approved by Young Lift“ (atranka), saugus mokėjimas, grąžinimai.
+- ES DSA: prekyvietė turi rodyti pardavėjo (verslo) duomenis kūrėjo puslapyje. Pasitikrinti su teisininku.
+- Kraunasi / tuščia / klaida būsenos (C3).
+- Prieinamumas: tekstas ne blankesnis nei #8b8a85 ant juodo fono (4.5:1), mygtukai ≥ 44px.
+
 ## Sprendimų žurnalas
 *(čia rašom, ką nusprendėm, kad abiejų AI žinotų)*
 
@@ -75,3 +94,4 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-12: **Journal = kūrėjo įrašai, ne Instagram.** Maišom du tipus: įrašas su nuotrauka (data · tipas, pavadinimas, 1–2 sakiniai, pvz. „New glaze method unlocked“) ir užrašų kortelė be nuotraukos (pvz. SKETCHBOOK citata dideliu šriftu, NEXT IDEA). Tipai: DISCOVERED / PROCESS / SKETCHBOOK / NEXT IDEA. Rodom tik kelis naujausius.
 - 2026-11-12: **Skirtukai (tabs):** pasirinktas rodomas dideliu Anton šriftu didžiosiomis raidėmis (PIECES), kiti mažais pilkais (Journal, About). Be žalio pabraukimo.
 - 2026-11-12: **Video/nuotraukų juosta rodoma tik Pieces skirtuke** (ne Journal ir ne About). Skirtukai eina iškart po Follow/Message.
+- 2026-11-12: Produktas lieka pilnu ekranu. Atgal mygtukas su vardu („‹ Mara“). Neaktyvūs navigacijos punktai #8b8a85 (kontrastas).

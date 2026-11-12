@@ -79,3 +79,6 @@ Checkout is Justinas's: UI calls `POST /api/checkout` with the bag and gets a St
 - PR description: what changed + which screen to check on the Vercel preview.
 - The other person approves, then merge to `main` (auto-deploys).
 - Never force-push `main`.
+
+## Design decisions
+Before building any screen, read `docs/design/JOURNEY.md`: the decision log and the navigation rules (back = one step with destination label, tapping the active tab returns to its root, the feed restores position, product is a full page with its own URL) apply to both of you.
