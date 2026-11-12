@@ -21,8 +21,8 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 ## A. Pirkėjo kelias (nuo pradžios iki pabaigos)
 | # | Ekranas | Ką žmogus čia daro | Būsena |
 |---|---|---|---|
-| A1 | Pirmas atidarymas / Welcome | Supranta, kas tai, ir nori pradėti | ⬜ |
-| A2 | Skonio pasirinkimas (3 žingsniai) | Pasirenka, kas jam patinka | ⬜ |
+| A1 | Pirmas atidarymas / Welcome | Supranta, kas tai, ir nori pradėti | 🟡 |
+| A2 | Skonio pasirinkimas | Pasirenka, kas jam patinka | 🟡 |
 | A3 | **Discover feed** | Scrollina kūrėjus po vieną (širdis) | ✅ |
 | A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | ✅ |
 | A5 | Produktas | Apžiūri kūrinį, renkasi variantą | ✅ |
