@@ -64,3 +64,6 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-12: Dizainą darom **pirma telefonui**, kompiuterio versiją po to.
 - 2026-11-12: Nuotaika: pasirinkta **A kryptis** (pop-up / plakatas: juodas fonas, Anton, žalia akcentui), bet **be „drop ends“ laikmačio**. B (galerija) ir C (iškirpta) atmesti.
 - 2026-11-12: Discover kūrėjo kortelė (srautas kaip prototipe): 1 kadras = kūrėjo įkelta nuotrauka (vienas ar keli kūriniai) su **suskleistais taškiukais**; paspaudus taškiuką išsiskleidžia pavadinimas + kaina, paspaudus juos atsidaro produktas. Braukiant į šoną: kūrėjo istorija / video ir t.t. „Explore her studio“ veda tiesiai į kūrėjo pasaulį.
+- 2026-11-12: Discover kortelė: 3 kadrai (1 darbai su taškiukais → 2 jos istorija/video → 3 daugiau kūrinių). Apačia vienoda visuose: avataras, VARDAS, miestas · amatas, „+ Follow“ tekstu, ❤️ be rėmelio, citata, vienas žalias mygtukas „Explore her studio →“. Be logo viršuje scrollinant. Navigacija paprastomis raidėmis.
+- 2026-11-12: Kainų taškiukai ir burbuliukai **stiklo (iOS glass) stiliaus**: apvalūs, permatomi su blur, tamsus tekstas.
+- 2026-11-12: **Kaina rašoma su euro ženklu po skaičiaus: `78 €`, `120 €`** (ne „€ 78“ ir ne „EUR 78“). Justinai: `lib/format.ts` `formatEUR` turi grąžinti tokį formatą.
