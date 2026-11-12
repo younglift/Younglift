@@ -1,11 +1,16 @@
 import type { Metadata, Viewport } from 'next';
-import { Anton, Archivo, IBM_Plex_Mono } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
+// Self-hosted fonts (no network at build time). next/font/google in Next 14 fails on Vercel
+// with the current Google Fonts response, so Anton, Archivo and IBM Plex Mono come from Fontsource.
+import '@fontsource/anton/400.css';
+import '@fontsource/archivo/400.css';
+import '@fontsource/archivo/500.css';
+import '@fontsource/archivo/600.css';
+import '@fontsource/archivo/700.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/ibm-plex-mono/600.css';
 import './globals.css';
-
-const anton = Anton({ subsets: ['latin', 'latin-ext'], weight: '400', variable: '--font-anton', display: 'swap' });
-const archivo = Archivo({ subsets: ['latin', 'latin-ext'], weight: ['400', '500', '600', '700'], variable: '--font-archivo', display: 'swap' });
-const plexMono = IBM_Plex_Mono({ subsets: ['latin', 'latin-ext'], weight: ['400', '500', '600'], variable: '--font-plex-mono', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'Young Lift',
@@ -20,7 +25,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${anton.variable} ${archivo.variable} ${plexMono.variable} ${GeistSans.variable}`}>
+    <html lang="en" className={GeistSans.variable}>
       <body>{children}</body>
     </html>
   );
