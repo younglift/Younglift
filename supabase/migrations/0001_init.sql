@@ -18,6 +18,14 @@ returns boolean language sql stable security definer set search_path = public as
   select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin');
 $$;
 
+-- Trusted = the server (service role key, e.g. Stripe webhook), the SQL editor, or an admin.
+-- End users always have auth.uid(); server-side calls and the SQL editor do not.
+-- Anonymous visitors also have no auth.uid(), but RLS gives them no update rights, so the guards never see them.
+create or replace function public.is_trusted()
+returns boolean language sql stable security definer set search_path = public as $$
+  select auth.uid() is null or coalesce(auth.role(), '') = 'service_role' or public.is_admin();
+$$;
+
 -- New sign-ups get a profile row automatically.
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$
@@ -33,11 +41,11 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
--- Users can edit their name and taste, never their role (only admins can).
+-- Users can edit their name and taste, never their role (only admins, the server or the SQL editor can).
 create or replace function public.guard_profile_role()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  if new.role is distinct from old.role and not public.is_admin() then
+  if new.role is distinct from old.role and not public.is_trusted() then
     new.role := old.role;
   end if;
   return new;
@@ -84,11 +92,12 @@ returns boolean language sql stable security definer set search_path = public as
   select exists (select 1 from public.makers where id = m and status = 'approved');
 $$;
 
--- Makers can edit their profile, but not approval status, ownership or payout account.
+-- Makers can edit their profile, but not approval status, ownership, slug or payout account.
+-- Admins, the server (Stripe saving stripe_account_id) and the SQL editor can.
 create or replace function public.guard_maker_fields()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  if not public.is_admin() then
+  if not public.is_trusted() then
     new.status := old.status;
     new.owner_id := old.owner_id;
     new.stripe_account_id := old.stripe_account_id;
