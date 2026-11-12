@@ -12,7 +12,7 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 ## 0. Pagrindas (prieš visus ekranus)
 | # | Žingsnis | Būsena |
 |---|---|---|
-| 0.1 | Nuotaika ir kryptis: kaip turi jaustis Young Lift (3 kryptys palyginimui) | ⬜ |
+| 0.1 | Nuotaika ir kryptis: kaip turi jaustis Young Lift (3 kryptys palyginimui) | 🟡 |
 | 0.2 | Spalvos | ⬜ |
 | 0.3 | Šriftai | ⬜ |
 | 0.4 | Mygtukai, žymos, kortelės, laukeliai | ⬜ |
@@ -23,7 +23,7 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 |---|---|---|---|
 | A1 | Pirmas atidarymas / Welcome | Supranta, kas tai, ir nori pradėti | ⬜ |
 | A2 | Skonio pasirinkimas (3 žingsniai) | Pasirenka, kas jam patinka | ⬜ |
-| A3 | **Discover feed** | Scrollina kūrėjus po vieną (širdis) | ⬜ |
+| A3 | **Discover feed** | Scrollina kūrėjus po vieną (širdis) | 🟡 |
 | A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | ⬜ |
 | A5 | Produktas | Apžiūri kūrinį, renkasi variantą | ⬜ |
 | A6 | Explore / paieška | Ieško kažko konkretaus | ⬜ |
@@ -61,3 +61,6 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 *(čia rašom, ką nusprendėm, kad abiejų AI žinotų)*
 
 - 2026-11-12: Srautai užrakinti, vizualas atviras. Pradedam nuo 0.1.
+- 2026-11-12: Dizainą darom **pirma telefonui**, kompiuterio versiją po to.
+- 2026-11-12: Nuotaika: pasirinkta **A kryptis** (pop-up / plakatas: juodas fonas, Anton, žalia akcentui), bet **be „drop ends“ laikmačio**. B (galerija) ir C (iškirpta) atmesti.
+- 2026-11-12: Discover kūrėjo kortelė (srautas kaip prototipe): 1 kadras = kūrėjo įkelta nuotrauka (vienas ar keli kūriniai) su **suskleistais taškiukais**; paspaudus taškiuką išsiskleidžia pavadinimas + kaina, paspaudus juos atsidaro produktas. Braukiant į šoną: kūrėjo istorija / video ir t.t. „Explore her studio“ veda tiesiai į kūrėjo pasaulį.
