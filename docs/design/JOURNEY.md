@@ -27,8 +27,8 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 | A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | ✅ |
 | A5 | Produktas | Apžiūri kūrinį, renkasi variantą | ✅ |
 | A6 | Explore / paieška | Ieško kažko konkretaus | ✅ |
-| A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | 🟡 |
-| A8 | Following | Mato sekamus kūrėjus | ⬜ |
+| A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | ✅ |
+| A8 | Following | Mato sekamus kūrėjus | 🟡 |
 | A9 | Žinutės | Rašo kūrėjui | ⬜ |
 | A10 | Krepšelis | Peržiūri, ką perka | ⬜ |
 | A11 | Checkout + Ačiū | Sumoka, gauna patvirtinimą | ⬜ |
@@ -105,3 +105,4 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-13: **Filtrų pasirinkimai generuojami iš tikrų kūrinių** (ne ranka): rodomos tik tos medžiagos / kainų ribos, kurios yra tos kategorijos ar paieškos rezultatuose (pvz. Jewellery be Wool), variantai su 0 rezultatų nerodomi. Medžiagą kūrėjas pasirenka iš sąrašo įkeldamas kūrinį. Justinai: `products.material` iš fiksuoto sąrašo, filtrų API grąžina galimus variantus su kiekiais.
 - 2026-11-13: Canvas dizainai = nuorodos ir sprendimai, ne galutinis kodas. Pikselių klaidos neperkeliamos; prieš paleidimą QA tikruose telefonuose.
 - 2026-11-13: **Saved (A7) = tik kūriniai ir lentos** (kūrėjai yra Following). SAVED + „5 pieces · 2 boards“, horizontali lentų eilė (2×2 nuotraukų koliažas, pavadinimas, kiekis; pasirinkta su žaliu rėmeliu), „+ New board“ (brūkšniuotas) atidaro pavadinimo laukelį. Žemiau pasirinktos lentos tinklelis (kaip visur), parduoti pilki su „Ask for something similar“. Paspaudus užpildytą išsaugojimo ženkliuką atsidaro **„Save to board“ lapas** (✕, varnelės prie lentų, „Remove from saved“); pašalinus rodoma žinutė su **Undo**.
+- 2026-11-13: **Following (A8):** FOLLOWING + „Makers you follow show up first in Discover.“ Viršuje apvalūs sekamų kūrėjų avatarai (kaip stories), **žalias žiedas = kažkas naujo**, paspaudus filtruoja; pirmas „ALL“. „NEW FROM YOUR MAKERS“: atnaujinimų kortelės (naujas kūrinys su nuotrauka ir kaina, arba journal įrašas tekstu), su laiku (2H, 1D). Apačioje „YOUR MAKERS“ sąrašas su „Following“ / „+ Follow“ mygtuku (atsekti vienu paspaudimu). Justinai: `getFollowingFeed()` = nauji kūriniai + journal įrašai iš sekamų kūrėjų, naujausi pirma.
