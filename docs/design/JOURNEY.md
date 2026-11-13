@@ -21,13 +21,13 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 ## A. Pirkėjo kelias (nuo pradžios iki pabaigos)
 | # | Ekranas | Ką žmogus čia daro | Būsena |
 |---|---|---|---|
-| A1 | Pirmas atidarymas / Welcome | Supranta, kas tai, ir nori pradėti | 🟡 |
-| A2 | Skonio pasirinkimas | Pasirenka, kas jam patinka | 🟡 |
+| A1 | Pirmas atidarymas / Welcome | Supranta, kas tai, ir nori pradėti | ✅ |
+| A2 | Skonio pasirinkimas | Pasirenka, kas jam patinka | ✅ |
 | A3 | **Discover feed** | Scrollina kūrėjus po vieną (širdis) | ✅ |
 | A4 | Kūrėjo pasaulis | Pažįsta kūrėją, mato visus kūrinius | ✅ |
 | A5 | Produktas | Apžiūri kūrinį, renkasi variantą | ✅ |
-| A6 | Explore / paieška | Ieško kažko konkretaus | 🟡 |
-| A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | ⬜ |
+| A6 | Explore / paieška | Ieško kažko konkretaus | ✅ |
+| A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | 🟡 |
 | A8 | Following | Mato sekamus kūrėjus | ⬜ |
 | A9 | Žinutės | Rašo kūrėjui | ⬜ |
 | A10 | Krepšelis | Peržiūri, ką perka | ⬜ |
@@ -102,3 +102,6 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-13: **Netikėtas kūrėjas Discover feed'e:** kas ~5–10 kortelių (tikslų dažnį testuosim) įmaišom kūrėją **ne iš žmogaus pasirinkto skonio**. Pirmame kadre viršuje kairėje stiklinė žymė „✦ Something new · we think you might like this“ (vietoj „looking now“). Justinai: `getFeed` jau numato „surprise maker“, žymę reikia perduoti kaip lauką (pvz. `FeedItem.reason = 'surprise'`).
 - 2026-11-13: **Explore (A6) = tik kūriniai, Zalando principu, be perkrovimo.** (1) **Pradžia:** EXPLORE, paieška, kategorijų sąrašas eilutėmis (nuotrauka, pavadinimas, kiek kūrinių, ›): Jewellery, Ceramics, Clothing, Bags & accessories, Home, Art & prints; žemiau POPULAR SEARCHES. (2) **Pasirinkus kategoriją arba įvedus paiešką:** „‹ Explore“, didelė antraštė (JEWELLERY / RESULTS), viena eilė subkategorijų (pvz. All · Rings · Necklaces · Earrings), du mygtukai **Filter** ir **Sort**, kiekis, tinklelis. (3) **Filter** atidaro pilno ekrano langą su ✕ ir „Clear all“: Material, Price, Availability su varnelėmis ir kiekiu prie kiekvieno; apačioje žalias „SHOW 4 PIECES“. Kai filtrai įjungti, mygtukas rodo „Filter (2)“ su žaliu rėmeliu. Jokių filtrų pill'ų eilių pagrindiniame ekrane. Apatinė navigacija: **Discover · Explore · Following · Saved · Bag** (laukia Justino OK).
 - 2026-11-13: Užrašai „HER STORY →“ (mygtukas pirmame kadre) ir ranka rašytas „her story →“ **pašalinti**: automatinis nuotraukos pasislinkimas pats parodo, kad yra daugiau kadrų.
+- 2026-11-13: **Filtrų pasirinkimai generuojami iš tikrų kūrinių** (ne ranka): rodomos tik tos medžiagos / kainų ribos, kurios yra tos kategorijos ar paieškos rezultatuose (pvz. Jewellery be Wool), variantai su 0 rezultatų nerodomi. Medžiagą kūrėjas pasirenka iš sąrašo įkeldamas kūrinį. Justinai: `products.material` iš fiksuoto sąrašo, filtrų API grąžina galimus variantus su kiekiais.
+- 2026-11-13: Canvas dizainai = nuorodos ir sprendimai, ne galutinis kodas. Pikselių klaidos neperkeliamos; prieš paleidimą QA tikruose telefonuose.
+- 2026-11-13: **Saved (A7) = tik kūriniai ir lentos** (kūrėjai yra Following). SAVED + „5 pieces · 2 boards“, horizontali lentų eilė (2×2 nuotraukų koliažas, pavadinimas, kiekis; pasirinkta su žaliu rėmeliu), „+ New board“ (brūkšniuotas) atidaro pavadinimo laukelį. Žemiau pasirinktos lentos tinklelis (kaip visur), parduoti pilki su „Ask for something similar“. Paspaudus užpildytą išsaugojimo ženkliuką atsidaro **„Save to board“ lapas** (✕, varnelės prie lentų, „Remove from saved“); pašalinus rodoma žinutė su **Undo**.
