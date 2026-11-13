@@ -1,6 +1,6 @@
 # Young Lift: shared contract for both AIs
 
-Read `CLAUDE.md` first (design rules are LOCKED). Then read your person's file (`justinas.md` or `matas.md`). This file is what both sides must agree on.
+Read `CLAUDE.md` first (flows are LOCKED, the visual look is being redesigned, see `docs/design/JOURNEY.md`). Then read your person's file (`justinas.md` or `matas.md`). This file is what both sides must agree on.
 
 ## Product in one paragraph
 A curated marketplace for young makers (jewellery, ceramics, crochet, textiles, prints...) that feels like a pop-up market on a phone. Buyers pick their taste, then scroll a vertical feed: one maker per screen (swipe up = next maker, swipe sideways = that maker's photos/video). Tapping a maker opens their "world" (personal shop). Buyers follow makers, save pieces into boards ("For birthday", "For my sister"), message makers, and buy. Makers are accepted by application only. Young Lift takes a commission on each sale. Launch markets: Lithuania, Latvia, Estonia, Poland. UI language: English first.
@@ -79,3 +79,6 @@ Checkout is Justinas's: UI calls `POST /api/checkout` with the bag and gets a St
 - PR description: what changed + which screen to check on the Vercel preview.
 - The other person approves, then merge to `main` (auto-deploys).
 - Never force-push `main`.
+
+## Design decisions
+Before building any screen, read `docs/design/JOURNEY.md`: the decision log and the navigation rules (back = one step with destination label, tapping the active tab returns to its root, the feed restores position, product is a full page with its own URL) apply to both of you.
