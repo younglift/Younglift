@@ -1,9 +1,12 @@
 // Mock implementation of the data contract (docs/ai/SHARED.md).
-// State lives in memory: it resets on reload / server restart. Supabase replaces this later
-// with the same function signatures, so screens built on it keep working.
+// State lives in memory and, in the browser, is kept in localStorage so a reload keeps the
+// bag, saves, follows and taste. Supabase replaces this later with the same function signatures.
 import type { Bag, Me } from './contract';
 import type { BagLine, Board, Category, FeedItem, Maker, Order, Product, Taste } from '@/lib/types';
 import { MAKERS, MAKER_EXTRAS, PRODUCTS } from './mock-data';
+
+/** Messages between the buyer and a maker (one thread per maker). Not in the shared contract yet. */
+export type ChatMessage = { id: string; makerId: string; me: boolean; text: string; at: string; productId?: string; request?: { budget: string } };
 
 const state = {
   me: { id: 'demo-buyer', name: 'Lea Meier', role: 'buyer' as const, taste: { categories: [] as Category[], styles: [] as string[], materials: [] as string[] } },
@@ -18,7 +21,38 @@ const state = {
   makers: MAKERS.map((m) => ({ ...m })),
   products: PRODUCTS.map((p) => ({ ...p })),
   myMakerId: 'inez',
+  messages: [] as ChatMessage[],
 };
+
+const KEY = 'yl-mock-v1';
+
+function hydrate() {
+  if (typeof window === 'undefined') return;
+  try {
+    const raw = window.localStorage.getItem(KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.taste) state.me.taste = d.taste;
+    if (Array.isArray(d.follows)) state.follows = new Set(d.follows);
+    if (Array.isArray(d.saves)) state.saves = new Set(d.saves);
+    if (Array.isArray(d.boards)) state.boards = d.boards;
+    if (Array.isArray(d.bag)) state.bag = d.bag;
+    if (Array.isArray(d.orders)) state.orders = d.orders;
+    if (Array.isArray(d.messages)) state.messages = d.messages;
+  } catch { /* storage blocked or corrupt: start fresh */ }
+}
+
+function persist() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify({
+      taste: state.me.taste, follows: [...state.follows], saves: [...state.saves],
+      boards: state.boards, bag: state.bag, orders: state.orders, messages: state.messages,
+    }));
+  } catch { /* ignore */ }
+}
+
+hydrate();
 
 const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x));
 const withMaker = (m: Maker): Maker => ({ ...m, isFollowing: state.follows.has(m.id) });
@@ -87,20 +121,26 @@ export async function getMe(): Promise<Me | null> {
 
 export async function saveTaste(t: Taste): Promise<void> {
   state.me.taste = clone(t);
+  persist();
 }
 
 export async function toggleFollow(makerId: string): Promise<boolean> {
-  if (state.follows.has(makerId)) { state.follows.delete(makerId); return false; }
-  state.follows.add(makerId); return true;
+  const on = !state.follows.has(makerId);
+  if (on) state.follows.add(makerId); else state.follows.delete(makerId);
+  persist();
+  return on;
 }
 
 export async function toggleSave(productId: string): Promise<boolean> {
   if (state.saves.has(productId)) {
     state.saves.delete(productId);
     state.boards.forEach((b) => { b.productIds = b.productIds.filter((id) => id !== productId); });
+    persist();
     return false;
   }
-  state.saves.add(productId); return true;
+  state.saves.add(productId);
+  persist();
+  return true;
 }
 
 export async function getBoards(): Promise<Board[]> {
@@ -110,6 +150,7 @@ export async function getBoards(): Promise<Board[]> {
 export async function createBoard(name: string): Promise<Board> {
   const board: Board = { id: `b${Date.now()}`, name: name.trim() || 'New board', productIds: [] };
   state.boards.push(board);
+  persist();
   return clone(board);
 }
 
@@ -118,6 +159,14 @@ export async function addToBoard(boardId: string, productId: string): Promise<vo
   if (!b) return;
   state.saves.add(productId);
   if (!b.productIds.includes(productId)) b.productIds.push(productId);
+  persist();
+}
+
+export async function removeFromBoard(boardId: string, productId: string): Promise<void> {
+  const b = state.boards.find((x) => x.id === boardId);
+  if (!b) return;
+  b.productIds = b.productIds.filter((id) => id !== productId);
+  persist();
 }
 
 export async function getBag(): Promise<Bag> {
@@ -133,10 +182,12 @@ export async function addToBag(line: BagLine): Promise<void> {
   const existing = state.bag.find((l) => sameLine(l, line));
   if (existing) existing.qty += line.qty;
   else state.bag.push(clone(line));
+  persist();
 }
 
 export async function updateBag(lines: BagLine[]): Promise<void> {
   state.bag = clone(lines.filter((l) => l.qty > 0));
+  persist();
 }
 
 export async function getOrders(): Promise<Order[]> {
@@ -186,4 +237,58 @@ export async function uploadImage(file: File): Promise<string> {
 export async function markShipped(orderId: string, _tracking?: string): Promise<void> {
   const o = state.orders.find((x) => x.id === orderId);
   if (o && o.status === 'paid') o.status = 'shipped';
+  persist();
+}
+
+// ---- Messages (mock) ----
+
+export async function getThreads(): Promise<{ maker: Maker; last: ChatMessage }[]> {
+  const out: { maker: Maker; last: ChatMessage }[] = [];
+  for (const m of state.makers) {
+    const msgs = state.messages.filter((x) => x.makerId === m.id);
+    if (msgs.length) out.push({ maker: withMaker(m), last: msgs[msgs.length - 1] });
+  }
+  out.sort((a, b) => b.last.at.localeCompare(a.last.at));
+  return clone(out);
+}
+
+export async function getMessages(makerId: string): Promise<ChatMessage[]> {
+  return clone(state.messages.filter((x) => x.makerId === makerId));
+}
+
+export async function sendMessage(makerId: string, text: string, productId?: string, request?: { budget: string }): Promise<ChatMessage> {
+  const msg: ChatMessage = { id: `m${Date.now()}${Math.random().toString(36).slice(2, 6)}`, makerId, me: true, text: text.trim(), at: new Date().toISOString(), productId, request };
+  state.messages.push(msg);
+  persist();
+  return clone(msg);
+}
+
+// ---- Checkout (mock) ----
+
+/** Payments are not live yet: this records a TEST order from the bag and empties the bag. */
+export async function placeTestOrder(): Promise<Order | null> {
+  const lines = state.bag
+    .map((l) => ({ ...l, product: state.products.find((p) => p.id === l.productId) }))
+    .filter((l): l is BagLine & { product: Product } => !!l.product);
+  if (!lines.length) return null;
+  const makers = new Set(lines.map((l) => l.product.makerId));
+  const items = lines.reduce((a, l) => a + l.product.priceCents * l.qty, 0);
+  let shipping = 0;
+  makers.forEach((id) => {
+    const mine = lines.filter((l) => l.product.makerId === id);
+    const sub = mine.reduce((a, l) => a + l.product.priceCents * l.qty, 0);
+    const limit = MAKER_EXTRAS[id]?.freeShippingOverCents;
+    shipping += limit != null && sub >= limit ? 0 : Math.max(...mine.map((l) => l.product.shippingCents));
+  });
+  const order: Order = {
+    id: `YL-${1000 + state.orders.length + 41}`,
+    createdAt: new Date().toISOString(),
+    status: 'paid',
+    lines: clone(lines),
+    totalCents: items + shipping,
+  };
+  state.orders.unshift(order);
+  state.bag = [];
+  persist();
+  return clone(order);
 }

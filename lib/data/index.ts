@@ -13,6 +13,7 @@ export {
   getBoards,
   createBoard,
   addToBoard,
+  removeFromBoard,
   getBag,
   addToBag,
   updateBag,
@@ -23,7 +24,12 @@ export {
   deleteProduct,
   uploadImage,
   markShipped,
+  getThreads,
+  getMessages,
+  sendMessage,
+  placeTestOrder,
 } from './mock';
-export { MAKER_EXTRAS } from './mock-data';
-export type { MakerExtras } from './mock-data';
+export type { ChatMessage } from './mock';
+export { MAKER_EXTRAS, PRODUCT_EXTRAS } from './mock-data';
+export type { MakerExtras, ProductExtras, PieceStatus } from './mock-data';
 export type { Me } from './contract';
