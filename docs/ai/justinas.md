@@ -4,6 +4,22 @@ You are working with **Justinas** on Young Lift. Read `CLAUDE.md` and `docs/ai/S
 
 Talk to Justinas in Lithuanian, short and plain. Write code, comments and commits in English.
 
+## 🎨 New screens from Matas (2026-11-16)
+The buyer journey A1–A12 is designed (phone). Source of every screen: `docs/design/screens/` (read its README first), the reasons and the data each screen needs: `docs/design/JOURNEY.md` → decision log, lines marked „Justinai:“. Build the UI from these with tokens from `app/globals.css`; treat them as the spec. Visuals may still change (design phase), flows and data needs are stable. Next: maker journey B1–B9.
+
+## ⚠️ IMPORTANT: do this first (before any other Supabase work)
+1. Install the official Supabase agent skills in Justinas's Claude Code: `npx skills add supabase/agent-skills` (from https://supabase.com/docs/guides/getting-started/ai-skills.md). Use them for every migration and RLS policy.
+2. Fix the Supabase advisor warnings in a new migration (project `younglift`, ref `kswrznfrcajvugmubaom`):
+   - `revoke execute` on the trigger functions `guard_maker_fields`, `guard_profile_role`, `handle_new_user` from `anon, authenticated, public`.
+   - In every RLS policy replace `auth.uid()` with `(select auth.uid())` (lint 0003 auth_rls_initplan).
+   - Add indexes for the unindexed foreign keys (bag_items.product_id, board_items.product_id, boards.user_id, maker_applications.user_id, messages.buyer_id / product_id / sender_id, order_items.product_id, saves.product_id).
+   - Split the `media` and `posts` "owner writes" `for all` policies into insert/update/delete so SELECT has one policy (lint 0006).
+   Re-run the security and performance advisors after; they should be clean except "unused index" (expected before launch).
+Tracked in GitHub issue "SVARBU: Supabase agent skills + advisor pataisymai".
+
+## Design phase note
+The visual look is being redesigned by Matas (see `CLAUDE.md` and `docs/design/JOURNEY.md`). Flows and data stay as they are, so your work is not affected. Never hard-code styles in anything you build (admin, emails can use their own simple styles).
+
 ## Day 1: unblock Matas (highest priority, ship as one PR before anything else)
 1. Scaffold Next.js (App Router, TypeScript, ESLint) in the repo root. Move the prototype to `prototype/index.html` + `prototype/img/` so it stays viewable.
 2. Fonts via `next/font/google`: Anton, Archivo, Geist, IBM Plex Mono.

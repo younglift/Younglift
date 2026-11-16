@@ -16,6 +16,12 @@ export type MakerExtras = {
   meet: { image: string; qa: [string, string][] };
   process: { image: string; title: string; steps: string[] };
   closerProductId: string;
+  /** Price dots on the first Discover photo: position in % of the photo, and the piece. */
+  tags: { x: number; y: number; productId: string }[];
+  /** Short line under the name on the maker page, e.g. "Cups and bowls, built by hand". */
+  tagline: string;
+  /** Maker's own free-shipping threshold (Matas, A10). Null = none. */
+  freeShippingOverCents: number | null;
   journal: { date: string; title: string; text: string; image?: string; isVideo?: boolean }[];
   about: { heading: string; text: string }[];
 };
@@ -62,6 +68,9 @@ export const MAKER_EXTRAS: Record<string, MakerExtras> = {
       'I file, sand and polish it by hand. About two days.',
     ] },
     closerProductId: 'flow',
+    tags: [{ x: 18, y: 30, productId: 'flow' }, { x: 62, y: 22, productId: 'fold' }, { x: 38, y: 50, productId: 'soft' }],
+    tagline: 'Silver rings, carved by hand',
+    freeShippingOverCents: null,
     journal: [
       { date: '12 Oct', title: 'New wax models', text: 'Five new shapes on the bench this week. Two will become rings, three go back in the drawer.', image: img('workbench') },
       { date: '28 Sep', title: 'Gold for the first time', text: 'The Soft loop now comes in gold vermeil. Same shape, warmer light.', image: img('soft-loop') },
@@ -90,6 +99,9 @@ export const MAKER_EXTRAS: Record<string, MakerExtras> = {
       'I glaze by dipping and fire it a second time.',
     ] },
     closerProductId: 'twist',
+    tags: [{ x: 14, y: 56, productId: 'ripple' }, { x: 50, y: 24, productId: 'twist' }, { x: 86, y: 62, productId: 'cup' }],
+    tagline: 'Cups and bowls, built by hand',
+    freeShippingOverCents: 15000,
     journal: [
       { date: '10 Oct', title: 'A new oat glaze', text: 'Warmer than the old one. The cups look like toast now.', image: img('morning-cup') },
       { date: '24 Sep', title: 'The tall twist', text: 'A vase that took three tries to stand straight.', image: img('twist-vase') },
@@ -118,6 +130,9 @@ export const MAKER_EXTRAS: Record<string, MakerExtras> = {
       'I wash and block it so it keeps its shape.',
     ] },
     closerProductId: 'hood',
+    tags: [{ x: 66, y: 30, productId: 'hood' }],
+    tagline: 'Crochet hoods, square by square',
+    freeShippingOverCents: null,
     journal: [
       { date: '5 Oct', title: 'Moss and cream again', text: 'The colours everyone asks for. Twelve hoods this month.', image: img('flower-hood') },
       { date: '20 Sep', title: 'Close up', text: 'Every flower has six petals. I count them in my sleep.', image: img('crochet-details') },
@@ -137,8 +152,10 @@ const RING = [{ name: 'Ring size (EU)', options: ['50', '52', '54', '56', '58'] 
 const HOOD = [{ name: 'Size', options: ['S/M', 'M/L'] }];
 const SHIPPING = 490;
 
+export type PieceStatus = 'ready' | 'order' | 'sold';
+
 type Raw = [id: string, makerId: string, title: string, material: string, eur: number, image: string,
-  status: 'ready' | 'order' | 'sold', category: Category, variants: Product['variants'], description: string];
+  status: PieceStatus, category: Category, variants: Product['variants'], description: string];
 
 // status: ready = in stock, order = made to order, sold = one of a kind and gone
 const RAW: Raw[] = [
@@ -167,3 +184,13 @@ export const PRODUCTS: Product[] = RAW.map(([id, makerId, title, material, eur, 
   oneOfAKind: status === 'sold' || id === 'twist',
   shippingCents: SHIPPING,
 }));
+
+/** Extra per-piece fields the screens need until they are in the database
+ *  (Matas: products.label, ready / made to order / sold). */
+export type ProductExtras = { status: PieceStatus; label?: string };
+
+const LABELS: Record<string, string> = { twist: '1 OF 1', ripple: 'SPECIAL WAX USED', flow: 'HAND-CARVED WAX' };
+
+export const PRODUCT_EXTRAS: Record<string, ProductExtras> = Object.fromEntries(
+  RAW.map(([id, , , , , , status]) => [id, { status, label: LABELS[id] }]),
+);

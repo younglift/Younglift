@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bag</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-scroll::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+
+  <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 0; bottom: {{scrollBottom}}; overflow-y: auto; scrollbar-width: none;">
+    <div style="padding: 20px 16px 4px; display: flex; justify-content: space-between; align-items: baseline;">
+      <h1 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 40px; line-height: 1;">BAG</h1>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{countLabel}}</span>
+    </div>
+
+    <sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
+      <div style="padding: 140px 32px 0; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;">
+        <svg aria-hidden="true" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#5a5d58" stroke-width="1.4" stroke-linejoin="round"><path d="M4 8h16l-1.5 13h-13z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg>
+        <span style="font-family: Anton, Impact, sans-serif; font-size: 26px;">YOUR BAG IS EMPTY</span>
+        <a href="#" style="margin-top: 8px; width: 100%; height: 52px; display: flex; align-items: center; justify-content: center; background: #4fe061; color: #121412; text-decoration: none; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px;">DISCOVER MAKERS</a>
+        <a href="#" style="color: #f1efe9; font-size: 14px; font-weight: 600;">Your saved pieces</a>
+      </div>
+    </sc-if>
+
+    <sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+      <section style="margin: 14px 16px 0; border: 1px solid #2a2c2a; border-radius: 10px; overflow: hidden;">
+        <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #2a2c2a; color: #f1efe9; text-decoration: none;">
+          <img src="{{g.img}}" alt="" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; object-position: {{g.pos}};">
+          <span style="flex-grow: 1; font-size: 14px; font-weight: 700;">{{g.name}}</span>
+          <span style="font-size: 12px; color: #8b8a85;">Ships from {{g.city}}</span>
+        </a>
+        <sc-for list="{{g.lines}}" as="l" hint-placeholder-count="1">
+          <div style="display: flex; gap: 12px; padding: 14px; border-bottom: 1px solid #222421;">
+            <a href="#" style="flex-shrink: 0;"><img src="{{l.img}}" alt="{{l.name}}" style="display: block; width: 84px; height: 104px; border-radius: 4px; object-fit: cover;"></a>
+            <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px;">
+                <span style="font-size: 15px; font-weight: 600;">{{l.name}}</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 500;">{{l.total}}</span>
+              </div>
+              <span style="font-size: 13px; color: #8b8a85;">{{l.meta}}</span>
+              <span style="flex-grow: 1;"></span>
+              <div style="display: flex; align-items: center; gap: 4px; min-height: 36px;">
+                <sc-if value="{{l.multi}}" hint-placeholder-val="{{false}}">
+                  <span style="display: flex; align-items: center; border: 1px solid #3a3d39; border-radius: 999px; height: 32px;">
+                    <button type="button" onClick="{{l.minus}}" aria-label="One less" style="width: 32px; height: 32px; border: 0; background: transparent; color: #f1efe9; font-size: 16px; cursor: pointer;">−</button>
+                    <span style="min-width: 16px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">{{l.qty}}</span>
+                    <button type="button" onClick="{{l.plus}}" aria-label="One more" style="width: 32px; height: 32px; border: 0; background: transparent; color: {{l.plusColor}}; font-size: 16px; cursor: pointer;">+</button>
+                  </span>
+                </sc-if>
+                <span style="flex-grow: 1;"></span>
+                <button type="button" onClick="{{l.remove}}" aria-label="Remove {{l.name}}" style="width: 36px; height: 36px; margin-right: -8px; padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#c9c8c2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v5M14 11v5"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{g.hasGoal}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 12px 14px 2px; display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 13px; color: {{g.goalColor}}; font-weight: 600;">{{g.goalText}}</span>
+            <span style="height: 3px; border-radius: 2px; background: #2a2c2a; overflow: hidden;"><span style="display: block; height: 100%; width: {{g.goalPct}}; background: #4fe061;"></span></span>
+          </div>
+        </sc-if>
+        <div style="display: flex; justify-content: space-between; padding: 10px 14px; font-size: 13px; color: #8b8a85;"><span>Shipping to Lithuania</span><span style="font-family: 'IBM Plex Mono', monospace; color: {{g.shipColor}};">{{g.ship}}</span></div>
+      </section>
+    </sc-for>
+
+    <sc-if value="{{hasItems}}" hint-placeholder-val="{{true}}">
+      <div style="margin: 20px 16px 24px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #c9c8c2;"><span>Pieces</span><span style="font-family: 'IBM Plex Mono', monospace;">{{items}}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #c9c8c2;"><span>Shipping · {{parcels}}</span><span style="font-family: 'IBM Plex Mono', monospace;">{{ship}}</span></div>
+        <div style="height: 1px; background: #2a2c2a;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 16px; font-weight: 700;">Total</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600;">{{total}}</span></div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 16px; right: 16px; bottom: {{toastBottom}}; height: 48px; padding: 0 16px; border-radius: 10px; background: #f1efe9; color: #121412; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,.4);">
+      <span>{{toast}}</span>
+      <button type="button" onClick="{{undo}}" style="padding: 0; border: 0; background: transparent; color: #121412; font: 700 14px Archivo, Arial, sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">Undo</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{hasItems}}" hint-placeholder-val="{{true}}">
+    <div style="position: absolute; left: 0; right: 0; bottom: 64px; padding: 12px 16px; border-top: 1px solid #222421; background: #121412;">
+      <a href="#" style="height: 52px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #4fe061; color: #121412; text-decoration: none; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px;">CHECKOUT <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; letter-spacing: 0; font-size: 14px;">{{total}}</span></a>
+    </div>
+  </sc-if>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid #222421; background: #121412; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 12px; font-weight: 600;">
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Discover</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Explore</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Following</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Saved</a>
+    <a href="#" aria-current="page" style="color: #f1efe9; text-decoration: none;">Bag{{navCount}}</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"empty":{"editor":"boolean","default":false},"single":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bag: props.empty ? [] : [
+        { id: 'flow', maker: 'inez', name: 'Flow ring', meta: 'Size 56 · 1 of 1', price: 145, qty: 1, stock: 1, img: '/_blob/42547c7d127c23e79e6298e385db6098' },
+        { id: 'ripple', maker: 'mara', name: 'Ripple bowl', meta: '1 of 1', price: 78, qty: 1, stock: 1, img: '/_blob/5bf0b89334514376f2638484cbb3bfb9' },
+        { id: 'cup', maker: 'mara', name: 'Morning cup', meta: 'Oat glaze · 3 made', price: 34, qty: 2, stock: 3, img: '/_blob/c250021ba43e28825ae41415a4005f27' }
+      ],
+      toast: '', last: null
+    };
+    if (props.single) this.state.bag = this.state.bag.filter((b) => b.maker === 'mara');
+  }
+  renderVals() {
+    const st = this.state;
+    const M = {
+      inez: { free: 0, name: 'Inez', city: 'Vilnius', img: '/_blob/d7bb7bc69d58d2724047c0554e8a6a6c', pos: 'center 25%' },
+      mara: { free: 150, name: 'Mara', city: 'Berlin', img: '/_blob/4d5d9ddd16544d5e92f74eee0d109a08', pos: 'center 20%' }
+    };
+    const SHIP = 4.9;
+    const eur = (n) => (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2).replace('.', ',')) + '€';
+    const setQty = (id, d) => this.setState({ bag: st.bag.map((b) => b.id === id ? Object.assign({}, b, { qty: Math.min(b.stock, Math.max(1, b.qty + d)) }) : b) });
+    const drop = (b, msg) => {
+      const idx = st.bag.indexOf(b);
+      this.setState({ bag: st.bag.filter((x) => x !== b), toast: msg, last: { b, idx } });
+      clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '', last: null }), 4000);
+    };
+    const order = [];
+    st.bag.forEach((b) => { if (order.indexOf(b.maker) < 0) order.push(b.maker); });
+    const sub = (mid) => st.bag.filter((b) => b.maker === mid).reduce((a, b) => a + b.price * b.qty, 0);
+    const shipOf = (mid) => (M[mid].free && sub(mid) >= M[mid].free ? 0 : SHIP);
+    const groups = order.map((mid) => { const m = M[mid]; const sb = sub(mid); const freeNow = shipOf(mid) === 0; return Object.assign({}, m, {
+      ship: freeNow ? 'Free' : eur(SHIP), shipColor: freeNow ? '#4fe061' : '#8b8a85',
+      hasGoal: !!m.free, goalPct: Math.min(100, Math.round(sb / (m.free || 1) * 100)) + '%',
+      goalText: freeNow ? 'You get free shipping from ' + m.name : 'Add ' + eur(m.free - sb) + ' more from ' + m.name + ' for free shipping',
+      goalColor: freeNow ? '#4fe061' : '#f1efe9',
+      lines: st.bag.filter((b) => b.maker === mid).map((b) => ({
+        name: b.name, img: b.img, qty: b.qty, multi: b.stock > 1,
+        meta: b.meta + (b.qty > 1 ? ' · ' + eur(b.price) + ' each' : ''),
+        total: eur(b.price * b.qty), plusColor: b.qty < b.stock ? '#f1efe9' : '#4a4c48',
+        minus: () => b.qty > 1 ? setQty(b.id, -1) : drop(b, b.name + ' removed'), plus: () => setQty(b.id, 1),
+        remove: () => drop(b, b.name + ' removed'), save: () => drop(b, b.name + ' moved to Saved')
+      }))
+    }); });
+    const pieces = st.bag.reduce((a, b) => a + b.qty, 0);
+    const items = st.bag.reduce((a, b) => a + b.price * b.qty, 0);
+    const ship = order.reduce((a, mid) => a + shipOf(mid), 0);
+    const has = st.bag.length > 0;
+    return {
+      groups, isEmpty: !has, hasItems: has,
+      countLabel: has ? pieces + (pieces === 1 ? ' PIECE' : ' PIECES') : '',
+      items: eur(items), ship: eur(ship), parcels: order.length + (order.length === 1 ? ' parcel' : ' parcels'), total: eur(items + ship),
+      navCount: has ? ' · ' + pieces : '',
+      scrollBottom: has ? '141px' : '64px', toastBottom: has ? '153px' : '76px',
+      toast: st.toast,
+      undo: () => { const l = st.last; if (!l) return; const bag = st.bag.slice(); bag.splice(l.idx, 0, l.b); clearTimeout(this._t); this.setState({ bag, toast: '', last: null }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

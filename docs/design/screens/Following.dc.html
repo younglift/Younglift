@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Following</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-glass{background:rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.35),0 6px 18px rgba(18,20,18,.18)}
+.yl-scroll::-webkit-scrollbar,.yl-row::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+  <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 0; bottom: 64px; overflow-y: auto; scrollbar-width: none;">
+
+    <div style="padding: 20px 16px 0;">
+      <h1 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 40px; line-height: 1;">FOLLOWING</h1>
+    </div>
+
+    <div class="yl-row" style="margin-top: 20px; display: flex; gap: 14px; overflow-x: auto; padding: 0 16px; scrollbar-width: none;">
+      <sc-for list="{{makers}}" as="m" hint-placeholder-count="4">
+        <button type="button" onClick="{{m.pick}}" aria-pressed="{{m.on}}" style="flex-shrink: 0; width: 72px; padding: 0; background: transparent; border: 0; color: #f1efe9; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;">
+          <span style="position: relative; width: 64px; height: 64px; border-radius: 50%; padding: 3px; box-sizing: border-box; background: {{m.ringBg}};">
+            <sc-if value="{{m.img}}" hint-placeholder-val="{{true}}"><img src="{{m.img}}" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: {{m.pos}}; border: 2px solid #121412; box-sizing: border-box; display: block;"></sc-if>
+            <sc-if value="{{m.isAll}}" hint-placeholder-val="{{false}}"><span style="width: 100%; height: 100%; border-radius: 50%; background: #1c1f1c; border: 2px solid #121412; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">ALL</span></sc-if>
+          </span>
+          <span style="font-size: 12px; font-weight: {{m.weight}}; color: {{m.color}};">{{m.name}}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="margin-top: 26px; padding: 0 16px; display: flex; justify-content: space-between; align-items: baseline;">
+      <h2 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 24px;">NEW FROM YOUR MAKERS</h2>
+    </div>
+
+    <div style="padding: 14px 16px 0; display: flex; flex-direction: column; gap: 14px;">
+      <sc-for list="{{updates}}" as="u" hint-placeholder-count="3">
+        <article style="border: 1px solid #2a2c2a; border-radius: 10px; overflow: hidden;">
+          <div style="padding: 12px 14px; display: flex; align-items: center; gap: 10px;">
+            <img src="{{u.avatar}}" alt="" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: {{u.avPos}};">
+            <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 1px;"><span style="font-size: 14px; font-weight: 600;">{{u.maker}}</span><span style="font-size: 12px; color: #8b8a85;">{{u.kind}}</span></span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{u.when}}</span>
+          </div>
+          <sc-if value="{{u.isPiece}}" hint-placeholder-val="{{true}}">
+            <a href="#" style="display: block; position: relative; color: #f1efe9; text-decoration: none;">
+              <img src="{{u.img}}" alt="{{u.title}}" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;">
+              <span style="display: flex; justify-content: space-between; align-items: baseline; padding: 12px 14px 14px;"><span style="font-size: 15px; font-weight: 600;">{{u.title}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px;">{{u.price}}</span></span>
+            </a>
+          </sc-if>
+          <sc-if value="{{u.isNote}}" hint-placeholder-val="{{false}}">
+            <p style="margin: 0; padding: 4px 14px 16px; font-size: 15px; line-height: 1.5; color: #d6d4cd;">{{u.text}}</p>
+          </sc-if>
+        </article>
+      </sc-for>
+    </div>
+
+    <div style="margin-top: 30px; padding: 0 16px; display: flex; justify-content: space-between; align-items: baseline;">
+      <h2 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 24px;">YOUR MAKERS</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{followCount}}</span>
+    </div>
+    <div style="padding: 8px 16px 32px;">
+      <sc-for list="{{list}}" as="l" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #222421;">
+          <img src="{{l.img}}" alt="" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: {{l.pos}};">
+          <a href="#" style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px; color: #f1efe9; text-decoration: none;"><span style="font-size: 15px; font-weight: 600;">{{l.name}}</span><span style="font-size: 12px; color: #8b8a85;">{{l.meta}}</span></a>
+          <button type="button" onClick="{{l.toggle}}" aria-pressed="{{l.following}}" style="height: 34px; padding: 0 14px; border-radius: 999px; border: 1.5px solid {{l.border}}; background: {{l.bg}}; color: {{l.fg}}; font: 600 13px Archivo, Arial, sans-serif; cursor: pointer;">{{l.label}}</button>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid #222421; background: #121412; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 12px; font-weight: 600;">
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Discover</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Explore</a>
+    <a href="#" aria-current="page" style="color: #f1efe9; text-decoration: none;">Following</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Saved</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Bag</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 'all', unfollowed: [] };
+  }
+  renderVals() {
+    const st = this.state;
+    const M = [
+      { id: 'mara', name: 'Mara', meta: 'Hand-built ceramics · Berlin', img: '/_blob/4d5d9ddd16544d5e92f74eee0d109a08', pos: 'center 20%', fresh: true },
+      { id: 'inez', name: 'Inez', meta: 'Silver rings · Vilnius', img: '/_blob/d7bb7bc69d58d2724047c0554e8a6a6c', pos: 'center 25%', fresh: true },
+      { id: 'ula', name: 'Ula', meta: 'Crochet hoods · Hamburg', img: '/_blob/722923ff0d6196b11d37db1919181398', pos: '70% 25%', fresh: false }
+    ];
+    const U = [
+      { m: 'inez', kind: 'New piece', when: '2H', isPiece: true, title: 'Soft loop', price: '190€', img: '/_blob/8ece4143636c56a478f0d047aea99cba' },
+      { m: 'mara', kind: 'Journal · Discovered', when: '1D', isNote: true, text: 'Found a warmer oat glaze. The cups look like toast now. Testing it on the bowls next.' },
+      { m: 'mara', kind: 'New piece', when: '3D', isPiece: true, title: 'Twist vase', price: '120€', img: '/_blob/3e1c04a8e00317072d7077768622f3d8' },
+      { m: 'ula', kind: 'Journal · Next idea', when: '1W', isNote: true, text: 'Working on a matching hood and scarf set for winter. First one goes up next week.' }
+    ];
+    const byId = {}; M.forEach((m) => { byId[m.id] = m; });
+    const following = M.filter((m) => st.unfollowed.indexOf(m.id) < 0);
+    const makers = [{ id: 'all', name: 'All', isAll: true, img: '' }].concat(following).map((m) => {
+      const on = st.sel === m.id;
+      return { ...m, on, isAll: !!m.isAll, ringBg: m.fresh ? '#4fe061' : (on ? '#f1efe9' : '#2a2c2a'), weight: on ? '700' : '500', color: on ? '#f1efe9' : '#c9c8c2', pick: () => this.setState({ sel: m.id }) };
+    });
+    const updates = U.filter((u) => st.unfollowed.indexOf(u.m) < 0 && (st.sel === 'all' || u.m === st.sel)).map((u) => ({
+      ...u, maker: byId[u.m].name, avatar: byId[u.m].img, avPos: byId[u.m].pos, isPiece: !!u.isPiece, isNote: !!u.isNote
+    }));
+    const list = M.map((m) => {
+      const f = st.unfollowed.indexOf(m.id) < 0;
+      return { ...m, following: f, label: f ? 'Following' : '+ Follow', bg: f ? 'transparent' : '#4fe061', fg: f ? '#f1efe9' : '#121412', border: f ? '#3a3d39' : '#4fe061',
+        toggle: () => this.setState({ unfollowed: f ? st.unfollowed.concat([m.id]) : st.unfollowed.filter((x) => x !== m.id) }) };
+    });
+    return { makers, updates, list, followCount: following.length + ' MAKERS' };
+  }
+}
+</script>
+</body>
+</html>

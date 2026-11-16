@@ -23,6 +23,9 @@
 
 ---
 
+## Dizaino etapas (pirmos ~3 dienos, Matas)
+Išvaizdą perdarom žingsnis po žingsnio: pirma pirkėjo kelias, tada pardavėjo. Kas kur atsidaro, nesikeičia. Visa eiga aprašyta `docs/design/JOURNEY.md`. Tuo metu Justinas daro variklį, tad laiko neprarandam.
+
 ## Savaitės
 
 | | Justinas | Matas |

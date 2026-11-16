@@ -1,10 +1,22 @@
-/** Format integer cents as a euro price, e.g. 14500 -> "EUR 145,00". Show it in IBM Plex Mono (.mono). */
-export function formatEUR(cents: number): string {
-  const value = (cents / 100).toLocaleString('lt-LT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  return `EUR ${value}`;
+// Price format decided by Matas (docs/design/JOURNEY.md, 2026-11-12):
+// the euro sign sticks to the number in mono prices: "78€", "149,90€".
+// In plain running text (Archivo) a space is fine: "4,90 €".
+
+function amount(cents: number): string {
+  const whole = cents % 100 === 0;
+  return (cents / 100).toLocaleString('lt-LT', {
+    minimumFractionDigits: whole ? 0 : 2,
+    maximumFractionDigits: 2,
+    useGrouping: false,
+  });
 }
 
-/** Short form without decimals when whole, e.g. 14500 -> "EUR 145", 4999 -> "EUR 49,99". */
-export function formatEURShort(cents: number): string {
-  return cents % 100 === 0 ? `EUR ${cents / 100}` : formatEUR(cents);
+/** Mono price: 7800 -> "78€", 14990 -> "149,90€". */
+export function formatEUR(cents: number): string {
+  return `${amount(cents)}€`;
+}
+
+/** Price inside normal text: 490 -> "4,90 €". */
+export function formatEURText(cents: number): string {
+  return `${amount(cents)} €`;
 }

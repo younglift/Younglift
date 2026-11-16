@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Welcome: what catches your eye</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-glass{background:rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.35),0 6px 18px rgba(18,20,18,.18)}
+.yl-scroll::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+  <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 0; bottom: 150px; overflow-y: auto; scrollbar-width: none; padding: 0 16px 24px; box-sizing: border-box;">
+    <div style="padding-top: 18px; display: flex; justify-content: space-between; align-items: center;">
+      <span style="font-family: Anton, Impact, sans-serif; font-size: 22px; letter-spacing: .5px;">YOUNG <span style="display: inline-block; background: #4fe061; color: #121412; padding: 0 4px; transform: rotate(-6deg);">LIFT</span></span>
+      <button type="button" onClick="{{surprise}}" style="background: transparent; border: 0; color: #c9c8c2; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">Skip</button>
+    </div>
+
+    <span style="display: block; margin-top: 36px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85; letter-spacing: .5px;">WELCOME TO YOUNG LIFT</span>
+    <h1 style="margin: 10px 0 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 52px; line-height: .92;">WHAT CATCHES YOUR EYE?</h1>
+    <p style="margin: 14px 0 0; font-size: 15px; line-height: 1.5; color: #b9b8b2;">Pick a few things you love. We’ll introduce you to the people making them.</p>
+
+    <div style="margin-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px;">
+      <sc-for list="{{tiles}}" as="t" hint-placeholder-count="6">
+        <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="padding: 0; background: transparent; border: 0; color: #f1efe9; text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer;">
+          <span style="position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: 6px; overflow: hidden; background: #1c1f1c; outline: {{t.ring}} solid #4fe061; outline-offset: -3px;">
+            <sc-if value="{{t.img}}" hint-placeholder-val="{{true}}">
+              <img src="{{t.img}}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: {{t.pos}};">
+            </sc-if>
+            <sc-if value="{{t.noImg}}" hint-placeholder-val="{{false}}">
+              <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">COMING SOON</span>
+            </sc-if>
+            <span class="{{t.markClass}}" style="position: absolute; right: 8px; top: 8px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{t.markBg}};">
+              <sc-if value="{{t.on}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></sc-if>
+              <sc-if value="{{t.off}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></sc-if>
+            </span>
+          </span>
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 15px; font-weight: 600;">{{t.name}}</span>
+            <sc-if value="{{t.noImg}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #8b8a85;">No makers here yet</span></sc-if>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{showSubs}}" hint-placeholder-val="{{true}}">
+      <div style="margin-top: 24px; padding: 16px; border: 1px solid #3a3d39; border-radius: 10px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 14px; font-weight: 600;">In jewellery, what do you wear?</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <sc-for list="{{subs}}" as="s" hint-placeholder-count="4">
+            <button type="button" onClick="{{s.pick}}" aria-pressed="{{s.on}}" style="height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid {{s.border}}; background: {{s.bg}}; color: {{s.fg}}; font: 600 13px Archivo, Arial, sans-serif; cursor: pointer;">{{s.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 150px; box-sizing: border-box; padding: 12px 16px 20px; border-top: 1px solid #222421; background: #121412; display: flex; flex-direction: column; gap: 10px;">
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85; text-align: center;">{{countText}}</span>
+    <button type="button" onClick="{{go}}" disabled="{{none}}" style="height: 52px; border: 0; background: {{goBg}}; color: {{goFg}}; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px; cursor: pointer;">MEET THE MAKERS →</button>
+    <button type="button" onClick="{{surprise}}" style="height: 40px; background: transparent; border: 0; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">Surprise me</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: ['Jewellery', 'Ceramics'], subs: ['Rings'] };
+  }
+  renderVals() {
+    const st = this.state;
+    const T = [
+      ['Jewellery', '/_blob/3b1663da4f029616da26481c03aeb046', 'center'],
+      ['Ceramics', '/_blob/43cc8248789551a9e40281a0a78225c4', '25% center'],
+      ['Clothing', '/_blob/722923ff0d6196b11d37db1919181398', '70% 25%'],
+      ['Bags & accessories', '/_blob/2216899e48ec14b0f8f7b48f5e141546', 'center 30%'],
+      ['Objects for the home', '/_blob/e1d52bf47eb38f720bbf3ed250eb43f4', 'center'],
+      ['Art & prints', '', 'center']
+    ];
+    const toggle = (list, x) => (list.indexOf(x) > -1 ? list.filter((y) => y !== x) : list.concat([x]));
+    const tiles = T.map(([name, img, pos]) => {
+      const on = st.sel.indexOf(name) > -1;
+      return { name, img, pos, noImg: !img, on, off: !on, ring: on ? '3px' : '0px',
+        markClass: on ? '' : 'yl-glass', markBg: on ? '#4fe061' : 'transparent',
+        pick: () => this.setState({ sel: toggle(st.sel, name) }) };
+    });
+    const subs = ['Rings', 'Necklaces', 'Earrings', 'Other pieces'].map((label) => {
+      const on = st.subs.indexOf(label) > -1;
+      return { label, on, pick: () => this.setState({ subs: toggle(st.subs, label) }),
+        bg: on ? '#f1efe9' : 'transparent', fg: on ? '#121412' : '#c9c8c2', border: on ? '#f1efe9' : '#3a3d39' };
+    });
+    const n = st.sel.length;
+    return {
+      tiles, subs, showSubs: st.sel.indexOf('Jewellery') > -1,
+      countText: n ? n + ' PICKED · YOU CAN CHANGE THIS LATER' : 'PICK AT LEAST ONE, OR LET US SURPRISE YOU',
+      none: n === 0, goBg: n ? '#4fe061' : '#2a2c2a', goFg: n ? '#121412' : '#8b8a85',
+      go: () => {}, surprise: () => {}
+    };
+  }
+}
+</script>
+</body>
+</html>

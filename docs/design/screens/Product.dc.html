@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Product page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-glass{background:rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.35),0 6px 18px rgba(18,20,18,.18)}
+.yl-scroll::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+  <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 0; bottom: 84px; overflow-y: auto; scrollbar-width: none;">
+
+    <div style="position: relative; width: 390px; height: 488px;">
+      <img src="{{photo}}" alt="{{photoAlt}}" style="width: 100%; height: 100%; object-fit: cover; object-position: {{photoPos}}; filter: {{photoFilter}};">
+      <button type="button" onClick="{{prevPhoto}}" aria-label="Previous photo" style="position: absolute; left: 0; top: 0; width: 120px; height: 100%; background: transparent; border: 0; cursor: w-resize;"></button>
+      <button type="button" onClick="{{nextPhoto}}" aria-label="Next photo" style="position: absolute; right: 0; top: 0; width: 120px; height: 100%; background: transparent; border: 0; cursor: e-resize;"></button>
+      <div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between;">
+        <a href="#" class="yl-glass" style="height: 36px; display: flex; align-items: center; gap: 6px; padding: 0 14px 0 10px; border-radius: 999px; color: #121412; text-decoration: none; font-size: 13px; font-weight: 600;"><span aria-hidden="true">‹</span> {{backLabel}}</a>
+        <button type="button" aria-label="Share" class="yl-glass" style="width: 36px; height: 36px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 13v7h14v-7"/></svg></button>
+      </div>
+      <sc-if value="{{label}}" hint-placeholder-val="{{true}}">
+        <span style="position: absolute; left: 16px; bottom: 16px; background: {{labelBg}}; color: {{labelFg}}; padding: 5px 8px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px;">{{label}}</span>
+      </sc-if>
+      <div class="yl-glass" style="position: absolute; right: 16px; bottom: 16px; display: flex; gap: 6px; padding: 7px 10px; border-radius: 999px;">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="4">
+          <button type="button" onClick="{{d.go}}" aria-label="{{d.label}}" style="width: {{d.w}}; height: 6px; padding: 0; border: 0; border-radius: 999px; background: {{d.bg}}; cursor: pointer;"></button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="padding: 22px 16px 0; display: flex; flex-direction: column;">
+      <a href="#" style="align-self: flex-start; color: #f1efe9; font-size: 20px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px;">{{makerLine}}</a>
+      <a href="#reviews" style="margin-top: 8px; align-self: flex-start; display: flex; align-items: center; gap: 6px; color: #f1efe9; text-decoration: none; font-size: 13px; font-weight: 600;"><span aria-hidden="true" style="color: #4fe061; letter-spacing: 1px;">★★★★★</span>{{rating}}<span style="color: #8b8a85; font-weight: 400; text-decoration: underline; text-underline-offset: 3px;">{{reviewCount}} reviews</span></a>
+      <h1 style="margin: 14px 0 0; font-size: 26px; font-weight: 600; line-height: 1.15; letter-spacing: -.5px;">{{title}}</h1>
+
+      <div style="margin-top: 18px; display: flex; align-items: baseline; gap: 10px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500; color: {{priceColor}};">{{price}}</span>
+      </div>
+      <sc-if value="{{showTotal}}" hint-placeholder-val="{{true}}">
+        <span style="margin-top: 4px; font-size: 13px; line-height: 1.4; color: #8b8a85;">+ {{ship}} shipping to Lithuania · {{total}} total</span>
+      </sc-if>
+
+      <span style="margin-top: 18px; font-size: 14px; color: #c9c8c2;">Material: <b style="color: #f1efe9; font-weight: 700;">{{sub}}</b></span>
+
+      <div style="margin-top: 18px; padding: 16px; border: 1px solid #3a3d39; border-radius: 10px; display: flex; flex-direction: column; gap: 6px;">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600;"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{statusDot}};"></span>{{status}}</span>
+        <span style="font-size: 14px; line-height: 1.45; color: #b9b8b2;">{{statusNote}}</span>
+      </div>
+
+      <sc-if value="{{hasSizes}}" hint-placeholder-val="{{false}}">
+        <div style="margin-top: 12px; padding: 14px 16px 16px; border: 1.5px solid {{sizeBorder}}; border-radius: 10px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="display: flex; justify-content: space-between; align-items: baseline; font-size: 15px;"><span>Size: <b style="font-weight: 700;">{{sizeText}}</b></span><a href="#" style="font-size: 13px; color: #c9c8c2;">Size guide</a></span>
+          <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px;">
+            <sc-for list="{{sizes}}" as="z" hint-placeholder-count="6">
+              <button type="button" onClick="{{z.pick}}" aria-pressed="{{z.on}}" disabled="{{z.off}}" aria-label="Size {{z.n}}{{z.offText}}" style="height: 44px; border-radius: 6px; border: 1.5px solid {{z.border}}; background: {{z.bg}}; color: {{z.fg}}; font: 500 14px 'IBM Plex Mono', monospace; text-decoration: {{z.strike}}; cursor: pointer;">{{z.n}}</button>
+            </sc-for>
+          </div>
+          <span style="font-size: 12px; color: #8b8a85;">Not sure? <a href="#" style="color: #f1efe9;">Ask Inez</a>, she can size it for you.</span>
+        </div>
+      </sc-if>
+
+      <div style="margin-top: 28px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 13px; font-weight: 700; letter-spacing: .3px;">About this piece</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #c9c8c2;">{{desc}}</p>
+      </div>
+      <a href="#" style="margin-top: 18px; height: 46px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid #3a3d39; border-radius: 10px; color: #f1efe9; text-decoration: none; font-size: 14px; font-weight: 600;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f1efe9" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>{{askLabel}}</a>
+    </div>
+
+    <dl style="margin: 24px 16px 0; padding: 0; border-bottom: 1px solid #2a2c2a;">
+      <sc-for list="{{specs}}" as="s" hint-placeholder-count="3">
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid #2a2c2a; font-size: 14px;"><dt style="color: #8b8a85;">{{s.k}}</dt><dd style="margin: 0;">{{s.v}}</dd></div>
+      </sc-for>
+    </dl>
+
+    <div style="margin: 0 16px;">
+      <button type="button" onClick="{{toggleShip}}" aria-expanded="{{shipOpen}}" style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; background: transparent; border: 0; border-bottom: 1px solid #2a2c2a; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">Shipping<span aria-hidden="true" style="color: #8b8a85;">{{shipSign}}</span></button>
+      <sc-if value="{{shipOpen}}" hint-placeholder-val="{{true}}">
+        <p style="margin: 0; padding: 12px 0 14px; font-size: 14px; line-height: 1.5; color: #b9b8b2; border-bottom: 1px solid #2a2c2a;">{{shipText}}</p>
+      </sc-if>
+      <button type="button" onClick="{{toggleReturns}}" aria-expanded="{{returnsOpen}}" style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; background: transparent; border: 0; border-bottom: 1px solid #2a2c2a; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">Returns<span aria-hidden="true" style="color: #8b8a85;">{{returnsSign}}</span></button>
+      <sc-if value="{{returnsOpen}}" hint-placeholder-val="{{false}}">
+        <p style="margin: 0; padding: 12px 0 14px; font-size: 14px; line-height: 1.5; color: #b9b8b2; border-bottom: 1px solid #2a2c2a;">{{returnsText}}</p>
+      </sc-if>
+    </div>
+
+    <section id="reviews" style="margin: 28px 16px 0; display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;"><h2 style="margin: 0; font-size: 17px; font-weight: 700;">Reviews of {{makerFirst}}</h2><span style="font-size: 13px; color: #c9c8c2;"><span aria-hidden="true" style="color: #4fe061;">★</span> {{rating}} · {{reviewCount}}</span></div>
+      <sc-for list="{{reviews}}" as="r" hint-placeholder-count="2">
+        <article style="padding: 14px 16px; border: 1px solid #2a2c2a; border-radius: 10px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 14px; font-weight: 600;">{{r.name}} <span aria-label="{{r.starsLabel}}" style="margin-left: 6px; color: #4fe061; font-size: 12px; letter-spacing: 1px;">{{r.stars}}</span></span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{r.date}}</span></div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #d6d4cd;">{{r.text}}</p>
+          <span style="font-size: 12px; color: #8b8a85;">Bought: {{r.item}} · Verified purchase</span>
+        </article>
+      </sc-for>
+      <a href="#" style="height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1.5px solid #3a3d39; border-radius: 10px; color: #f1efe9; text-decoration: none; font-size: 14px; font-weight: 600;">See all {{reviewCount}} reviews</a>
+    </section>
+
+    <a href="#" style="margin: 24px 16px 28px; padding: 14px; display: flex; align-items: center; gap: 12px; background: #1c1f1c; color: #f1efe9; text-decoration: none;">
+      <img src="{{avatar}}" alt="" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: {{avatarPos}};">
+      <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px; font-weight: 600;">{{madeBy}}</span><span style="font-size: 12px; color: #8b8a85;">{{madeMeta}}</span></span>
+      <span style="font-size: 13px; font-weight: 600;">Her studio ›</span>
+    </a>
+  </div>
+
+  <sc-if value="{{added}}" hint-placeholder-val="{{false}}">
+    <div class="yl-glass" style="position: absolute; left: 16px; right: 16px; bottom: 96px; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 999px; color: #121412; font-size: 14px; font-weight: 600;">
+      <span style="display: flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #4fe061;"></span>Added to bag</span>
+      <a href="#" style="color: #121412; font-size: 13px; font-weight: 700;">View bag ›</a>
+    </div>
+  </sc-if>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; padding: 12px 16px 20px; border-top: 1px solid #222421; background: #121412; display: flex; gap: 8px;">
+    <button type="button" onClick="{{toggleSave}}" aria-pressed="{{saved}}" aria-label="Save" style="width: 52px; height: 52px; flex-shrink: 0; background: transparent; border: 1.5px solid #3a3d39; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="{{saveFill}}" stroke="#f1efe9" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button>
+    <button type="button" onClick="{{mainAction}}" style="flex-grow: 1; height: 52px; border: 0; background: {{mainBg}}; color: {{mainFg}}; display: flex; align-items: center; justify-content: {{mainJustify}}; padding: 0 20px; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px; cursor: pointer;"><span>{{mainLabel}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 500; letter-spacing: 0;">{{mainPrice}}</span></button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["bowl","ring","sold"],"default":"bowl"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { img: 0, ship: true, returns: false, saved: false, added: false, size: null };
+  }
+  renderVals() {
+    const st = this.state;
+    const MARA = '/_blob/4d5d9ddd16544d5e92f74eee0d109a08', INEZ = '/_blob/d7bb7bc69d58d2724047c0554e8a6a6c';
+    const D = {
+      bowl: {
+        rating: '4.9', reviewCount: '31', makerFirst: 'Mara', reviews: [{ name: 'Lea M.', date: '2 NOV', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'Even nicer in real life. You can feel her thumbs in the rim.', item: 'Ripple bowl' }, { name: 'Jonas K.', date: '18 OCT', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'Bought two cups as a gift. Mara wrote a little note for each one.', item: 'Morning cup' }],
+        back: 'Mara', avatar: MARA, avatarPos: 'center 20%', makerLine: 'Mara · Studio Lehm',
+        title: 'Ripple bowl', sub: 'Speckled stoneware, beeswax finish', price: '78 €', ship: '4,90 €', total: '82,90 €',
+        status: 'Ready to ship', statusNote: 'Sent from Berlin within 2 days. Arrives in 2–4 days.', statusDot: '#4fe061', label: 'SPECIAL WAX USED',
+        desc: 'Pinched by hand, so the rim moves like a slow wave. Finished with a thin coat of beeswax that keeps the clay soft to the touch.',
+        ask: 'Ask Mara a question', madeBy: 'Made by Mara', madeMeta: 'Berlin · replies in a few hours',
+        specs: [['Material', 'Speckled stoneware'], ['Size', 'Ø 24 cm'], ['Care', 'Hand wash']],
+        shipText: 'Sent within 2 days from Berlin. 4,90 € within the EU, arrives in 2–4 days.',
+        returnsText: 'Mara accepts returns within 14 days if the piece is unused. Custom pieces can’t be returned.',
+        gal: [['/_blob/5bf0b89334514376f2638484cbb3bfb9', 'Ripple bowl', 'center'], ['/_blob/e1d52bf47eb38f720bbf3ed250eb43f4', 'Ripple bowl from above', 'center'], ['/_blob/43cc8248789551a9e40281a0a78225c4', 'Ripple bowl with other pieces', '20% center'], [MARA, 'Mara holding the bowl', 'center 25%']]
+      },
+      ring: {
+        rating: '5.0', reviewCount: '18', makerFirst: 'Inez', reviews: [{ name: 'Marta R.', date: '29 OCT', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'Inez helped me find my size over chat. The ring fits perfectly and feels heavy in the best way.', item: 'Flow ring' }, { name: 'Tom B.', date: '11 OCT', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'Proposed with it. She said yes.', item: 'Soft loop ring' }],
+        back: 'Discover', avatar: INEZ, avatarPos: 'center 25%', makerLine: 'Inez · Studio Serein',
+        title: 'Flow ring', sub: 'Polished recycled silver', price: '145 €', ship: '4,90 €', total: '149,90 €',
+        status: 'Made to order', statusNote: 'Inez makes it for you in 1–2 weeks, then sends it from Vilnius.', statusDot: '#e7a33b', label: 'HAND-CARVED WAX',
+        desc: 'Carved in wax first, then cast in silver and polished by hand. Heavy enough to feel, soft enough to wear every day.',
+        ask: 'Ask Inez a question', madeBy: 'Made by Inez', madeMeta: 'Vilnius · replies in about a day',
+        specs: [['Material', 'Recycled sterling silver'], ['Band width', '4–9 mm, organic'], ['Weight', 'About 7 g']],
+        shipText: 'Made to order in 1–2 weeks, then sent from Vilnius. 4,90 € within the EU.',
+        returnsText: 'Inez accepts returns within 14 days if the ring is unworn. Resized rings can’t be returned.',
+        gal: [['/_blob/42547c7d127c23e79e6298e385db6098', 'Flow ring', 'center'], ['/_blob/f35d2b8d0907e4da528ee1b867ea5cf1', 'Flow ring from the side', 'center'], ['/_blob/3b1663da4f029616da26481c03aeb046', 'Flow ring with other rings', 'center'], [INEZ, 'Inez at her workbench', 'center 25%']],
+        sizes: ['48', '50', '52', '54', '56', '58'], soldOut: '56'
+      },
+      sold: {
+        rating: '4.9', reviewCount: '31', makerFirst: 'Mara', reviews: [{ name: 'Lea M.', date: '2 NOV', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'Even nicer in real life. You can feel her thumbs in the rim.', item: 'Ripple bowl' }, { name: 'Jonas K.', date: '18 OCT', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'Bought two cups as a gift. Mara wrote a little note for each one.', item: 'Morning cup' }],
+        back: 'Mara', avatar: MARA, avatarPos: 'center 20%', makerLine: 'Mara · Studio Lehm',
+        title: 'Still life set', sub: 'Stoneware and terracotta', price: '210 €', ship: '', total: '',
+        status: 'This piece has found a home', statusNote: 'Mara can make something similar for you, in your size or colours.', statusDot: '#8b8a85', label: 'SOLD',
+        desc: 'Three pieces made to sit together on one table. Each glazed in the same batch, so the speckle matches.',
+        ask: 'Ask Mara about something similar', madeBy: 'Made by Mara', madeMeta: 'Berlin · replies in a few hours',
+        specs: [['Material', 'Stoneware and terracotta'], ['Pieces', 'Bowl, vase, cup']],
+        shipText: 'A similar set is made to order in 3–4 weeks, then sent from Berlin.',
+        returnsText: 'Custom pieces can’t be returned.',
+        gal: [['/_blob/43cc8248789551a9e40281a0a78225c4', 'Still life set', '20% center'], ['/_blob/5bf0b89334514376f2638484cbb3bfb9', 'The bowl from the set', 'center']]
+      }
+    };
+    const v = this.props.variant ?? 'bowl';
+    const p = D[v] || D.bowl;
+    const n = p.gal.length;
+    const img = st.img % n;
+    const go = (i) => () => this.setState({ img: (i + n) % n });
+    const isSold = v === 'sold';
+    const hasSizes = !!p.sizes;
+    const needSize = hasSizes && !st.size;
+    let mainLabel = 'ADD TO BAG', mainPrice = p.price.replace(' €', '€'), mainBg = '#4fe061', mainFg = '#121412', mainJustify = 'space-between';
+    let mainAction = () => this.setState({ added: true });
+    if (isSold) { mainLabel = 'ASK FOR SOMETHING SIMILAR'; mainPrice = ''; mainJustify = 'center'; mainAction = () => {}; }
+    else if (needSize) { mainLabel = 'CHOOSE A SIZE'; mainBg = '#2a2c2a'; mainFg = '#c9c8c2'; mainAction = () => {}; }
+    return {
+      backLabel: p.back, avatar: p.avatar, avatarPos: p.avatarPos, makerLine: p.makerLine,
+      title: p.title, sub: p.sub, price: p.price.replace(' €', '€'), ship: p.ship, total: p.total, showTotal: !isSold,
+      priceColor: isSold ? '#8b8a85' : '#f1efe9',
+      status: p.status, statusNote: p.statusNote, statusDot: p.statusDot,
+      sizeText: st.size ? 'EU ' + st.size : 'Choose your size', sizeBorder: needSize ? '#f1efe9' : '#3a3d39', label: p.label,
+      labelBg: isSold ? '#f1efe9' : '#121412', labelFg: isSold ? '#121412' : '#f1efe9',
+      desc: p.desc, askLabel: p.ask, madeBy: p.madeBy, madeMeta: p.madeMeta,
+      rating: p.rating, reviewCount: p.reviewCount, makerFirst: p.makerFirst, reviews: p.reviews,
+      specs: p.specs.map(([k, val]) => ({ k, v: val })),
+      shipText: p.shipText, returnsText: p.returnsText, sold: isSold,
+      photo: p.gal[img][0], photoAlt: p.gal[img][1], photoPos: p.gal[img][2], photoFilter: isSold ? 'grayscale(.6)' : 'none',
+      prevPhoto: go(img - 1), nextPhoto: go(img + 1),
+      dots: p.gal.map((g, i) => ({ go: go(i), label: 'Photo ' + (i + 1), w: i === img ? '18px' : '6px', bg: i === img ? '#121412' : 'rgba(18,20,18,.35)' })),
+      hasSizes,
+      sizes: (p.sizes || []).map((z) => {
+        const off = z === p.soldOut, on = st.size === z;
+        return { n: z, on, off, offText: off ? ', sold out' : '', pick: () => { if (!off) this.setState({ size: z }); },
+          border: on ? '#4fe061' : '#3a3d39', bg: on ? '#4fe061' : 'transparent', fg: on ? '#121412' : (off ? '#5a5d58' : '#f1efe9'), strike: off ? 'line-through' : 'none' };
+      }),
+      shipOpen: st.ship, shipSign: st.ship ? '−' : '+', toggleShip: () => this.setState({ ship: !st.ship }),
+      returnsOpen: st.returns, returnsSign: st.returns ? '−' : '+', toggleReturns: () => this.setState({ returns: !st.returns }),
+      saved: st.saved, saveFill: st.saved ? '#f1efe9' : 'none', toggleSave: () => this.setState({ saved: !st.saved }),
+      added: st.added && !isSold && !needSize,
+      mainLabel, mainPrice, mainBg, mainFg, mainJustify, mainAction
+    };
+  }
+}
+</script>
+</body>
+</html>
