@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Saved pieces and boards</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-glass{background:rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.35),0 6px 18px rgba(18,20,18,.18)}
+.yl-scroll::-webkit-scrollbar,.yl-row::-webkit-scrollbar{display:none}
+.yl-input::placeholder{color:#8b8a85}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+  <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 0; bottom: 64px; overflow-y: auto; scrollbar-width: none;">
+
+    <div style="padding: 20px 16px 0;">
+      <h1 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 40px; line-height: 1;">SAVED</h1>
+      <p style="margin: 6px 0 0; font-size: 14px; color: #8b8a85;">{{summary}}</p>
+    </div>
+
+    <div class="yl-row" style="margin-top: 20px; display: flex; gap: 10px; overflow-x: auto; padding: 0 16px; scrollbar-width: none;">
+      <sc-for list="{{boards}}" as="b" hint-placeholder-count="3">
+        <button type="button" onClick="{{b.pick}}" aria-pressed="{{b.on}}" style="flex-shrink: 0; width: 132px; padding: 0; background: transparent; border: 0; color: #f1efe9; text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer;">
+          <span style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 2px; width: 132px; height: 132px; border-radius: 8px; overflow: hidden; background: #1c1f1c; outline: {{b.ring}} solid #4fe061; outline-offset: -3px;">
+            <sc-for list="{{b.thumbs}}" as="t" hint-placeholder-count="4">
+              <span style="display: block; background: #222421;"><sc-if value="{{t.img}}" hint-placeholder-val="{{true}}"><img src="{{t.img}}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></span>
+            </sc-for>
+          </span>
+          <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 14px; font-weight: 600;">{{b.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{b.count}}</span></span>
+        </button>
+      </sc-for>
+      <button type="button" onClick="{{startNew}}" style="flex-shrink: 0; width: 132px; height: 132px; border-radius: 8px; border: 1.5px dashed #5a5d58; background: transparent; color: #c9c8c2; font: 600 14px Archivo, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer;"><span aria-hidden="true" style="font-size: 26px; line-height: 1;">+</span>New board</button>
+    </div>
+
+    <sc-if value="{{naming}}" hint-placeholder-val="{{false}}">
+      <div style="margin: 14px 16px 0; padding: 14px; border: 1px solid #3a3d39; border-radius: 10px; display: flex; flex-direction: column; gap: 10px;">
+        <label style="font-size: 13px; font-weight: 600;" for="yl-newboard">Name your board</label>
+        <input id="yl-newboard" class="yl-input" value="{{newName}}" onChange="{{onName}}" placeholder="e.g. For my mum’s birthday" maxlength="40" style="height: 44px; padding: 0 12px; border-radius: 8px; border: 1px solid #3a3d39; background: #1c1f1c; color: #f1efe9; font: 400 15px Archivo, Arial, sans-serif; outline: none;">
+        <div style="display: flex; gap: 8px;">
+          <button type="button" onClick="{{createBoard}}" style="flex: 1; height: 44px; border: 0; background: #4fe061; color: #121412; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px; cursor: pointer;">CREATE</button>
+          <button type="button" onClick="{{cancelNew}}" style="height: 44px; padding: 0 16px; border: 1.5px solid #3a3d39; background: transparent; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">Cancel</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="margin-top: 26px; padding: 0 16px; display: flex; justify-content: space-between; align-items: baseline;">
+      <h2 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 24px;">{{boardTitle}}</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{boardCount}}</span>
+    </div>
+
+    <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+      <div style="margin: 16px 16px 0; padding: 24px; border: 1px solid #2a2c2a; border-radius: 10px; display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 15px; font-weight: 600;">Nothing here yet</span>
+        <span style="font-size: 14px; line-height: 1.45; color: #b9b8b2;">Tap the save icon on any piece and choose this board.</span>
+      </div>
+    </sc-if>
+
+    <div style="padding: 16px 16px 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px;">
+      <sc-for list="{{pieces}}" as="p" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: #1c1f1c;">
+            <a href="#" style="display: block; width: 100%; height: 100%;"><img src="{{p.img}}" alt="{{p.name}}" style="width: 100%; height: 100%; object-fit: cover; filter: {{p.filter}};"></a>
+            <button type="button" onClick="{{p.openSheet}}" aria-label="Saved. Change boards for {{p.name}}" class="yl-glass" style="position: absolute; right: 8px; top: 8px; width: 34px; height: 34px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="#121412" stroke="#121412" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button>
+            <sc-if value="{{p.sold}}" hint-placeholder-val="{{false}}">
+              <span style="position: absolute; left: 8px; bottom: 8px; background: #f1efe9; color: #121412; padding: 4px 7px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px;">SOLD</span>
+            </sc-if>
+          </div>
+          <a href="#" style="display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: {{p.color}};">
+            <span style="font-size: 12px; color: #8b8a85;">{{p.maker}}</span>
+            <span style="font-size: 14px; font-weight: 600;">{{p.name}}</span>
+            <span style="margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">{{p.priceText}}</span>
+          </a>
+          <sc-if value="{{p.sold}}" hint-placeholder-val="{{false}}">
+            <a href="#" style="font-size: 12px; color: #c9c8c2;">Ask for something similar</a>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+    <div class="yl-glass" style="position: absolute; left: 16px; right: 16px; bottom: 80px; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 999px; color: #121412; font-size: 14px; font-weight: 600;">
+      <span>{{toast}}</span>
+      <button type="button" onClick="{{undo}}" style="background: transparent; border: 0; color: #121412; font: 700 13px Archivo, Arial, sans-serif; text-decoration: underline; cursor: pointer;">Undo</button>
+    </div>
+  </sc-if>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid #222421; background: #121412; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 12px; font-weight: 600;">
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Discover</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Explore</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Following</a>
+    <a href="#" aria-current="page" style="color: #f1efe9; text-decoration: none;">Saved</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Bag</a>
+  </nav>
+
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" onClick="{{closeSheet}}" aria-label="Close" style="position: absolute; inset: 0; background: rgba(0,0,0,.55); border: 0; cursor: pointer;"></button>
+    <div role="dialog" aria-modal="true" aria-label="Save to board" style="position: absolute; left: 0; right: 0; bottom: 0; background: #1c1f1c; border-radius: 16px 16px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 4px;">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #3a3d39; margin-bottom: 8px;"></span>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <span style="font-size: 16px; font-weight: 700;">Save to board</span>
+        <button type="button" onClick="{{closeSheet}}" aria-label="Close" style="width: 36px; height: 36px; background: transparent; border: 0; color: #f1efe9; font-size: 18px; cursor: pointer;">✕</button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid #2a2c2a;">
+        <img src="{{sheetImg}}" alt="" style="width: 44px; height: 54px; border-radius: 4px; object-fit: cover;">
+        <span style="font-size: 14px; font-weight: 600;">{{sheetName}}</span>
+      </div>
+      <sc-for list="{{sheetBoards}}" as="s" hint-placeholder-count="2">
+        <button type="button" role="checkbox" aria-checked="{{s.on}}" onClick="{{s.pick}}" style="display: flex; align-items: center; gap: 12px; height: 48px; padding: 0; background: transparent; border: 0; color: #f1efe9; font: 400 15px Archivo, Arial, sans-serif; cursor: pointer; text-align: left;">
+          <span aria-hidden="true" style="width: 22px; height: 22px; border-radius: 5px; border: 1.5px solid {{s.box}}; background: {{s.fill}}; display: flex; align-items: center; justify-content: center; color: #121412; font-size: 14px; font-weight: 700;">{{s.tick}}</span>{{s.name}}
+        </button>
+      </sc-for>
+      <button type="button" onClick="{{unsave}}" style="margin-top: 10px; height: 46px; border: 1.5px solid #3a3d39; border-radius: 10px; background: transparent; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">Remove from saved</button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      saved: ['flow', 'ripple', 'hood', 'cup', 'set'],
+      boards: [{ name: 'For my sister', items: ['hood', 'ripple'] }, { name: 'Rings I like', items: ['flow'] }],
+      sel: 'all', naming: false, newName: '', sheet: null, toast: '', last: null
+    };
+  }
+  renderVals() {
+    const st = this.state;
+    const P = {
+      flow: { name: 'Flow ring', maker: 'Inez', price: 145, img: '/_blob/42547c7d127c23e79e6298e385db6098' },
+      ripple: { name: 'Ripple bowl', maker: 'Mara', price: 78, img: '/_blob/5bf0b89334514376f2638484cbb3bfb9' },
+      hood: { name: 'Granny square hood', maker: 'Ula', price: 59, img: '/_blob/ae6f6cd28159b01b44b5c7dbb20ae4ab' },
+      cup: { name: 'Morning cup', maker: 'Mara', price: 32, img: '/_blob/c250021ba43e28825ae41415a4005f27' },
+      set: { name: 'Still life set', maker: 'Mara', price: 210, img: '/_blob/43cc8248789551a9e40281a0a78225c4', sold: true }
+    };
+    const thumbs = (ids) => [0, 1, 2, 3].map((i) => ({ img: ids[i] ? P[ids[i]].img : '' }));
+    const live = (ids) => ids.filter((id) => st.saved.indexOf(id) > -1);
+    const boards = [{ key: 'all', name: 'All saved', ids: st.saved }].concat(st.boards.map((b) => ({ key: b.name, name: b.name, ids: live(b.items) })))
+      .map((b) => ({ name: b.name, count: b.ids.length + (b.ids.length === 1 ? ' PIECE' : ' PIECES'), thumbs: thumbs(b.ids), on: st.sel === b.key, ring: st.sel === b.key ? '3px' : '0px', pick: () => this.setState({ sel: b.key }) }));
+    const cur = st.sel === 'all' ? { name: 'All saved', items: st.saved } : st.boards.find((b) => b.name === st.sel) || { name: 'All saved', items: st.saved };
+    const ids = live(cur.items);
+    const pieces = ids.map((id) => {
+      const p = P[id];
+      return { ...p, priceText: p.price + '€', sold: !!p.sold, filter: p.sold ? 'grayscale(1) opacity(.5)' : 'none', color: p.sold ? '#8b8a85' : '#f1efe9', openSheet: () => this.setState({ sheet: id }) };
+    });
+    const sp = st.sheet ? P[st.sheet] : null;
+    const sheetBoards = st.boards.map((b) => {
+      const on = b.items.indexOf(st.sheet) > -1;
+      return { name: b.name, on, tick: on ? '✓' : '', box: on ? '#4fe061' : '#5a5d58', fill: on ? '#4fe061' : 'transparent',
+        pick: () => this.setState({ boards: st.boards.map((x) => x.name !== b.name ? x : { name: x.name, items: on ? x.items.filter((i) => i !== st.sheet) : x.items.concat([st.sheet]) }) }) };
+    });
+    return {
+      summary: st.saved.length + ' pieces · ' + st.boards.length + ' boards',
+      boards, naming: st.naming, newName: st.newName,
+      startNew: () => this.setState({ naming: true }), cancelNew: () => this.setState({ naming: false, newName: '' }),
+      onName: (e) => this.setState({ newName: e.target.value }),
+      createBoard: () => { const n = st.newName.trim(); if (!n) return; this.setState({ boards: st.boards.concat([{ name: n, items: [] }]), naming: false, newName: '', sel: n }); },
+      boardTitle: cur.name.toUpperCase(), boardCount: ids.length + (ids.length === 1 ? ' PIECE' : ' PIECES'), empty: ids.length === 0,
+      pieces,
+      sheetOpen: !!sp, sheetImg: sp ? sp.img : '', sheetName: sp ? sp.name : '', sheetBoards,
+      closeSheet: () => this.setState({ sheet: null }),
+      unsave: () => this.setState({ saved: st.saved.filter((x) => x !== st.sheet), sheet: null, toast: 'Removed from saved', last: st.sheet }),
+      toast: st.toast,
+      undo: () => this.setState({ saved: st.last && st.saved.indexOf(st.last) < 0 ? st.saved.concat([st.last]) : st.saved, toast: '', last: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

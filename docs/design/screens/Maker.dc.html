@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Maker world: Mara, Studio Lehm</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-glass{background:rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.35),0 6px 18px rgba(18,20,18,.18)}
+.yl-strip::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 2140px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif; display: flex; flex-direction: column;">
+
+  <div style="position: relative; height: 440px; flex-shrink: 0;">
+    <img src="/_blob/4d5d9ddd16544d5e92f74eee0d109a08" alt="Mara in her studio in Neukölln" style="width: 100%; height: 100%; object-fit: cover; object-position: center 22%;">
+    <div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between;">
+      <a href="#" class="yl-glass" style="height: 36px; display: flex; align-items: center; gap: 6px; padding: 0 14px 0 10px; border-radius: 999px; color: #121412; text-decoration: none; font-size: 13px; font-weight: 600;"><span aria-hidden="true">‹</span> Discover</a>
+      <button type="button" aria-label="Share Mara's studio" class="yl-glass" style="width: 36px; height: 36px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 13v7h14v-7"/></svg></button>
+    </div>
+  </div>
+
+  <div style="padding: 20px 16px 0; display: flex; flex-direction: column; gap: 10px;">
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85; letter-spacing: .5px;">STUDIO LEHM · BERLIN, GERMANY</span>
+    <h1 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 72px; line-height: .9;">MARA</h1>
+    <span style="font-size: 17px; font-weight: 600;">Cups and bowls, built by hand</span>
+    <button type="button" onClick="{{showReviews}}" style="align-self: flex-start; padding: 0; background: transparent; border: 0; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer; display: flex; align-items: center; gap: 6px;"><span aria-hidden="true" style="color: #4fe061; letter-spacing: 1px;">★★★★★</span>4.9<span style="color: #8b8a85; font-weight: 400; text-decoration: underline; text-underline-offset: 3px;">31 reviews</span></button>
+    <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #b9b8b2;">I build cups, bowls and vases by hand in a small studio in Neukölln. Nothing is thrown on the wheel. Every rim is pinched, so no two pieces match.</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;">
+      <span style="padding: 6px 10px; border: 1px solid #2a2c2a; border-radius: 999px; font-size: 12px; color: #c9c8c2;">Speckled stoneware</span>
+      <span style="padding: 6px 10px; border: 1px solid #2a2c2a; border-radius: 999px; font-size: 12px; color: #c9c8c2; display: flex; align-items: center; gap: 6px;"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #4fe061;"></span>Custom pieces open</span>
+      <span style="padding: 6px 10px; border: 1px solid #2a2c2a; border-radius: 999px; font-size: 12px; color: #c9c8c2;">Replies in a few hours</span>
+    </div>
+    <div style="display: flex; gap: 8px; margin-top: 8px;">
+      <button type="button" onClick="{{toggleFollow}}" style="flex-grow: 1; height: 48px; border: 0; background: {{followBg}}; color: {{followFg}}; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px; cursor: pointer;">{{followLabel}}</button>
+      <a href="#" style="flex-grow: 1; height: 48px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1.5px solid #f1efe9; color: #f1efe9; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: 1.5px;">MESSAGE</a>
+    </div>
+  </div>
+
+
+  <div role="tablist" style="margin-top: 32px; padding: 0 16px 12px; display: flex; align-items: baseline; gap: 18px; border-bottom: 1px solid #2a2c2a;">
+    <button type="button" role="tab" aria-selected="{{tPieces}}" onClick="{{showPieces}}" style="padding: 0; background: transparent; border: 0; color: {{colPieces}}; font: {{fontPieces}}; line-height: 1; cursor: pointer;">{{labelPieces}}</button>
+    <button type="button" role="tab" aria-selected="{{tJournal}}" onClick="{{showJournal}}" style="padding: 0; background: transparent; border: 0; color: {{colJournal}}; font: {{fontJournal}}; line-height: 1; cursor: pointer;">{{labelJournal}}</button>
+    <button type="button" role="tab" aria-selected="{{tAbout}}" onClick="{{showAbout}}" style="padding: 0; background: transparent; border: 0; color: {{colAbout}}; font: {{fontAbout}}; line-height: 1; cursor: pointer;">{{labelAbout}}</button>
+    <button type="button" role="tab" aria-selected="{{tReviews}}" onClick="{{showReviews}}" style="padding: 0; background: transparent; border: 0; color: {{colReviews}}; font: {{fontReviews}}; line-height: 1; cursor: pointer;">{{labelReviews}}</button>
+  </div>
+
+  <sc-if value="{{tPieces}}" hint-placeholder-val="{{true}}">
+  <div class="yl-strip" style="margin-top: 20px; display: flex; gap: 8px; overflow-x: auto; padding: 0 16px; scrollbar-width: none;">
+    <a href="#" style="position: relative; flex-shrink: 0; width: 150px; height: 200px; border-radius: 4px; overflow: hidden; display: block;">
+      <img src="/_blob/4d5d9ddd16544d5e92f74eee0d109a08" alt="Mara's intro video" style="width: 100%; height: 100%; object-fit: cover; object-position: center 25%;">
+      <span class="yl-glass" style="position: absolute; left: 8px; bottom: 8px; display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px; border-radius: 999px; color: #121412; font-size: 12px; font-weight: 600;"><svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="#121412"><path d="M7 4.5v15l13-7.5z"/></svg>Intro · 0:24</span>
+    </a>
+    <a href="#" style="flex-shrink: 0; width: 150px; height: 200px; border-radius: 4px; overflow: hidden; display: block;"><img src="/_blob/e1d52bf47eb38f720bbf3ed250eb43f4" alt="Glazing a wide bowl" style="width: 100%; height: 100%; object-fit: cover;"></a>
+    <a href="#" style="flex-shrink: 0; width: 150px; height: 200px; border-radius: 4px; overflow: hidden; display: block;"><img src="/_blob/3e1c04a8e00317072d7077768622f3d8" alt="The twist vase drying" style="width: 100%; height: 100%; object-fit: cover;"></a>
+  </div>
+    <div style="padding: 16px 16px 0; display: flex; gap: 6px; flex-wrap: wrap;">
+      <sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+        <button type="button" onClick="{{f.pick}}" aria-pressed="{{f.on}}" style="height: 34px; padding: 0 14px; border-radius: 999px; border: 1px solid {{f.border}}; background: {{f.bg}}; color: {{f.fg}}; font: 600 13px Archivo, Arial, sans-serif; cursor: pointer;">{{f.label}}</button>
+      </sc-for>
+    </div>
+    <div style="padding: 20px 16px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px;">
+      <sc-for list="{{pieces}}" as="p" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: #1c1f1c;">
+            <a href="#" style="display: block; width: 100%; height: 100%;"><img src="{{p.img}}" alt="{{p.name}}" style="width: 100%; height: 100%; object-fit: cover; filter: {{p.filter}};"></a>
+            <button type="button" aria-label="Save {{p.name}}" class="yl-glass" style="position: absolute; right: 8px; top: 8px; width: 34px; height: 34px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button>
+            <sc-if value="{{p.label}}" hint-placeholder-val="{{false}}">
+              <span style="position: absolute; left: 8px; bottom: 8px; background: {{p.labelBg}}; color: {{p.labelFg}}; padding: 4px 7px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px;">{{p.label}}</span>
+            </sc-if>
+          </div>
+          <a href="#" style="display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: {{p.color}};">
+            <span style="font-size: 14px; font-weight: 600;">{{p.name}}</span>
+            <span style="font-size: 13px; color: #8b8a85;">{{p.sub}}</span>
+            <span style="margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">{{p.price}}</span>
+          </a>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin: 36px 16px 0; padding: 24px; background: #4fe061; color: #121412; display: flex; flex-direction: column; gap: 12px;">
+      <span style="font-family: Anton, Impact, sans-serif; font-size: 34px; line-height: .95;">WANT SOMETHING PERSONAL?</span>
+      <span style="font-size: 14px; line-height: 1.45;">Your size, another glaze, a gift with a story. Mara takes a few commissions a month.</span>
+      <a href="#" style="margin-top: 4px; height: 48px; display: flex; align-items: center; justify-content: center; background: #121412; color: #f1efe9; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: 1.5px;">REQUEST A CUSTOM PIECE</a>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{tJournal}}" hint-placeholder-val="{{false}}">
+    <div style="padding: 20px 16px 0; display: flex; flex-direction: column; gap: 28px;">
+      <article style="display: flex; flex-direction: column; gap: 8px;">
+        <img src="/_blob/c250021ba43e28825ae41415a4005f27" alt="Cups in the new oat glaze" style="width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">10 OCT · DISCOVERED</span>
+        <h3 style="margin: 0; font-size: 17px; font-weight: 600;">New glaze method unlocked</h3>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #b9b8b2;">Warmer than the old one. The cups look like toast now. Testing it on the bowls next.</p>
+      </article>
+      <article style="padding: 24px; border: 1px solid #2a2c2a; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">30 AUG · SKETCHBOOK</span>
+        <p style="margin: 0; font-family: Anton, Impact, sans-serif; font-size: 28px; line-height: 1;">“IF IT WOBBLES, IT’S MINE.”</p>
+      </article>
+      <article style="display: flex; flex-direction: column; gap: 8px;">
+        <img src="/_blob/3e1c04a8e00317072d7077768622f3d8" alt="The tall twist vase" style="width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">24 SEP · PROCESS</span>
+        <h3 style="margin: 0; font-size: 17px; font-weight: 600;">The tall twist</h3>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #b9b8b2;">A vase that took three tries to stand straight.</p>
+      </article>
+      <article style="padding: 24px; border: 1px solid #2a2c2a; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">15 AUG · NEXT IDEA</span>
+        <p style="margin: 0; font-size: 16px; line-height: 1.45;">Want to make a full table set: six bowls for one family, each a little different.</p>
+      </article>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{tAbout}}" hint-placeholder-val="{{false}}">
+    <div style="padding: 24px 16px 0; display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4fe061;">APPROACH</span><p style="margin: 0; font-size: 15px; line-height: 1.5; color: #d6d4cd;">I build by hand because I like slow shapes. Every bowl starts as a ball of clay pinched between my thumbs.</p></div>
+      <div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4fe061;">MATERIALS</span><p style="margin: 0; font-size: 15px; line-height: 1.5; color: #d6d4cd;">Speckled stoneware and terracotta, food-safe glazes, fired twice.</p></div>
+      <div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4fe061;">INFLUENCES</span><p style="margin: 0; font-size: 15px; line-height: 1.5; color: #d6d4cd;">Japanese tea bowls, Berlin breakfasts, and the colour of oat milk.</p></div>
+      <div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4fe061;">WHERE I WORK</span><p style="margin: 0; font-size: 15px; line-height: 1.5; color: #d6d4cd;">A ground-floor studio in Neukölln, Berlin. I ship across the EU in recycled packaging.</p></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{tReviews}}" hint-placeholder-val="{{false}}">
+    <div style="padding: 20px 16px 0; display: flex; flex-direction: column; gap: 20px;">
+      <div style="padding: 16px; border: 1px solid #3a3d39; border-radius: 10px; display: flex; align-items: center; gap: 16px;">
+        <span style="font-family: Anton, Impact, sans-serif; font-size: 48px; line-height: 1;">4.9</span>
+        <span style="display: flex; flex-direction: column; gap: 4px;"><span aria-label="5 out of 5 stars" style="color: #4fe061; letter-spacing: 2px; font-size: 16px;">★★★★★</span><span style="font-size: 13px; color: #8b8a85;">31 reviews · only from people who bought</span></span>
+      </div>
+      <sc-for list="{{reviews}}" as="r" hint-placeholder-count="3">
+        <article style="padding-bottom: 20px; border-bottom: 1px solid #2a2c2a; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 14px; font-weight: 600;">{{r.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{r.date}}</span></div>
+          <span aria-label="{{r.starsLabel}}" style="color: #4fe061; letter-spacing: 1px; font-size: 13px;">{{r.stars}}</span>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #d6d4cd;">{{r.text}}</p>
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #8b8a85;"><img src="{{r.img}}" alt="" style="width: 28px; height: 28px; border-radius: 4px; object-fit: cover;">Bought: {{r.item}} · Verified purchase</span>
+        </article>
+      </sc-for>
+      <button type="button" style="height: 46px; border: 1.5px solid #3a3d39; border-radius: 10px; background: transparent; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">See all 31 reviews</button>
+    </div>
+  </sc-if>
+
+  <nav aria-label="Main" style="margin-top: auto; height: 64px; flex-shrink: 0; border-top: 1px solid #222421; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 12px; font-weight: 600;">
+    <a href="#" style="color: #f1efe9; text-decoration: none;">Discover</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Following</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Saved</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Bag</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2140}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'pieces', filter: 'all', follow: false };
+  }
+  renderVals() {
+    const st = this.state;
+    const all = [
+      { name: 'Twist vase', sub: 'Terracotta', price: '120€', img: '/_blob/3e1c04a8e00317072d7077768622f3d8', st: 'ready', label: '1 OF 1' },
+      { name: 'Morning cup', sub: 'Stoneware, oat glaze', price: '32€', img: '/_blob/c250021ba43e28825ae41415a4005f27', st: 'ready', label: '' },
+      { name: 'Ripple bowl', sub: 'Speckled stoneware', price: '78€', img: '/_blob/5bf0b89334514376f2638484cbb3bfb9', st: 'ready', label: 'SPECIAL WAX USED' },
+      { name: 'Wide salad bowl', sub: 'Stoneware · made to order', price: '64€', img: '/_blob/e1d52bf47eb38f720bbf3ed250eb43f4', st: 'order', label: '' },
+      { name: 'Still life set', sub: 'Stoneware and terracotta', price: '210€', img: '/_blob/43cc8248789551a9e40281a0a78225c4', st: 'sold', label: 'SOLD' }
+    ];
+    const pieces = all.filter((p) => st.filter === 'all' || p.st === st.filter).map((p) => ({
+      ...p,
+      filter: p.st === 'sold' ? 'grayscale(1) opacity(.5)' : 'none',
+      color: p.st === 'sold' ? '#8b8a85' : '#f1efe9',
+      labelBg: p.st === 'sold' ? '#f1efe9' : '#121412',
+      labelFg: p.st === 'sold' ? '#121412' : '#f1efe9'
+    }));
+    const filters = [['all', 'All'], ['ready', 'Ready to ship'], ['order', 'Made to order'], ['sold', 'Sold']].map(([id, label]) => {
+      const on = st.filter === id;
+      return { label, on, pick: () => this.setState({ filter: id }), bg: on ? '#f1efe9' : 'transparent', fg: on ? '#121412' : '#c9c8c2', border: on ? '#f1efe9' : '#2a2c2a' };
+    });
+    const tab = (t) => () => this.setState({ tab: t });
+    const on = (t) => st.tab === t;
+    const big = '400 30px Anton, Impact, sans-serif';
+    const small = '600 14px Archivo, Arial, sans-serif';
+    return {
+      pieces, filters,
+      tPieces: on('pieces'), tJournal: on('journal'), tAbout: on('about'), tReviews: on('reviews'),
+      showPieces: tab('pieces'), showJournal: tab('journal'), showAbout: tab('about'), showReviews: tab('reviews'),
+      linePieces: on('pieces') ? '#4fe061' : 'transparent', lineJournal: on('journal') ? '#4fe061' : 'transparent', lineAbout: on('about') ? '#4fe061' : 'transparent',
+      colPieces: on('pieces') ? '#f1efe9' : '#8b8a85', colJournal: on('journal') ? '#f1efe9' : '#8b8a85', colAbout: on('about') ? '#f1efe9' : '#8b8a85',
+      fontPieces: on('pieces') ? big : small, fontJournal: on('journal') ? big : small, fontAbout: on('about') ? big : small, fontReviews: on('reviews') ? big : small, colReviews: on('reviews') ? '#f1efe9' : '#8b8a85',
+      labelPieces: on('pieces') ? 'PIECES' : 'Pieces · 5', labelJournal: on('journal') ? 'JOURNAL' : 'Journal', labelAbout: on('about') ? 'ABOUT' : 'About', labelReviews: on('reviews') ? 'REVIEWS' : 'Reviews',
+      reviews: [
+        { name: 'Lea M.', date: '2 NOV', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'The bowl is even nicer in real life. You can feel her thumbs in the rim. Packed with so much care.', item: 'Ripple bowl', img: '/_blob/5bf0b89334514376f2638484cbb3bfb9' },
+        { name: 'Jonas K.', date: '18 OCT', stars: '★★★★★', starsLabel: '5 out of 5 stars', text: 'Bought two cups as a gift. Mara wrote a little note for each one.', item: 'Morning cup', img: '/_blob/c250021ba43e28825ae41415a4005f27' },
+        { name: 'Aiko T.', date: '3 OCT', stars: '★★★★☆', starsLabel: '4 out of 5 stars', text: 'Beautiful vase, took a bit longer to arrive than I hoped, but worth it.', item: 'Twist vase', img: '/_blob/3e1c04a8e00317072d7077768622f3d8' }
+      ],
+      followLabel: st.follow ? 'FOLLOWING' : '+ FOLLOW',
+      followBg: st.follow ? '#2a2c2a' : '#4fe061',
+      followFg: st.follow ? '#f1efe9' : '#121412',
+      toggleFollow: () => this.setState({ follow: !st.follow })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Checkout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-scroll::-webkit-scrollbar{display:none}
+.yl-in::placeholder{color:#6b6a66}
+.yl-in{width:100%;box-sizing:border-box;height:48px;padding:0 14px;border-radius:10px;border:1px solid #3a3d39;background:#1c1f1c;color:#f1efe9;font:400 15px Archivo,Arial,sans-serif;outline:none}
+.yl-in:focus{border-color:#f1efe9}
+.yl-lab{font-size:13px;font-weight:600;color:#c9c8c2}
+.yl-h{margin:0;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:22px;line-height:1}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+
+  <sc-if value="{{isForm}}" hint-placeholder-val="{{true}}">
+    <div style="position: absolute; left: 0; right: 0; top: 0; height: 56px; box-sizing: border-box; padding: 0 16px; border-bottom: 1px solid #222421; display: flex; align-items: center; justify-content: space-between;">
+      <a href="#" style="color: #f1efe9; text-decoration: none; font-size: 14px; font-weight: 600;">‹ Bag</a>
+      <span style="font-family: Anton, Impact, sans-serif; font-size: 20px;">CHECKOUT</span>
+      <span style="display: flex; align-items: center; gap: 5px; font-size: 12px; color: #8b8a85;"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8b8a85" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure</span>
+    </div>
+
+    <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 56px; bottom: 84px; overflow-y: auto; scrollbar-width: none; padding: 16px 16px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 26px;">
+
+      <button type="button" onClick="{{toggleSum}}" aria-expanded="{{sumOpen}}" style="padding: 12px 14px; border: 1px solid #2a2c2a; border-radius: 10px; background: transparent; color: #f1efe9; display: flex; align-items: center; gap: 10px; cursor: pointer; text-align: left;">
+        <span style="display: flex;"><sc-for list="{{thumbs}}" as="t" hint-placeholder-count="3"><img src="{{t}}" alt="" style="width: 32px; height: 40px; border-radius: 3px; object-fit: cover; margin-right: -8px; border: 2px solid #121412;"></sc-for></span>
+        <span style="flex-grow: 1; margin-left: 10px; font-size: 14px; font-weight: 600;">{{pieceCount}} · {{makerNames}}</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600;">{{total}}</span>
+        <span aria-hidden="true" style="color: #8b8a85; font-size: 12px;">{{sumArrow}}</span>
+      </button>
+      <sc-if value="{{sumOpen}}" hint-placeholder-val="{{false}}">
+        <div style="margin-top: -18px; padding: 4px 14px 12px; border: 1px solid #2a2c2a; border-top: 0; border-radius: 0 0 10px 10px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #c9c8c2;">
+          <sc-for list="{{lines}}" as="l" hint-placeholder-count="3"><div style="display: flex; justify-content: space-between;"><span>{{l.name}}</span><span style="font-family: 'IBM Plex Mono', monospace;">{{l.price}}</span></div></sc-for>
+          <sc-for list="{{wrapLines}}" as="l" hint-placeholder-count="0"><div style="display: flex; justify-content: space-between;"><span>{{l.name}}</span><span style="font-family: 'IBM Plex Mono', monospace;">{{l.price}}</span></div></sc-for>
+          <div style="display: flex; justify-content: space-between;"><span>Shipping · {{parcels}}</span><span style="font-family: 'IBM Plex Mono', monospace;">{{ship}}</span></div>
+        </div>
+      </sc-if>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" onClick="{{pay}}" style="height: 50px; border: 0; border-radius: 10px; background: #f1efe9; color: #121412; font: 700 16px Archivo, Arial, sans-serif; cursor: pointer;">Apple Pay</button>
+        <button type="button" onClick="{{pay}}" style="height: 50px; border: 1px solid #3a3d39; border-radius: 10px; background: transparent; color: #f1efe9; font: 700 16px Archivo, Arial, sans-serif; cursor: pointer;">Google Pay</button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px; font-size: 12px; color: #8b8a85;"><span style="flex: 1; height: 1px; background: #2a2c2a;"></span>or fill in below<span style="flex: 1; height: 1px; background: #2a2c2a;"></span></div>
+      </div>
+
+      <section style="display: flex; flex-direction: column; gap: 10px;">
+        <h2 class="yl-h">CONTACT</h2>
+        <input class="yl-in" type="email" value="{{email}}" onChange="{{onEmail}}" placeholder="Email for your receipt" aria-label="Email" aria-invalid="{{emailBad}}" style="border-color: {{emailBorder}};">
+        <sc-if value="{{emailBad}}" hint-placeholder-val="{{false}}"><span style="font-size: 13px; color: #ff8a7a;">Add your email so we can send the receipt.</span></sc-if>
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #c9c8c2; cursor: pointer;">
+          <input type="checkbox" checked="{{news}}" onChange="{{toggleNews}}" style="width: 18px; height: 18px; accent-color: #4fe061; margin: 0;">Tell me when my makers post new pieces
+        </label>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 10px;">
+        <h2 class="yl-h">DELIVERY</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+          <button type="button" onClick="{{toLocker}}" aria-pressed="{{isLocker}}" style="height: 60px; border-radius: 10px; border: 1.5px solid {{lockerBorder}}; background: transparent; color: #f1efe9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer;"><span style="font: 600 14px Archivo, Arial, sans-serif;">Parcel locker</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">4,90€ / parcel</span></button>
+          <button type="button" onClick="{{toHome}}" aria-pressed="{{isHome}}" style="height: 60px; border-radius: 10px; border: 1.5px solid {{homeBorder}}; background: transparent; color: #f1efe9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer;"><span style="font: 600 14px Archivo, Arial, sans-serif;">To my door</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">6,90€ / parcel</span></button>
+        </div>
+        <sc-if value="{{isLocker}}" hint-placeholder-val="{{true}}">
+          <button type="button" style="padding: 12px 14px; border-radius: 10px; border: 1px solid #3a3d39; background: #1c1f1c; color: #f1efe9; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left;">
+            <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 14px; font-weight: 600;">Omniva · Akropolis</span><span style="font-size: 12px; color: #8b8a85;">Ozo g. 25, Vilnius · 600 m from you</span></span>
+            <span style="font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;">Change</span>
+          </button>
+          <input class="yl-in" value="{{name}}" onChange="{{onName}}" placeholder="Full name" aria-label="Full name">
+          <input class="yl-in" type="tel" value="{{phone}}" onChange="{{onPhone}}" placeholder="Phone" aria-label="Phone">
+          <span style="margin-top: -4px; font-size: 12px; color: #8b8a85;">The locker texts you the pickup code.</span>
+        </sc-if>
+        <sc-if value="{{isHome}}" hint-placeholder-val="{{false}}">
+          <input class="yl-in" value="{{name}}" onChange="{{onName}}" placeholder="Full name" aria-label="Full name">
+          <input class="yl-in" placeholder="Street and number" aria-label="Street and number">
+          <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 6px;"><input class="yl-in" placeholder="Postcode" aria-label="Postcode"><input class="yl-in" placeholder="City" aria-label="City"></div>
+          <input class="yl-in" type="tel" value="{{phone}}" onChange="{{onPhone}}" placeholder="Phone" aria-label="Phone">
+          <span style="margin-top: -4px; font-size: 12px; color: #8b8a85;">The courier calls only if they can’t find you.</span>
+        </sc-if>
+
+        <div style="margin-top: 4px; border: 1px solid #2a2c2a; border-radius: 10px;">
+          <sc-for list="{{arrivals}}" as="a" hint-placeholder-count="2">
+            <div style="padding: 12px 14px; border-bottom: 1px solid #222421; display: flex; align-items: center; gap: 10px;">
+              <img src="{{a.img}}" alt="" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; object-position: {{a.pos}};">
+              <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-size: 14px; font-weight: 600;">Arrives {{a.date}}</span>
+                <span style="font-size: 12px; color: {{a.noteColor}};">{{a.note}}</span>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 10px;">
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; cursor: pointer;">
+          <input type="checkbox" checked="{{gift}}" onChange="{{toggleGift}}" style="width: 20px; height: 20px; accent-color: #4fe061; margin: 0;">This is a gift
+        </label>
+        <sc-if value="{{gift}}" hint-placeholder-val="{{false}}">
+          <input class="yl-in" value="{{giftTo}}" onChange="{{onGiftTo}}" placeholder="Who is it for? (name on the card)" aria-label="Gift recipient name">
+          <textarea class="yl-in" rows="3" value="{{giftNote}}" onChange="{{onGift}}" placeholder="Your note. The maker writes it by hand on a card." aria-label="Gift note" style="height: auto; padding: 12px 14px; line-height: 1.45; resize: none;"></textarea>
+          <sc-for list="{{wraps}}" as="w" hint-placeholder-count="2">
+            <button type="button" onClick="{{w.toggle}}" aria-pressed="{{w.on}}" style="padding: 10px; border-radius: 10px; border: 1.5px solid {{w.border}}; background: transparent; color: #f1efe9; display: flex; align-items: center; gap: 12px; cursor: pointer; text-align: left;">
+              <img src="{{w.img}}" alt="" style="width: 56px; height: 56px; border-radius: 6px; object-fit: cover; flex-shrink: 0;">
+              <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px;">
+                <span style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 14px; font-weight: 700;">Gift wrap by {{w.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">+{{w.price}}</span></span>
+                <span style="font-size: 12px; line-height: 1.4; color: #8b8a85;">{{w.desc}}</span>
+              </span>
+              <span aria-hidden="true" style="width: 22px; height: 22px; flex-shrink: 0; border-radius: 6px; border: 1.5px solid {{w.boxBorder}}; background: {{w.boxBg}}; color: #121412; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center;">{{w.tick}}</span>
+            </button>
+          </sc-for>
+          <span style="margin-top: -4px; font-size: 12px; color: #8b8a85;">No prices inside the parcel.</span>
+        </sc-if>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 10px;">
+        <h2 class="yl-h">PAYMENT</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px;">
+          <sc-for list="{{methods}}" as="m" hint-placeholder-count="3">
+            <button type="button" onClick="{{m.pick}}" aria-pressed="{{m.on}}" style="height: 44px; border-radius: 10px; border: 1.5px solid {{m.border}}; background: transparent; color: #f1efe9; font: 600 13px Archivo, Arial, sans-serif; cursor: pointer;">{{m.label}}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{isCard}}" hint-placeholder-val="{{true}}">
+          <input class="yl-in" inputmode="numeric" placeholder="Card number" aria-label="Card number">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"><input class="yl-in" placeholder="MM / YY" aria-label="Expiry"><input class="yl-in" placeholder="CVC" aria-label="CVC"></div>
+        </sc-if>
+        <sc-if value="{{isBank}}" hint-placeholder-val="{{false}}"><span style="font-size: 13px; color: #c9c8c2;">You’ll pick your bank (Swedbank, SEB, Luminor, Revolut…) on the next screen.</span></sc-if>
+        <sc-if value="{{isBlik}}" hint-placeholder-val="{{false}}"><input class="yl-in" inputmode="numeric" placeholder="6-digit BLIK code" aria-label="BLIK code"></sc-if>
+      </section>
+
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: 14px; border: 1px solid #2a2c2a; border-radius: 10px;">
+        <sc-for list="{{trust}}" as="t" hint-placeholder-count="3">
+          <span style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #c9c8c2;"><span aria-hidden="true" style="color: #4fe061;">✓</span>{{t}}</span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 20px; border-top: 1px solid #222421; background: #121412;">
+      <button type="button" onClick="{{pay}}" style="width: 100%; height: 52px; border: 0; background: #4fe061; color: #121412; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">PAY <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; letter-spacing: 0;">{{total}}</span></button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isDone}}" hint-placeholder-val="{{false}}">
+    <div class="yl-scroll" style="position: absolute; inset: 0; overflow-y: auto; scrollbar-width: none; padding: 48px 16px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4fe061;">ORDER #YL-1041 · PAID</span>
+        <h1 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 52px; line-height: .95;">THANK YOU,<br>{{firstUp}}.</h1>
+        <span style="font-size: 15px; line-height: 1.45; color: #c9c8c2;">Your makers just got the news. Receipt sent to {{emailShown}}.</span>
+      </div>
+
+      <sc-for list="{{doneMakers}}" as="d" hint-placeholder-count="2">
+        <article style="border: 1px solid #2a2c2a; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="{{d.img}}" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: {{d.pos}};">
+            <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 15px; font-weight: 700;">{{d.name}} is packing your {{d.what}}</span><span style="font-size: 12px; color: #8b8a85;">Arrives {{d.date}}</span></span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+            <sc-for list="{{d.steps}}" as="s" hint-placeholder-count="4">
+              <span style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 3px; border-radius: 2px; background: {{s.bar}};"></span><span style="font-size: 11px; color: {{s.color}};">{{s.label}}</span></span>
+            </sc-for>
+          </div>
+          <p style="margin: 0; padding: 12px 14px; border-radius: 10px; background: #1c1f1c; font-size: 14px; line-height: 1.5; color: #e2e0d9;">“{{d.note}}”<br><span style="font-size: 12px; color: #8b8a85;">— {{d.name}}</span></p>
+        </article>
+      </sc-for>
+
+      <sc-if value="{{showAcct}}" hint-placeholder-val="{{true}}">
+        <div style="border: 1px solid #2a2c2a; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 15px; font-weight: 700;">Follow your order in the app</span>
+          <span style="font-size: 13px; color: #c9c8c2; margin-top: -4px;">Add a password. Your email and address are already saved.</span>
+          <input class="yl-in" type="password" placeholder="Password" aria-label="Password">
+          <button type="button" onClick="{{makeAcct}}" style="height: 46px; border-radius: 999px; border: 1.5px solid #f1efe9; background: transparent; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">Save my account</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{acctDone}}" hint-placeholder-val="{{false}}"><span style="font-size: 14px; color: #4fe061;">✓ Account saved. Your order is in Profile.</span></sc-if>
+
+      <a href="#" style="height: 52px; display: flex; align-items: center; justify-content: center; background: #4fe061; color: #121412; text-decoration: none; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px;">KEEP DISCOVERING</a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startOn":{"editor":"enum","options":["checkout","done"],"default":"checkout"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: props.startOn === 'done', sumOpen: false, email: props.startOn === 'done' ? 'lina@example.com' : '', name: props.startOn === 'done' ? 'Lina Petraitė' : '', phone: '', news: false, mode: 'locker', gift: false, giftNote: '', giftTo: '', wraps: [], method: 'card', tried: false, acct: false, now: Date.now() };
+    this._end = Date.now() + (3 * 3600 + 12 * 60) * 1000;
+    this._iv = setInterval(() => this.setState({ now: Date.now() }), 1000);
+  }
+  renderVals() {
+    const st = this.state;
+    const eur = (n) => (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2).replace('.', ',')) + '€';
+    const MK = [
+      { id: 'inez', name: 'Inez', img: '/_blob/d7bb7bc69d58d2724047c0554e8a6a6c', pos: 'center 25%', what: 'Flow ring', date: 'Tue, Nov 17', wrap: { price: 5, desc: 'Linen pouch, wax seal and a handwritten card with their name', img: '/_blob/f35d2b8d0907e4da528ee1b867ea5cf1' }, ships: 'today', note: 'Thank you so much! I’ll polish it one more time before it goes in the box.' },
+      { id: 'mara', name: 'Mara', img: '/_blob/4d5d9ddd16544d5e92f74eee0d109a08', pos: 'center 20%', what: 'bowl and cups', date: 'Nov 20–23', wrap: { price: 7, desc: 'Kraft box, dried flowers and a card. Every piece wrapped in paper', img: '/_blob/43cc8248789551a9e40281a0a78225c4' }, ships: 'Monday', note: 'They were still warm from the kiln last week. Hope they make your mornings slower.' }
+    ];
+    const items = [{ name: 'Flow ring · size 56', p: 145, img: '/_blob/42547c7d127c23e79e6298e385db6098' }, { name: 'Ripple bowl', p: 78, img: '/_blob/5bf0b89334514376f2638484cbb3bfb9' }, { name: 'Morning cup × 2', p: 68, img: '/_blob/c250021ba43e28825ae41415a4005f27' }];
+    const per = st.mode === 'locker' ? 4.9 : 6.9;
+    const sumItems = items.reduce((a, b) => a + b.p, 0);
+    const ship = per * 2;
+    const wrapOn = (id) => st.gift && st.wraps.indexOf(id) >= 0;
+    const wrapSum = MK.reduce((a, k) => a + (k.wrap && wrapOn(k.id) ? k.wrap.price : 0), 0);
+    const left = Math.max(0, this._end - st.now);
+    const h = Math.floor(left / 3600000), m = Math.floor(left / 60000) % 60;
+    const emailOk = /.+@.+\..+/.test(st.email);
+    const first = (st.name.trim().split(' ')[0] || 'friend');
+    const stepsFor = () => ['Paid', 'Packing', 'On the way', 'Delivered'].map((label, i) => ({ label, bar: i < 2 ? '#4fe061' : '#2a2c2a', color: i < 2 ? '#f1efe9' : '#8b8a85' }));
+    return {
+      isForm: !st.done, isDone: st.done,
+      thumbs: items.map((i) => i.img), pieceCount: '4 pieces', makerNames: 'Inez, Mara',
+      lines: items.map((i) => ({ name: i.name, price: eur(i.p) })), parcels: '2 parcels', ship: eur(ship), total: eur(sumItems + ship + wrapSum),
+      wrapLines: MK.filter((k) => k.wrap && wrapOn(k.id)).map((k) => ({ name: 'Gift wrap by ' + k.name, price: eur(k.wrap.price) })),
+      giftTo: st.giftTo, onGiftTo: (e) => this.setState({ giftTo: e.target.value }),
+      wraps: MK.filter((k) => k.wrap).map((k) => { const on = st.wraps.indexOf(k.id) >= 0; return { name: k.name, img: k.wrap.img, desc: k.wrap.desc, price: eur(k.wrap.price), on,
+        border: on ? '#4fe061' : '#3a3d39', boxBorder: on ? '#4fe061' : '#5a5d58', boxBg: on ? '#4fe061' : 'transparent', tick: on ? '✓' : '',
+        toggle: () => this.setState({ wraps: on ? st.wraps.filter((x) => x !== k.id) : st.wraps.concat([k.id]) }) }; }),
+      sumOpen: st.sumOpen, sumArrow: st.sumOpen ? '▲' : '▼', toggleSum: () => this.setState({ sumOpen: !st.sumOpen }),
+      email: st.email, onEmail: (e) => this.setState({ email: e.target.value }), emailBad: st.tried && !emailOk, emailBorder: st.tried && !emailOk ? '#ff8a7a' : '#3a3d39',
+      news: st.news, toggleNews: () => this.setState({ news: !st.news }),
+      isLocker: st.mode === 'locker', isHome: st.mode === 'home', toLocker: () => this.setState({ mode: 'locker' }), toHome: () => this.setState({ mode: 'home' }),
+      lockerBorder: st.mode === 'locker' ? '#f1efe9' : '#3a3d39', homeBorder: st.mode === 'home' ? '#f1efe9' : '#3a3d39',
+      name: st.name, onName: (e) => this.setState({ name: e.target.value }), phone: st.phone, onPhone: (e) => this.setState({ phone: e.target.value }),
+      arrivals: MK.map((k) => ({ img: k.img, pos: k.pos, date: k.date,
+        note: k.ships === 'today' ? (left > 0 ? 'Inez ships today if you order in ' + h + 'h ' + m + 'm' : 'Inez ships tomorrow') : 'Mara ships on Mondays from Berlin',
+        noteColor: k.ships === 'today' && left > 0 ? '#4fe061' : '#8b8a85' })),
+      gift: st.gift, toggleGift: () => this.setState({ gift: !st.gift }), giftNote: st.giftNote, onGift: (e) => this.setState({ giftNote: e.target.value }),
+      methods: [['card', 'Card'], ['bank', 'Bank link'], ['blik', 'BLIK']].map(([id, label]) => ({ label, on: st.method === id, border: st.method === id ? '#f1efe9' : '#3a3d39', pick: () => this.setState({ method: id }) })),
+      isCard: st.method === 'card', isBank: st.method === 'bank', isBlik: st.method === 'blik',
+      trust: ['14 days to change your mind and return', 'Paid safely through Stripe. Makers never see your card', 'Money reaches the maker only after the parcel ships'],
+      pay: () => { if (!emailOk) { this.setState({ tried: true }); return; } this.setState({ done: true }); },
+      firstUp: first.toUpperCase(), emailShown: st.email || 'your email',
+      doneMakers: MK.map((k) => ({ name: k.name, img: k.img, pos: k.pos, what: k.what, date: k.date, note: k.note, steps: stepsFor() })),
+      showAcct: !st.acct, acctDone: st.acct, makeAcct: () => this.setState({ acct: true })
+    };
+  }
+}
+</script>
+</body>
+</html>
