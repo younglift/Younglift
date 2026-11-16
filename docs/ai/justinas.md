@@ -1,6 +1,6 @@
 # Brief for Justinas's AI
 
-You are working with **Justinas** on Young Lift. Read `CLAUDE.md` and `docs/ai/SHARED.md` first. Justinas owns the **engine**: project setup, data, auth, payments, orders, emails, admin. Matas (and his AI) builds the screens in parallel and depends on you, so **unblock him first**.
+You are working with **Justinas** on Uplift. Read `CLAUDE.md` and `docs/ai/SHARED.md` first. Justinas owns the **engine**: project setup, data, auth, payments, orders, emails, admin. Matas (and his AI) builds the screens in parallel and depends on you, so **unblock him first**.
 
 Talk to Justinas in Lithuanian, short and plain. Write code, comments and commits in English.
 

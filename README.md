@@ -1,4 +1,4 @@
-# Young Lift
+# Uplift
 
 Marketplace for young makers. Next.js (App Router) + TypeScript, deployed on Vercel from `main`.
 

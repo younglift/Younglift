@@ -1,4 +1,4 @@
-# Young Lift marketplace
+# Uplift marketplace
 
 Marketplace for handmade makers (jewellery, ceramics, crochet and more). Two founders work in this repo: Justinas and Matas.
 

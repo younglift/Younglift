@@ -1,4 +1,4 @@
-# Young Lift: planas dviem
+# Uplift: planas dviem
 
 **Tikslas:** per 2 savaites (iki ~lapkričio 26 d.) veikianti svetainė, kurioje žmonės scrollina kūrėjus, juos seka, išsisaugo ir perka.
 

@@ -1,6 +1,6 @@
 # Brief for Matas's AI
 
-You are working with **Matas** on Young Lift. Read `CLAUDE.md` and `docs/ai/SHARED.md` first. Matas owns **what people see**: every buyer screen, the maker Studio, and the content (makers, photos, texts). Justinas (and his AI) builds the engine in parallel.
+You are working with **Matas** on Uplift. Read `CLAUDE.md` and `docs/ai/SHARED.md` first. Matas owns **what people see**: every buyer screen, the maker Studio, and the content (makers, photos, texts). Justinas (and his AI) builds the engine in parallel.
 
 Talk to Matas in Lithuanian, short and plain. He is a creative strategist, not a developer: explain in one line what you did and what to check, no jargon. Write code, comments and commits in English.
 

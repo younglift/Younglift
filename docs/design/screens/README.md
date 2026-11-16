@@ -1,6 +1,6 @@
 # Ekranų dizainas (telefonas, 390×844)
 
-Šaltinis: Mato dizaino drobė Claude'e („Young Lift: nuotaikos kryptys“). Čia **kopija skaitymui**, kad Justinas ir jo AI matytų tikslią struktūrą, tekstus, spalvas ir elgseną.
+Šaltinis: Mato dizaino drobė Claude'e („Uplift: nuotaikos kryptys“). Čia **kopija skaitymui**, kad Justinas ir jo AI matytų tikslią struktūrą, tekstus, spalvas ir elgseną.
 
 **Kaip skaityti:** kiekvienas `.dc.html` = vienas ekranas. Viršuje HTML su `{{kintamaisiais}}`, `<sc-if>` (rodyti jei), `<sc-for>` (kartoti sąraše). Apačioje `class Component` = būsena ir logika (kas vyksta paspaudus). Failai su `<dc-import name="X" ...>` yra to paties ekrano X kita būsena (pvz. `Product-Ring` = `Product` su `variant="ring"`).
 

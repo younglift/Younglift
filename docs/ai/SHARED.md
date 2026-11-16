@@ -1,9 +1,9 @@
-# Young Lift: shared contract for both AIs
+# Uplift: shared contract for both AIs
 
 Read `CLAUDE.md` first (flows are LOCKED, the visual look is being redesigned, see `docs/design/JOURNEY.md`). Then read your person's file (`justinas.md` or `matas.md`). This file is what both sides must agree on.
 
 ## Product in one paragraph
-A curated marketplace for young makers (jewellery, ceramics, crochet, textiles, prints...) that feels like a pop-up market on a phone. Buyers pick their taste, then scroll a vertical feed: one maker per screen (swipe up = next maker, swipe sideways = that maker's photos/video). Tapping a maker opens their "world" (personal shop). Buyers follow makers, save pieces into boards ("For birthday", "For my sister"), message makers, and buy. Makers are accepted by application only. Young Lift takes a commission on each sale. Launch markets: Lithuania, Latvia, Estonia, Poland. UI language: English first.
+A curated marketplace for young makers (jewellery, ceramics, crochet, textiles, prints...) that feels like a pop-up market on a phone. Buyers pick their taste, then scroll a vertical feed: one maker per screen (swipe up = next maker, swipe sideways = that maker's photos/video). Tapping a maker opens their "world" (personal shop). Buyers follow makers, save pieces into boards ("For birthday", "For my sister"), message makers, and buy. Makers are accepted by application only. Uplift takes a commission on each sale. Launch markets: Lithuania, Latvia, Estonia, Poland. UI language: English first.
 
 The clickable prototype `index.html` is the source of truth for screens, copy and behaviour. Port it faithfully; do not redesign.
 
