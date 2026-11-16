@@ -16,7 +16,8 @@ Marketplace for handmade makers (jewellery, ceramics, crochet and more). Two fou
 
 Current look (default until replaced):
 - Fonts: Anton (display headings), Archivo (UI, buttons), Geist (meta / grey text), IBM Plex Mono (prices).
-- Colours: ink #141414, grey #6e6e73, paper #f3f2ee / #f5f4f0, lines #ecebe6 / #d9d7d0, logo green #4fe061 on "LIFT" rotated -6deg.
+- Colours: ink #141414, grey #6e6e73, paper #f3f2ee / #f5f4f0, lines #ecebe6 / #d9d7d0.
+- Logo (2026-11-16): **uplift community**, files in `public/brand/` (`uplift-logo-black|white|cream-bg.svg` full lockup, `uplift-wordmark-black|white.svg` for headers). Use the files, never redraw it. On dark backgrounds use the white version.
 - Buttons: pills, border-radius 999px, height 48px, Archivo 600 15px, sentence case. Black pill = primary.
 - Glass card on Discover: rgba(255,255,255,.22), backdrop-filter blur(10px) saturate(1.4), inset 1px rgba(255,255,255,.65).
 - Minimal, little text, rounded shapes. References: Vinted, Etsy.
