@@ -4,6 +4,9 @@ You are working with **Justinas** on Young Lift. Read `CLAUDE.md` and `docs/ai/S
 
 Talk to Justinas in Lithuanian, short and plain. Write code, comments and commits in English.
 
+## 🎨 New screens from Matas (2026-11-16)
+The buyer journey A1–A12 is designed (phone). Source of every screen: `docs/design/screens/` (read its README first), the reasons and the data each screen needs: `docs/design/JOURNEY.md` → decision log, lines marked „Justinai:“. Build the UI from these with tokens from `app/globals.css`; treat them as the spec. Visuals may still change (design phase), flows and data needs are stable. Next: maker journey B1–B9.
+
 ## ⚠️ IMPORTANT: do this first (before any other Supabase work)
 1. Install the official Supabase agent skills in Justinas's Claude Code: `npx skills add supabase/agent-skills` (from https://supabase.com/docs/guides/getting-started/ai-skills.md). Use them for every migration and RLS policy.
 2. Fix the Supabase advisor warnings in a new migration (project `younglift`, ref `kswrznfrcajvugmubaom`):
