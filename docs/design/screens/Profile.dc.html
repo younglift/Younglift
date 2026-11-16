@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Profile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-scroll::-webkit-scrollbar{display:none}
+.yl-in::placeholder{color:#6b6a66}
+.yl-row{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid #222421;color:#f1efe9;text-decoration:none;font-size:15px;font-weight:500}
+.yl-h{margin:0;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:24px;line-height:1}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+  <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 0; bottom: 64px; overflow-y: auto; scrollbar-width: none;">
+
+    <div style="padding: 20px 16px 0; display: flex; align-items: center; gap: 14px;">
+      <span style="width: 64px; height: 64px; border-radius: 50%; background: #1c1f1c; border: 1px solid #3a3d39; display: flex; align-items: center; justify-content: center; font-family: Anton, Impact, sans-serif; font-size: 26px; color: #4fe061;">L</span>
+      <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-family: Anton, Impact, sans-serif; font-size: 34px; line-height: 1;">LINA</span>
+        <span style="font-size: 13px; color: #8b8a85;">Vilnius · with us since Nov 2026</span>
+      </span>
+      <a href="#" aria-label="Settings" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f1efe9" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a>
+    </div>
+
+    <div style="margin-top: 28px; padding: 0 16px;"><h2 class="yl-h">YOUR ORDERS</h2></div>
+    <div style="padding: 14px 16px 0; display: flex; flex-direction: column; gap: 12px;">
+      <sc-for list="{{orders}}" as="o" hint-placeholder-count="3">
+        <article style="border: 1px solid #2a2c2a; border-radius: 10px; overflow: hidden;">
+          <button type="button" onClick="{{o.toggle}}" aria-expanded="{{o.open}}" style="width: 100%; padding: 14px; border: 0; background: transparent; color: #f1efe9; display: flex; gap: 12px; align-items: center; text-align: left; cursor: pointer;">
+            <img src="{{o.img}}" alt="" style="width: 56px; height: 68px; border-radius: 4px; object-fit: cover; flex-shrink: 0;">
+            <span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px;">
+              <span style="font-size: 15px; font-weight: 600;">{{o.title}}</span>
+              <span style="font-size: 12px; color: #8b8a85;">from {{o.maker}} · {{o.no}}</span>
+              <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: {{o.stColor}};"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: {{o.stColor}};"></span>{{o.status}}</span>
+            </span>
+            <span aria-hidden="true" style="color: #8b8a85; font-size: 12px;">{{o.arrow}}</span>
+          </button>
+
+          <sc-if value="{{o.showTrack}}" hint-placeholder-val="{{false}}">
+            <div style="padding: 0 14px 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+              <sc-for list="{{o.steps}}" as="s" hint-placeholder-count="4">
+                <span style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 3px; border-radius: 2px; background: {{s.bar}};"></span><span style="font-size: 11px; color: {{s.color}};">{{s.label}}</span></span>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{o.open}}" hint-placeholder-val="{{false}}">
+            <div style="padding: 0 14px 14px; display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 13px; color: #c9c8c2;"><span>{{o.detail}}</span><span style="font-family: 'IBM Plex Mono', monospace;">{{o.total}}</span></div>
+              <sc-if value="{{o.hasTracking}}" hint-placeholder-val="{{false}}"><div style="font-size: 13px; color: #c9c8c2;">Omniva · <span style="font-family: 'IBM Plex Mono', monospace;">CE4815162342LT</span></div></sc-if>
+              <div style="display: flex; gap: 8px;">
+                <a href="#" style="flex: 1; height: 40px; border-radius: 999px; border: 1.5px solid #3a3d39; display: flex; align-items: center; justify-content: center; color: #f1efe9; text-decoration: none; font-size: 13px; font-weight: 600;">Message {{o.maker}}</a>
+                <a href="#" style="flex: 1; height: 40px; border-radius: 999px; border: 1.5px solid #3a3d39; display: flex; align-items: center; justify-content: center; color: #f1efe9; text-decoration: none; font-size: 13px; font-weight: 600;">{{o.second}}</a>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{o.canReview}}" hint-placeholder-val="{{false}}">
+            <div style="padding: 12px 14px 14px; border-top: 1px solid #222421; display: flex; flex-direction: column; gap: 10px;">
+              <span style="font-size: 14px; font-weight: 600;">How is your {{o.short}}?</span>
+              <div style="display: flex; gap: 4px;">
+                <sc-for list="{{o.stars}}" as="st" hint-placeholder-count="5">
+                  <button type="button" onClick="{{st.pick}}" aria-label="{{st.label}}" style="width: 40px; height: 40px; padding: 0; border: 0; background: transparent; font-size: 28px; line-height: 1; color: {{st.color}}; cursor: pointer;">★</button>
+                </sc-for>
+              </div>
+              <sc-if value="{{o.rated}}" hint-placeholder-val="{{false}}">
+                <textarea class="yl-in" rows="2" value="{{o.text}}" onChange="{{o.onText}}" placeholder="A few words for {{o.maker}} (optional)" aria-label="Review" style="padding: 12px 14px; border-radius: 10px; border: 1px solid #3a3d39; background: #1c1f1c; color: #f1efe9; font: 400 14px/1.45 Archivo, Arial, sans-serif; resize: none; outline: none;"></textarea>
+                <button type="button" onClick="{{o.send}}" style="height: 44px; border: 0; background: #4fe061; color: #121412; font: 700 12px Archivo, Arial, sans-serif; letter-spacing: 1.5px; cursor: pointer;">POST REVIEW</button>
+              </sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{o.reviewed}}" hint-placeholder-val="{{false}}">
+            <div style="padding: 12px 14px; border-top: 1px solid #222421; font-size: 13px; color: #4fe061;">✓ Thanks. {{o.maker}} will see your review.</div>
+          </sc-if>
+        </article>
+      </sc-for>
+    </div>
+
+    <div style="margin-top: 30px; padding: 0 16px;">
+      <a href="#" class="yl-row"><span style="flex-grow: 1;">Messages</span><span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #8b8a85;"><span aria-label="1 unread" style="width: 8px; height: 8px; border-radius: 50%; background: #4fe061;"></span>›</span></a>
+      <a href="#" class="yl-row"><span style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px;"><span>Your taste</span><span style="font-size: 12px; color: #8b8a85;">Jewellery · Ceramics</span></span><span style="font-size: 13px; color: #8b8a85;">Change ›</span></a>
+      <a href="#" class="yl-row"><span style="flex-grow: 1;">Addresses &amp; payment</span><span style="color: #8b8a85;">›</span></a>
+      <a href="#" class="yl-row"><span style="flex-grow: 1;">Notifications</span><span style="color: #8b8a85;">›</span></a>
+      <a href="#" class="yl-row"><span style="flex-grow: 1;">Privacy &amp; your data</span><span style="color: #8b8a85;">›</span></a>
+      <a href="#" class="yl-row"><span style="flex-grow: 1;">Help &amp; returns</span><span style="color: #8b8a85;">›</span></a>
+    </div>
+
+    <a href="#" style="margin: 26px 16px 0; padding: 18px; border: 1px solid #4fe061; border-radius: 10px; display: flex; align-items: center; gap: 12px; color: #f1efe9; text-decoration: none;">
+      <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Anton, Impact, sans-serif; font-size: 22px; line-height: 1;">YOU MAKE THINGS?</span><span style="font-size: 13px; color: #c9c8c2;">Open your studio on Young Lift</span></span>
+      <span style="font-size: 22px; color: #4fe061;">→</span>
+    </a>
+
+    <div style="padding: 24px 16px 32px;"><a href="#" style="color: #8b8a85; font-size: 14px;">Log out</a></div>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid #222421; background: #121412; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 12px; font-weight: 600;">
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Discover</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Explore</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Following</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Saved</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Bag</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: 'flow', rating: {}, text: {}, sent: {} };
+  }
+  renderVals() {
+    const st = this.state;
+    const O = [
+      { id: 'flow', title: 'Flow ring', short: 'Flow ring', maker: 'Inez', no: '#YL-1041', img: '/_blob/42547c7d127c23e79e6298e385db6098', step: 2, status: 'On the way · arrives Tue, Nov 17', detail: 'Size 56 · paid 13 Nov', total: '149,90€', second: 'Track parcel' },
+      { id: 'cups', title: 'Ripple bowl + 2 cups', short: 'bowl', maker: 'Mara', no: '#YL-1041', img: '/_blob/5bf0b89334514376f2638484cbb3bfb9', step: 1, status: 'Mara is packing · arrives Nov 20–23', detail: '3 pieces · paid 13 Nov', total: '150,90€', second: 'Order details' },
+      { id: 'hood', title: 'Flower hood', short: 'Flower hood', maker: 'Ula', no: '#YL-1017', img: '/_blob/2216899e48ec14b0f8f7b48f5e141546', step: 4, status: 'Delivered 30 Oct', detail: 'Size S/M · paid 24 Oct', total: '94,90€', second: 'Return' }
+    ];
+    const orders = O.map((o) => {
+      const open = st.open === o.id; const delivered = o.step === 4; const r = st.rating[o.id] || 0; const sent = !!st.sent[o.id];
+      return {
+        title: o.title, short: o.short, maker: o.maker, no: o.no, img: o.img, status: o.status, detail: o.detail, total: o.total, second: o.second,
+        stColor: delivered ? '#8b8a85' : '#4fe061', open, arrow: open ? '▲' : '▼',
+        toggle: () => this.setState({ open: open ? null : o.id }),
+        showTrack: !delivered, hasTracking: o.step >= 2 && !delivered,
+        steps: ['Paid', 'Packing', 'On the way', 'Delivered'].map((label, i) => ({ label, bar: i < o.step ? '#4fe061' : '#2a2c2a', color: i < o.step ? '#f1efe9' : '#8b8a85' })),
+        canReview: delivered && !sent, reviewed: sent, rated: r > 0,
+        stars: [1, 2, 3, 4, 5].map((n) => ({ label: n + (n === 1 ? ' star' : ' stars'), color: n <= r ? '#4fe061' : '#3a3d39', pick: () => this.setState({ rating: Object.assign({}, st.rating, { [o.id]: n }) }) })),
+        text: st.text[o.id] || '', onText: (e) => this.setState({ text: Object.assign({}, st.text, { [o.id]: e.target.value }) }),
+        send: () => this.setState({ sent: Object.assign({}, st.sent, { [o.id]: true }) })
+      };
+    });
+    return { orders };
+  }
+}
+</script>
+</body>
+</html>

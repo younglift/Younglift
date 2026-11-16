@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Messages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+.yl-scroll::-webkit-scrollbar,.yl-row::-webkit-scrollbar{display:none}
+.yl-input::placeholder{color:#8b8a85}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+
+  <sc-if value="{{isList}}" hint-placeholder-val="{{true}}">
+    <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 0; bottom: 64px; overflow-y: auto; scrollbar-width: none;">
+      <div style="padding: 20px 16px 8px;">
+        <h1 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 40px; line-height: 1;">MESSAGES</h1>
+      </div>
+      <sc-for list="{{threads}}" as="t" hint-placeholder-count="3">
+        <button type="button" onClick="{{t.open}}" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: transparent; border: 0; border-bottom: 1px solid #222421; color: #f1efe9; text-align: left; cursor: pointer;">
+          <img src="{{t.img}}" alt="" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; object-position: {{t.pos}}; flex-shrink: 0;">
+          <span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px;">
+            <span style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 15px; font-weight: {{t.weight}};">{{t.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">{{t.when}}</span></span>
+            <span style="font-size: 14px; color: {{t.previewColor}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{t.preview}}</span>
+          </span>
+          <sc-if value="{{t.unread}}" hint-placeholder-val="{{false}}"><span aria-label="Unread" style="width: 10px; height: 10px; border-radius: 50%; background: #4fe061; flex-shrink: 0;"></span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid #222421; background: #121412; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 12px; font-weight: 600;">
+      <a href="#" style="color: #8b8a85; text-decoration: none;">Discover</a>
+      <a href="#" style="color: #8b8a85; text-decoration: none;">Explore</a>
+      <a href="#" style="color: #8b8a85; text-decoration: none;">Following</a>
+      <a href="#" style="color: #8b8a85; text-decoration: none;">Saved</a>
+      <a href="#" style="color: #8b8a85; text-decoration: none;">Bag</a>
+    </nav>
+  </sc-if>
+
+  <sc-if value="{{isChat}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; right: 0; top: 0; height: 64px; box-sizing: border-box; padding: 0 16px; border-bottom: 1px solid #222421; display: flex; align-items: center; gap: 10px;">
+      <button type="button" onClick="{{back}}" style="padding: 0; background: transparent; border: 0; color: #f1efe9; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">‹ Messages</button>
+      <span style="flex-grow: 1;"></span>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; color: #f1efe9; text-decoration: none;">
+        <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 1px;"><span style="font-size: 15px; font-weight: 700;">{{cName}}</span><span style="font-size: 11px; color: {{cSubColor}}; display: flex; align-items: center; gap: 5px;"><sc-if value="{{cDot}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: {{cDotColor}};"></span></sc-if>{{cSub}}</span></span>
+        <img src="{{cImg}}" alt="" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: {{cPos}};">
+      </a>
+    </div>
+
+    <div style="position: absolute; left: 16px; right: 16px; top: 76px; display: flex; padding: 3px; border-radius: 10px; background: #1c1f1c;">
+      <button type="button" onClick="{{tabMsg}}" aria-pressed="{{onMsg}}" style="flex: 1; height: 36px; border: 0; border-radius: 8px; background: {{msgBg}}; color: {{msgFg}}; font: 600 13px Archivo, Arial, sans-serif; cursor: pointer;">Message</button>
+      <button type="button" onClick="{{tabReq}}" aria-pressed="{{onReq}}" style="flex: 1; height: 36px; border: 0; border-radius: 8px; background: {{reqBg}}; color: {{reqFg}}; font: 600 13px Archivo, Arial, sans-serif; cursor: pointer;">Custom request</button>
+    </div>
+
+    <sc-if value="{{onMsg}}" hint-placeholder-val="{{true}}">
+      <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 128px; bottom: 132px; overflow-y: auto; scrollbar-width: none; padding: 8px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;">
+        <sc-if value="{{hasCtx}}" hint-placeholder-val="{{true}}">
+          <a href="#" style="align-self: center; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border: 1px solid #2a2c2a; border-radius: 10px; color: #f1efe9; text-decoration: none;">
+            <img src="{{ctxImg}}" alt="" style="width: 40px; height: 48px; border-radius: 4px; object-fit: cover;">
+            <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 11px; color: #8b8a85;">About this piece</span><span style="font-size: 14px; font-weight: 600;">{{ctxName}} · <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 400;">{{ctxPrice}}</span></span></span>
+          </a>
+        </sc-if>
+        <sc-for list="{{msgs}}" as="m" hint-placeholder-count="3">
+          <div style="align-self: {{m.align}}; max-width: 80%; display: flex; flex-direction: column; gap: 3px; align-items: {{m.align}};">
+            <span style="padding: 10px 14px; border-radius: {{m.radius}}; background: {{m.bg}}; color: {{m.fg}}; font-size: 15px; line-height: 1.4;">{{m.text}}</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8b8a85;">{{m.when}}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 0 20px; border-top: 1px solid #222421; background: #121412;">
+        <sc-if value="{{showHint}}" hint-placeholder-val="{{false}}"><div style="padding: 2px 16px 10px; text-align: center; font-size: 12px; color: #8b8a85;">{{hintText}}</div></sc-if>
+        <div class="yl-row" style="display: flex; gap: 6px; overflow-x: auto; padding: 0 16px 10px; scrollbar-width: none;">
+          <sc-for list="{{quick}}" as="q" hint-placeholder-count="3">
+            <button type="button" onClick="{{q.pick}}" style="flex-shrink: 0; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #3a3d39; background: transparent; color: #c9c8c2; font: 500 13px Archivo, Arial, sans-serif; cursor: pointer;">{{q.label}}</button>
+          </sc-for>
+        </div>
+        <div style="padding: 0 16px; display: flex; gap: 8px; align-items: center;">
+          <button type="button" aria-label="Add a photo" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: 1.5px solid #3a3d39; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f1efe9" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6l1.5-2h4l1.5 2"/></svg></button>
+          <input class="yl-input" value="{{draft}}" onChange="{{onDraft}}" placeholder="Write to {{cName}}" aria-label="Write a message" style="flex-grow: 1; min-width: 0; height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid #3a3d39; background: #1c1f1c; color: #f1efe9; font: 400 15px Archivo, Arial, sans-serif; outline: none;">
+          <button type="button" onClick="{{send}}" aria-label="Send" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: 0; background: {{sendBg}}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{onReq}}" hint-placeholder-val="{{false}}">
+      <div class="yl-scroll" style="position: absolute; left: 0; right: 0; top: 128px; bottom: 0; overflow-y: auto; scrollbar-width: none; padding: 12px 16px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px;">
+        <sc-if value="{{reqSent}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 18px; border: 1px solid #4fe061; border-radius: 10px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700;"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #4fe061;"></span>Request sent to {{cName}}</span>
+            <span style="font-size: 14px; line-height: 1.45; color: #b9b8b2;">You’ll get an answer in {{cReply}}, with a price and a date. Nothing is paid until you say yes.</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{reqForm}}" hint-placeholder-val="{{true}}">
+          <h2 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 28px; line-height: 1;">ASK {{cNameUp}} TO MAKE SOMETHING</h2>
+          <label style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">What would you like?</span>
+            <textarea class="yl-input" value="{{reqText}}" onChange="{{onReqText}}" rows="4" placeholder="e.g. The Flow ring in size 56, a bit wider" style="padding: 12px 14px; border-radius: 10px; border: 1px solid #3a3d39; background: #1c1f1c; color: #f1efe9; font: 400 15px/1.45 Archivo, Arial, sans-serif; resize: none; outline: none;"></textarea>
+          </label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">Budget</span>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;">
+              <sc-for list="{{budgets}}" as="b" hint-placeholder-count="4">
+                <button type="button" onClick="{{b.pick}}" aria-pressed="{{b.on}}" style="height: 44px; border-radius: 10px; border: 1.5px solid {{b.border}}; background: {{b.bg}}; color: {{b.fg}}; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">{{b.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+          <button type="button" aria-label="Add a reference photo" style="height: 46px; border-radius: 10px; border: 1.5px dashed #5a5d58; background: transparent; color: #c9c8c2; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">+ Add a reference photo</button>
+          <button type="button" onClick="{{sendReq}}" style="height: 52px; border: 0; background: {{reqBtnBg}}; color: {{reqBtnFg}}; font: 700 13px Archivo, Arial, sans-serif; letter-spacing: 1.5px; cursor: pointer;">SEND REQUEST</button>
+        </sc-if>
+      </div>
+    </sc-if>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startOn":{"editor":"enum","options":["list","chat","request"],"default":"list"},"replyStyle":{"editor":"enum","options":["day","active","note","combo"],"default":"combo"},"empty":{"editor":"boolean","default":false},"who":{"editor":"enum","options":["inez","mara","ula"],"default":"inez"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const s = props.startOn || 'list';
+    this.state = {
+      view: s === 'list' ? 'list' : 'chat', who: props.who || 'inez', tab: s === 'request' ? 'req' : 'msg', draft: '', reqText: '', budget: null, reqSent: false,
+      msgs: {
+        inez: [{ me: false, text: 'Hi! Thanks for stopping by the studio. Ask me anything about the rings.', when: '10:12' }, { me: true, text: 'Could you make the Flow ring in size 56?', when: '10:20' }, { me: false, text: 'Yes, of course. It takes about two weeks. Want a slightly wider band too?', when: '10:41' }],
+        mara: [{ me: true, text: 'Is the Ripple bowl food safe?', when: 'MON' }, { me: false, text: 'Yes, fully glazed inside and fired twice. Hand wash is best.', when: 'MON' }],
+        ula: [{ me: false, text: 'The winter set goes up next week. Want me to message you?', when: '1W' }]
+      }
+    };
+    if (props.empty) this.state.msgs.inez = [];
+  }
+  renderVals() {
+    const st = this.state;
+    const W = {
+      inez: { name: 'Inez', reply: 'about a day', active: 'Active now', live: true, note: 'Replies in the evenings', img: '/_blob/d7bb7bc69d58d2724047c0554e8a6a6c', pos: 'center 25%', ctx: { name: 'Flow ring', price: '145€', img: '/_blob/42547c7d127c23e79e6298e385db6098' }, unread: true },
+      mara: { name: 'Mara', reply: 'a few hours', active: 'Active 2h ago', live: false, note: 'Replies between firings', img: '/_blob/4d5d9ddd16544d5e92f74eee0d109a08', pos: 'center 20%', ctx: { name: 'Ripple bowl', price: '78€', img: '/_blob/5bf0b89334514376f2638484cbb3bfb9' }, unread: false },
+      ula: { name: 'Ula', reply: 'about a day', active: 'Active yesterday', live: false, note: 'Off on Sundays', img: '/_blob/722923ff0d6196b11d37db1919181398', pos: '70% 25%', ctx: null, unread: true }
+    };
+    const threads = ['inez', 'mara', 'ula'].map((id) => {
+      const list = st.msgs[id]; const w = W[id]; const last = list[list.length - 1] || { me: false, text: 'Say hi to ' + w.name, when: '' };
+      const unread = w.unread && !last.me;
+      return { name: w.name, img: w.img, pos: w.pos, when: last.when, preview: (last.me ? 'You: ' : '') + last.text, unread, weight: unread ? '700' : '500', previewColor: unread ? '#f1efe9' : '#8b8a85',
+        open: () => this.setState({ view: 'chat', who: id, tab: 'msg' }) };
+    });
+    const w = W[st.who];
+    const msgs = st.msgs[st.who].map((m) => ({ text: m.text, when: m.when, align: m.me ? 'flex-end' : 'flex-start', bg: m.me ? '#f1efe9' : '#1c1f1c', fg: m.me ? '#121412' : '#f1efe9', radius: m.me ? '16px 16px 4px 16px' : '16px 16px 16px 4px' }));
+    const add = (text) => { if (!text.trim()) return; const next = Object.assign({}, st.msgs); next[st.who] = st.msgs[st.who].concat([{ me: true, text: text.trim(), when: 'NOW' }]); this.setState({ msgs: next, draft: '' }); };
+    const QS = ['Could you make this in my size?', 'Would this work in gold?', 'Can you make something similar as a gift?'];
+    const budgets = ['Under 150€', '150–300€', '300–500€', 'Over 500€'].map((label) => {
+      const on = st.budget === label;
+      return { label, on, pick: () => this.setState({ budget: label }), bg: on ? '#4fe061' : 'transparent', fg: on ? '#121412' : '#f1efe9', border: on ? '#4fe061' : '#3a3d39' };
+    });
+    const ready = !!st.reqText.trim() && !!st.budget;
+    const rs = 'combo';
+    const sub = w.live ? 'Active now' : 'Offline';
+    const dot = rs === 'combo' || (rs === 'active' && w.live);
+    return {
+      isList: st.view === 'list', isChat: st.view === 'chat', threads,
+      back: () => this.setState({ view: 'list' }),
+      cName: w.name, cSub: sub, cDot: dot, cDotColor: w.live ? '#4fe061' : '#6b6a66', cSubColor: w.live && dot ? '#c9c8c2' : '#8b8a85',
+      showHint: rs === 'combo' && st.msgs[st.who].length === 0, hintText: w.name + ' usually replies within a day', cNameUp: w.name.toUpperCase(), cReply: w.reply, cImg: w.img, cPos: w.pos,
+      onMsg: st.tab === 'msg', onReq: st.tab === 'req',
+      tabMsg: () => this.setState({ tab: 'msg' }), tabReq: () => this.setState({ tab: 'req' }),
+      msgBg: st.tab === 'msg' ? '#f1efe9' : 'transparent', msgFg: st.tab === 'msg' ? '#121412' : '#c9c8c2',
+      reqBg: st.tab === 'req' ? '#f1efe9' : 'transparent', reqFg: st.tab === 'req' ? '#121412' : '#c9c8c2',
+      hasCtx: !!w.ctx, ctxImg: w.ctx ? w.ctx.img : '', ctxName: w.ctx ? w.ctx.name : '', ctxPrice: w.ctx ? w.ctx.price : '',
+      msgs, quick: QS.map((label) => ({ label, pick: () => add(label) })),
+      draft: st.draft, onDraft: (e) => this.setState({ draft: e.target.value }), send: () => add(st.draft),
+      sendBg: st.draft.trim() ? '#4fe061' : '#3a3d39',
+      reqText: st.reqText, onReqText: (e) => this.setState({ reqText: e.target.value }), budgets,
+      reqBtnBg: ready ? '#4fe061' : '#2a2c2a', reqBtnFg: ready ? '#121412' : '#8b8a85',
+      sendReq: () => { if (ready) this.setState({ reqSent: true }); },
+      reqSent: st.reqSent, reqForm: !st.reqSent
+    };
+  }
+}
+</script>
+</body>
+</html>
