@@ -11,11 +11,11 @@ Formatas: `- [ ] užduotis · kas · iki kada` → `- [x] … (data)`.
 - [ ] Nuspręsti, kaip telefone pasiekiamas profilis (siūlymas: avataras viršuje dešinėje) · Matas
 
 ## Toliau
-- [ ] Likę 07 stiliumi: užuominos (Hints), Offline pokalbis, individualus užsakymas, „netikėtas kūrėjas“ · AI
 - [ ] Justino OK: 3-ias Discover žingsnis = pilnas kūrėjos profilis; krepšelis „pirkti iš kiekvienos kūrėjos“ + 15 min rezervacija · Justinas
 - [ ] Statyti pirkėjo kelią 07 stiliumi pagal `docs/design/HANDOFF-07.md` (+ Rock Salt ir Inter šriftai) · Justinas
 - [ ] UX audito pataisymai A1–A12 (laukelių užrašai, autofill, 44px, reduced motion, Undo atsekant) – laukia Mato OK
-- [ ] Kūrėjo kelias B1–B9 (Sell on Uplift → paraiška → Studio → kūrinys → išmokos → dashboard → siuntimas)
+- [ ] Matas peržiūri kūrėjo kelią B1–B9 drobėje (9–11 eilės) ir pasako pataisymus · Matas
+- [ ] Komisinis % (reikia skaičiaus išmokų ekranui) · Justinas + Matas
 - [ ] Bendri ekranai C1–C4 (prisijungimas, el. laiškai, tušti ekranai / klaidos, teisiniai puslapiai)
 
 - [ ] Lipdukai į app: `stickers` laukas kūriniui (kūrėjos 1) + automatiniai Uplift lipdukai iš duomenų; „In progress“ v2 dar perdaryti (Higgsfield) · AI/Justinas
@@ -27,6 +27,7 @@ Formatas: `- [ ] užduotis · kas · iki kada` → `- [x] … (data)`.
 - Ateityje: Claude Tag Slack'e (reikia Team plano)
 
 ## Padaryta
+- [x] Likę pirkėjo ekranai (užuominos, netikėtas kūrėjas, offline, individualus užsakymas) + kūrėjo kelias B1–B9 07 stiliumi, pirmas variantas (2026-11-23)
 - [x] Pirkėjo kelias 07 perduotas Justinui: ekranai, tokenai `--u-*`, nuotraukos, lipdukai (2026-11-23)
 - [x] Motto „A community of upcoming makers“, 12 Higgsfield nuotraukų, 12 lipdukų su logotipu (2026-11-23)
 - [x] Galutinis 07 dizainas vienoje drobėje, seni ekranai išvalyti (2026-11-23)

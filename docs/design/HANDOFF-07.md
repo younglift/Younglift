@@ -1,6 +1,6 @@
 # Perdavimas Justinui: pirkėjo kelias, dizainas 07 „Tamsus stiklas“
 
-Matas, 2026-11-23. **Pirkėjo kelio išvaizda nuspręsta.** Galima statyti į app'ą ir leisti į Vercel. Kūrėjo kelią (Sell on Uplift, paraiška, Studio, kūrinio įkėlimas, išmokos) projektuojam toliau. Jis ateis atskiru perdavimu.
+Matas, 2026-11-23. **Pirkėjo kelio išvaizda nuspręsta.** Galima statyti į app'ą ir leisti į Vercel. **Kūrėjo kelias B1–B9** jau nupieštas tuo pačiu stiliumi (ekranai `10-`–`19-`). Tai pirmas variantas: Matas dar gali keisti išvaizdą, bet ekranų eiliškumas ir duomenys tinka statyti.
 
 ## Kur kas
 | Kas | Kur |
@@ -34,6 +34,10 @@ Matas, 2026-11-23. **Pirkėjo kelio išvaizda nuspręsta.** Galima statyti į ap
 | Krepšelis / tuščias / checkout / ačiū | `07-*` | `/bag`, `/checkout`, `/checkout/done` |
 | Tavo profilis + užsakymai | `08-profile` | `/account` |
 | Lipdukai | `09-stickers` | (ne ekranas, komponentas `Sticker`) |
+| Individualus užsakymas | `06-custom-request*` | `/m/[maker]/request` |
+| Sell on Uplift, paraiška | `10-sell`, `11-apply` | `/sell`, `/sell/apply` |
+| Priimta → žingsniai | `12-approved` | `/studio/welcome` |
+| Studio | `13-`–`19-` | `/studio` (Today), `/studio/profile`, `/studio/pieces`, `/studio/pieces/new`, `/studio/post`, `/studio/payouts`, `/studio/orders/[id]` |
 
 ## Srautų pakeitimai, kuriems reikia tavo OK
 Pagal `CLAUDE.md` srautai užrakinti, todėl šitie du laukia tavęs:
@@ -50,8 +54,18 @@ Pagal `CLAUDE.md` srautai užrakinti, todėl šitie du laukia tavęs:
   - Ant vieno kūrinio daugiausia 1 kūrėjos + 1 Uplift lipdukas, ir ne ant kiekvieno.
 - **Kūrėjos profilis:** reikia `cover_url` (atskiras nuo avataro), Journal įrašų (`posts` jau yra) ir atsiliepimų (`reviews`: order_item_id, rating, text). Atsiliepimų lentelės dar nėra.
 
+## Kūrėjo kelias: ko reikia backend'ui
+- `makers.status`: `applied → approved → live`. Patvirtinta kūrėja mato Studio, bet profilis paslėptas, kol pati nepaspaudžia „Go live“ (reikia bent profilio ir 3 kūrinių).
+- `maker_applications`: vardas, el. paštas, miestas, šalis, Instagram / svetainė, kategorijos, aprašymas, 3–10 nuotraukų, varnelė „viską darau pati“. Atsakom per 3 dienas (admin'e approve / reject + el. laiškas).
+- Profilio redaktorius (5 žingsniai kaip prototipe): `makers.collage` (3 kūriniai), `makers.slide_order`, video su subtitrais, `custom_requests_open`, `gift_wrap` (kaina, aprašymas), `free_shipping_from_cents`.
+- Kūrinys: nuotraukos (iki 8, pirma = viršelis), kaina, kategorija, aprašymas, medžiagos, `made_to_order` arba `ready`, kiekis, `ships_within_days`, dydžiai, `maker_sticker` (+ `batch_size`, `collab_maker_id`). „1 of 1“ leidžiam tik kai kiekis 1.
+- Įrašai: `posts.kind` = `video | journal | in_progress`, `post_products` (kokie kūriniai video). „In progress“ įrašas uždeda Uplift lipduką „In progress“ ant susieto kūrinio.
+- Užsakymas: `ship_by`, `tracking_number`, dovanų kortelės tekstas, mygtukas „Mark as shipped“ (`markShipped(orderId, tracking?)`).
+- Išmokos: Stripe Connect Express. **Komisinis % dar nenuspręstas**, ekrane pavyzdys su 10%.
+- Studio statistika: peržiūros, išsaugojimai, sekėjai (savaitės pokytis), pardavimai per mėnesį.
+
 ## Tekstai
 Motto: **„A community of upcoming makers“** (ne „young“). Mygtukai sakiniu, veiksmažodžiu („Add to bag“, „Start exploring“). Programėlės kalba EN.
 
-## Ko dar nėra (ateis vėliau)
-Užuominos pirmame Discover (Hints), Offline pokalbis, individualus užsakymas, „netikėtas kūrėjas“ kortelė (seni variantai `screens/v1-archive/`, srautas tas pats, išvaizdą perpiešiam). Visas kūrėjo kelias B1–B9.
+## Ko dar nėra
+Bendri ekranai C1–C4 (prisijungimas, el. laiškai, tušti ekranai ir klaidos, teisiniai puslapiai). Admin (paraiškų peržiūra).

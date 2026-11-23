@@ -13,10 +13,10 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 | # | Žingsnis | Būsena |
 |---|---|---|
 | 0.1 | Nuotaika ir kryptis: kaip turi jaustis Uplift (3 kryptys palyginimui) | ✅ |
-| 0.2 | Spalvos | ⬜ |
-| 0.3 | Šriftai | ⬜ |
-| 0.4 | Mygtukai, žymos, kortelės, laukeliai | ⬜ |
-| 0.5 | Logo naudojimas, viršutinė juosta, apatinė navigacija | ⬜ |
+| 0.2 | Spalvos | ✅ |
+| 0.3 | Šriftai | ✅ |
+| 0.4 | Mygtukai, žymos, kortelės, laukeliai | ✅ |
+| 0.5 | Logo naudojimas, viršutinė juosta, apatinė navigacija | ✅ |
 
 ## A. Pirkėjo kelias (nuo pradžios iki pabaigos)
 | # | Ekranas | Ką žmogus čia daro | Būsena |
@@ -30,22 +30,24 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 | A7 | Saved + lentos („For birthday“) | Išsisaugo idėjas dovanoms | ✅ |
 | A8 | Following | Mato sekamus kūrėjus | ✅ |
 | A9 | Žinutės | Rašo kūrėjui | ✅ |
-| A10 | Krepšelis | Peržiūri, ką perka | 🟡 |
-| A11 | Checkout + Ačiū | Sumoka, gauna patvirtinimą | 🟡 |
-| A12 | Profilis + užsakymai | Seka užsakymą, keičia skonį | 🟡 |
+| A10 | Krepšelis | Peržiūri, ką perka | ✅ |
+| A11 | Checkout + Ačiū | Sumoka, gauna patvirtinimą | ✅ |
+| A12 | Profilis + užsakymai | Seka užsakymą, keičia skonį | ✅ |
 
 ## B. Pardavėjo (kūrėjo) kelias
 | # | Ekranas | Ką kūrėjas čia daro | Būsena |
 |---|---|---|---|
-| B1 | „Sell on Uplift“ puslapis | Supranta, kodėl verta prisijungti | ⬜ |
-| B2 | Paraiška | Pateikia savo darbus atrankai | ⬜ |
-| B3 | Patvirtinta → pirmi žingsniai | Sužino, kad priimtas, ką daryti toliau | ⬜ |
-| B4 | Studio: profilio redaktorius | Susikuria savo „pasaulį“ | ⬜ |
-| B5 | Pridėti kūrinį | Įkelia nuotraukas, kainą, aprašymą | ⬜ |
-| B6 | Įkelti video / postą | Kuria turinį feed'ui | ⬜ |
-| B7 | Prijungti išmokas (Stripe) | Nurodo, kur gauti pinigus | ⬜ |
-| B8 | Dashboard | Mato pardavimus | ⬜ |
-| B9 | Užsakymas → išsiųsti | Supakuoja, pažymi „išsiųsta“ | ⬜ |
+| B1 | „Sell on Uplift“ puslapis | Supranta, kodėl verta prisijungti | 🟡 |
+| B2 | Paraiška | Pateikia savo darbus atrankai | 🟡 |
+| B3 | Patvirtinta → pirmi žingsniai | Sužino, kad priimtas, ką daryti toliau | 🟡 |
+| B4 | Studio: profilio redaktorius | Susikuria savo „pasaulį“ | 🟡 |
+| B5 | Pridėti kūrinį | Įkelia nuotraukas, kainą, aprašymą | 🟡 |
+| B6 | Įkelti video / postą | Kuria turinį feed'ui | 🟡 |
+| B7 | Prijungti išmokas (Stripe) | Nurodo, kur gauti pinigus | 🟡 |
+| B8 | Dashboard | Mato pardavimus | 🟡 |
+| B9 | Užsakymas → išsiųsti | Supakuoja, pažymi „išsiųsta“ | 🟡 |
+
+(🟡 = pirmas variantas 07 stiliumi drobėje, laukia Mato atsiliepimo.)
 
 ## C. Bendri dalykai
 | # | Ekranas | Būsena |
@@ -122,3 +124,4 @@ Būsenos: ⬜ dar nepradėta · 🟡 daroma · ✅ nuspręsta
 - 2026-11-23: **Krepšelis (A10) pasirinktas: „pirkti iš kiekvienos kūrėjos“** (Mato sprendimas; drobėje „★ Pasirinkta“). Kiekviena kūrėja = atskiras siuntinys su savo mygtuku („Buy from Inez · 99,90€“), apačioje „Pay for all“. Prie kūrėjos, kuri turi nemokamo siuntimo ribą: „Free shipping from 150€ · 38€ to go“ + butter juosta + „More from Mara that would get you there“ (3 jos kūriniai su „+“). **15 min rezervacija:** viršuje „Your 1 of 1 pieces are held for 14:52 · After that they go back on sale for others.“ Taikoma **tik vienetiniams** kūriniams ir **tik jei tikrai rezervuojam** (ES: netikri laikmačiai draudžiami). Justinai: `cart_holds` (piece_id, cart_id, expires_at = now + 15 min), kol galioja, kūrinys kitiems rodomas „In someone’s bag“ ir negali būti įdėtas; pasibaigus atlaisvinam; laikmatis rodo `expires_at`, ne išgalvotą laiką; atskiri Stripe mokėjimai kiekvienai kūrėjai arba vienas „Pay for all“.
 - 2026-11-23: **Galutinis dizainas (07) vienoje drobėje.** Seni A1–A12 tamsiai žali ekranai ir visi bandymai (T07, D07 A/B/C, krepšelio variantai, C1c-07) ištrinti iš drobės; jie lieka drobės istorijoje ir `docs/design/screens/`. **Spalvos suvienodintos pagal Discover kortelę** (pilkšvai ruda, ne tamsiai ruda): fonas `#665e58` + išblukinta kūrinio nuotrauka (opacity .3), stiklas `linear-gradient(135deg, rgba(28,18,12,.42), rgba(28,18,12,.28))`, mažas stiklas `rgba(28,18,12,.35)`, kraštas `rgba(255,255,255,.22)`, tekstas `#fffaed`, antrinis `rgba(255,250,237,.78)`, akcentas butter `#f3d27a`. Pagrindinis mygtukas: kreminė pill su kietu 3 px `#b8912f` kraštu apačioje (paspaudus nusileidžia). Drobės eilės: 1 Pradžia (Home + skonis) · 2 Discover (kūrinys → video → profilis) · 3 Produktas (paruoštas, su dydžiais, parduotas) · 4 Explore (kategorijos, kategorija, filtras) · 5 Saved, Following, Žinutės, Pokalbis · 6 Pirkimas (krepšelis su 15 min rezervacija, tuščias, checkout, ačiū) · 7 Tavo profilis · 8 Lipdukai. Naujai suprojektuota: Home, Ką mėgsti, Žiedas su dydžiais, Parduotas, Kategorija, Filtras, Žinučių sąrašas, Tuščias krepšelis.
 - 2026-11-23: **Motto: „A community of upcoming makers“** (ne „young“). Home ekrane ir visur kitur. **Nuotraukos:** 12 naujų Higgsfield nuotraukų (apyrankė, žvakė, megztinis, nerta rankinė, lėkštelė, auskarai, Inez prie stalo, Mara prie rato, lėkštės, riso spauda, studijos stalas, piniginė), kad ekranai nesikartotų; originalai Mato aplanke `young lift platforma/higgsfield/`. **Lipdukai:** Higgsfield, su tikru mūsų logotipu (įkeltas kaip nuoroda, ne perpieštas), permatomi PNG, raw/pop stilius. Dvi grupės: *kūrėja uždeda* (1 of 1, Handmade, Small batch, Made in Berlin, Made in collab with …, Made to order) ir *Uplift uždeda* automatiškai ir tik kartais (We think you might like this, In progress, New maker, Just dropped, Last one left, Back in stock). Ant kūrinio daugiausia vienas kūrėjos ir vienas mūsų lipdukas. Mūsų lipdukai tik iš tikrų duomenų (Last one left tik kai tikrai liko 1, Back in stock tik kai kiekis vėl > 0, Just dropped pirmas 7 d., New maker pirmas 30 d.). Atmesta: „Support upcoming makers“, prekės ženklo antspaudas (ne į temą). PNG: `young lift platforma/higgsfield/stickers-v2/`.
+- 2026-11-23: **Likę pirkėjo ekranai ir kūrėjo kelias 07 stiliumi (pirmas variantas).** Pirkėjui: *užuominos naujiems* (pirmame kadre nuotrauka po 1 s pati pasislenka 64 px į kairę ir parodo video kraštą, 2 kartus; po pirmo braukimo „Up next · Mara · swipe up ↑“; be teksto, be pritemdymo, reduced-motion išjungia), *netikėtas kūrėjas* (lipdukas „We think you might like this“ + paaiškinimas kodėl ir „Not for me“), *naujas pokalbis offline* (pilkas taškas „Offline“, kortelė „Mara usually replies within a day“, greiti klausimai), *individualus užsakymas* (rūšis, aprašymas, nuotraukos, biudžetas, data; „Nothing is ordered or paid yet“) ir *išsiųsta* (4 žingsniai: atsako → susitariat → privatus listingas → gamina ir siunčia). Kūrėjui: B1 Sell on Uplift (3 priežastys, kaip veikia, tik savo darbai), B2 paraiška (apie tave, ką darai, 3–10 nuotraukų, patvirtinimas „viską darau pati“), B3 priimta (New maker lipdukas, 4 žingsniai iki „Go live“, profilis paslėptas kol nepaspaus), B4 profilio redaktorius telefone tais pačiais 5 žingsniais kaip prototipe (Apie tave → koliažas iš 3 → video → skaidrių tvarka → kūriniai ir užklausos + Gift wrap + nemokamo siuntimo riba), B5 naujas kūrinys (nuotraukos, kaina, kategorija, aprašymas, medžiagos, paruoštas / pagal užsakymą, kiekis, dydžiai, **lipduko pasirinkimas** iš 6 kūrėjos lipdukų arba jokio; Small batch klausia kiekio, Collab klausia su kuo, 1 of 1 tik kai kiekis 1), B6 dalintis (Video / Journal / In progress, subtitrai, kūriniai video), B7 išmokos per Stripe (ko reikės, pavyzdys su 10% mokesčiu, **galutinis mokestis dar nenuspręstas**), B8 Studio „Today“ (ką išsiųsti, pardavimai, peržiūros / išsaugojimai / sekėjai, užklausos), kūrinių sąrašas (Live / Sold out / Draft), B9 užsakymas (pirkėjas, pristatymas, dovanų kortelės tekstas, supakuok → etiketė → pažymėk išsiųsta + sekimo nr.). Studio apatinė navigacija: Today · Pieces · Orders · Messages · Profile. Justinai: `makers.status` (applied / approved / live), `maker_applications` su nuotraukomis, `products.maker_sticker` + `batch_size` + `collab_maker_id`, `posts.kind` (video / journal / in_progress) ir `post_products`, `orders.tracking_number`, `orders.ship_by`.

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Uplift · Studio today</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Rock+Salt&amp;display=swap">
+<style>
+body{margin:0}
+a,button{position:relative}
+a::after,button::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.g{background:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35)}
+.gs{background:rgba(28,18,12,.35);-webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.hand{font-family:'Rock Salt',cursive;font-weight:400}
+.ui{font-family:Inter,system-ui,sans-serif}
+.sc{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.m{color:rgba(255,250,237,.78)}
+.cta{height:44px;border-radius:999px;border:0;background:#fffaed;color:#2a1a10;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 #b8912f}
+.sec{height:44px;border-radius:999px;color:#fffaed;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fffaed;cursor:pointer;padding:0}
+.lbl{font:600 12px Inter,sans-serif;letter-spacing:.2px}
+.cta:active{transform:translateY(3px);box-shadow:none}
+.chk{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 13px Inter,sans-serif}
+.fld{display:flex;flex-direction:column;gap:6px}
+.inp{height:48px;border-radius:14px;border:1px solid rgba(255,250,237,.22);background:rgba(22,16,11,.28);color:#fffaed;padding:0 14px;font:400 15px Inter,sans-serif;outline:none;box-sizing:border-box;width:100%}
+textarea.inp{height:auto;padding:12px 14px;line-height:1.5;resize:none}
+.inp:focus{border-color:#f3d27a;box-shadow:0 0 0 3px rgba(243,210,122,.25)}
+.chip{height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,250,237,.22);background:transparent;color:#fffaed;font:500 13px Inter,sans-serif;cursor:pointer;flex-shrink:0}
+.chip.on{background:#f3d27a;border-color:#f3d27a;color:#2a1a10;font-weight:600}
+.tg{width:48px;height:28px;border-radius:999px;background:rgba(255,250,237,.2);position:relative;flex-shrink:0;border:0;padding:0;cursor:pointer}
+.tg i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fffaed;transition:left .15s ease}
+.tg.on{background:#f3d27a}.tg.on i{left:23px;background:#2a1a10}
+@media (prefers-reduced-motion:reduce){.tg i{transition:none}}
+</style>
+</helmet>
+<div class="ui" style="width:390px;height:844px;position:relative;overflow:hidden;background:#665e58;color:#fffaed">
+  <img src="/img/mara.jpg" alt="" style="position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:.3;filter:blur(60px) saturate(.9)">
+  <div class="sc" style="bottom:0;padding-bottom:100px">
+    <div style="padding:20px 16px 0;display:flex;align-items:center;gap:12px"><img src="/img/mara.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1"><span class="m" style="display:block;font-size:12px">Studio · Monday</span><h1 class="hand" style="margin:2px 0 0;font-size:24px;line-height:1.3">Hi, Mara</h1></span><a href="#" aria-label="See my profile as buyers do" class="sec gs" style="padding:0 14px;height:40px;font-size:13px">View profile</a></div>
+    <div style="padding:16px 12px 0;display:flex;flex-direction:column;gap:12px">
+      <div class="g" style="border-radius:24px;padding:16px 16px 6px;"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="lbl">To ship · 2</span><a href="#" class="m" style="font-size:12px">All orders</a></div><a href="#" style="display:flex;align-items:center;gap:12px;padding:12px 0;color:inherit;text-decoration:none;"><img src="/img/plates.jpg" alt="" style="width:48px;height:48px;border-radius:12px;object-fit:cover"><span style="flex:1;min-width:0"><span style="display:block;font-size:14px;font-weight:600">Speckled plates</span><span class="m" style="display:block;font-size:12px;margin-top:3px">Lina · Vilnius · gift wrap</span></span><span style="padding:5px 10px;border-radius:999px;background:#f3d27a;color:#2a1a10;font:600 11px Inter,sans-serif;white-space:nowrap">Ship by Wed</span></a><a href="#" style="display:flex;align-items:center;gap:12px;padding:12px 0;color:inherit;text-decoration:none;border-top:1px solid rgba(255,250,237,.16)"><img src="/img/candle.jpg" alt="" style="width:48px;height:48px;border-radius:12px;object-fit:cover"><span style="flex:1;min-width:0"><span style="display:block;font-size:14px;font-weight:600">Candle cup × 2</span><span class="m" style="display:block;font-size:12px;margin-top:3px">Jonas · Riga</span></span><span style="padding:5px 10px;border-radius:999px;background:rgba(255,250,237,.14);color:#fffaed;font:600 11px Inter,sans-serif;white-space:nowrap">Ship by Thu</span></a></div>
+      <div class="g" style="border-radius:24px;padding:16px;"><span class="m" style="display:block;font-size:12px">Sold in November</span><div style="display:flex;align-items:baseline;gap:10px;margin-top:4px"><span style="font:600 32px Inter,sans-serif">612€</span><span class="m" style="font-size:13px">8 orders</span></div><div aria-hidden="true" style="display:flex;align-items:flex-end;gap:6px;height:56px;margin-top:12px"><span style=flex:1;height:30%;border-radius:4px;background:rgba(255,250,237,.25)></span><span style=flex:1;height:55%;border-radius:4px;background:rgba(255,250,237,.25)></span><span style=flex:1;height:20%;border-radius:4px;background:rgba(255,250,237,.25)></span><span style=flex:1;height:70%;border-radius:4px;background:rgba(255,250,237,.25)></span><span style=flex:1;height:45%;border-radius:4px;background:rgba(255,250,237,.25)></span><span style=flex:1;height:35%;border-radius:4px;background:rgba(255,250,237,.25)></span><span style=flex:1;height:60%;border-radius:4px;background:rgba(255,250,237,.25)></span><span style=flex:1;height:90%;border-radius:4px;background:#f3d27a></span></div><span class="m" style="display:block;font-size:11px;margin-top:6px">Last 8 weeks · paid out by Stripe</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="gs" style="border-radius:18px;padding:12px"><span class="m" style="display:block;font-size:12px">Views</span><span style="display:block;font:600 20px Inter,sans-serif;margin-top:4px">1 284</span><span style="display:block;font-size:11px;margin-top:2px;color:#f3d27a">+18% this week</span></div><div class="gs" style="border-radius:18px;padding:12px"><span class="m" style="display:block;font-size:12px">Saves</span><span style="display:block;font:600 20px Inter,sans-serif;margin-top:4px">96</span><span style="display:block;font-size:11px;margin-top:2px;color:#f3d27a">+12</span></div><div class="gs" style="border-radius:18px;padding:12px"><span class="m" style="display:block;font-size:12px">Followers</span><span style="display:block;font:600 20px Inter,sans-serif;margin-top:4px">214</span><span style="display:block;font-size:11px;margin-top:2px;color:#f3d27a">+9</span></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><a href="#" class="cta" style="height:48px">+ Add piece</a><a href="#" class="sec gs" style="height:48px">Share a video</a></div>
+      <a href="#" class="gs" style="border-radius:20px;padding:12px 14px;display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none"><img src="/img/inez.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1;min-width:0"><span style="display:block;font-size:14px;font-weight:600">1 custom request</span><span class="m" style="display:block;font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lina: “Could you make the plates in blue?”</span></span><span style="width:9px;height:9px;border-radius:50%;background:#f3d27a"></span></a>
+    </div>
+  </div>
+  <nav aria-label="Studio" class="gs" style="position:absolute;left:12px;right:12px;bottom:12px;height:54px;border-radius:999px;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;z-index:9"><a href="#" aria-current=page style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:#fffaed;text-decoration:none;font:600 12px Inter,sans-serif">Today<span style="width:4px;height:4px;border-radius:50%;background:#f3d27a"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Pieces<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Orders · 2<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Messages<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Profile<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a></nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
