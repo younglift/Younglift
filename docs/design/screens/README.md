@@ -65,7 +65,7 @@ Nuspręsta 2026-11-23. Pirmiausia skaityk `docs/design/HANDOFF-07.md`.
 | `desktop/06-messages` | Žinutės: sąrašas + pokalbis |
 | `desktop/07-bag-drawer` | Krepšelis: stalčius dešinėje |
 | `desktop/07-checkout` | Checkout: žingsniai + užsakymo santrauka |
-| `desktop/13-studio-profile` | Studio: profilio redaktorius + peržiūra |
+| `desktop/13-studio-profile` | Studio: profilio kūrimas, visi 5 žingsniai (▶ Play, prop `startOn` 1–5), dešinėje gyva peržiūra keičiasi pagal žingsnį |
 | `desktop/14-studio-add-piece` | Studio: naujas kūrinys + lipdukas + peržiūra |
 | `desktop/17-studio-today` | Studio: šiandien |
 

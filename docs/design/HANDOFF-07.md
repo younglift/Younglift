@@ -51,7 +51,7 @@ Pagal `CLAUDE.md` srautai užrakinti, todėl šitie du laukia tavęs:
 - **15 min rezervacija (tikra, ne netikras laikmatis; ES draudžia netikrus):** lentelė `cart_holds (piece_id, cart_id, expires_at)`. `expires_at = now() + 15 min`, kai vienetinis kūrinys įdedamas į krepšelį. Kol galioja, kitiems kūrinys rodomas „In someone’s bag“ ir jo negalima įdėti. Pasibaigus atlaisvinam. Laikmatis ekrane skaičiuoja nuo `expires_at`.
 - **Nemokamas siuntimas nuo X:** kūrėjai laukas `free_shipping_from_cents` (gali būti tuščias).
 - **Mokėjimai:** jau suplanuota viena PaymentIntent kiekvienai kūrėjai, tinka. „Pay for all“ = viena Checkout sesija su keliais mokėjimais.
-- **Lipdukai:**
+- **Lipdukai** (taisyklės galutinės, bet Matas kai kurių piešinukų dar gali keisti: `Sticker` komponentas tegul ima `public/stickers/<raktas>.png`, kad pakeitus failą nereiktų keisti kodo):
   - *kūrėja pasirenka* (ne daugiau kaip 1 kūriniui): `product.maker_sticker` ∈ `one_of_one | handmade | small_batch | made_in_city | made_in_collab | made_to_order`, plius `collab_maker_id` (jei collab) ir `batch_size` (jei small batch). „Made in …“ miestas imamas iš kūrėjos profilio.
   - *Uplift uždeda automatiškai*, tik kai tiesa: `new_maker` (pirmos 30 d.), `just_dropped` (pirmos 7 d.), `last_one_left` (liko tikrai 1 iš kelių), `back_in_stock` (kiekis vėl > 0), `in_progress` (kūrėja pažymėjo, kad gamina), `you_might_like` (tik Discover, kai feed'as įmeta už skonio ribų). Skaičiuoti serveryje iš duomenų, nesaugoti ranka.
   - Ant vieno kūrinio daugiausia 1 kūrėjos + 1 Uplift lipdukas, ir ne ant kiekvieno.
@@ -60,7 +60,7 @@ Pagal `CLAUDE.md` srautai užrakinti, todėl šitie du laukia tavęs:
 ## Kūrėjo kelias: ko reikia backend'ui
 - `makers.status`: `applied → approved → live`. Patvirtinta kūrėja mato Studio, bet profilis paslėptas, kol pati nepaspaudžia „Go live“ (reikia bent profilio ir 3 kūrinių).
 - `maker_applications`: vardas, el. paštas, miestas, šalis, Instagram / svetainė, kategorijos, aprašymas, 3–10 nuotraukų, varnelė „viską darau pati“. Atsakom per 3 dienas (admin'e approve / reject + el. laiškas).
-- Profilio redaktorius (5 žingsniai kaip prototipe): `makers.collage` (3 kūriniai), `makers.slide_order`, video su subtitrais, `custom_requests_open`, `gift_wrap` (kaina, aprašymas), `free_shipping_from_cents`.
+- Profilio kūrimas (5 žingsniai kaip prototipe, telefone `13-studio-profile`, kompiuteryje `desktop/13-studio-profile` su gyva peržiūra): `makers.collage` (3 kūriniai), `makers.slide_order`, video su subtitrais, `custom_requests_open`, `gift_wrap` (kaina, aprašymas), `free_shipping_from_cents`.
 - Kūrinys: nuotraukos (iki 8, pirma = viršelis), kaina, kategorija, aprašymas, medžiagos, `made_to_order` arba `ready`, kiekis, `ships_within_days`, dydžiai, `maker_sticker` (+ `batch_size`, `collab_maker_id`). „1 of 1“ leidžiam tik kai kiekis 1.
 - Įrašai: `posts.kind` = `video | journal | in_progress`, `post_products` (kokie kūriniai video). „In progress“ įrašas uždeda Uplift lipduką „In progress“ ant susieto kūrinio.
 - Užsakymas: `ship_by`, `tracking_number`, dovanų kortelės tekstas, mygtukas „Mark as shipped“ (`markShipped(orderId, tracking?)`).
