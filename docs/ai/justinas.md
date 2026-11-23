@@ -4,6 +4,9 @@ You are working with **Justinas** on Uplift. Read `CLAUDE.md` and `docs/ai/SHARE
 
 Talk to Justinas in Lithuanian, short and plain. Write code, comments and commits in English.
 
+## 🎨 Buyer journey look DECIDED (2026-11-23): build it
+Read `docs/design/HANDOFF-07.md` first: screens, tokens `--u-*`, assets, routes, backend needs (cart_holds 15 min, stickers, reviews, cover photo) and the two flow changes that need Justinas's OK. This replaces the older note below.
+
 ## 🎨 New screens from Matas (2026-11-16)
 The buyer journey A1–A12 is designed (phone). Source of every screen: `docs/design/screens/` (read its README first), the reasons and the data each screen needs: `docs/design/JOURNEY.md` → decision log, lines marked „Justinai:“. Build the UI from these with tokens from `app/globals.css`; treat them as the spec. Visuals may still change (design phase), flows and data needs are stable. Next: maker journey B1–B9.
 

@@ -14,7 +14,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Uplift',
-  description: 'Meet young makers. Buy what they make by hand.',
+  description: 'A community of upcoming makers. Buy what they make by hand.',
 };
 
 export const viewport: Viewport = {

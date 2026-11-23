@@ -1,43 +1,35 @@
-# Ekranų dizainas (telefonas, 390×844)
+# Ekranai: dizainas 07 „Tamsus stiklas“ (telefonas, 390×844)
 
-Šaltinis: Mato dizaino drobė Claude'e („Uplift: nuotaikos kryptys“). Čia **kopija skaitymui**, kad Justinas ir jo AI matytų tikslią struktūrą, tekstus, spalvas ir elgseną.
+Nuspręsta 2026-11-23. Pirmiausia skaityk `docs/design/HANDOFF-07.md`.
 
-**Kaip skaityti:** kiekvienas `.dc.html` = vienas ekranas. Viršuje HTML su `{{kintamaisiais}}`, `<sc-if>` (rodyti jei), `<sc-for>` (kartoti sąraše). Apačioje `class Component` = būsena ir logika (kas vyksta paspaudus). Failai su `<dc-import name="X" ...>` yra to paties ekrano X kita būsena (pvz. `Product-Ring` = `Product` su `variant="ring"`).
+**Kaip skaityti:** kiekvienas `.dc.html` yra vienas ekranas iš Mato drobės. Viršuje HTML su `{{kintamaisiais}}`, `<sc-if>` (rodyti jei) ir `<sc-for>` (kartoti). Apačioje `class Component` laiko būseną ir logiką. `<dc-import name="03-discover" start-on="2">` reiškia tą patį ekraną kitame žingsnyje.
 
-**Svarbu:**
-- Tai **specifikacija, ne kodas kopijuoti**. Programėlėje viską statyk Next.js komponentais, spalvas / šriftus / apvalinimus imk tik iš tokenų `app/globals.css` (žr. CLAUDE.md).
-- Nuotraukų adresai `/_blob/...` veikia tik drobėje. Programėlėje naudok `@/lib/data` nuotraukas.
-- Kodėl padaryta būtent taip ir ko reikia backend'ui (lentelės, laukai): `docs/design/JOURNEY.md` → Sprendimų žurnalas. Ten pažymėta „Justinai:“.
-- Interaktyvią drobę Matas gali pasidalinti per Share.
+- Tai **specifikacija, ne kodas kopijuoti**. Statyk Next.js komponentais, stilius imk tik iš `var(--u-*)` (`app/globals.css`). Ekranuose stiliai įrašyti tiesiai tik todėl, kad tai drobė.
+- Nuotraukos jau perrašytos į `/img/...` ir `/stickers/...` (yra `public/`). App'e jas imk per `@/lib/data`.
+- Klasės ekranuose atitinka tokenus: `.g` = `--u-glass`, `.gs` = `--u-glass-sm`, `.hand` = `--u-hand`, `.cta` = pagrindinis mygtukas, `.m` = `--u-mute`.
 
 | Failas | Ekranas |
 |---|---|
-| `Main.dc.html` | 1/3 Darbai (spausk ▶ Play: veikia visa kortelė) |
-| `A2-Video.dc.html` | 2/3 Jos istorija (video + subtitrai) |
-| `A3-Daugiau.dc.html` | 3/3 Daugiau kūrinių |
-| `Maker.dc.html` | A4 · Kūrėjo pasaulis (spausk ▶ Play) |
-| `Product.dc.html` | A5 · Produktas: paruoštas siųsti |
-| `Product-Ring.dc.html` | A5 · Produktas: žiedas su dydžiais |
-| `Product-Sold.dc.html` | A5 · Produktas: parduotas |
-| `Welcome.dc.html` | A1–A2 · Pirmas atidarymas + skonis (spausk ▶ Play) |
-| `Hints.dc.html` | Tada: judančios užuominos pirmame Discover (spausk ▶ Play) |
-| `DarkTags.dc.html` | Tamsūs stikliniai burbuliukai (tamsioms nuotraukoms) |
-| `Explore.dc.html` | A6 · Explore: pradžia (kategorijos + paieška) |
-| `ExploreResults.dc.html` | A6 · Explore: kategorija (Filter + Sort) |
-| `ExploreFilter.dc.html` | A6 · Explore: Filter langas |
-| `Surprise.dc.html` | Discover: netikėtas kūrėjas (kas ~5–10 kortelių) |
-| `Saved.dc.html` | A7 · Saved + lentos (spausk ▶ Play, bakstelk išsaugojimo ženkliuką) |
-| `Following.dc.html` | A8 · Following (spausk ▶ Play) |
-| `Messages.dc.html` | A9 · Žinutės: sąrašas (spausk ▶ Play) |
-| `MessagesChat.dc.html` | A9 · Pokalbis (● Active now + greiti klausimai) |
-| `MessagesRequest.dc.html` | A9 · Individualus užsakymas |
-| `ReplyD.dc.html` | A9 · Naujas pokalbis: „Inez usually replies within a day“ (dingsta po pirmos žinutės) |
-| `MessagesOffline.dc.html` | A9 · Pokalbis, kai kūrėja Offline (pilkas taškas) |
-| `Bag.dc.html` | A10 · Krepšelis (spausk ▶ Play: −/+, Remove, Save for later, Undo) |
-| `BagEmpty.dc.html` | A10 · Tuščias krepšelis |
-| `BagSingle.dc.html` | A10 · Krepšelis: vieno kūrėjo kūriniai |
-| `Checkout.dc.html` | A11 · Checkout (spausk ▶ Play, slink žemyn; PAY be el. pašto parodo klaidą) |
-| `CheckoutDone.dc.html` | A11 · Ačiū (užsakymas priimtas) |
-| `Profile.dc.html` | A12 · Profilis + užsakymai (spausk ▶ Play, palik atsiliepimą Ulai) |
+| `01-home` | Pradžia: logotipas, motto, „Start exploring“ / „I make things“ |
+| `02-taste` | Ką mėgsti? (kategorijos su nuotraukomis, butter pažymėjimas) |
+| `03-discover` | Discover: kūrinys + „More from Inez“ (▶ Play: šonu į video ir profilį) |
+| `03-discover-video` | Discover 2: jos video |
+| `03-discover-profile` | Discover 3: jos profilis (Works · Journal · Reviews, „Next maker“) |
+| `04-product` | Kūrinys: paruoštas siųsti |
+| `04-product-ring` | Kūrinys: su dydžiais (EU) |
+| `04-product-sold` | Kūrinys: parduotas (+ panašūs) |
+| `05-explore` | Explore: kategorijos + paieška |
+| `05-explore-results` | Kategorija (Filter + Sort) |
+| `05-explore-filter` | Filtras (apatinis langas) |
+| `06-saved` | Saved + lentos |
+| `06-following` | Following |
+| `06-inbox` | Žinučių sąrašas |
+| `06-chat` | Pokalbis |
+| `07-bag` | Krepšelis: pirkti iš kiekvienos kūrėjos, nemokamo siuntimo pagalbininkas, 15 min rezervacija (▶ Play: laikmatis eina) |
+| `07-bag-empty` | Tuščias krepšelis |
+| `07-checkout` | Checkout |
+| `07-thanks` | Ačiū |
+| `08-profile` | Tavo profilis + užsakymai |
+| `09-stickers` | Lipdukai: kūrėja uždeda / Uplift uždeda |
 
-Atnaujinta: 2026-11-16. Kai Matas pakeis dizainą, šie failai atnaujinami iš drobės.
+Seni A1–A12 ekranai (šviesūs ir tamsiai žali): `v1-archive/`. Jų srautai galioja, išvaizda ne.

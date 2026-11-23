@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Uplift · Checkout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Rock+Salt&amp;display=swap">
+<style>
+body{margin:0}
+a,button{position:relative}
+a::after,button::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.g{background:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35)}
+.gs{background:rgba(28,18,12,.35);-webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.hand{font-family:'Rock Salt',cursive;font-weight:400}
+.ui{font-family:Inter,system-ui,sans-serif}
+.sc{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.m{color:rgba(255,250,237,.78)}
+.cta{height:44px;border-radius:999px;border:0;background:#fffaed;color:#2a1a10;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 #b8912f}
+.sec{height:44px;border-radius:999px;color:#fffaed;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fffaed;cursor:pointer;padding:0}
+.lbl{font:600 12px Inter,sans-serif;letter-spacing:.2px}
+.cta:active{transform:translateY(3px);box-shadow:none}
+.chk{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 13px Inter,sans-serif}
+</style>
+</helmet>
+<div class="ui" style="width:390px;height:844px;position:relative;overflow:hidden;background:#665e58;color:#fffaed">
+  <img src="/img/pink-necklace.jpg" alt="" style="position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:.3;filter:blur(60px) saturate(.9)">
+  <div class="sc" style="bottom:0;padding-bottom:110px">
+    <div style="padding:20px 16px 0;display:flex;align-items:center;gap:12px"><a href="#" aria-label="Back" class="ic gs" style="flex-shrink:0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fffaed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a><span style="flex:1;min-width:0"><h1 class="hand" style="margin:0;font-size:28px;line-height:1.25">Checkout</h1><span class="m" style="display:block;font-size:13px;margin-top:6px">No account needed</span></span></div>
+    <div style="padding:16px 12px 0;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:8px"><a href="#" class="cta" style="flex:1">Apple Pay</a><a href="#" class="sec gs" style="flex:1">G Pay</a></div>
+      <span class="m" style="text-align:center;font-size:12px">or pay with card or bank</span>
+      <section class="g" style="border-radius:24px;padding:16px">
+        <label class="lbl" for="em">Email for your receipt</label>
+        <input id="em" type="email" autocomplete="email" placeholder="name@example.com" style="margin-top:8px;width:100%;box-sizing:border-box;height:44px;border-radius:14px;border:1px solid rgba(255,250,237,.16);background:rgba(0,0,0,.22);padding:0 14px;color:#fffaed;font:400 15px Inter,sans-serif;outline:none">
+      </section>
+      <section class="g" style="border-radius:24px;padding:16px">
+        <span class="lbl">Delivery</span>
+        <div style="margin-top:4px"><label style="display:flex;align-items:center;gap:12px;padding:12px 0;"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid #fffaed;display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:50%;background:#fffaed"></span></span><span style="flex:1;font-size:14px">Parcel locker</span><span class="m" style="font-size:13px">4,90€ / maker</span></label><label style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(255,250,237,.16)"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,250,237,.78);display:flex;align-items:center;justify-content:center"></span><span style="flex:1;font-size:14px">To your door</span><span class="m" style="font-size:13px">6,90€ / maker</span></label></div>
+        <div class="gs" style="margin-top:6px;padding:10px 12px;border-radius:14px;font-size:13px">Inez ships today if you order in <b>3h 12m</b></div>
+      </section>
+      <section class="g" style="border-radius:24px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:600">It’s a gift</span><span class="m" style="font-size:12px">Add a note, and gift wrap from each maker</span></span>
+        <span role="switch" aria-checked="false" aria-label="It’s a gift" style="width:46px;height:28px;border-radius:999px;background:rgba(255,250,237,.16);border:1px solid rgba(255,255,255,.22);position:relative"><span style="position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fffaed;opacity:.5"></span></span>
+      </section>
+      <section class="g" style="border-radius:24px;padding:16px">
+        <span class="lbl">Payment</span>
+        <div style="display:flex;gap:8px;margin-top:10px"><span class="" style="flex:1;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;background:#fffaed;color:#2a1a10">Card</span><span class="gs" style="flex:1;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">Bank link</span><span class="gs" style="flex:1;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">BLIK</span></div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px;font-size:13px">
+          <div style="display:flex;justify-content:space-between"><span class="m">3 pieces</span><span>207,00€</span></div>
+          <div style="display:flex;justify-content:space-between"><span class="m">Shipping · 2 parcels</span><span>9,80€</span></div>
+        </div>
+        <span class="m" style="display:block;margin-top:12px;font-size:12px">🔒 Paid safely. Makers get paid after delivery. 14-day returns.</span>
+      </section>
+    </div>
+  </div>
+  <a href="#" class="cta" style="position:absolute;left:12px;right:12px;bottom:16px;z-index:9;height:48px;box-shadow:0 8px 24px rgba(0,0,0,.35)">Pay 216,80€</a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

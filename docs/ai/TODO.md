@@ -13,7 +13,7 @@ Formatas: `- [ ] užduotis · kas · iki kada` → `- [x] … (data)`.
 ## Toliau
 - [ ] Likę 07 stiliumi: užuominos (Hints), Offline pokalbis, individualus užsakymas, „netikėtas kūrėjas“ · AI
 - [ ] Justino OK: 3-ias Discover žingsnis = pilnas kūrėjos profilis; krepšelis „pirkti iš kiekvienos kūrėjos“ + 15 min rezervacija · Justinas
-- [ ] Pasirinktą kryptį perkelti į tokenus `app/globals.css` (0.2 spalvos, 0.3 šriftai, 0.4 mygtukai, 0.5 logo/nav)
+- [ ] Statyti pirkėjo kelią 07 stiliumi pagal `docs/design/HANDOFF-07.md` (+ Rock Salt ir Inter šriftai) · Justinas
 - [ ] UX audito pataisymai A1–A12 (laukelių užrašai, autofill, 44px, reduced motion, Undo atsekant) – laukia Mato OK
 - [ ] Kūrėjo kelias B1–B9 (Sell on Uplift → paraiška → Studio → kūrinys → išmokos → dashboard → siuntimas)
 - [ ] Bendri ekranai C1–C4 (prisijungimas, el. laiškai, tušti ekranai / klaidos, teisiniai puslapiai)
@@ -27,6 +27,7 @@ Formatas: `- [ ] užduotis · kas · iki kada` → `- [x] … (data)`.
 - Ateityje: Claude Tag Slack'e (reikia Team plano)
 
 ## Padaryta
+- [x] Pirkėjo kelias 07 perduotas Justinui: ekranai, tokenai `--u-*`, nuotraukos, lipdukai (2026-11-23)
 - [x] Motto „A community of upcoming makers“, 12 Higgsfield nuotraukų, 12 lipdukų su logotipu (2026-11-23)
 - [x] Galutinis 07 dizainas vienoje drobėje, seni ekranai išvalyti (2026-11-23)
 - [x] Pasirinkta Discover kryptis: 07 Tamsus stiklas (2026-11-23)

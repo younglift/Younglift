@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Uplift · Thanks</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Rock+Salt&amp;display=swap">
+<style>
+body{margin:0}
+a,button{position:relative}
+a::after,button::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.g{background:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35)}
+.gs{background:rgba(28,18,12,.35);-webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.hand{font-family:'Rock Salt',cursive;font-weight:400}
+.ui{font-family:Inter,system-ui,sans-serif}
+.sc{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.m{color:rgba(255,250,237,.78)}
+.cta{height:44px;border-radius:999px;border:0;background:#fffaed;color:#2a1a10;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 #b8912f}
+.sec{height:44px;border-radius:999px;color:#fffaed;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fffaed;cursor:pointer;padding:0}
+.lbl{font:600 12px Inter,sans-serif;letter-spacing:.2px}
+.cta:active{transform:translateY(3px);box-shadow:none}
+.chk{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 13px Inter,sans-serif}
+</style>
+</helmet>
+<div class="ui" style="width:390px;height:844px;position:relative;overflow:hidden;background:#665e58;color:#fffaed">
+  <img src="/img/pink-necklace.jpg" alt="" style="position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:.3;filter:blur(60px) saturate(.9)">
+  <div style="position:absolute;left:12px;right:12px;top:110px;display:flex;flex-direction:column;gap:12px">
+    <div style="text-align:center;padding:0 12px"><h1 class="hand" style="margin:0;font-size:32px;line-height:1.3">Thank you, Lina!</h1><p class="m" style="margin:10px 0 0;font-size:14px">Order #YL-1042 · receipt sent to lina@example.com</p></div>
+    <section class="g" style="margin-top:14px;border-radius:24px;padding:6px 16px"><div style="display:flex;align-items:center;gap:12px;padding:12px 0;"><img src="/img/pink-necklace.jpg" alt="" style="width:52px;height:62px;border-radius:12px;object-fit:cover"><span style="flex:1"><span class="hand" style="display:block;font-size:15px">Inez</span><span class="m" style="font-size:12px">Ships tomorrow · locker in 2–3 days</span></span></div><div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(255,250,237,.16)"><img src="/img/ripple-bowl.jpg" alt="" style="width:52px;height:62px;border-radius:12px;object-fit:cover"><span style="flex:1"><span class="hand" style="display:block;font-size:15px">Mara</span><span class="m" style="font-size:12px">Ships Monday · 2 pieces</span></span></div></section>
+    <section class="gs" style="border-radius:20px;padding:14px 16px;font-size:14px;line-height:1.5">Inez and Mara got a note that you ordered. They’ll message you here if anything changes.</section>
+  </div>
+  <div style="position:absolute;left:12px;right:12px;bottom:16px;display:flex;flex-direction:column;gap:8px"><a href="#" class="cta">Track my order</a><a href="#" class="sec gs">Keep exploring</a></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

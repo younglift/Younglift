@@ -14,13 +14,14 @@ Marketplace for handmade makers (jewellery, ceramics, crochet and more). Two fou
 - Never hard-code colours, fonts or radii in components. Always use CSS variables from `app/globals.css`, so a redesign means changing tokens, not every screen.
 - Only Matas (or Justinas with Matas's OK) decides visual changes. Don't restyle on your own initiative.
 
-Current look (default until replaced):
-- Fonts: Anton (display headings), Archivo (UI, buttons), Geist (meta / grey text), IBM Plex Mono (prices).
-- Colours: ink #141414, grey #6e6e73, paper #f3f2ee / #f5f4f0, lines #ecebe6 / #d9d7d0.
-- Logo (2026-11-16): **uplift community**, files in `public/brand/` (`uplift-logo-black|white|cream-bg.svg` full lockup, `uplift-wordmark-black|white.svg` for headers). Use the files, never redraw it. On dark backgrounds use the white version.
-- Buttons: pills, border-radius 999px, height 48px, Archivo 600 15px, sentence case. Black pill = primary.
-- Glass card on Discover: rgba(255,255,255,.22), backdrop-filter blur(10px) saturate(1.4), inset 1px rgba(255,255,255,.65).
-- Minimal, little text, rounded shapes. References: Vinted, Etsy.
+Current look: **direction 07 "Tamsus stiklas" (decided 2026-11-23, buyer journey).** Full spec: `docs/design/HANDOFF-07.md`, screens in `docs/design/screens/`, tokens `--u-*` in `app/globals.css`.
+- Fonts: Rock Salt (maker names, piece titles, screen titles), Inter (everything else).
+- Colours: base #665e58 under a blurred product photo, dark glass cards, cream text #fffaed, one accent butter #f3d27a.
+- Buttons: pills 999px, primary 48px cream with a hard 3px #b8912f bottom edge; min tap 44px.
+- Logo (2026-11-16): **uplift community**, files in `public/brand/`. Use the files, never redraw it. On dark backgrounds use the white version.
+- Stickers: `public/stickers/` (maker-set and Uplift-set, rules in HANDOFF-07).
+- Old tokens (Anton/Archivo, ink #141414, paper #f3f2ee) stay in globals.css only until every screen is moved to `--u-*`.
+- Maker journey (Studio etc.) look is still open.
 
 ## Working together
 - Work on a branch (`git checkout -b name/feature`), open a pull request, merge to `main`.
