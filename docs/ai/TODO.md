@@ -18,6 +18,8 @@ Formatas: `- [ ] užduotis · kas · iki kada` → `- [x] … (data)`.
 - [ ] Kūrėjo kelias B1–B9 (Sell on Uplift → paraiška → Studio → kūrinys → išmokos → dashboard → siuntimas)
 - [ ] Bendri ekranai C1–C4 (prisijungimas, el. laiškai, tušti ekranai / klaidos, teisiniai puslapiai)
 
+- [ ] Lipdukai į app: `stickers` laukas kūriniui (kūrėjos 1) + automatiniai Uplift lipdukai iš duomenų; „In progress“ v2 dar perdaryti (Higgsfield) · AI/Justinas
+
 ## Atviri klausimai
 - „Approved by Uplift“ pasitikėjimo ženklas?
 - DSA pardavėjo informacija produkto puslapyje
@@ -25,6 +27,7 @@ Formatas: `- [ ] užduotis · kas · iki kada` → `- [x] … (data)`.
 - Ateityje: Claude Tag Slack'e (reikia Team plano)
 
 ## Padaryta
+- [x] Motto „A community of upcoming makers“, 12 Higgsfield nuotraukų, 12 lipdukų su logotipu (2026-11-23)
 - [x] Galutinis 07 dizainas vienoje drobėje, seni ekranai išvalyti (2026-11-23)
 - [x] Pasirinkta Discover kryptis: 07 Tamsus stiklas (2026-11-23)
 - [x] Pirkėjo kelias A1–A12 suprojektuotas (2026-11-13)
