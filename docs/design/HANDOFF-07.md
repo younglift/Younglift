@@ -13,6 +13,9 @@ Matas, 2026-11-23. **Pirkėjo kelio išvaizda nuspręsta.** Galima statyti į ap
 | Logotipas | `public/brand/` (tamsiame fone `uplift-logo-white.svg`, niekada neperpiešti) |
 | Kodėl taip ir ko reikia backend'ui | `docs/design/JOURNEY.md`, eilutės su „Justinai:“ |
 
+## Kompiuteris
+Ekranai `docs/design/screens/desktop/` (1440×900). Telefone ir kompiuteryje tie patys komponentai ir tokenai, skiriasi tik išdėstymas (riba 820 px). Kompiuteryje: viršutinė stiklinė juosta vietoj apatinės navigacijos, kūrinys kaip langas (modal), krepšelis kaip stalčius, Studio su kairiu meniu ir gyva peržiūra. Klaviatūra Discover'e: ← → nuotraukos, ↓ kita kūrėja.
+
 ## Išvaizda trumpai
 - Kiekvieno ekrano fonas `--u-bg` + to ekrano kūrinio nuotrauka, labai išblukinta (`--u-wash-*`). Ant viršaus stiklinės kortelės (`--u-glass`).
 - Tekstas kreminis `--u-ink`, antrinis `--u-mute`. **Vienintelis akcentas** butter `--u-accent` (pažymėta, aktyvus taškas nav'e, progresas). Daugiau spalvų nėra, išskyrus lipdukus.

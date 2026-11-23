@@ -53,4 +53,22 @@ Nuspręsta 2026-11-23. Pirmiausia skaityk `docs/design/HANDOFF-07.md`.
 | `18-studio-pieces` | Studio: tavo kūriniai |
 | `19-studio-order` | B9 · Užsakymas → išsiųsti |
 
+**Kompiuteris (1440×900), aplankas `desktop/`.** Srautai tie patys kaip telefone ir prototipe: viršuje stiklinė juosta (logotipas, Discover · Explore · Following · Saved, paieška, „Sell on Uplift“, žinutės, krepšelis, profilis). Discover yra didelė scena su ← → nuotraukoms ir „Up next“ kūrėjų eile apačioje (↓ = kita kūrėja). Kūrinys atsidaro kaip langas virš puslapio, krepšelis kaip stalčius dešinėje. Studio turi meniu kairėje ir gyvą peržiūrą („How it looks in Discover“) dešinėje. Riba tarp telefono ir kompiuterio: 820 px, kaip prototipe.
+
+| Failas | Ekranas |
+|---|---|
+| `desktop/01-home` | Home |
+| `desktop/03-discover` | Discover: scena + „Up next“ |
+| `desktop/03-maker-profile` | Kūrėjos profilis (kortelė kairėje, kūriniai 4 stulpeliais) |
+| `desktop/04-product-window` | Kūrinys: langas virš profilio |
+| `desktop/05-explore` | Explore: filtras kairėje, 4 stulpeliai |
+| `desktop/06-messages` | Žinutės: sąrašas + pokalbis |
+| `desktop/07-bag-drawer` | Krepšelis: stalčius dešinėje |
+| `desktop/07-checkout` | Checkout: žingsniai + užsakymo santrauka |
+| `desktop/13-studio-profile` | Studio: profilio redaktorius + peržiūra |
+| `desktop/14-studio-add-piece` | Studio: naujas kūrinys + lipdukas + peržiūra |
+| `desktop/17-studio-today` | Studio: šiandien |
+
+Kitiems ekranams (Saved, Following, profilis, Studio užsakymai ir išmokos) taikomas tas pats principas: ta pati viršutinė juosta / Studio meniu, turinys iki 1280 px, tinkleliai 4 stulpeliais.
+
 Seni A1–A12 ekranai (šviesūs ir tamsiai žali): `v1-archive/`. Jų srautai galioja, išvaizda ne.
