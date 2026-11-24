@@ -45,10 +45,10 @@ Ekranai `docs/design/screens/desktop/` (1440×900). Telefone ir kompiuteryje tie
 ## Srautų pakeitimai, kuriems reikia tavo OK
 Pagal `CLAUDE.md` srautai užrakinti, todėl šitie du laukia tavęs:
 1. **Discover šonu: kūrinys → jos video → jos pilnas profilis** (Works · Journal · Reviews). Anksčiau 3-ias žingsnis buvo „Daugiau kūrinių“. Žemyn = kita kūrėja, kaip buvo.
-2. **Krepšelis: „pirkti iš kiekvienos kūrėjos“** (atskiras siuntinys ir mygtukas kiekvienai) + apačioje „Pay for all“, nemokamo siuntimo pagalbininkas („38€ to go“), **15 min rezervacija tik vienetiniams**.
+2. **Krepšelis: „pirkti iš kiekvienos kūrėjos“** (atskiras siuntinys ir mygtukas kiekvienai) + apačioje „Pay for all“, nemokamo siuntimo pagalbininkas („38€ to go“), **15 min rezervacija visiems kūriniams su ribotu kiekiu** (1 of 1, small batch, „X left“; ne made to order). Pakeista 2026-11-24.
 
 ## Ko reikia backend'ui
-- **15 min rezervacija (tikra, ne netikras laikmatis; ES draudžia netikrus):** lentelė `cart_holds (piece_id, cart_id, expires_at)`. `expires_at = now() + 15 min`, kai vienetinis kūrinys įdedamas į krepšelį. Kol galioja, kitiems kūrinys rodomas „In someone’s bag“ ir jo negalima įdėti. Pasibaigus atlaisvinam. Laikmatis ekrane skaičiuoja nuo `expires_at`.
+- **15 min rezervacija (tikra, ne netikras laikmatis; ES draudžia netikrus), visiems kūriniams su ribotu kiekiu (pakeista 2026-11-24):** lentelė `cart_holds (piece_id, cart_id, qty, expires_at)`. Kai kūrinys su ribotu kiekiu (1 of 1, small batch, „X left“) įdedamas į krepšelį, rezervuojam tiek vienetų, kiek įdėta: `expires_at = now() + 15 min`. Kitiems laisvas kiekis = `stock − kitų aktyvių holds qty`; jei 0, rodom „In someone’s bag“ ir įdėti negalima. Made to order kūriniams rezervacijos nėra (kiekis neribotas, laikmatis būtų netikras). Krepšelyje viena juosta „Your pieces are held for 14:52“ (artimiausias pasibaigiantis), prie kiekvienos eilutės „Held for you · 14:52“, ir tas pats laikmatis checkout'e. Pasibaigus: atlaisvinam, eilutėje „Hold again“, jei niekas kitas nepaėmė.
 - **Nemokamas siuntimas nuo X:** kūrėjai laukas `free_shipping_from_cents` (gali būti tuščias).
 - **Mokėjimai:** jau suplanuota viena PaymentIntent kiekvienai kūrėjai, tinka. „Pay for all“ = viena Checkout sesija su keliais mokėjimais.
 - **Lipdukai** (taisyklės galutinės, bet Matas kai kurių piešinukų dar gali keisti: `Sticker` komponentas tegul ima `public/stickers/<raktas>.png`, kad pakeitus failą nereiktų keisti kodo):
