@@ -71,6 +71,8 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 .u-wash{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--u-bg)}
 .u-wash img{position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:0;filter:var(--u-wash-filter);transition:opacity var(--u-dur-step) var(--u-ease)}
 .u-wash img.on{opacity:var(--u-wash-opacity)}
+.u-wash img{will-change:opacity}
+.u-wash img.baked{filter:none}  /* blur + saturation already baked into /img/w/ (scripts/optimize-images.cjs) */
 @media (prefers-reduced-motion:reduce){.u-wash img{transition:none}}
 .u-page{position:relative;z-index:1;min-height:100dvh;overflow-x:clip;padding:calc(18px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 .u-page.has-bar{padding-bottom:calc(120px + env(safe-area-inset-bottom))}

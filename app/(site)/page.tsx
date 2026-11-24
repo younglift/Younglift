@@ -16,6 +16,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from './discover/discover.module.css';
 import Img from '@/components/u/Img';
+import { washSrc } from '@/lib/img';
 
 const STEP_LABEL = ['The piece', 'Her story', 'Her profile'];
 
@@ -283,7 +284,7 @@ function DeskSlide({ item, active, step, setStep, sel, setSel, inBag }: { item: 
   const bg = step === 0 ? p.images[0] : m.video?.posterUrl ?? m.portraitUrl;
   return (
     <div className={s.stage}>
-      {step === 0 ? <Link key={`p0${p.id}`} href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.stagePhoto} u-fade-in`}><Img small src={bg} alt="" aria-hidden="true" className={s.stageBlur} /><Img src={bg} alt={`${p.title} by ${m.name}`} eager={active} className={s.stageImg} /></Link> : null}
+      {step === 0 ? <Link key={`p0${p.id}`} href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.stagePhoto} u-fade-in`}><img src={washSrc(bg)} alt="" aria-hidden="true" decoding="async" className={`${s.stageBlur} ${washSrc(bg).startsWith('/img/w/') ? s.baked : ''}`} /><Img src={bg} alt={`${p.title} by ${m.name}`} eager={active} className={s.stageImg} /></Link> : null}
       {step === 1 ? <Img key={`s1${m.id}`} src={bg} alt={`${m.name} at work`} className="u-fade-in" /> : null}
       {step < 2 ? <div className={s.stageShade} /> : null}
       {step === 2 ? <div key={`s2${m.id}`} className={`${s.dprofile} u-step-in`} data-own-scroll><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
