@@ -60,15 +60,15 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
       ))}
     </div>
   );
+  const filters = (
+    <div className={s.filters}>
+      {([['all', 'All'], ['ready', 'Ready to ship'], ['order', 'Made to order'], ['sold', 'Sold']] as const).map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={filter === k} onClick={() => setFilter(k)}>{l}</button>)}
+    </div>
+  );
   const content = (
     <div key={tab} className={`u-fade-in ${s.tabBody}`}>
       {tab === 'works' ? (
         <>
-          {desktop ? (
-            <div className={s.filters}>
-              {([['all', 'All'], ['ready', 'Ready to ship'], ['order', 'Made to order'], ['sold', 'Sold']] as const).map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={filter === k} onClick={() => setFilter(k)}>{l}</button>)}
-            </div>
-          ) : null}
           <div className="u-grid">{shown.map((p) => <ProductCard key={p.id} p={p} showMaker={false} />)}</div>
           {!shown.length ? <span className="m">Nothing here yet.</span> : null}
         </>
@@ -107,7 +107,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
       {desktop ? (
         <div className={s.body}>
           <div className={s.side}>{card}{story}</div>
-          <div className={s.main}><div className={`g ${s.tabsBar}`}>{tabs}</div>{content}</div>
+          <div className={s.main}><div className={`g ${s.tabsBar}`}>{tabs}{tab === 'works' ? filters : null}</div>{content}</div>
         </div>
       ) : (
         <div className={s.body}>

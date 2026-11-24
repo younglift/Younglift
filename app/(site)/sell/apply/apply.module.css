@@ -1,0 +1,18 @@
+.head{display:none}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.photo{position:relative;width:76px;height:76px;border-radius:var(--u-r-chip);overflow:hidden}
+.remove{position:absolute;right:3px;top:3px;width:26px;height:26px;border-radius:50%;color:var(--u-ink);cursor:pointer;font-size:12px}
+.add{width:76px;height:76px;border-radius:var(--u-r-chip);color:var(--u-ink);font-size:26px;cursor:pointer;border-style:dashed}
+.chkBad{border-color:var(--u-accent)}
+/* desktop-Apply: own header (no shop nav), wider form, fields in two columns */
+@media (min-width:820px){
+  .head{display:flex;position:fixed;top:0;left:0;right:0;height:88px;align-items:center;padding:0 56px;z-index:20}
+  .page:global(.u-page.narrow){max-width:928px}
+  .back{display:none}
+  .sec{color:var(--u-accent)}
+  .form{display:grid;grid-template-columns:1fr 1fr;gap:12px 12px}
+  .form > *{grid-column:span 1}
+  .form > .sec,.form > .pair,.form > .wide{grid-column:1 / -1}
+  .form > .pair{display:contents}
+  .photo,.add{width:96px;height:96px}
+}

@@ -37,20 +37,20 @@ export default function Results({ title, category, q }: { title: string; categor
     <>
       <Wash src={list[0]?.images[0] ?? '/img/flow-ring.jpg'} />
       <main className="u-page">
-        <div className="u-head wrap">
-          <BackButton href="/explore" text="Explore" className="sec" />
-        </div>
-        <div className="u-head" style={{ marginTop: -10 }}><span><h1 className="hand">{title}</h1><span className="desk-only"><span className="m sub">{summary}</span></span></span></div>
-        {foundMakers.length ? (
-          <div className={s.makers}>{foundMakers.map((m) => <Link key={m.id} href={`/m/${m.slug}`} className="gs"><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand t-small">{m.name}</span><span className="m t-meta">{m.city}</span></Link>)}</div>
-        ) : null}
         <div className={s.layout}>
           <aside className={`g ${s.aside}`} aria-label="Filter">
             <div className="row between"><span className="hand t-18">Filter</span>{n ? <button type="button" className="link" onClick={() => setF(EMPTY)}>Clear all</button> : null}</div>
             <Filters list={base} f={f} set={setF} countryOf={countryOf} />
           </aside>
-          <div className="u-stack minw0 gap-12">
-            {kinds.length > 2 ? <div className="chips scroll">{kinds.map((k) => <button key={k} type="button" className="chip" aria-pressed={kind === k} onClick={() => setKind(k)}>{k}</button>)}</div> : null}
+          <div className={`u-stack minw0 gap-12 ${s.main}`}>
+            <div className={s.head}>
+              <BackButton href="/explore" text="Explore" className="sec" />
+              <div className="u-head"><h1 className="hand">{title}</h1><span className="m desk-only">{summary}</span></div>
+            </div>
+            {foundMakers.length ? (
+              <div className={s.makers}>{foundMakers.map((m) => <Link key={m.id} href={`/m/${m.slug}`} className="gs"><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand t-small">{m.name}</span><span className="m t-meta">{m.city}</span></Link>)}</div>
+            ) : null}
+            {kinds.length > 2 ? <div className={`chips scroll ${s.kinds}`}>{kinds.map((k) => <button key={k} type="button" className="chip" aria-pressed={kind === k} onClick={() => setKind(k)}>{k}</button>)}</div> : null}
             <div className={s.tools}>
               <button type="button" className={`sec gs ${s.filterBtn}`} onClick={() => setSheet(true)}>Filter{n ? ` (${n})` : ''}</button>
               <span className="rel flex">
@@ -60,7 +60,7 @@ export default function Results({ title, category, q }: { title: string; categor
             </div>
             <span className="m t-small phone-only">{summary}</span>
             {res ? (list.length ? (
-              <div className="u-grid">{list.map((p) => <ProductCard key={p.id} p={p} maker={byId.get(p.makerId)} />)}</div>
+              <div className={`u-grid ${s.grid}`}>{list.map((p) => <ProductCard key={p.id} p={p} maker={byId.get(p.makerId)} />)}</div>
             ) : (
               <div className="g u-card u-stack ai-start">
                 <span className="hand t-18">Nothing found</span>

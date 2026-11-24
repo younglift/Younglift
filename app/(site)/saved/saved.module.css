@@ -6,3 +6,18 @@
 .count{font-size:12px;margin-top:-4px}
 .board{padding:0;border:0;background:none;color:var(--u-ink);text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:8px;width:132px;flex-shrink:0}
 .newBoard{width:132px;aspect-ratio:1;border-radius:var(--u-r-tile);color:var(--u-ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex-shrink:0;border-style:dashed}
+
+/* desktop-Saved: board cards (one big photo + two small) in a row of four, 6-column grid */
+@media (min-width:820px){
+  .boards{display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px !important;overflow:visible !important;margin:0 !important;padding:0 !important}
+  .board{width:auto;display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;padding:8px 8px 10px;border-radius:var(--u-r-card);background:var(--u-glass-sm);border:1px solid var(--u-glass-border)}
+  .board .mosaic{grid-column:1 / -1;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:2/1;border-radius:var(--u-r-tile);margin-bottom:10px;background:none;border:0;box-shadow:none}
+  .board .mosaic .cell:first-child{grid-row:1 / 3}
+  .board .mosaic .cell:nth-child(4){display:none}
+  .name{padding-left:8px;font-size:14px}
+  .count{margin:0;padding-right:8px}
+  .on{outline-offset:-2px}
+  .newBoard{width:auto;aspect-ratio:auto;min-height:100%;border-radius:var(--u-r-card);background:none;flex-direction:row;font-weight:600}
+  .newBoard :global(.t-26){font-size:15px}
+  .grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+}

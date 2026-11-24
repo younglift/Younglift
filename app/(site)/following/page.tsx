@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getFollowing, getFollowingFeed, getMakers, toggleFollow } from '@/lib/data';
+import { CATEGORY_LABEL, getFollowing, getFollowingFeed, getMakers, toggleFollow } from '@/lib/data';
 import { ago, plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import Loading from '@/components/u/Loading';
@@ -22,14 +22,15 @@ export default function Following() {
   const makers = everyone.filter((m) => ids.includes(m.id));
   const byId = new Map(makers.map((m) => [m.id, m]));
   const recent = new Set(feed.filter((x) => Date.now() - new Date(x.at).getTime() < 7 * 864e5).map((x) => x.makerId));
+  const suggest = everyone.filter((m) => !followed.some((f) => f.id === m.id)).slice(0, 3);
   const items = feed.filter((x) => (!only || x.makerId === only) && followed.some((m) => m.id === x.makerId));
   return (
     <>
       <Wash src={makers[0]?.portraitUrl ?? '/img/mara.jpg'} />
       <main className="u-page">
-        <div className="u-head"><span><h1 className="hand">Following</h1><span className="m sub">{plural(followed.length, 'maker')}</span></span></div>
+        <div className="u-head"><span><h1 className="hand">Following</h1><span className="m sub">{plural(followed.length, 'maker')}{recent.size ? <span className="desk-only"> · {plural(recent.size, 'new post')}</span> : null}</span></span></div>
         {makers.length ? (
-          <div className="snap-x bleed gap-12">
+          <div className={`snap-x bleed gap-12 ${fo.stories}`}>
             <button className={fo.story} type="button" onClick={() => setOnly(null)} aria-pressed={!only}>
               <span className={`gs ${fo.ring + ' ' + fo.all + (!only ? ' ' + fo.sel : '')}`}>All</span><span className="t-small">&nbsp;</span>
             </button>
@@ -40,12 +41,24 @@ export default function Following() {
             ))}
           </div>
         ) : null}
-        <span className="lbl m">New from your makers</span>
+        <div className={fo.cols}>
+        <aside className={`g u-card ${fo.side}`} aria-label="Your makers">
+          <span className="lbl">Your makers</span>
+          {makers.filter((m) => m.isFollowing).map((m) => (
+            <button key={m.id} type="button" className={fo.mk} aria-pressed={only === m.id} onClick={() => setOnly(only === m.id ? null : m.id)}>
+              <Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-40" />
+              <span className="grow col"><span className="hand t-small">{m.name}</span><span className="m t-meta">{m.city} · {CATEGORY_LABEL[m.categories[0]]}</span></span>
+              {recent.has(m.id) ? <span className={fo.dot} aria-label="Something new" /> : null}
+            </button>
+          ))}
+        </aside>
+        <div className={`u-stack ${fo.feed}`}>
+        <span className="lbl m phone-only">New from your makers</span>
         {items.map((x) => {
           const m = byId.get(x.makerId)!;
           return (
             <article key={x.kind + x.makerId + x.at} className="g u-card u-stack">
-              <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-36" /><span className="grow"><Link href={`/m/${m.slug}`} className="hand tap">{m.name}</Link> <span className="m t-small">{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m t-meta">{ago(x.at)}</span></div>
+              <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-36" /><span className="grow"><Link href={`/m/${m.slug}`} className="hand tap">{m.name}</Link> <span className="m t-small">{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m t-meta phone-only">{ago(x.at)}</span><span className="desk-only"><Link href={`/messages/${m.slug}`} className="sec gs">Message</Link></span></div>
               {x.kind === 'pieces' ? (
                 <>
                   <div className={'grid3'}>{x.products.slice(0, 3).map((p) => <Link key={p.id} href={`/p/${p.id}`} aria-label={p.title}><Img className={'u-sq'} small src={p.images[0]} alt="" /></Link>)}</div>
@@ -62,8 +75,8 @@ export default function Following() {
           );
         })}
         {!items.length ? <div className="g u-card m">Nothing new yet. Follow makers in Discover to see their new pieces here.</div> : null}
-        <span className="lbl m">Your makers</span>
-        <div className="g u-card u-stack">
+        <span className="lbl m phone-only">Your makers</span>
+        <div className="g u-card u-stack phone-only">
           {makers.map((m) => (
             <div key={m.id} className="row">
               <Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-40" />
@@ -72,6 +85,20 @@ export default function Following() {
             </div>
           ))}
           {!makers.length ? <Link href="/" className="cta">Discover makers</Link> : null}
+        </div>
+        </div>
+        {suggest.length ? (
+          <aside className={`g u-card ${fo.side}`} aria-label="You might like">
+            <span className="lbl">You might like</span>
+            {suggest.map((m) => (
+              <div key={m.id} className={fo.mk}>
+                <Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-40" />
+                <Link href={`/m/${m.slug}`} className="grow col"><span className="hand t-small">{m.name}</span><span className="m t-meta">{m.city} · {CATEGORY_LABEL[m.categories[0]]}</span></Link>
+                <button type="button" className={`link accent ${fo.follow}`} onClick={() => toggleFollow(m.id)}>Follow</button>
+              </div>
+            ))}
+          </aside>
+        ) : null}
         </div>
       </main>
     </>

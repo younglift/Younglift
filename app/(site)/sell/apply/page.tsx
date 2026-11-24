@@ -6,6 +6,8 @@ import { CATEGORY_LABEL, submitApplication, uploadImage } from '@/lib/data';
 import { BackButton } from '@/components/u/Bits';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
+import Logo from '@/components/u/Logo';
+import ap from './apply.module.css';
 
 const CATS: Category[] = ['jewelry', 'ceramics', 'crochet', 'clothing', 'home', 'prints', 'other'];
 
@@ -41,30 +43,31 @@ export default function Apply() {
   return (
     <>
       <Wash src={photos[0] ?? '/img/plates.jpg'} />
-      <main className="u-page narrow has-bar">
-        <div className="u-head"><BackButton href="/sell" /><span><h1 className="hand">Show us your work</h1><span className="m sub">Takes about 5 minutes. We reply within 3 days.</span></span></div>
+      <header className={ap.head}><Link href="/" aria-label="Uplift home"><Logo height={28} wordmark /></Link></header>
+      <main className={`u-page narrow has-bar ${ap.page}`}>
+        <div className="u-head"><span className={ap.back}><BackButton href="/sell" /></span><span><h1 className="hand">Show us your work</h1><span className="m sub">Takes about 5 minutes. We reply within 3 days.</span></span></div>
         {tried && !ok ? <div className="gs u-card t-small" role="alert">A few things are missing. They’re marked below.</div> : null}
-        <div className="g u-card u-stack">
-          <span className="lbl">About you</span>
+        <div className={`g u-card u-stack ${ap.form}`}>
+          <span className={`lbl ${ap.sec}`}>About you</span>
           <label className="fld"><span className="lbl">Your name</span><input className="inp" autoComplete="name" value={f.name} onChange={set('name')} aria-invalid={bad(!!f.name.trim())} /></label>
           <label className="fld"><span className="lbl">Email</span><input className="inp" type="email" autoComplete="email" value={f.email} onChange={set('email')} aria-invalid={bad(emailOk)} /></label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <div className={ap.pair}>
             <label className="fld"><span className="lbl">City</span><input className="inp" value={f.city} onChange={set('city')} aria-invalid={bad(!!f.city.trim())} /></label>
             <label className="fld"><span className="lbl">Country</span><input className="inp" value={f.country} onChange={set('country')} aria-invalid={bad(!!f.country.trim())} /></label>
           </div>
-          <label className="fld"><span className="lbl">Instagram or website</span><input className="inp" value={f.link} onChange={set('link')} placeholder="@yourstudio" /><span className="m t-meta">Optional, but it helps us get to know you.</span></label>
+          <label className={`fld ${ap.wide}`}><span className="lbl">Instagram or website</span><input className="inp" value={f.link} onChange={set('link')} placeholder="@yourstudio" /><span className="m t-meta">Optional, but it helps us get to know you.</span></label>
         </div>
         <div className="g u-card u-stack">
-          <span className="lbl">Your work</span>
+          <span className={`lbl ${ap.sec}`}>Your work</span>
           <div className="fld"><span className="lbl">What do you make?</span><div className="chips">{CATS.map((c) => <button key={c} type="button" className="chip" aria-pressed={cats.includes(c)} onClick={() => setCats(cats.includes(c) ? cats.filter((x) => x !== c) : [...cats, c])}>{CATEGORY_LABEL[c]}</button>)}</div>{tried && !cats.length ? <span className="t-meta accent">Pick at least one</span> : null}</div>
           <div className="fld">
             <span className="lbl">Photos of your work</span>
-            <span className="m" style={{ fontSize: 12, color: tried && photos.length < 3 ? 'var(--u-accent)' : undefined }}>{photos.length} of 3–10 · real pieces you made, at least one of you working</span>
+            <span className={`m t-meta${tried && photos.length < 3 ? ' accent' : ''}`}>{photos.length} of 3–10 · real pieces you made, at least one of you working</span>
             <div className="row wrap gap-8">
               {photos.map((u, i) => (
-                <span key={i} style={{ position: 'relative', width: 76, height: 76, borderRadius: 14, overflow: 'hidden' }}><Img small src={u} alt="" className="u-cover" /><button type="button" aria-label="Remove photo" className="gs" style={{ position: 'absolute', right: 3, top: 3, width: 26, height: 26, borderRadius: '50%', color: 'var(--u-ink)', cursor: 'pointer', fontSize: 12 }} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>✕</button></span>
+                <span key={i} className={ap.photo}><Img small src={u} alt="" className="u-cover" /><button type="button" aria-label="Remove photo" className={`gs ${ap.remove}`} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>✕</button></span>
               ))}
-              {photos.length < 10 ? <button type="button" aria-label="Add photos" className="gs" style={{ width: 76, height: 76, borderRadius: 14, color: 'var(--u-ink)', fontSize: 26, cursor: 'pointer' }} onClick={() => file.current?.click()}>+</button> : null}
+              {photos.length < 10 ? <button type="button" aria-label="Add photos" className={`gs ${ap.add}`} onClick={() => file.current?.click()}>+</button> : null}
               <input ref={file} type="file" accept="image/*" multiple hidden onChange={async (e) => { const fs = Array.from(e.target.files ?? []).slice(0, 10 - photos.length); setPhotos([...photos, ...(await Promise.all(fs.map(uploadImage)))]); e.target.value = ''; }} />
             </div>
           </div>
@@ -72,7 +75,7 @@ export default function Apply() {
         </div>
         <label className="g u-card row pointer ai-start">
           <input type="checkbox" className="sr" checked={self} onChange={() => setSelf(!self)} />
-          <span className={`chk ${self ? 'on' : ''}`} aria-hidden="true" style={tried && !self ? { borderColor: 'var(--u-accent)' } : undefined}>{self ? '✓' : ''}</span>
+          <span className={`chk ${self ? 'on' : ''}${tried && !self ? ' ' + ap.chkBad : ''}`} aria-hidden="true">{self ? '✓' : ''}</span>
           <span className="t-small lh-15">I make everything I’ll sell myself (alone or in my own small studio).</span>
         </label>
         <div className="g u-bar"><button type="button" className="cta" onClick={send}>Send application</button></div>

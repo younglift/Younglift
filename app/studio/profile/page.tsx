@@ -19,6 +19,7 @@ const STEPS = [
   ['Order of your slides', 'What buyers see when they swipe across your profile.'],
   ['Pieces and requests', 'Last step. You can change all of this later in Studio.'],
 ] as const;
+const SHORT = ['About you', 'Your collage', 'Your video', 'Slide order', 'Pieces and requests'];
 const SLIDE_LABEL = (name: string): Record<Slide, string> => ({ work: 'Your work', meet: `Meet ${name}`, process: 'Your process', piece: 'A piece' });
 const euros = (v: string) => Math.round(parseFloat(v.replace(',', '.').replace(/[^0-9.]/g, '')) * 100) || 0;
 
@@ -60,20 +61,25 @@ export default function StudioProfile() {
   return (
     <>
       <Wash src={cover[0] ?? d.portraitUrl} />
-      <main className="u-page has-bar">
-        <div className="u-head">
+      <main className={`u-page has-bar ${s.prof}`}>
+        <div className={s.dTop}>
+          <span className="grow"><h1 className="hand m0">Your profile</h1><span className="m t-small">This is how buyers meet you in Discover</span></span>
+          <button type="button" className="sec gs" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1}>Back</button>
+          <button type="button" className="cta" onClick={next}>{step < 5 ? 'Continue' : 'Save profile'}</button>
+        </div>
+        <div className={`u-head ${s.mTop}`}>
           <Link href="/studio" aria-label="Close" className="ic gs">✕</Link>
           <span className="grow tc fw600">Your profile</span>
           <button type="button" className="sec gs" onClick={async () => { await save(); router.push(`/m/${d.slug}`); }}>Preview</button>
         </div>
-        <div className={s.steps}>{[1, 2, 3, 4, 5].map((i) => <button key={i} type="button" aria-label={`Step ${i}: ${STEPS[i - 1][0]}`} onClick={() => setStep(i)} className={s.stepBtn}><span className={s.stepBar + (i <= step ? ' ' + s.stepOn : '')} /></button>)}</div>
+        <div className={s.steps}>{[1, 2, 3, 4, 5].map((i) => <button key={i} type="button" aria-label={`Step ${i}: ${STEPS[i - 1][0]}`} onClick={() => setStep(i)} className={s.stepBtn} aria-current={i === step ? 'step' : undefined}><span className={s.stepBar + (i <= step ? ' ' + s.stepOn : '')} /><span className={s.stepNum}>{i}</span><span className={s.stepName}>{SHORT[i - 1]}</span></button>)}</div>
         <div className={s.editor}>
           <div key={step} className="u-stack u-step-in">
             <div><span className="m lbl">STEP {step} OF 5</span><h1 className={`hand ${s.stepTitle}`}>{STEPS[step - 1][0]}</h1><span className="m t-small">{STEPS[step - 1][1]}</span></div>
 
             {step === 1 ? (
-              <div className="g u-card u-stack">
-                <div className="row"><Img small src={d.portraitUrl} alt="" className="u-avatar ph ph-72" /><button type="button" className="sec gs" onClick={() => photo.current?.click()}>Change photo</button>
+              <div className={`g u-card u-stack ${s.about}`}>
+                <div className={`row ${s.aboutPhoto}`}><Img small src={d.portraitUrl} alt="" className={`u-avatar ph ph-72 ${s.aboutFace}`} /><button type="button" className="sec gs" onClick={() => photo.current?.click()}>Change photo</button>
                   <input ref={photo} type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) set({ portraitUrl: await uploadImage(f) }); e.target.value = ''; }} /></div>
                 <label className="fld"><span className="lbl">Your name</span><input className="inp" value={d.name} onChange={(e) => set({ name: e.target.value })} /></label>
                 <label className="fld"><span className="lbl">Studio name</span><input className="inp" value={d.studio} onChange={(e) => set({ studio: e.target.value })} /><span className="m t-meta">Optional</span></label>
@@ -153,7 +159,7 @@ export default function StudioProfile() {
           </div>
 
           <aside className={s.preview} aria-label="Preview">
-            <span className="lbl m">How it looks in Discover</span>
+            <span className="row between"><span className="lbl">Your first slide</span><span className="m t-meta">live</span></span>
             <div className={`g ${s.phone}`}>
               {cover[0] ? <Img src={cover[0]} alt="" className={`u-cover ${s.fill}`} /> : <Img src={d.portraitUrl} alt="" className={`u-cover ${s.fill}`} />}
               <div className={`gs row ${s.prevPill}`}><Img small src={d.portraitUrl} alt="" className="u-avatar ph ph-32" /><span className={s.prevName}><span className="hand t-small">{d.name || 'Your name'}</span><span className={`m ${s.t11}`}>{d.city}</span></span></div>
@@ -163,7 +169,7 @@ export default function StudioProfile() {
             </div>
           </aside>
         </div>
-        <div className="g u-bar">
+        <div className={`g u-bar ${s.mBar}`}>
           <button type="button" className="sec" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1}>Back</button>
           <button type="button" className="cta" onClick={next}>{step < 5 ? 'Continue' : 'Save profile'}</button>
         </div>
