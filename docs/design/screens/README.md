@@ -58,17 +58,30 @@ Nuspręsta 2026-11-23. Pirmiausia skaityk `docs/design/HANDOFF-07.md`.
 | Failas | Ekranas |
 |---|---|
 | `desktop/01-home` | Home |
+| `desktop/02-taste` | Ką mėgsti? |
 | `desktop/03-discover` | Discover: scena + „Up next“ |
-| `desktop/03-maker-profile` | Kūrėjos profilis (kortelė kairėje, kūriniai 4 stulpeliais) |
+| `desktop/03-maker-profile` | Kūrėjos profilis |
 | `desktop/04-product-window` | Kūrinys: langas virš profilio |
-| `desktop/05-explore` | Explore: filtras kairėje, 4 stulpeliai |
+| `desktop/05-explore` | Explore: filtras kairėje |
+| `desktop/06-saved` | Saved + lentos |
+| `desktop/06-following` | Following |
 | `desktop/06-messages` | Žinutės: sąrašas + pokalbis |
+| `desktop/06-custom-request` | Individualus užsakymas: langas |
 | `desktop/07-bag-drawer` | Krepšelis: stalčius dešinėje |
-| `desktop/07-checkout` | Checkout: žingsniai + užsakymo santrauka |
-| `desktop/13-studio-profile` | Studio: profilio kūrimas, visi 5 žingsniai (▶ Play, prop `startOn` 1–5), dešinėje gyva peržiūra keičiasi pagal žingsnį |
+| `desktop/07-bag-empty` | Tuščias krepšelis |
+| `desktop/07-checkout` | Checkout |
+| `desktop/07-thanks` | Ačiū |
+| `desktop/08-profile` | Tavo profilis + užsakymai |
+| `desktop/10-sell` | Sell on Uplift |
+| `desktop/11-apply` | Paraiška |
+| `desktop/13-studio-profile` | Studio: profilio kūrimas, 5 žingsniai (▶ Play, prop `startOn`) |
 | `desktop/14-studio-add-piece` | Studio: naujas kūrinys + lipdukas + peržiūra |
+| `desktop/15-studio-post` | Studio: video / journal / in progress |
+| `desktop/16-studio-payouts` | Studio: išmokos |
 | `desktop/17-studio-today` | Studio: šiandien |
+| `desktop/18-studio-pieces` | Studio: kūriniai (lentelė) |
+| `desktop/19-studio-orders` | Studio: užsakymai + išsiųsti |
 
-Kitiems ekranams (Saved, Following, profilis, Studio užsakymai ir išmokos) taikomas tas pats principas: ta pati viršutinė juosta / Studio meniu, turinys iki 1280 px, tinkleliai 4 stulpeliais.
+Lygiavimas: puslapio kraštai 24 px, turinys iki 1280 px, tarpai 16 px, kortelės 26 px apvalumo, visi laukai eilutėje prasideda tame pačiame aukštyje, pasirinkimai (segmented control) 48 px kaip ir įvesties laukai.
 
 Seni A1–A12 ekranai (šviesūs ir tamsiai žali): `v1-archive/`. Jų srautai galioja, išvaizda ne.
