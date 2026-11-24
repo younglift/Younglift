@@ -6,6 +6,7 @@ import { getBag, getMakerProducts, getProduct, getReviews, getSimilar, replyLine
 import { formatEUR, formatEURExact, shipsLine } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { useIsDesktop } from '@/lib/useIsDesktop';
+import { useLockBody } from '@/lib/useLockBody';
 import { BackButton, SaveButton, useAddToBag } from '@/components/u/Bits';
 import { Close } from '@/components/u/Icons';
 import MakerProfile from '@/components/u/MakerProfile';
@@ -30,6 +31,8 @@ export default function ProductPage() {
   const [size, setSize] = useState<string>();
   const [guide, setGuide] = useState(false);
   const desktop = useIsDesktop();
+  useLockBody(guide, () => setGuide(false));
+  useLockBody(!!desktop && !guide, () => { if (window.history.length > 1) router.back(); });
   if (data === null) return (<main className="u-page"><Wash /><BackButton /><span className="hand" style={{ fontSize: 22 }}>This piece is gone</span><Link href="/explore" className="cta">Explore</Link></main>);
   if (!data) return <Loading />;
   const { product: p, maker: m } = data;

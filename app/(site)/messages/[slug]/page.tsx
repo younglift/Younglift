@@ -62,7 +62,7 @@ function Chat() {
         <div className={`${s.chat}`}>
           <div className={`g ${s.head}`}>
             <span className={s.back} style={{ display: 'flex' }}><BackButton href="/messages" label="Back to messages" className="ic" /></span>
-            <Link href={`/m/${m.slug}`} style={{ lineHeight: 0 }}><Img small src={m.portraitUrl} alt="" className="u-avatar" /></Link>
+            <Link href={`/m/${m.slug}`} aria-label={`${m.name}’s profile`} className={s.avLink}><Img small src={m.portraitUrl} alt="" className="u-avatar" /></Link>
             <span style={{ flex: 1, display: 'flex', flexDirection: 'column' }}><span className="hand" style={{ fontSize: 16 }}>{m.name}</span><span className={`m ${s.status}`}><span className={`${s.dot} ${live ? s.live : ''}`} />{live ? 'Active now' : 'Offline'}</span></span>
             <Link href={`/m/${m.slug}`} className="m tap" style={{ fontSize: 13, padding: '0 6px' }}>Profile</Link>
           </div>

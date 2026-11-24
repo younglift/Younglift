@@ -5,6 +5,7 @@ import type { Category, Maker, Product } from '@/lib/types';
 import { getMakers, search } from '@/lib/data';
 import { plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import { useLockBody } from '@/lib/useLockBody';
 import { BackButton, ProductCard } from '@/components/u/Bits';
 import { Close } from '@/components/u/Icons';
 import Wash from '@/components/u/Wash';
@@ -23,6 +24,7 @@ export default function Results({ title, category, q }: { title: string; categor
   const [sheet, setSheet] = useState(false);
   const [sort, setSort] = useState<(typeof SORTS)[number][0]>('new');
   const [sortOpen, setSortOpen] = useState(false);
+  useLockBody(sheet, () => setSheet(false));
   const byId = useMemo(() => new Map((makers ?? []).map((m) => [m.id, m])), [makers]);
   const countryOf = (p: Product) => byId.get(p.makerId)?.country ?? 'LT';
   const base = (res?.products ?? []).filter((p) => kind === 'All' || p.kind === kind);

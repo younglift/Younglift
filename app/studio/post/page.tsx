@@ -60,7 +60,7 @@ export default function Post() {
           <div className="fld">
             <span className="lbl">{kind === 'in_progress' ? 'Which piece?' : kind === 'video' ? 'Pieces in this video' : 'Pieces in this post'}</span>
             <span className="m" style={{ fontSize: 12 }}>{kind === 'in_progress' ? 'It gets an “In progress” sticker for 30 days.' : 'Buyers can tap to see them'}</span>
-            <div style={{ display: 'flex', gap: 10, overflowX: 'auto', scrollbarWidth: 'none' }}>
+            <div className="snap-x" style={{ gap: 10 }}>
               {live.map((p) => (
                 <button key={p.id} type="button" aria-pressed={ids.includes(p.id)} onClick={() => pick(p.id)} style={{ padding: 0, border: 0, background: 'none', color: 'var(--u-ink)', display: 'flex', flexDirection: 'column', gap: 4, cursor: 'pointer', flexShrink: 0, width: 72 }}>
                   <span style={{ width: 72, height: 72, borderRadius: 14, overflow: 'hidden', display: 'block', outline: ids.includes(p.id) ? '2px solid var(--u-accent)' : 'none', outlineOffset: 2 }}><Img small src={p.images[0]} alt="" className="u-cover" /></span>

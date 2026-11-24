@@ -62,7 +62,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
           <section key={g.maker.id} className={`${compact ? 'gs' : 'g'} ${s.group}`} aria-label={`From ${g.maker.name}`}>
             <div className={s.ghead}>
               <Img small src={g.maker.portraitUrl} alt="" className="u-avatar" />
-              <Link href={`/m/${g.maker.slug}`} className="hand" onClick={onNavigate}>{g.maker.name}</Link>
+              <Link href={`/m/${g.maker.slug}`} className="hand tap" onClick={onNavigate}>{g.maker.name}</Link>
               <span className="m" style={{ fontSize: 12 }}>{allMto ? shipsLine({ madeToOrder: true, shipsWithinDays: soonest }) : shipsLine({ madeToOrder: false, shipsWithinDays: soonest })}</span>
             </div>
             {g.lines.map((l) => {

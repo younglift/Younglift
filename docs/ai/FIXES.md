@@ -26,14 +26,14 @@ How to work through it: one group per PR, highest first. After each fix run the 
 
 ## P2. "Half of it slides around"
 
-- [ ] **2.1 Desktop thumbs / Up next rows overflow without snap.** Live: thumbs row 56px wider than its box, stops at random positions. `.upnextList` in `discover.module.css` has `overflow-x:auto` but no snap.
+- [x] **2.1 Desktop thumbs / Up next rows overflow without snap.** Live: thumbs row 56px wider than its box, stops at random positions. `.upnextList` in `discover.module.css` has `overflow-x:auto` but no snap.
   Fix: every horizontal row: `scroll-snap-type:x mandatory`, items `scroll-snap-align:start`, `scroll-padding-inline` = margin; if the row fits, no scroll.
   Proof: QUALITY 2.5 by hand at 390 and 1440; qa no "sticks out".
-- [ ] **2.2 Peek shows the portrait instead of the next panel.** `discover.module.css` line 9: `.photo img{position:absolute;inset:0}` overrides `.peek{left:100%}` (same specificity, comes first but `inset` resets left). So the hint nudge reveals her portrait sitting on top of the piece.
+- [x] **2.2 Peek shows the portrait instead of the next panel.** `discover.module.css` line 9: `.photo img{position:absolute;inset:0}` overrides `.peek{left:100%}` (same specificity, comes first but `inset` resets left). So the hint nudge reveals her portrait sitting on top of the piece.
   Fix: `.photo img.peek{left:100%;right:auto}` (or move `.peek` out of `.photo`).
   Proof: first-visit hint on phone shows the edge of the next panel, piece photo stays visible.
-- [ ] **2.3 Chips rows, "More from", boards, Explore categories**: same snap rule as 2.1. Check each at 390.
-- [ ] **2.4 Body scrolls behind open sheets** (filter, bag drawer, product window). Lock body scroll while open.
+- [x] **2.3 Chips rows, "More from", boards, Explore categories**: same snap rule as 2.1. Check each at 390.
+- [x] **2.4 Body scrolls behind open sheets** (filter, bag drawer, product window). Lock body scroll while open.
 
 ## P3. Clunky (no feedback, no motion)
 
