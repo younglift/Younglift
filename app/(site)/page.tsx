@@ -179,11 +179,26 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
   const [sels, setSels] = useState<Record<string, number>>({});
   const stepOf = (id: string) => steps[id] ?? 0;
   const setStep = useCallback((id: string, n: number) => setSteps((x) => ({ ...x, [id]: Math.max(0, Math.min(2, n)) })), []);
+  // Own animation instead of the browser's slow 'smooth' scroll: 320ms, fast start, soft stop (--u-ease feel).
+  const anim = useRef(0);
+  const sliding = useRef(false);
   const scrollTo = useCallback((i: number, smooth = true) => {
     const f = feed.current; if (!f) return;
-    f.scrollTo({ top: Math.max(0, Math.min(items.length, i)) * f.clientHeight, behavior: smooth ? 'smooth' : 'auto' });
+    const to = Math.max(0, Math.min(items.length, i)) * f.clientHeight;
+    cancelAnimationFrame(anim.current);
+    if (!smooth || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { f.scrollTop = to; return; }
+    const from = f.scrollTop, t0 = performance.now(), dur = 320;
+    f.style.scrollSnapType = 'none'; sliding.current = true;
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
+      f.scrollTop = from + (to - from) * e;
+      if (k < 1) anim.current = requestAnimationFrame(tick);
+      // React work (mounting the next maker, photo change) waits until the slide has landed, so the motion never stutters.
+      else { f.style.scrollSnapType = ''; sliding.current = false; setCur(Math.round(to / f.clientHeight)); }
+    };
+    anim.current = requestAnimationFrame(tick);
   }, [items.length]);
-  const onScroll = () => { const f = feed.current; if (!f) return; const i = Math.round(f.scrollTop / f.clientHeight); if (i !== cur) setCur(i); };
+  const onScroll = () => { const f = feed.current; if (!f || sliding.current) return; const i = Math.round(f.scrollTop / f.clientHeight); if (i !== cur) setCur(i); };
   const curId = items[Math.min(cur, items.length - 1)]?.maker.id;
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
@@ -196,27 +211,29 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
     };
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
   }, [cur, curId, steps, setStep, scrollTo]);
-  // Mouse wheel / trackpad: one gesture = one maker, sliding like the phone feed. (Plain scroll-snap would
-  // snap a 100px mouse-wheel notch back to the same maker.) Her profile (step 3) scrolls normally inside.
+  // Mouse wheel / trackpad: one gesture = one maker. A new gesture can start as soon as the slide lands;
+  // the trackpad's fading momentum (smaller and smaller deltas) is ignored. Her profile (step 3) scrolls inside.
   useEffect(() => {
     const f = feed.current; if (!f) return;
-    let acc = 0, locked = false, last = 0, started = 0, timer = 0;
-    const unlock = () => { if (Date.now() - last > 180 && Date.now() - started > 650) { locked = false; acc = 0; } else timer = window.setTimeout(unlock, 60); };
+    let acc = 0, busyUntil = 0, last = 0, lastAbs = 0, needFresh = false;
     const w = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
       if ((e.target as HTMLElement)?.closest('[data-own-scroll]')) return;
-      e.preventDefault(); last = Date.now();
-      if (locked) return;
+      e.preventDefault();
+      const now = performance.now(), abs = Math.abs(e.deltaY);
+      const fresh = now - last > 120 || (now >= busyUntil && abs > lastAbs * 1.4 + 4);   // new flick, not momentum
+      last = now; lastAbs = abs;
+      if (fresh) needFresh = false;
+      if (now < busyUntil || needFresh) return;
       acc += e.deltaY;
-      if (Math.abs(acc) < 30) return;
-      locked = true; started = Date.now();
+      if (Math.abs(acc) < 20) return;
       const i = Math.round(f.scrollTop / f.clientHeight) + (acc > 0 ? 1 : -1);
-      f.scrollTo({ top: Math.max(0, Math.min(items.length, i)) * f.clientHeight, behavior: 'smooth' });
-      timer = window.setTimeout(unlock, 60);
+      acc = 0; busyUntil = now + 300; needFresh = true;
+      scrollTo(i);
     };
     f.addEventListener('wheel', w, { passive: false });
-    return () => { f.removeEventListener('wheel', w); window.clearTimeout(timer); };
-  }, [items.length]);
+    return () => f.removeEventListener('wheel', w);
+  }, [scrollTo]);
   // Logo / Discover tapped while already here: back to the very start of the feed.
   useEffect(() => {
     const home = () => { setSteps({}); scrollTo(0, false); setCur(0); };
@@ -230,7 +247,7 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
       <div className={s.desk} ref={feed} onScroll={onScroll}>
         {items.map((it, i) => (
           <section key={it.maker.id} className={s.dslide} aria-label={it.maker.name}>
-            {Math.abs(i - cur) <= 1 ? (
+            {Math.abs(i - cur) <= 2 ? (
               <DeskSlide item={it} active={i === cur} step={stepOf(it.maker.id)} setStep={(n) => setStep(it.maker.id, n)}
                 sel={sels[it.maker.id] ?? firstAvailable(it.products)} setSel={(n) => setSels((x) => ({ ...x, [it.maker.id]: n }))} inBag={inBag} />
             ) : <div className={s.stage} />}
