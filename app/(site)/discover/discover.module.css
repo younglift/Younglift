@@ -105,6 +105,8 @@
   .dbars span.on{background:var(--u-ink)}
   .dpill{position:absolute;left:24px;top:34px;border-radius:var(--u-r-pill);padding:6px;display:flex;align-items:center;gap:12px;z-index:3}
   .dpill img{width:40px;height:40px}
+  .dpillWho{display:flex;align-items:center;gap:12px;padding:0;border:0;background:none;color:var(--u-ink);text-align:left;cursor:pointer;min-height:44px;border-radius:var(--u-r-pill)}
+  .dpillWho:hover .dpillText :global(.hand){text-decoration:underline;text-underline-offset:3px}
   .dstep{position:absolute;right:24px;top:40px;padding:7px 14px;border-radius:var(--u-r-pill);font:500 12px var(--u-ui);z-index:3}
   .dstk{position:absolute;right:300px;top:120px;z-index:3}
   .dstk2{position:absolute;right:120px;top:260px;z-index:3}
