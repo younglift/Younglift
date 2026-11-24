@@ -191,11 +191,29 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
     };
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
   }, [nextMaker, step]);
+  // Mouse wheel / trackpad scroll = the vertical feed: one maker per scroll gesture. Her profile (step 3) scrolls normally.
+  const deskRef = useRef<HTMLDivElement>(null);
+  const wheelLock = useRef(0);
+  useEffect(() => {
+    const el = deskRef.current; if (!el) return;
+    const w = (e: WheelEvent) => {
+      if (step === 2 || Math.abs(e.deltaY) < Math.abs(e.deltaX) || (e.target as HTMLElement)?.closest('input,textarea,[data-scroll]')) return;
+      e.preventDefault();
+      if (Math.abs(e.deltaY) < 12 || Date.now() < wheelLock.current) return;
+      wheelLock.current = Date.now() + 700;
+      nextMaker(e.deltaY > 0 ? 1 : -1);
+    };
+    el.addEventListener('wheel', w, { passive: false }); return () => el.removeEventListener('wheel', w);
+  }, [nextMaker, step]);
+  useEffect(() => {
+    const home = () => { setMi(0); setStep(0); window.scrollTo({ top: 0 }); };
+    window.addEventListener('u:home', home); return () => window.removeEventListener('u:home', home);
+  }, []);
   const { mk, up } = stickerPair(item, p);
   const bg = step === 0 ? p.images[0] : m.video?.posterUrl ?? m.portraitUrl;
 
   return (
-    <div className={s.desk}>
+    <div className={s.desk} ref={deskRef}>
       <Wash src={item.products[firstAvailable(item.products)]?.images[0]} />
       <div className={s.stage}>
         {step === 0 ? <Link key={`p0${p.id}`} href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.stagePhoto} u-fade-in`}><Img small src={bg} alt="" aria-hidden="true" className={s.stageBlur} /><Img src={bg} alt={`${p.title} by ${m.name}`} eager className={s.stageImg} /></Link> : null}
@@ -205,8 +223,10 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
         <div className={s.dbars}>{[0, 1, 2].map((i) => <span key={i} className={i <= step ? s.on : ''} />)}</div>
         {step < 2 ? (
           <div className={`gs ${s.dpill}`}>
-            <Img small src={m.portraitUrl} alt="" className="u-avatar" />
-            <span className={s.dpillText}><span className="hand">{m.name}</span><span className="m">{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
+            <button type="button" className={s.dpillWho} onClick={() => setStep(2)} aria-label={`${m.name}’s profile`}>
+              <Img small src={m.portraitUrl} alt="" className="u-avatar" />
+              <span className={s.dpillText}><span className="hand">{m.name}</span><span className="m">{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
+            </button>
             <button type="button" className={s.follow} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
           </div>
         ) : null}
@@ -252,6 +272,10 @@ export default function Discover() {
   const desktop = useIsDesktop();
   const [cur, setCur] = useState(0);
   useEffect(() => { if (me && !me.onboarded) router.replace('/welcome'); }, [me, router]);
+  useEffect(() => {
+    const home = () => feed.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    window.addEventListener('u:home', home); return () => window.removeEventListener('u:home', home);
+  }, []);
   const inBag = useMemo(() => new Set((bag?.groups ?? []).flatMap((g) => g.lines.map((l) => l.productId))), [bag]);
   if (!me || !me.onboarded || !items || desktop === undefined) return <Loading />;
   if (desktop) return items.length ? <DeskStage items={items} inBag={inBag} /> : <Loading />;
