@@ -92,6 +92,7 @@
   /* portrait photos: whole photo on the right, its blurred copy fills the stage (FIXES 4.6) */
   .stagePhoto{position:absolute;inset:0;z-index:1;display:block;overflow:hidden}
   .stageBlur{position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;filter:var(--u-wash-filter)}
+  .stageBlur.baked{filter:none}  /* pre-blurred /img/w/ copy: no live blur on a huge layer */
   .stageImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:68% 50%}
   .dpillText{display:flex;flex-direction:column;line-height:1.25;padding-right:8px}
   .dpillText :global(.hand){font-size:16px}
