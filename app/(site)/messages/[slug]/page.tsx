@@ -7,6 +7,7 @@ import { clock, formatEUR, shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import { Camera, Send } from '@/components/u/Icons';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Inbox from '../Inbox';
 import s from '../messages.module.css';
@@ -15,6 +16,20 @@ const QUICK: Record<string, string[]> = {
   jewelry: ['When does it ship?', 'Gift wrap?', 'Other sizes?'],
   ceramics: ['Do you ship to Riga?', 'Can I pick a glaze?', 'Gift wrap?'],
 };
+
+/** Private listing card inside the chat (only this buyer can see it). */
+function Listing({ id }: { id: string }) {
+  const [d] = useData(() => getProduct(id), [id]);
+  if (!d) return null;
+  const p = d.product;
+  return (
+    <Link href={`/p/${p.id}`} className="g" style={{ display: 'flex', gap: 10, alignItems: 'center', borderRadius: 14, padding: 8, marginTop: 4, color: 'var(--u-ink)' }}>
+      <img src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 10, objectFit: 'cover' }} />
+      <span style={{ flex: 1, display: 'flex', flexDirection: 'column' }}><span className="hand" style={{ fontSize: 14 }}>{p.title}</span><span className="m" style={{ fontSize: 12 }}>{p.sold ? 'Bought ✓' : `${formatEUR(p.priceCents)} · only for you`}</span></span>
+      {!p.sold ? <span className="cta" style={{ minHeight: 36, padding: '0 12px', fontSize: 13 }}>View</span> : null}
+    </Link>
+  );
+}
 
 function Chat() {
   const { slug } = useParams<{ slug: string }>();
@@ -32,7 +47,7 @@ function Chat() {
   useEffect(() => { if (m) markThreadRead(m.id); }, [m, msgs]);
   useEffect(() => { end.current?.scrollIntoView({ block: 'end' }); }, [msgs?.length]);
   if (m === null) return <main className="u-page"><Wash /><span className="hand">Maker not found</span><Link href="/messages" className="cta">Messages</Link></main>;
-  if (!m || !msgs) return <Wash />;
+  if (!m || !msgs) return <Loading />;
   const send = async (t: string, img?: string) => { if (!t.trim() && !img) return; await sendMessage(m.id, t, msgs.length ? undefined : piece?.id, img); setText(''); };
   const live = isActive(m);
   const reply = replyLine(m);
@@ -61,7 +76,7 @@ function Chat() {
               return (
                 <div key={x.id} style={{ display: 'contents' }}>
                   {show ? <span className={`m ${s.day}`}>{today ? 'Today' : day}</span> : null}
-                  <div className={`${s.b} ${x.fromMe ? s.mine : `gs ${s.theirs}`}`}>{x.imageUrl ? <img src={x.imageUrl} alt="Photo you sent" /> : null}{x.text ? <span>{x.text}</span> : null}<time>{clock(x.at)}</time></div>
+                  <div className={`${s.b} ${x.fromMe ? s.mine : `gs ${s.theirs}`}`}>{x.imageUrl ? <img src={x.imageUrl} alt="Photo you sent" /> : null}{x.text ? <span>{x.text}</span> : null}{x.listingId ? <Listing id={x.listingId} /> : null}<time>{clock(x.at)}</time></div>
                 </div>
               );
             })}
@@ -81,4 +96,4 @@ function Chat() {
     </>
   );
 }
-export default function ChatPage() { return <Suspense fallback={<Wash />}><Chat /></Suspense>; }
+export default function ChatPage() { return <Suspense fallback={<Loading />}><Chat /></Suspense>; }

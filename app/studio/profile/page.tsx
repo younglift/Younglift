@@ -7,6 +7,7 @@ import { getMyMaker, getStudioProducts, updateMyMaker, uploadImage } from '@/lib
 import { formatEUR } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 
@@ -38,7 +39,7 @@ export default function StudioProfile() {
       setFreeFrom(me.freeShippingFromCents ? String(me.freeShippingFromCents / 100) : '150');
     }
   }, [me, d]);
-  if (!d || !pieces) return <Wash />;
+  if (!d || !pieces) return <Loading />;
   const set = (p: Partial<Maker>) => setD({ ...d, ...p });
   const live = pieces.filter((p) => p.status === 'live');
   const lib = live.length ? live : pieces;

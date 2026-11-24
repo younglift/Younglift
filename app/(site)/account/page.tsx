@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { CATEGORY_LABEL, addReview, getMe, getMyMaker, getOrders, getUnreadCount, markDelivered, resetDemo } from '@/lib/data';
+import { CATEGORY_LABEL, addReview, canReturn, getMe, getMyMaker, getOrders, getUnreadCount, markDelivered, requestReturn, resetDemo, saveAddress, saveNotify } from '@/lib/data';
 import { longDate, monthName, shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { Stars } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 const STEPS = ['Paid', 'Packing', 'On the way', 'Delivered'];
@@ -20,7 +21,11 @@ export default function Account() {
   const [open, setOpen] = useState<string | null>(null);
   const [rating, setRating] = useState<Record<string, number>>({});
   const [text, setText] = useState('');
-  if (!me || !orders) return <Wash />;
+  const [addr, setAddr] = useState<NonNullable<typeof me>['address']>();
+  const [returning, setReturning] = useState<string | null>(null);
+  const [why, setWhy] = useState('');
+  if (!me || !orders) return <Loading />;
+  const a = addr ?? me.address;
   const since = `${monthName(me.since)} ${new Date(me.since).getFullYear()}`;
   const panel = (k: string, body: React.ReactNode) => (open === k ? <div className="m" style={{ padding: '0 0 12px', fontSize: 14, lineHeight: 1.55 }}>{body}</div> : null);
   const row = (k: string, label: string, right: string) => (
@@ -68,6 +73,14 @@ export default function Account() {
                   </div>
                 </>
               )}
+              {o.returnRequestedAt ? <span className="m" style={{ fontSize: 13 }}>Return requested · {o.maker.name} will reply in Messages</span> : canReturn(o) ? (
+                returning === o.id ? (
+                  <form className="u-stack" style={{ gap: 8 }} onSubmit={async (e) => { e.preventDefault(); await requestReturn(o.id, why); setReturning(null); setWhy(''); toast(`${o.maker.name} got your return request`); }}>
+                    <input className="inp" placeholder="What’s wrong? (optional)" value={why} onChange={(e) => setWhy(e.target.value)} aria-label="Reason for return" />
+                    <div className="row" style={{ gap: 8 }}><button type="button" className="sec" onClick={() => setReturning(null)}>Cancel</button><button type="submit" className="cta" style={{ flex: 1 }}>Ask for a return</button></div>
+                  </form>
+                ) : <button type="button" className="link m" style={{ fontSize: 13, alignSelf: 'flex-start' }} onClick={() => setReturning(o.id)}>Return this order (14 days)</button>
+              ) : null}
             </article>
           );
         })}
@@ -78,10 +91,26 @@ export default function Account() {
           <Link href="/welcome/taste" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: 52 }}><span>Your taste</span><span className="m" style={{ fontSize: 13 }}>{me.taste.categories.map((c) => CATEGORY_LABEL[c]).join(' · ') || 'Not set'} ›</span></Link>
           <hr className="hr" />
           {row('addr', 'Addresses & payment', '')}
-          {panel('addr', <>Your email: {me.email}. We don’t store cards: payments go through Stripe when they’re live. Your delivery details are filled in at checkout.</>)}
+          {panel('addr', (
+            <form className="u-stack" style={{ gap: 10, color: 'var(--u-ink)' }} onSubmit={async (e) => { e.preventDefault(); await saveAddress(a); setAddr(undefined); toast('Saved. We’ll fill it in at checkout.'); }}>
+              <label className="fld"><span className="lbl">Full name</span><input className="inp" value={a.fullName} onChange={(e) => setAddr({ ...a, fullName: e.target.value })} autoComplete="name" /></label>
+              <label className="fld"><span className="lbl">Phone (for the locker code)</span><input className="inp" type="tel" value={a.phone} onChange={(e) => setAddr({ ...a, phone: e.target.value })} autoComplete="tel" /></label>
+              <label className="fld"><span className="lbl">Parcel locker</span><input className="inp" value={a.locker} onChange={(e) => setAddr({ ...a, locker: e.target.value })} /></label>
+              <label className="fld"><span className="lbl">Home address (optional)</span><input className="inp" value={a.street} onChange={(e) => setAddr({ ...a, street: e.target.value })} autoComplete="street-address" /></label>
+              <span className="m" style={{ fontSize: 12 }}>We don’t store cards. Payment happens at checkout.</span>
+              <button type="submit" className="cta">Save</button>
+            </form>
+          ))}
           <hr className="hr" />
           {row('notif', 'Notifications', '')}
-          {panel('notif', <>You’ll get an email when a maker replies, ships your order or answers a custom request. More settings come with sign-in.</>)}
+          {panel('notif', (
+            <div className="u-stack" style={{ gap: 4, color: 'var(--u-ink)' }}>
+              {([['replies', 'A maker replies to you'], ['shipping', 'Your order ships or arrives'], ['newFromFollowed', 'New pieces from makers you follow']] as const).map(([k, l]) => (
+                <div key={k} className="row" style={{ minHeight: 48 }}><span style={{ flex: 1 }}>{l}</span><button type="button" role="switch" aria-checked={me.notify[k]} aria-label={l} className="tg" onClick={() => saveNotify({ ...me.notify, [k]: !me.notify[k] })}><i /></button></div>
+              ))}
+              <span className="m" style={{ fontSize: 12 }}>By email to {me.email}.</span>
+            </div>
+          ))}
           <hr className="hr" />
           {row('privacy', 'Privacy & your data', '')}
           {panel('privacy', <>This demo keeps your data only in this browser. <button type="button" className="link" onClick={async () => { await resetDemo(); toast('Demo data reset'); }}>Reset demo data</button></>)}

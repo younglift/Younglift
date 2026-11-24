@@ -7,6 +7,7 @@ import { formatEUR, formatEURExact, longDate, shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 /** B9 Order → pack, print the label, mark as shipped (+ tracking). */
@@ -15,7 +16,7 @@ export default function Order() {
   const [o] = useData(() => getStudioOrder(id), [id]);
   const [tracking, setTracking] = useState('');
   const [labelDone, setLabelDone] = useState(false);
-  if (o === undefined) return <Wash />;
+  if (o === undefined) return <Loading />;
   if (o === null) return <main className="u-page"><Wash /><span className="hand">Order not found</span><Link href="/studio/orders" className="cta">Orders</Link></main>;
   const l = o.lines[0];
   const packed = o.status !== 'paid';

@@ -53,6 +53,7 @@ export type Product = {
   shippingCents: number
   makerSticker?: MakerSticker; batchSize?: number; collabMakerId?: string
   status: 'live' | 'draft'
+  privateFor?: string        // private listing made after a custom request: only this buyer sees it
   createdAt: string; restockedAt?: string
   oneOfAKind: boolean        // madeCount === 1 && !madeToOrder
   sold: boolean              // ready, not made to order, stock 0
@@ -80,18 +81,20 @@ export type Order = {
   buyer: { name: string; email: string; city: string }
   gift?: { toName: string; note: string; wrap: boolean }
   shipBy: string; trackingNumber?: string; shippedAt?: string; deliveredAt?: string
+  returnRequestedAt?: string; returnReason?: string
 }
 
-export type Review = { id: string; orderItemId: string; makerId: string; productId: string; rating: number; text: string; who: string; createdAt: string }
+export type Review = { id: string; orderItemId: string; makerId: string; productId: string; rating: number; text: string; who: string; createdAt: string; reply?: string }
 export type PostKind = 'video' | 'journal' | 'in_progress'
 export type Post = { id: string; makerId: string; kind: PostKind; caption: string; imageUrl?: string; seconds?: number; productIds: string[]; showAsStory?: boolean; createdAt: string }
 
-export type ChatMessage = { id: string; makerId: string; fromMe: boolean; text: string; at: string; productId?: string; requestId?: string; imageUrl?: string }
+/** One thread per maker + buyer. fromMe = written by the buyer. buyer defaults to the signed-in buyer ('me'). */
+export type ChatMessage = { id: string; makerId: string; buyer?: string; buyerName?: string; fromMe: boolean; text: string; at: string; productId?: string; requestId?: string; listingId?: string; imageUrl?: string }
 export type BudgetBand = 'under_100' | '100_200' | '200_400' | 'not_sure'
 export type CustomRequest = {
   id: string; makerId: string; kind: string; text: string; photos: string[]
   budget: BudgetBand; when: 'no_rush' | 'by_date'; date?: string
-  status: 'sent' | 'replied' | 'agreed' | 'declined'; createdAt: string; buyerName: string
+  status: 'sent' | 'replied' | 'agreed' | 'declined'; createdAt: string; buyerName: string; listingId?: string
 }
 
 export type MakerApplication = {

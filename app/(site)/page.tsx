@@ -10,6 +10,7 @@ import { SaveButton, useAddToBag } from '@/components/u/Bits';
 import { Back, Chevron } from '@/components/u/Icons';
 import MakerProfile, { makerMeta } from '@/components/u/MakerProfile';
 import Sticker from '@/components/u/Sticker';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from './discover/discover.module.css';
 
@@ -90,10 +91,10 @@ function MakerCard({ item, next, hints, inBag, onNext, index }: { item: FeedItem
       <div className={s.track} ref={track} onScroll={onScroll}>
         {/* 1 · the piece */}
         <div className={s.panel}>
-          <div className={`${s.photo} ${hints && index === 0 ? s.nudge : ''}`}>
+          <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.photo} ${hints && index === 0 ? s.nudge : ''}`}>
             <img src={p.images[0]} alt={`${p.title} by ${m.name}`} />
             <img src={m.video?.posterUrl ?? m.portraitUrl} alt="" aria-hidden="true" className={s.peek} />
-          </div>
+          </Link>
           {mk ? <span className={s.stk}><Sticker k={mk} city={m.city} width={mk === 'one_of_one' ? 104 : 120} /></span> : null}
           {up ? <span className={mk ? s.stk2 : s.stk}><Sticker k={up} width={118} tilt={mk ? 6 : -8} /></span> : null}
           <PieceBox item={item} sel={sel} setSel={setSel} inBag={inBag} onProfile={() => go(2)} />
@@ -113,7 +114,7 @@ function MakerCard({ item, next, hints, inBag, onNext, index }: { item: FeedItem
             <div className={`gs ${s.upnext}`}><img src={next.portraitUrl} alt="" className="u-avatar" /><span>Up next · {next.name}</span><span className="m" style={{ fontWeight: 400 }}>swipe up ↑</span></div>
           ) : null}
           <div className={`g ${s.mini}`}>
-            <button type="button" onClick={() => go(0)} aria-label={`See ${p.title}`}><img src={p.images[0]} alt="" /></button>
+            <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ lineHeight: 0 }}><img src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 14, objectFit: 'cover', display: 'block' }} /></Link>
             <span style={{ flex: 1, minWidth: 0 }}><span className="hand">{p.title}</span><span style={{ font: '600 15px var(--u-ui)' }}>{formatEUR(p.priceCents)}</span></span>
             <MiniAdd p={p} inBag={inBag} />
           </div>
@@ -180,7 +181,8 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
   return (
     <div className={s.desk}>
       <div className={s.stage}>
-        {step < 2 ? <img src={bg} alt={step === 0 ? `${p.title} by ${m.name}` : `${m.name} at work`} /> : null}
+        {step === 0 ? <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ position: 'absolute', inset: 0, zIndex: 1 }}><img src={bg} alt={`${p.title} by ${m.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 45%' }} /></Link> : null}
+        {step === 1 ? <img src={bg} alt={`${m.name} at work`} /> : null}
         {step < 2 ? <div className={s.stageShade} /> : null}
         {step === 2 ? <div className={s.dprofile}><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
         <div className={s.dbars}>{[0, 1, 2].map((i) => <span key={i} className={i <= step ? s.on : ''} />)}</div>
@@ -232,7 +234,7 @@ export default function Discover() {
   const feed = useRef<HTMLDivElement>(null);
   useEffect(() => { if (me && !me.onboarded) router.replace('/welcome'); }, [me, router]);
   const inBag = useMemo(() => new Set((bag?.groups ?? []).flatMap((g) => g.lines.map((l) => l.productId))), [bag]);
-  if (!me || !me.onboarded || !items) return <Wash />;
+  if (!me || !me.onboarded || !items) return <Loading />;
   const scrollTo = (i: number) => feed.current?.scrollTo({ top: i * feed.current.clientHeight, behavior: 'smooth' });
 
   return (

@@ -5,13 +5,14 @@ import { Suspense } from 'react';
 import { getOrderGroup } from '@/lib/data';
 import { longDate, plural, shipsLine } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 /** 07 Thank you. */
 function Done() {
   const g = useSearchParams().get('g') ?? '';
   const [orders] = useData(() => getOrderGroup(g), [g]);
-  if (!orders) return <Wash />;
+  if (!orders) return <Loading />;
   if (!orders.length) return <main className="u-page narrow"><Wash /><span className="hand">Order not found</span><Link href="/account" className="cta">Your orders</Link></main>;
   const first = orders[0];
   const names = orders.map((o) => o.maker.name);
@@ -45,4 +46,4 @@ function Done() {
     </>
   );
 }
-export default function DonePage() { return <Suspense fallback={<Wash />}><Done /></Suspense>; }
+export default function DonePage() { return <Suspense fallback={<Loading />}><Done /></Suspense>; }

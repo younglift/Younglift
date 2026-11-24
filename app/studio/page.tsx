@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getMostLoved, getMyMaker, getStats, getStudioOrders, getStudioProducts, getStudioRequests } from '@/lib/data';
 import { dayName, formatEUR, monthName, plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Welcome from './welcome/Checklist';
 import s from './studio.module.css';
@@ -15,7 +16,7 @@ export default function Today() {
   const [reqs] = useData(getStudioRequests);
   const [pieces] = useData(getStudioProducts);
   const [loved] = useData(getMostLoved);
-  if (!me || !orders || !stats || !pieces) return <Wash />;
+  if (!me || !orders || !stats || !pieces) return <Loading />;
   if (me.status !== 'live') return <Welcome />;
   const now = new Date();
   const toShip = orders.filter((o) => o.status === 'paid' || o.status === 'packing');

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { getStudioProducts } from '@/lib/data';
 import { formatEUR, plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 
@@ -11,7 +12,7 @@ import s from '../studio.module.css';
 export default function Pieces() {
   const [list] = useData(getStudioProducts);
   const [f, setF] = useState<'all' | 'live' | 'sold' | 'draft'>('all');
-  if (!list) return <Wash />;
+  if (!list) return <Loading />;
   const state = (p: (typeof list)[number]) => (p.status === 'draft' ? 'draft' : p.sold ? 'sold' : 'live');
   const shown = list.filter((p) => f === 'all' || state(p) === f);
   const live = list.filter((p) => state(p) === 'live').length;

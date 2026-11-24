@@ -4,6 +4,7 @@ import { createBoard, deleteBoard, getBoards, getMakers, getSaved, removeFromBoa
 import { plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { ProductCard } from '@/components/u/Bits';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 /** 06 Saved + boards. */
@@ -15,7 +16,7 @@ export default function Saved() {
   const [naming, setNaming] = useState(false);
   const [name, setName] = useState('');
   const byId = useMemo(() => new Map((makers ?? []).map((m) => [m.id, m])), [makers]);
-  if (!saved || !boards) return <Wash />;
+  if (!saved || !boards) return <Loading />;
   const board = boards.find((b) => b.id === open);
   const list = board ? saved.filter((p) => board.productIds.includes(p.id)) : saved;
   const tile = (key: string, title: string, ids: string[]) => {

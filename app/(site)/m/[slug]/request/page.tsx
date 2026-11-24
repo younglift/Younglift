@@ -6,6 +6,7 @@ import type { BudgetBand, Category } from '@/lib/types';
 import { BUDGET_LABEL, getMaker, getProduct, replyLine, sendCustomRequest, uploadImage } from '@/lib/data';
 import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 const KINDS: Partial<Record<Category, string[]>> = {
@@ -31,7 +32,7 @@ export default function CustomRequest() {
   const [tried, setTried] = useState(false);
   const file = useRef<HTMLInputElement>(null);
   useEffect(() => { const like = q.get('like'); if (like) getProduct(like).then((d) => d && setPhotos([d.product.images[0]])); }, [q]);
-  if (!m) return <Wash />;
+  if (!m) return <Loading />;
   const ok = !!kind && text.trim().length > 5 && !!budget && (when === 'no_rush' || !!date.trim());
   const send = async () => {
     setTried(true); if (!ok) return;

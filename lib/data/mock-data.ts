@@ -140,6 +140,7 @@ export function seedMessages(): ChatMessage[] {
     { id: 'm4', makerId: 'inez', fromMe: false, text: 'If you order today I’ll send it tomorrow morning. Parcel lockers take 2–3 days.', at: t(65) },
     { id: 'm5', makerId: 'mara', fromMe: false, text: 'Glazes are ready, sending a photo soon', at: t(60 * 24 * 2) },
     { id: 'm6', makerId: 'ula', fromMe: false, text: 'Thanks for the review!', at: t(60 * 24 * 22) },
+    { id: 'm7', makerId: 'mara', buyer: 'jonas', buyerName: 'Jonas', fromMe: true, text: 'Hi Mara, could the candle cups come in a set of two with a box?', at: t(60 * 20) },
   ];
 }
 
@@ -173,4 +174,8 @@ export function seedOrders(): OrderSeed[] {
   ];
 }
 
-export const DEMO_ME = { id: 'me', name: 'Lina', email: 'lina@example.com', city: 'Vilnius', since: '2026-11-01' };
+export const DEMO_ME = {
+  id: 'me', name: 'Lina', email: 'lina@example.com', city: 'Vilnius', since: '2026-11-01',
+  address: { fullName: 'Lina K.', phone: '', locker: 'Omniva · Vilnius, Užupio g. 9', street: '' },
+  notify: { replies: true, shipping: true, newFromFollowed: false },
+};

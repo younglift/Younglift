@@ -5,7 +5,7 @@
 .track{position:absolute;inset:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .track::-webkit-scrollbar{display:none}
 .panel{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;overflow:hidden}
-.photo{position:absolute;inset:0;z-index:1}
+.photo{position:absolute;inset:0;z-index:1;display:block;cursor:pointer}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .nudge{animation:nudge 1.5s cubic-bezier(.45,0,.25,1) 1s 2}
 @keyframes nudge{0%,100%{transform:translateX(0)}45%,60%{transform:translateX(-64px)}}
@@ -74,7 +74,7 @@
   .desk{display:block;position:fixed;inset:0;z-index:1}
   .stage{position:absolute;left:24px;right:24px;top:96px;bottom:84px;border-radius:32px;overflow:hidden;z-index:2;max-width:1392px;margin:0 auto}
   .stage > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
-  .stageShade{position:absolute;inset:0;background:linear-gradient(90deg,var(--u-shade),transparent 45%),linear-gradient(var(--u-shade),transparent 25%);opacity:.75}
+  .stageShade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,var(--u-shade),transparent 45%),linear-gradient(var(--u-shade),transparent 25%);opacity:.75}
   .dbars{position:absolute;left:24px;right:24px;top:16px;display:flex;gap:6px;z-index:3}
   .dbars span{flex:1;height:3px;border-radius:2px;background:var(--u-track)}
   .dbars span.on{background:var(--u-ink)}

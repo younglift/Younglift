@@ -9,6 +9,7 @@ import { BackButton, SaveButton, useAddToBag } from '@/components/u/Bits';
 import { Close } from '@/components/u/Icons';
 import MakerProfile from '@/components/u/MakerProfile';
 import Sticker from '@/components/u/Sticker';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from './product.module.css';
 
@@ -24,12 +25,13 @@ export default function ProductPage() {
   const [bag] = useData(getBag);
   const [img, setImg] = useState(0);
   const [size, setSize] = useState<string>();
+  const [guide, setGuide] = useState(false);
   if (data === null) return (<main className="u-page"><Wash /><BackButton /><span className="hand" style={{ fontSize: 22 }}>This piece is gone</span><Link href="/explore" className="cta">Explore</Link></main>);
-  if (!data) return <Wash />;
+  if (!data) return <Loading />;
   const { product: p, maker: m } = data;
   const inBag = (bag?.groups ?? []).some((g) => g.lines.some((l) => l.productId === p.id));
   const r = replyLine(m);
-  const tags = p.sold ? ['Sold', p.oneOfAKind ? '1 of 1' : `${p.madeCount} made`] : [p.oneOfAKind ? '1 of 1' : p.madeToOrder ? (p.sizes ? 'Made to size' : 'Made to order') : p.madeCount > 1 ? `${p.stock} of ${p.madeCount} left` : '', ...p.materials, shipsLine(p)].filter(Boolean);
+  const tags = p.privateFor ? ['Only for you', shipsLine({ madeToOrder: true, shipsWithinDays: p.shipsWithinDays })] : p.sold ? ['Sold', p.oneOfAKind ? '1 of 1' : `${p.madeCount} made`] : [p.oneOfAKind ? '1 of 1' : p.madeToOrder ? (p.sizes ? 'Made to size' : 'Made to order') : p.madeCount > 1 ? `${p.stock} of ${p.madeCount} left` : '', ...p.materials, shipsLine(p)].filter(Boolean);
   const close = () => (window.history.length > 1 ? router.back() : router.push(`/m/${m.slug}`));
   const sizeLabel = p.sizes?.label ?? 'Size';
   const addIt = async () => {
@@ -74,7 +76,7 @@ export default function ProductPage() {
             <>
               {p.sizes ? (
                 <div id="sizes" className="u-stack" style={{ gap: 8 }}>
-                  <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">{sizeLabel}</span><Link href={`/messages/${m.slug}?piece=${p.id}`} className="m" style={{ fontSize: 13 }}>Size guide</Link></div>
+                  <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">{sizeLabel}</span><button type="button" className="link m" style={{ fontSize: 13 }} onClick={() => setGuide(true)}>Size guide</button></div>
                   <div className={s.sizes} style={{ gridTemplateColumns: `repeat(${Math.min(6, p.sizes.options.length)},1fr)` }}>
                     {p.sizes.options.map((o) => <button key={o} type="button" aria-pressed={size === o} disabled={p.sizes!.unavailable?.includes(o)} onClick={() => setSize(o)}>{o}</button>)}
                   </div>
@@ -109,6 +111,27 @@ export default function ProductPage() {
           ) : null}
         </div>
       </div>
+      {guide && p.sizes ? (
+        <>
+          <div className="u-scrim" onClick={() => setGuide(false)} />
+          <div role="dialog" aria-modal="true" aria-label="Size guide" className="u-sheet g">
+            <div className="row" style={{ justifyContent: 'space-between' }}><span className="hand" style={{ fontSize: 18 }}>Size guide</span><button type="button" className="ic" aria-label="Close" onClick={() => setGuide(false)}>✕</button></div>
+            <div className="body" style={{ fontSize: 14, lineHeight: 1.55 }}>
+              {p.category === 'jewelry' ? (
+                <>
+                  <span>EU ring size = the inside circumference of the ring in millimetres.</span>
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead><tr><th style={{ textAlign: 'left', padding: '6px 0' }} className="lbl">EU size</th><th style={{ textAlign: 'left' }} className="lbl">Inside Ø</th><th style={{ textAlign: 'left' }} className="lbl">Circumference</th></tr></thead>
+                    <tbody>{p.sizes.options.map((o) => { const c = parseFloat(o); return <tr key={o} style={{ borderTop: '1px solid var(--u-line)' }}><td style={{ padding: '8px 0' }}>{o}</td><td>{(c / Math.PI).toFixed(1)} mm</td><td>{c} mm</td></tr>; })}</tbody>
+                  </table>
+                  <span className="m">How to measure: wrap a strip of paper around the finger you want, mark where it meets, and measure the length in mm. That number is your EU size.</span>
+                </>
+              ) : <span>{p.description}</span>}
+              <Link href={`/messages/${m.slug}?piece=${p.id}`} className="sec gs">Still not sure? Ask {m.name}</Link>
+            </div>
+          </div>
+        </>
+      ) : null}
       <span className={s.back}><BackButton href={`/m/${m.slug}`} label={`Back`} /></span>
       <span className={s.save}><SaveButton p={p} /></span>
       <div className={`g ${s.bar}`}>

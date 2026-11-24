@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { getStudioOrders } from '@/lib/data';
 import { dayName, formatEURExact, shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 
@@ -13,7 +14,7 @@ const LABEL: Record<string, string> = { paid: 'To pack', packing: 'Packing', shi
 export default function Orders() {
   const [orders] = useData(getStudioOrders);
   const [f, setF] = useState<'open' | 'done'>('open');
-  if (!orders) return <Wash />;
+  if (!orders) return <Loading />;
   const open = orders.filter((o) => o.status === 'paid' || o.status === 'packing');
   const shown = f === 'open' ? open : orders.filter((o) => !open.includes(o));
   return (

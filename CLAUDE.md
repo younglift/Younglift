@@ -2,12 +2,15 @@
 
 Marketplace for handmade makers (jewellery, ceramics, crochet and more). Two founders work in this repo: Justinas and Matas.
 
-## Current state
-- `prototype/index.html` + `prototype/img/` is the clickable prototype (Round 2, all 12 steps locked) and the source of truth for screens.
-- The app is Next.js (App Router, TypeScript). UI gets data only from `@/lib/data` (mock today, Supabase later). See `docs/ai/SHARED.md`.
+## Current state (updated 2026-11-24)
+- The app is built on design 07: buyer and maker journeys, phone and desktop (breakpoint 820px). Screens spec: `docs/design/screens/`, handoff: `docs/design/HANDOFF-07.md`. `prototype/` is history only.
+- UI gets data only from `@/lib/data`. Today it is a mock backend in `lib/data/mock.ts` that already follows the real rules (15-minute holds on one-of-a-kind pieces, stickers computed from data, one order per maker, applications → approve, reviews only after delivery, private listings after custom requests). State lives in the browser's localStorage. Supabase replaces it later with the same function signatures. Types: `lib/types.ts`.
+- Not connected yet: sign-in, Supabase, Stripe, emails. `/admin` (application review) is open until sign-in exists.
+- Routes: buyer `/`, `/welcome`, `/explore`, `/p/[id]`, `/m/[slug]`, `/m/[slug]/request`, `/saved`, `/following`, `/messages`, `/bag`, `/checkout`, `/account`; maker `/sell`, `/sell/apply`, `/studio/*`; admin `/admin`.
+- Shared UI: `app/u.css` (classes `.g .gs .cta .sec .ic .chip .tg .inp …` on `--u-*` tokens) and `components/u/`.
 
 ## What is locked and what is open (updated 2026-11-12)
-**LOCKED: flows and behaviour.** The prototype defines which screens exist, what opens what, the order of steps, and how things move (vertical feed, swipe sideways through a maker, taste setup, bag, checkout, Studio). Do not change these without both founders' OK.
+**LOCKED: flows and behaviour.** The 07 screens define which screens exist, what opens what, the order of steps, and how things move (vertical feed, swipe sideways through a maker: piece → her video → her profile, taste setup, bag bought per maker with "Pay for all", checkout, Studio). Both founders approved these on 2026-11-24. Do not change them without both founders' OK.
 
 **OPEN: the visual look (design phase, ~3 days, led by Matas).** Colours, fonts, buttons, cards, spacing, imagery and mood are being redesigned step by step, following the buyer journey first, then the maker journey. Progress lives in `docs/design/JOURNEY.md`. Decided styles go into the tokens in `app/globals.css`, and that file is the single source of truth for the look.
 - Until a step is marked decided in `docs/design/JOURNEY.md`, the current look below stays the default.

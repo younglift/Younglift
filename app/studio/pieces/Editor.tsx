@@ -9,6 +9,7 @@ import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import Sticker, { STICKER_LABEL, stickerSrc } from '@/components/u/Sticker';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 
@@ -39,7 +40,7 @@ export default function Editor({ initial }: { initial?: Product }) {
   const [confirmDel, setConfirmDel] = useState(false);
   const file = useRef<HTMLInputElement>(null);
   useEffect(() => { if (!initial && me) setCategory(me.categories[0] ?? 'other'); }, [me, initial]);
-  if (!me) return <Wash />;
+  if (!me) return <Loading />;
   const n = parseInt(qty, 10) || 0;
   const one = !mto && n === 1;
   const allowed = (k: MakerSticker | 'none') => k === 'none' || (k === 'one_of_one' ? one : k === 'made_to_order' ? mto : true);
@@ -64,14 +65,22 @@ export default function Editor({ initial }: { initial?: Product }) {
   const form = (
     <div className="u-stack">
       <div className="g u-card u-stack">
-        <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">Photos</span><span className="m" style={{ fontSize: 12 }}>{images.length} of up to 8 · tap one to make it the cover</span></div>
+        <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">Photos</span><span className="m" style={{ fontSize: 12 }}>{images.length} of up to 8 · drag or use ← → to reorder</span></div>
         <div className={s.photos}>
           {images.map((u, i) => (
-            <span key={u.slice(-24) + i} style={{ position: 'relative' }}>
+            <span key={u.slice(-24) + i} style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}
+              draggable onDragStart={(e) => e.dataTransfer.setData('text/plain', String(i))} onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => { e.preventDefault(); const from = Number(e.dataTransfer.getData('text/plain')); if (Number.isNaN(from) || from === i) return; const a = [...images]; const [x] = a.splice(from, 1); a.splice(i, 0, x); setImages(a); }}>
               <button type="button" className={s.photo} aria-label={i ? 'Make this the cover photo' : 'Cover photo'} onClick={() => setImages([u, ...images.filter((_, j) => j !== i)])}>
                 <img src={u} alt="" className="u-cover" />{i === 0 ? <span className="u-badge" style={{ top: 'auto', bottom: 6, left: 6 }}>Cover</span> : null}
               </button>
               <button type="button" className={`gs ${s.x}`} aria-label="Remove photo" onClick={() => setImages(images.filter((_, j) => j !== i))}>✕</button>
+              {images.length > 1 ? (
+                <span style={{ display: 'flex', gap: 2 }}>
+                  <button type="button" className="ic" style={{ width: 40, height: 32 }} aria-label="Move photo left" disabled={!i} onClick={() => { const a = [...images]; [a[i - 1], a[i]] = [a[i], a[i - 1]]; setImages(a); }}>←</button>
+                  <button type="button" className="ic" style={{ width: 40, height: 32 }} aria-label="Move photo right" disabled={i === images.length - 1} onClick={() => { const a = [...images]; [a[i + 1], a[i]] = [a[i], a[i + 1]]; setImages(a); }}>→</button>
+                </span>
+              ) : null}
             </span>
           ))}
           {images.length < 8 ? <button type="button" className={`gs ${s.add}`} aria-label="Add photos" onClick={() => file.current?.click()}>+</button> : null}

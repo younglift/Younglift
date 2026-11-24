@@ -5,6 +5,7 @@ import { getChecklist, getMyMaker, goLive } from '@/lib/data';
 import { useData } from '@/lib/useData';
 import Sticker from '@/components/u/Sticker';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 
@@ -13,7 +14,7 @@ export default function Checklist() {
   const router = useRouter();
   const [me] = useData(getMyMaker);
   const [c] = useData(getChecklist);
-  if (!me || !c) return <Wash />;
+  if (!me || !c) return <Loading />;
   const rows = [
     { done: c.steps.profile, href: '/studio/profile', t: 'Set up your profile', d: 'Photo, a few words, three pieces for your collage' },
     { done: c.steps.pieces, href: '/studio/pieces/new', t: 'Add your first pieces', d: `At least 3, so buyers have something to look at${c.pieces ? ` · ${c.pieces} so far` : ''}` },

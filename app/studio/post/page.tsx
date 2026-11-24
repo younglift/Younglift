@@ -6,6 +6,7 @@ import { createPost, getMyMaker, getStudioProducts, uploadImage } from '@/lib/da
 import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 /** B6 Share something: video, journal post, or "in progress" (adds the In progress sticker to that piece). */
@@ -20,7 +21,7 @@ export default function Post() {
   const [story, setStory] = useState(true);
   const [captions, setCaptions] = useState(true);
   const file = useRef<HTMLInputElement>(null);
-  if (!me || !pieces) return <Wash />;
+  if (!me || !pieces) return <Loading />;
   const live = pieces.filter((p) => p.status === 'live');
   const pick = (id: string) => setIds(kind === 'in_progress' ? [id] : ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]);
   const ok = caption.trim() && (kind !== 'video' || img) && (kind !== 'in_progress' || ids.length === 1);

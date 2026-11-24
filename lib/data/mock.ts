@@ -14,7 +14,7 @@ import {
 export const HOLD_MINUTES = 15;
 const MY_CART = 'me';
 const DAY = 864e5;
-const KEY = 'uplift-demo-v1';
+const KEY = 'uplift-demo-v2';
 
 type State = ReturnType<typeof fresh>;
 function fresh() {
@@ -119,12 +119,16 @@ function rating(makerId: string) {
 function viewMaker(m: Maker): Maker {
   return { ...m, isFollowing: state.follows.includes(m.id), rating: rating(m.id) };
 }
-const visible = (p: Product) => p.status === 'live' && makerOf(p.makerId)?.status === 'live';
+const visible = (p: Product) => p.status === 'live' && makerOf(p.makerId)?.status === 'live' && !p.privateFor;
+/** Private listings are visible (and buyable) only for the buyer they were made for. */
+const buyable = (p: Product) => p.status === 'live' && makerOf(p.makerId)?.status === 'live' && (!p.privateFor || p.privateFor === MY_CART);
 
 // ---------- buyer: browse ----------
 
 export async function getMe() { load(); return clone(state.me); }
 export async function saveTaste(t: Taste) { load(); state.me.taste = clone(t); state.me.onboarded = true; save(); }
+export async function saveAddress(a: typeof DEMO_ME.address) { load(); state.me.address = clone(a); save(); }
+export async function saveNotify(n: typeof DEMO_ME.notify) { load(); state.me.notify = clone(n); save(); }
 export async function markOnboarded() { load(); state.me.onboarded = true; save(); }
 export async function markHintsSeen() { load(); if (!state.me.hintsSeen) { state.me.hintsSeen = true; save(); } }
 
@@ -150,7 +154,7 @@ export async function getFeed(): Promise<FeedItem[]> {
 }
 function productsFor(makerId: string) {
   const m = makerOf(makerId);
-  const list = state.products.filter((p) => p.makerId === makerId && p.status === 'live').map(view);
+  const list = state.products.filter((p) => p.makerId === makerId && visible(p)).map(view);
   // collage pieces first, available before sold
   const order = (p: Product) => (m?.collage.indexOf(p.id) ?? -1) >= 0 ? m!.collage.indexOf(p.id) : 9;
   return list.sort((a, b) => Number(a.sold) - Number(b.sold) || order(a) - order(b));
@@ -165,6 +169,7 @@ export async function getMaker(slug: string): Promise<Maker | null> {
 export async function getMakerProducts(makerId: string): Promise<Product[]> { load(); return clone(productsFor(makerId)); }
 export async function getProduct(id: string): Promise<{ product: Product; maker: Maker } | null> {
   load(); const p = productOf(id); const m = p && makerOf(p.makerId);
+  if (p?.privateFor && p.privateFor !== MY_CART) return null;
   return p && m ? clone({ product: view(p), maker: viewMaker(m) }) : null;
 }
 export async function getPosts(makerId: string): Promise<Post[]> {
@@ -297,7 +302,7 @@ export type AddResult = { ok: true } | { ok: false; reason: 'sold' | 'held' | 's
 export async function addToBag(line: BagLine): Promise<AddResult> {
   load();
   const p = productOf(line.productId);
-  if (!p || !visible(p)) return { ok: false, reason: 'missing' };
+  if (!p || !buyable(p)) return { ok: false, reason: 'missing' };
   if (p.sold) return { ok: false, reason: 'sold' };
   if (p.sizes && !line.variant?.[p.sizes.label]) return { ok: false, reason: 'size' };
   if (p.oneOfAKind) {
@@ -358,6 +363,7 @@ export async function placeOrder(input: CheckoutInput): Promise<CheckoutResult> 
   if (!q.rows.length) return { ok: false, reason: 'Your bag is empty.' };
   for (const r of q.rows) for (const l of r.lines) {
     const p = productOf(l.productId)!;
+    if (!buyable(p)) return { ok: false, reason: `${p.title} is no longer available.` };
     if (p.sold || (!p.madeToOrder && p.stock < l.qty)) return { ok: false, reason: `${p.title} just sold out.` };
     if (p.oneOfAKind && heldByOther(p.id)) return { ok: false, reason: `${p.title} is in someone else’s bag right now.` };
   }
@@ -394,6 +400,16 @@ export async function getOrders(): Promise<(Order & { maker: Maker; reviewed: bo
 export async function getOrderGroup(groupId: string) {
   load(); return clone(state.orders.filter((o) => o.paymentGroupId === groupId).map((o) => ({ ...o, maker: viewMaker(makerOf(o.makerId)!) })));
 }
+/** 14-day returns on ready pieces (not made to order or private/custom). Sends the maker a note. */
+export function canReturn(o: Order) {
+  return o.status === 'delivered' && !o.returnRequestedAt && !!o.deliveredAt && now() - new Date(o.deliveredAt).getTime() < 14 * DAY && o.lines.every((l) => !l.product.madeToOrder && !l.product.privateFor);
+}
+export async function requestReturn(orderId: string, reason: string) {
+  load(); const o = state.orders.find((x) => x.id === orderId); if (!o || !isMine(o) || !canReturn(o)) return false;
+  o.returnRequestedAt = new Date().toISOString(); o.returnReason = reason.trim();
+  state.messages.push({ id: uid('m'), makerId: o.makerId, fromMe: true, at: o.returnRequestedAt, text: `I’d like to return order #UL-${o.number}${reason.trim() ? `: ${reason.trim()}` : '.'}` });
+  save(); return true;
+}
 /** Only the buyer of a delivered order can review it. */
 export async function addReview(orderId: string, productId: string, rating: number, text: string) {
   load(); const o = state.orders.find((x) => x.id === orderId);
@@ -417,7 +433,7 @@ export async function getThreads() {
   load();
   const out: { maker: Maker; last: ChatMessage; unread: boolean }[] = [];
   for (const m of state.makers) {
-    const msgs = state.messages.filter((x) => x.makerId === m.id);
+    const msgs = state.messages.filter((x) => x.makerId === m.id && (x.buyer ?? MY_CART) === MY_CART);
     if (!msgs.length) continue;
     const last = msgs[msgs.length - 1];
     out.push({ maker: viewMaker(m), last, unread: !last.fromMe && !state.readThreads.includes(`${m.id}:${last.id}`) });
@@ -425,9 +441,9 @@ export async function getThreads() {
   return clone(out.sort((a, b) => b.last.at.localeCompare(a.last.at)));
 }
 export async function getUnreadCount() { return (await getThreads()).filter((t) => t.unread).length; }
-export async function getMessages(makerId: string) { load(); return clone(state.messages.filter((x) => x.makerId === makerId)); }
+export async function getMessages(makerId: string) { load(); return clone(state.messages.filter((x) => x.makerId === makerId && (x.buyer ?? MY_CART) === MY_CART)); }
 export async function markThreadRead(makerId: string) {
-  load(); const msgs = state.messages.filter((x) => x.makerId === makerId); const last = msgs[msgs.length - 1];
+  load(); const msgs = state.messages.filter((x) => x.makerId === makerId && (x.buyer ?? MY_CART) === MY_CART); const last = msgs[msgs.length - 1];
   if (last && !last.fromMe && !state.readThreads.includes(`${makerId}:${last.id}`)) { state.readThreads.push(`${makerId}:${last.id}`); save(); }
 }
 export async function sendMessage(makerId: string, text: string, productId?: string, imageUrl?: string): Promise<ChatMessage | null> {
@@ -563,17 +579,54 @@ export async function createPost(p: { kind: PostKind; caption: string; imageUrl?
   save(); return clone(post);
 }
 export async function getStudioRequests() { load(); return clone(state.requests.filter((r) => r.makerId === state.myMakerId)); }
+/** Studio inbox: one thread per buyer. */
 export async function getStudioThreads() {
   load(); const msgs = state.messages.filter((x) => x.makerId === state.myMakerId);
-  return msgs.length ? clone([{ buyer: state.me.name, last: msgs[msgs.length - 1], count: msgs.length }]) : [];
+  const keys = Array.from(new Set(msgs.map((x) => x.buyer ?? MY_CART)));
+  return clone(keys.map((k) => {
+    const mine = msgs.filter((x) => (x.buyer ?? MY_CART) === k);
+    const last = mine[mine.length - 1];
+    return { buyer: k, name: k === MY_CART ? state.me.name : mine.find((x) => x.buyerName)?.buyerName ?? 'Buyer', last, count: mine.length, waiting: last.fromMe };
+  }).sort((a, b) => b.last.at.localeCompare(a.last.at)));
 }
-/** Maker answers the buyer (studio side of the same thread). */
-export async function replyAsMaker(text: string) {
+export async function getStudioMessages(buyer: string) {
+  load(); return clone(state.messages.filter((x) => x.makerId === state.myMakerId && (x.buyer ?? MY_CART) === buyer));
+}
+/** Maker answers a buyer (studio side of the same thread). */
+export async function replyAsMaker(text: string, buyer: string = MY_CART) {
   load(); const m = state.myMakerId && makerOf(state.myMakerId); if (!m || !text.trim()) return;
-  state.messages.push({ id: uid('m'), makerId: m.id, fromMe: false, text: text.trim(), at: new Date().toISOString() });
+  state.messages.push({ id: uid('m'), makerId: m.id, buyer: buyer === MY_CART ? undefined : buyer, fromMe: false, text: text.trim(), at: new Date().toISOString() });
   m.lastActiveAt = new Date().toISOString();
-  state.requests.filter((r) => r.makerId === m.id && r.status === 'sent').forEach((r) => { r.status = 'replied'; });
+  if (buyer === MY_CART) state.requests.filter((r) => r.makerId === m.id && r.status === 'sent').forEach((r) => { r.status = 'replied'; });
   save();
+}
+/** After a custom request: the maker sends a private listing only that buyer can see and buy. */
+export async function sendPrivateListing(requestId: string, l: { title: string; priceCents: number; shipsWithinDays: number; description: string; imageUrl?: string }) {
+  load(); const r = state.requests.find((x) => x.id === requestId && x.makerId === state.myMakerId); const m = r && makerOf(r.makerId);
+  if (!r || !m) return null;
+  const p: Product = {
+    id: uid('p'), makerId: m.id, title: l.title.trim() || `${r.kind} for ${r.buyerName}`, description: l.description.trim(), subtitle: `Made for ${r.buyerName}`,
+    priceCents: l.priceCents, currency: 'EUR', images: [l.imageUrl || r.photos[0] || m.coverUrl], category: m.categories[0], materials: [],
+    madeToOrder: false, stock: 1, madeCount: 1, shipsWithinDays: l.shipsWithinDays || 14, shippingCents: 490, status: 'live',
+    privateFor: MY_CART, createdAt: new Date().toISOString(), oneOfAKind: true, sold: false,
+  };
+  state.products.unshift(p);
+  r.status = 'agreed'; r.listingId = p.id;
+  state.messages.push({ id: uid('m'), makerId: m.id, fromMe: false, text: `Here is your private listing: ${p.title}. Only you can see it.`, at: new Date().toISOString(), listingId: p.id });
+  m.lastActiveAt = new Date().toISOString();
+  save(); return clone(p);
+}
+export async function declineRequest(requestId: string) {
+  load(); const r = state.requests.find((x) => x.id === requestId && x.makerId === state.myMakerId); if (!r) return;
+  r.status = 'declined';
+  state.messages.push({ id: uid('m'), makerId: r.makerId, fromMe: false, text: 'Thank you for asking! I can’t take this one on right now.', at: new Date().toISOString(), requestId: r.id });
+  save();
+}
+/** Reviews of my studio, and my public reply under one. */
+export async function getStudioReviews() { load(); return clone(state.reviews.filter((r) => r.makerId === state.myMakerId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map((r) => ({ ...r, productTitle: productOf(r.productId)?.title ?? '' }))); }
+export async function replyToReview(reviewId: string, text: string) {
+  load(); const r = state.reviews.find((x) => x.id === reviewId && x.makerId === state.myMakerId); if (!r) return;
+  r.reply = text.trim() || undefined; save();
 }
 export async function getPayouts() { load(); return state.myMakerId ? (state.payouts[state.myMakerId] ?? 'not_connected') : 'not_connected'; }
 /** Test mode until Stripe Connect is set up: marks payouts as connected. */

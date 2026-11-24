@@ -6,6 +6,7 @@ import { getCategories } from '@/lib/data';
 import { plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { Search } from '@/components/u/Icons';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Results from './Results';
 import s from './explore.module.css';
@@ -44,4 +45,4 @@ function Explore() {
     </>
   );
 }
-export default function ExplorePage() { return <Suspense fallback={<Wash />}><Explore /></Suspense>; }
+export default function ExplorePage() { return <Suspense fallback={<Loading />}><Explore /></Suspense>; }

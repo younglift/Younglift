@@ -4,12 +4,13 @@ import { CATEGORY_LABEL, approveApplication, getApplications, rejectApplication,
 import { shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 /** Admin: review maker applications (approve / reject). Not designed yet; plain on purpose. Sign-in will protect it. */
 export default function Admin() {
   const [apps] = useData(getApplications);
-  if (!apps) return <Wash />;
+  if (!apps) return <Loading />;
   const pending = apps.filter((a) => a.status === 'pending');
   const done = apps.filter((a) => a.status !== 'pending');
   return (

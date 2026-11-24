@@ -4,6 +4,7 @@ import { formatEURExact } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 const FEE = 0.1; // example only: the final fee is decided before launch
@@ -12,7 +13,7 @@ const FEE = 0.1; // example only: the final fee is decided before launch
 export default function Payouts() {
   const [st] = useData(getPayouts);
   const [pieces] = useData(getStudioProducts);
-  if (!st) return <Wash />;
+  if (!st) return <Loading />;
   const ex = pieces?.find((p) => p.status === 'live') ?? { title: 'Speckled plates', priceCents: 9600 };
   const fee = Math.round(ex.priceCents * FEE);
   const on = st === 'connected';

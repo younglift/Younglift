@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getFollowing, getFollowingFeed, getMakers, toggleFollow } from '@/lib/data';
 import { ago, plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 /** 06 Following: your makers (stories row), what's new from them, unfollow in one tap. */
@@ -15,7 +16,7 @@ export default function Following() {
   // Keep makers you just unfollowed on screen, so "+ Follow" brings them back in one tap.
   const [ids, setIds] = useState<string[]>();
   useEffect(() => { if (followed) setIds((x) => Array.from(new Set([...(x ?? []), ...followed.map((m) => m.id)]))); }, [followed]);
-  if (!followed || !feed || !everyone || !ids) return <Wash />;
+  if (!followed || !feed || !everyone || !ids) return <Loading />;
   const makers = everyone.filter((m) => ids.includes(m.id));
   const byId = new Map(makers.map((m) => [m.id, m]));
   const recent = new Set(feed.filter((x) => Date.now() - new Date(x.at).getTime() < 7 * 864e5).map((x) => x.makerId));

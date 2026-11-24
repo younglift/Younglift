@@ -8,6 +8,7 @@ import { formatEURExact, plural } from '@/lib/format';
 import { useData, useNow } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import { Lock } from '@/components/u/Icons';
+import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 
 /** Next cut-off for "ships today if you order in …": 15:00 local time on weekdays. */
@@ -38,8 +39,8 @@ function Checkout() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const now = useNow(30000);
-  useEffect(() => { if (me) { setEmail((e) => e || me.email); setName((n) => n || me.name); } }, [me]);
-  if (!q) return <Wash />;
+  useEffect(() => { if (me) { setEmail((e) => e || me.email); setName((n) => n || me.address?.fullName || me.name); setPhone((x) => x || me.address?.phone || ''); if (me.address?.locker) setLocker(me.address.locker); } }, [me]);
+  if (!q) return <Loading />;
   if (!q.rows.length) return (<main className="u-page narrow"><Wash /><div className="u-head"><BackButton href="/bag" /><h1 className="hand">Checkout</h1></div><div className="g u-card u-stack"><span>Your bag is empty.</span><Link href="/" className="cta">Discover makers</Link></div></main>);
   const emailOk = /.+@.+\..+/.test(email);
   const ok = emailOk && name.trim() && phone.trim().length >= 6 && (!gift || toName.trim());
@@ -137,4 +138,4 @@ function Checkout() {
     </>
   );
 }
-export default function CheckoutPage() { return <Suspense fallback={<Wash />}><Checkout /></Suspense>; }
+export default function CheckoutPage() { return <Suspense fallback={<Loading />}><Checkout /></Suspense>; }

@@ -91,6 +91,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
               <div className={s.top}><span>{r.who}</span><span style={{ color: 'var(--u-accent)' }} aria-label={`${r.rating} of 5`}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span></div>
               <p>{r.text}</p>
               <span className="m" style={{ display: 'block', marginTop: 6, fontSize: 12 }}>Bought {r.productTitle} · Verified purchase</span>
+              {r.reply ? <p className="m" style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.5, paddingLeft: 10, borderLeft: '2px solid var(--u-line)' }}><b style={{ color: 'var(--u-ink)' }}>{m.name}:</b> {r.reply}</p> : null}
             </div>
           ))}
           {reviews && !reviews.length ? <span className="m">No reviews yet. Only people who bought from {m.name} can leave one.</span> : null}

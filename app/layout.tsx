@@ -11,10 +11,14 @@ import './globals.css';
 import './u.css';
 import Toaster from '@/components/u/Toast';
 
+const DESCRIPTION = 'A community of upcoming makers. Handmade jewellery, ceramics, crochet and more, bought straight from the people who make it.';
 export const metadata: Metadata = {
-  title: 'Uplift',
-  description: 'A community of upcoming makers. Buy what they make by hand.',
-  icons: { icon: '/brand/uplift-logo-black.svg' },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://younglift-delta.vercel.app'),
+  title: { default: 'Uplift · A community of upcoming makers', template: '%s · Uplift' },
+  description: DESCRIPTION,
+  icons: { icon: '/brand/uplift-logo-black.svg', apple: '/brand/uplift-logo-cream-bg.svg' },
+  openGraph: { type: 'website', siteName: 'Uplift', title: 'Uplift · A community of upcoming makers', description: DESCRIPTION, images: [{ url: '/img/studio-table.jpg', alt: 'A maker’s studio table' }] },
+  twitter: { card: 'summary_large_image', title: 'Uplift', description: DESCRIPTION, images: ['/img/studio-table.jpg'] },
 };
 
 export const viewport: Viewport = {
