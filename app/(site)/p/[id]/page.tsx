@@ -37,14 +37,14 @@ export default function ProductPage() {
   const { product: p, maker: m } = data;
   const inBag = (bag?.groups ?? []).some((g) => g.lines.some((l) => l.productId === p.id));
   const r = replyLine(m);
-  const tags = p.privateFor ? ['Only for you', shipsLine({ madeToOrder: true, shipsWithinDays: p.shipsWithinDays })] : p.sold ? ['Sold', p.oneOfAKind ? '1 of 1' : `${p.madeCount} made`] : [p.oneOfAKind ? '1 of 1' : p.madeToOrder ? 'Made to order' : p.madeCount > 1 ? `${p.stock} of ${p.madeCount} left` : '', ...p.materials, shipsLine(p)].filter(Boolean);
+  const tags = p.privateFor ? ['Only for you', shipsLine({ madeToOrder: true, shipsWithinDays: p.shipsWithinDays })] : p.sold ? ['Sold', p.oneOfAKind ? '1 of 1' : `${p.madeCount} made`] : [p.oneOfAKind ? '1 of 1' : p.madeToOrder ? 'Made to order' : p.madeCount > 1 ? `${p.freeStock ?? p.stock} of ${p.madeCount} left` : '', ...p.materials, shipsLine(p)].filter(Boolean);
   const close = () => (window.history.length > 1 ? router.back() : router.push(`/m/${m.slug}`));
   const sizeLabel = p.sizes?.label ?? 'Size';
   const addIt = async () => {
     if (p.sizes && !size) { document.getElementById('sizes')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return add(p); }
     return add(p, p.sizes ? { [sizeLabel]: size! } : undefined);
   };
-  const subline = p.sold ? '' : p.heldByOther ? 'In someone’s bag for up to 15 min' : p.oneOfAKind ? 'Only one made' : p.sizes && size ? `Size ${size} · ${shipsLine(p).toLowerCase()}` : p.madeToOrder ? shipsLine(p) : `${p.stock} left`;
+  const subline = p.sold ? '' : p.heldByOther ? 'In someone’s bag for up to 15 min' : p.oneOfAKind ? 'Only one made' : p.sizes && size ? `Size ${size} · ${shipsLine(p).toLowerCase()}` : p.madeToOrder ? shipsLine(p) : `${p.freeStock ?? p.stock} left`;
   const ctaLabel = inBag ? 'In your bag ✓' : p.heldByOther ? 'In someone’s bag' : p.sizes && size ? `Add to bag · size ${size}` : 'Add to bag';
 
   return (

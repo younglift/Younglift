@@ -63,13 +63,13 @@ How to work through it: one group per PR, highest first. After each fix run the 
 
 ## P5. Copy and honesty
 
-- [ ] **5.1** `components/u/BagView.tsx` line 49: "Your 1 of 1 pieces are held" → "Your piece is held" / "Your 2 pieces are held" (plural by count).
-- [ ] **5.2 Timer shown twice in the bag, missing in checkout.** One timer per screen, and keep it in checkout.
-- [ ] **5.3 Apple Pay on Android** (`checkout/page.tsx` line 73). Show by platform (Payment Request API), card always.
-- [ ] **5.4 Mock data inconsistent** (same piece with different prices/stock across screens, counts that don't add up). Check QUALITY 2.9 on every screen.
-- [ ] **5.5 Studio: Publish only at the bottom of a long form.** Sticky bottom bar with Publish; chips 36px and toggles 28px need their 44px hit area (`u.css` has it, inline overrides remove it in places).
+- [x] **5.1** `components/u/BagView.tsx` line 49: "Your 1 of 1 pieces are held" → "Your piece is held" / "Your 2 pieces are held" (plural by count).
+- [x] **5.2 Timer shown twice in the bag, missing in checkout.** One timer per screen, and keep it in checkout.
+- [x] **5.3 Apple Pay on Android** (`checkout/page.tsx` line 73). Show by platform (Payment Request API), card always.
+- [x] **5.4 Mock data inconsistent** (same piece with different prices/stock across screens, counts that don't add up). Check QUALITY 2.9 on every screen.
+- [x] **5.5 Studio: Publish only at the bottom of a long form.** Sticky bottom bar with Publish; chips 36px and toggles 28px need their 44px hit area (`u.css` has it, inline overrides remove it in places).
 
-- [ ] **5.6 Rezervacija visiems kūriniams su ribotu kiekiu, ne tik 1 of 1** (nuspręsta 2026-11-24, spec `docs/design/HANDOFF-07.md` „15 min rezervacija“, ekranai `07-bag`, `desktop/07-bag-drawer`, `desktop/07-checkout`).
+- [x] **5.6 Rezervacija visiems kūriniams su ribotu kiekiu, ne tik 1 of 1** (nuspręsta 2026-11-24, spec `docs/design/HANDOFF-07.md` „15 min rezervacija“, ekranai `07-bag`, `desktop/07-bag-drawer`, `desktop/07-checkout`).
   Fix: `lib/data/mock.ts` hold kurti kiekvienam ne made-to-order kūriniui su `qty`; laisvas kiekis = stock − kitų holds; `components/u/BagView.tsx` tekstai („When you add a piece, we hold it for you for 15 minutes.“ tuščiame krepšelyje) „Your pieces are held for …“ ir „Held for you · mm:ss“ prie kiekvienos rezervuotos eilutės; laikmatis checkout'e; Supabase `cart_holds.qty`.
   Proof: įdėk Morning cup (ne 1 of 1) → krepšelyje „Held for you“; antroje naršyklėje to paties kūrinio laisvas kiekis sumažėjo; made-to-order žiedas be laikmačio.
 

@@ -85,7 +85,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
                       <span className={s.qty}>
                         <button type="button" aria-label={`One less ${p.title}`} onClick={() => (l.qty > 1 ? setBagQty(p.id, l.variant, l.qty - 1) : remove(p.id, p.title, l.variant))}>−</button>
                         <span aria-label="Quantity">{l.qty}</span>
-                        <button type="button" aria-label={`One more ${p.title}`} disabled={!p.madeToOrder && l.qty >= p.stock} onClick={() => setBagQty(p.id, l.variant, l.qty + 1)}>+</button>
+                        <button type="button" aria-label={`One more ${p.title}`} disabled={!p.madeToOrder && l.qty >= (p.freeStock ?? p.stock)} onClick={() => setBagQty(p.id, l.variant, l.qty + 1)}>+</button>
                       </span>
                     ) : null}
                   </span>
