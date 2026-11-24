@@ -511,7 +511,7 @@ export async function upsertProduct(p: Partial<Product>): Promise<Product> {
     status: 'draft', createdAt: new Date().toISOString(), oneOfAKind: true, sold: false,
   };
   const wasOut = !base.madeToOrder && base.stock <= 0;
-  const next = { ...base, ...p, makerId: base.makerId } as Product;
+  const next = { ...base, ...p, id: base.id, makerId: base.makerId, createdAt: base.createdAt } as Product;
   if (next.madeToOrder) { next.stock = 0; next.madeCount = 0; }
   next.madeCount = next.madeToOrder ? 0 : Math.max(next.madeCount, next.stock, existing ? next.madeCount : next.stock);
   next.oneOfAKind = !next.madeToOrder && next.madeCount === 1;

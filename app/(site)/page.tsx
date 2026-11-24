@@ -209,13 +209,14 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
       </div>
       <div className={s.upnextRow}>
         <span className="m" style={{ fontSize: 13, marginRight: 6 }}>Up next</span>
-        {items.slice(0, 6).map((x, i) => (
+        <div className={s.upnextList}>
+        {items.map((x, i) => (
           <button key={x.maker.id} type="button" className={i === mi ? 'g' : 'gs'} aria-pressed={i === mi} onClick={() => { setMi(i); setStep(0); }}>
             <img src={x.maker.portraitUrl} alt="" className="u-avatar" /><span style={{ font: '600 13px var(--u-ui)' }}>{x.maker.name}</span><span className="m" style={{ fontSize: 12 }}>{makerMeta(x.maker).split(' · ')[1]}</span>
           </button>
         ))}
-        <span className={s.grow} />
-        <span className="m" style={{ fontSize: 13 }}>← → photos · ↓ next maker</span>
+        </div>
+        <span className="m" style={{ fontSize: 13, whiteSpace: 'nowrap' }}>← → photos · ↓ next maker</span>
         <button type="button" className="cta" onClick={() => nextMaker(1)}>Next maker ↓</button>
       </div>
     </div>

@@ -96,8 +96,10 @@
   .dprofile{position:absolute;inset:0;overflow-y:auto;z-index:3;padding:0 0 24px}
   .dprofile > div:first-child{border-radius:0}
   .upnextRow{position:absolute;left:24px;right:24px;bottom:18px;height:52px;display:flex;align-items:center;gap:8px;z-index:3;max-width:1392px;margin:0 auto}
-  .upnextRow > button{height:48px;border-radius:var(--u-r-pill);padding:0 16px 0 6px;display:flex;align-items:center;gap:10px;color:var(--u-ink);cursor:pointer}
-  .upnextRow > button[aria-pressed="true"]{outline:2px solid var(--u-accent);outline-offset:1px}
+  .upnextList{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1;padding:2px}
+  .upnextList::-webkit-scrollbar{display:none}
+  .upnextList > button{flex-shrink:0;height:48px;border-radius:var(--u-r-pill);padding:0 16px 0 6px;display:flex;align-items:center;gap:10px;color:var(--u-ink);cursor:pointer}
+  .upnextList > button[aria-pressed="true"]{outline:2px solid var(--u-accent);outline-offset:1px}
   .upnextRow img{width:36px;height:36px}
-  .upnextRow .grow{flex:1}
+  .upnextRow > :global(.cta){flex-shrink:0}
 }
