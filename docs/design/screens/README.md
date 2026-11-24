@@ -2,6 +2,8 @@
 
 Nuspręsta 2026-11-23. Pirmiausia skaityk `docs/design/HANDOFF-07.md`.
 
+**Paveikslėliai palyginimui:** `png/` (telefonas 390×844, kompiuteris `desktop-*` 1440×900). Su jais lygink kiekvieną sukurtą ekraną (žr. `docs/ai/QUALITY.md`). Juose ranka rašyti pavadinimai rodomi atsarginiu šriftu, app'e turi būti Rock Salt.
+
 **Kaip skaityti:** kiekvienas `.dc.html` yra vienas ekranas iš Mato drobės. Viršuje HTML su `{{kintamaisiais}}`, `<sc-if>` (rodyti jei) ir `<sc-for>` (kartoti). Apačioje `class Component` laiko būseną ir logiką. `<dc-import name="03-discover" start-on="2">` reiškia tą patį ekraną kitame žingsnyje.
 
 - Tai **specifikacija, ne kodas kopijuoti**. Statyk Next.js komponentais, stilius imk tik iš `var(--u-*)` (`app/globals.css`). Ekranuose stiliai įrašyti tiesiai tik todėl, kad tai drobė.

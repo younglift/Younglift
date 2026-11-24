@@ -26,6 +26,10 @@ Current look: **direction 07 "Tamsus stiklas" (decided 2026-11-23, buyer journey
 - Old tokens (Anton/Archivo, ink #141414, paper #f3f2ee) stay in globals.css only until every screen is moved to `--u-*`.
 - Maker journey (Studio etc.) look is still open.
 
+## Quality: check your own work
+- Before saying any UI work is done, follow `docs/ai/QUALITY.md`: run `node scripts/qa.mjs`, look at your screenshots next to the references in `docs/design/screens/png/`, use the screen by hand at 390 and 1440, fix and repeat until clean.
+- Open UI problems and their fixes: `docs/ai/FIXES.md`.
+
 ## Working together
 - Work on a branch (`git checkout -b name/feature`), open a pull request, merge to `main`.
 - Every push to `main` deploys automatically on Vercel; every branch gets a preview link.
