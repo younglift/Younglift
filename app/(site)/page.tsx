@@ -8,6 +8,7 @@ import { formatEUR, shipsLine } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { useIsDesktop } from '@/lib/useIsDesktop';
 import { SaveButton, useAddToBag } from '@/components/u/Bits';
+import { openBag } from '@/components/u/Nav';
 import { Back, Chevron } from '@/components/u/Icons';
 import MakerProfile, { makerMeta } from '@/components/u/MakerProfile';
 import Sticker from '@/components/u/Sticker';
@@ -34,7 +35,8 @@ function PieceBox({ item, sel, setSel, inBag, desktop, onProfile, active = true 
   const action = () => {
     if (p.sold) return router.push(`/p/${p.id}`);
     if (p.sizes) return router.push(`/p/${p.id}`);
-    if (!added) add(p);
+    if (added) return desktop ? openBag() : router.push('/bag');
+    add(p);
   };
   const label = p.sold ? 'Sold · see similar' : p.heldByOther ? 'In someone’s bag' : added ? 'In your bag ✓' : p.sizes ? 'Choose size' : 'Add to bag';
   return (
@@ -45,7 +47,7 @@ function PieceBox({ item, sel, setSel, inBag, desktop, onProfile, active = true 
       </Link>
       {item.reason === 'surprise' ? <span className={`m ${s.why}`}>Outside what you picked. Something new we think you might like.</span> : null}
       <div className={s.acts}>
-        <button type="button" className="cta" onClick={action} disabled={!!p.heldByOther && !p.sold}>{label}</button>
+        <button type="button" className="cta" onClick={action} disabled={!!p.heldByOther && !p.sold}><span key={label} className="u-fade-in">{label}</span></button>
         <SaveButton p={p} className="ic gs" />
       </div>
       <div className={s.div} />
@@ -161,9 +163,9 @@ function MiniAdd({ p, inBag }: { p: Product; inBag: Set<string> }) {
   const add = useAddToBag(); const router = useRouter();
   const added = inBag.has(p.id);
   return (
-    <button type="button" className="cta" style={{ padding: '0 18px', minHeight: 42 }} disabled={!!p.heldByOther}
-      onClick={() => (p.sold || p.sizes ? router.push(`/p/${p.id}`) : !added && add(p))}>
-      {p.sold ? 'Sold' : added ? 'Added ✓' : p.sizes ? 'Size' : 'Add'}
+    <button type="button" className={`cta ${s.miniAdd}`} disabled={!!p.heldByOther}
+      onClick={() => (p.sold || p.sizes ? router.push(`/p/${p.id}`) : added ? router.push('/bag') : add(p))}>
+      <span key={String(added)} className="u-fade-in">{p.sold ? 'Sold' : added ? 'In bag ✓' : p.sizes ? 'Size' : 'Add'}</span>
     </button>
   );
 }
@@ -197,9 +199,9 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
       <Wash src={item.products[firstAvailable(item.products)]?.images[0]} />
       <div className={s.stage}>
         {step === 0 ? <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ position: 'absolute', inset: 0, zIndex: 1 }}><Img src={bg} alt={`${p.title} by ${m.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 45%' }} /></Link> : null}
-        {step === 1 ? <Img src={bg} alt={`${m.name} at work`} /> : null}
+        {step === 1 ? <Img key={`s1${m.id}`} src={bg} alt={`${m.name} at work`} className="u-fade-in" /> : null}
         {step < 2 ? <div className={s.stageShade} /> : null}
-        {step === 2 ? <div className={s.dprofile}><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
+        {step === 2 ? <div key={`s2${m.id}`} className={`${s.dprofile} u-step-in`}><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
         <div className={s.dbars}>{[0, 1, 2].map((i) => <span key={i} className={i <= step ? s.on : ''} />)}</div>
         {step < 2 ? (
           <div className={`gs ${s.dpill}`}>
@@ -213,7 +215,7 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
         {step === 0 && up ? <span className={mk ? s.dstk2 : s.dstk}><Sticker k={up} width={150} tilt={mk ? 6 : -8} /></span> : null}
         {step > 0 ? <button type="button" aria-label="Previous" className={`ic gs ${s.prev}`} onClick={() => setStep(step - 1)}><Back /></button> : null}
         {step < 2 ? <button type="button" aria-label={step === 0 ? 'Next: her story' : 'Next: her profile'} className={`ic gs ${s.nextBtn}`} onClick={() => setStep(step + 1)}><Chevron /></button> : null}
-        {step === 0 ? <PieceBox item={item} sel={sel} setSel={(i) => setSels({ ...sels, [m.id]: i })} inBag={inBag} desktop onProfile={() => setStep(2)} /> : null}
+        {step === 0 ? <PieceBox key={`p${m.id}`} item={item} sel={sel} setSel={(i) => setSels({ ...sels, [m.id]: i })} inBag={inBag} desktop onProfile={() => setStep(2)} /> : null}
         {step === 1 ? (
           m.video ? (
             <>

@@ -37,15 +37,15 @@ How to work through it: one group per PR, highest first. After each fix run the 
 
 ## P3. Clunky (no feedback, no motion)
 
-- [ ] **3.1 Only `.cta` and `.tg` have transitions** (4 transitions in all CSS). Glass buttons, chips, cards, thumbs, rows, hearts have no pressed or hover state.
+- [x] **3.1 Only `.cta` and `.tg` have transitions** (4 transitions in all CSS). Glass buttons, chips, cards, thumbs, rows, hearts have no pressed or hover state.
   Fix: add motion tokens (`--u-dur-press:120ms`, `--u-dur-ui:180ms`, `--u-dur-panel:260ms`, `--u-dur-step:300ms`, `--u-ease:cubic-bezier(.2,.8,.2,1)`) to `globals.css` **(Matas: names/values)**, then in `u.css`: `:active{transform:scale(.97)}` for `.gs`, `.chip`, `.ic`, cards with links; hover lighten on desktop.
   Proof: qa "no pressed state" warns gone; by hand every tap moves.
-- [ ] **3.2 Steps cut hard.** Discover piece → story → profile on desktop (`DeskStage` `step` state), Studio profile steps 1–5, checkout. Content just swaps.
+- [x] **3.2 Steps cut hard.** Discover piece → story → profile on desktop (`DeskStage` `step` state), Studio profile steps 1–5, checkout. Content just swaps.
   Fix: 24px slide + fade 300ms, reduced-motion = fade only.
-- [ ] **3.3 Sheets/drawers appear without sliding.** Fix as QUALITY 2.4.
-- [ ] **3.4 First "Add to bag" tap is lost before hydration** (live, phone, fresh load). Fix: render the button disabled until mounted, or handle with a form action.
-- [ ] **3.5 "In your bag ✓" is a dead end.** It should open the bag (or the drawer on desktop). Toast (`components/u/Toast.tsx`, 3.2s) should carry "View bag".
-- [ ] **3.6 Disabled CTA looks active** in places that style it inline (checkout `style={{flex:1}}` buttons). Use the `.cta:disabled` look from `u.css` and write the reason next to it.
+- [x] **3.3 Sheets/drawers appear without sliding.** Fix as QUALITY 2.4.
+- [x] **3.4 First "Add to bag" tap is lost before hydration** (live, phone, fresh load). Fix: render the button disabled until mounted, or handle with a form action.
+- [x] **3.5 "In your bag ✓" is a dead end.** It should open the bag (or the drawer on desktop). Toast (`components/u/Toast.tsx`, 3.2s) should carry "View bag".
+- [x] **3.6 Disabled CTA looks active** in places that style it inline (checkout `style={{flex:1}}` buttons). Use the `.cta:disabled` look from `u.css` and write the reason next to it.
 
 ## P4. Cheap look (layout and consistency)
 

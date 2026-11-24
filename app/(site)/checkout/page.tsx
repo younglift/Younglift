@@ -36,6 +36,7 @@ function Checkout() {
   const [phone, setPhone] = useState('');
   const [locker, setLocker] = useState('Omniva · Vilnius, Užupio g. 9');
   const [pay, setPay] = useState<'card' | 'bank' | 'blik'>('card');
+  const [news, setNews] = useState(false);
   const [tried, setTried] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -78,7 +79,7 @@ function Checkout() {
 
         <section className="g u-card u-stack">
           <label className="fld"><span className="lbl">Email for your receipt</span><input className="inp" type="email" autoComplete="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={tried && !emailOk} />{tried && !emailOk ? <span style={{ fontSize: 12, color: 'var(--u-accent)' }}>Please check your email</span> : null}</label>
-          <label className="row" style={{ fontSize: 14, cursor: 'pointer' }}><input type="checkbox" /> <span className="m">Send me news from my makers (optional)</span></label>
+          <label className="row" style={{ fontSize: 14, cursor: 'pointer', minHeight: 44 }}><input type="checkbox" className="sr" checked={news} onChange={() => setNews(!news)} /><span className={`chk ${news ? 'on' : ''}`} aria-hidden="true">{news ? '✓' : ''}</span><span className="m">Send me news from my makers (optional)</span></label>
         </section>
 
         <section className="g u-card u-stack">

@@ -61,7 +61,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
     </div>
   );
   const content = (
-    <>
+    <div key={tab} className={`u-fade-in ${s.tabBody}`}>
       {tab === 'works' ? (
         <>
           {desktop ? (
@@ -98,7 +98,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
           {reviews && !reviews.length ? <span className="m">No reviews yet. Only people who bought from {m.name} can leave one.</span> : null}
         </>
       ) : null}
-    </>
+    </div>
   );
 
   return (

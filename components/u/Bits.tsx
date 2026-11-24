@@ -6,8 +6,8 @@ import type { Product } from '@/lib/types';
 import { addToBag, addToBoard, createBoard, getBoards, toggleSave, type AddResult } from '@/lib/data';
 import { formatEUR } from '@/lib/format';
 import { useData } from '@/lib/useData';
-import { useLockBody } from '@/lib/useLockBody';
 import { Back, Bookmark, Close } from './Icons';
+import Sheet from './Sheet';
 import { toast } from './Toast';
 import { openBag } from './Nav';
 import Img from '@/components/u/Img';
@@ -38,7 +38,7 @@ export function SaveButton({ p, className = 'ic gs', size = 18, onBoard }: { p: 
           const on = await toggleSave(p.id);
           toast(on ? 'Saved' : 'Removed from saved', on ? { label: 'Add to board', run: () => (onBoard ? onBoard() : setBoardFor(p.id)) } : undefined);
         }}>
-        <span style={{ color: p.isSaved ? 'var(--u-accent)' : 'var(--u-ink)', display: 'flex' }}><Bookmark size={size} filled={!!p.isSaved} /></span>
+        <span key={String(!!p.isSaved)} className={p.isSaved ? 'u-pop' : undefined} style={{ color: p.isSaved ? 'var(--u-accent)' : 'var(--u-ink)', display: 'flex' }}><Bookmark size={size} filled={!!p.isSaved} /></span>
       </button>
       {boardFor ? <BoardSheet productId={boardFor} onClose={() => setBoardFor(null)} /> : null}
     </>
@@ -48,13 +48,9 @@ export function SaveButton({ p, className = 'ic gs', size = 18, onBoard }: { p: 
 export function BoardSheet({ productId, onClose }: { productId: string; onClose: () => void }) {
   const [boards] = useData(getBoards);
   const [name, setName] = useState('');
-  useLockBody(true, onClose);
   return (
-    <>
-      <div className="u-scrim" onClick={onClose} />
-      <div role="dialog" aria-modal="true" aria-label="Add to board" className="u-sheet g">
-        <div className="row" style={{ justifyContent: 'space-between' }}><span className="hand" style={{ fontSize: 18 }}>Add to board</span><button type="button" className="ic" aria-label="Close" onClick={onClose}><Close /></button></div>
-        <div className="body">
+    <Sheet title="Add to board" onClose={onClose}>
+
           {(boards ?? []).map((b) => (
             <button key={b.id} type="button" className="sec gs" style={{ justifyContent: 'space-between' }} onClick={async () => { await addToBoard(b.id, productId); toast(`Added to ${b.name}`); onClose(); }}>
               <span>{b.name}</span><span className="m">{b.productIds.includes(productId) ? 'Added ✓' : `${b.productIds.length}`}</span>
@@ -64,9 +60,7 @@ export function BoardSheet({ productId, onClose }: { productId: string; onClose:
             <input className="inp" placeholder="New board, e.g. For my sister" value={name} onChange={(e) => setName(e.target.value)} aria-label="New board name" />
             <button type="submit" className="cta" disabled={!name.trim()}>Create</button>
           </form>
-        </div>
-      </div>
-    </>
+    </Sheet>
   );
 }
 

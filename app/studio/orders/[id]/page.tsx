@@ -24,7 +24,7 @@ export default function Order() {
   const shipped = o.status === 'shipped' || o.status === 'delivered';
   const step = (n: number, done: boolean, t: string, d: string, extra?: React.ReactNode, onTick?: () => void) => (
     <div className="row" style={{ alignItems: 'flex-start', minHeight: 52 }}>
-      {onTick ? <button type="button" className="chk" style={{ width: 28, height: 28, cursor: 'pointer', background: 'transparent', color: 'var(--u-ink)' }} aria-label={`Mark “${t}” done`} onClick={onTick}>{n}</button>
+      {onTick ? <button type="button" className="ic" aria-label={`Mark “${t}” done`} onClick={onTick} style={{ margin: -8 }}><span className="chk" style={{ width: 28, height: 28 }}>{n}</span></button>
         : <span className={`chk ${done ? 'on' : ''}`} style={{ width: 28, height: 28 }} aria-label={done ? `${t}: done` : undefined}>{done ? '✓' : n}</span>}
       <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, fontSize: 14 }}><span style={{ fontWeight: 600 }}>{t}</span><span className="m">{d}</span></span>{extra}
     </div>

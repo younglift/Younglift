@@ -47,6 +47,8 @@
 .st:disabled{opacity:.35;cursor:not-allowed}
 .st img{width:58px;height:auto}
 .steps{display:flex;gap:4px}
+.stepBtn{flex:1;height:44px;padding:0;border:0;background:none;cursor:pointer;display:flex;align-items:center}
+.stepBtn > span{flex:1}
 .steps span{flex:1;height:3px;border-radius:2px;background:var(--u-track)}
 .steps span.on{background:var(--u-accent)}
 .preview{display:none}
