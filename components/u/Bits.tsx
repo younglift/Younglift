@@ -9,6 +9,7 @@ import { useData } from '@/lib/useData';
 import { Back, Bookmark, Close } from './Icons';
 import { toast } from './Toast';
 import { openBag } from './Nav';
+import Img from '@/components/u/Img';
 
 const isDesktop = () => typeof window !== 'undefined' && window.matchMedia('(min-width: 820px)').matches;
 
@@ -72,7 +73,7 @@ export function ProductCard({ p, maker, showMaker = true }: { p: Product; maker?
   return (
     <div className="u-grid-item">
       <Link href={`/p/${p.id}`} className="ph" aria-label={`${p.title}, ${formatEUR(p.priceCents)}`}>
-        <img src={p.images[0]} alt="" className="u-cover" />
+        <Img src={p.images[0]} alt="" className="u-cover" />
         {p.sold ? <span className="u-badge dark">Sold</span> : p.oneOfAKind ? <span className="u-badge">1 of 1</span> : null}
       </Link>
       <span className="save"><SaveButton p={p} className="ic gs" size={16} /></span>

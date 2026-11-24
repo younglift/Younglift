@@ -6,6 +6,7 @@ import type { Category } from '@/lib/types';
 import { getMe, markOnboarded, saveTaste } from '@/lib/data';
 import Wash from '@/components/u/Wash';
 import s from '../welcome.module.css';
+import Img from '@/components/u/Img';
 
 const OPTIONS: { id: Category; label: string; img: string }[] = [
   { id: 'jewelry', label: 'Jewellery', img: '/img/earrings.jpg' },
@@ -33,7 +34,7 @@ export default function Taste() {
             const on = picked.includes(o.id);
             return (
               <button key={o.id} type="button" className={s.tile} aria-pressed={on} onClick={() => toggle(o.id)}>
-                <img src={o.img} alt="" className="u-cover" />
+                <Img src={o.img} alt="" className="u-cover" />
                 <span className={s.nm}>{o.label}</span>
                 {on ? <span className={`chk on ${s.chk}`}>✓</span> : null}
               </button>

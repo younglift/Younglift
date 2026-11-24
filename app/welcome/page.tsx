@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Logo from '@/components/u/Logo';
 import Wash from '@/components/u/Wash';
 import s from './welcome.module.css';
+import Img from '@/components/u/Img';
 
 const MAKERS = [
   { slug: 'inez', name: 'Inez', where: 'Vilnius · Jewellery', img: '/img/earrings.jpg', face: '/img/inez.jpg' },
@@ -14,7 +15,7 @@ export default function Welcome() {
   return (
     <>
       <Wash src="/img/studio-table.jpg" />
-      <div className={s.photo} aria-hidden="true"><img src="/img/studio-table.jpg" alt="" /></div>
+      <div className={s.photo} aria-hidden="true"><Img src="/img/studio-table.jpg" alt="" eager /></div>
       <div className={s.logo}><Logo height={92} /></div>
       <header className={`gs ${s.deskHead}`}>
         <Logo height={44} wordmark /><span className={s.grow} />
@@ -33,8 +34,8 @@ export default function Welcome() {
         <div className={s.makers}>
           {MAKERS.map((m) => (
             <Link key={m.slug} href={`/m/${m.slug}`} className="g">
-              <img src={m.img} alt="" />
-              <span className={s.who}><img src={m.face} alt="" className="u-avatar" /><span className="hand">{m.name}</span></span>
+              <Img src={m.img} alt="" />
+              <span className={s.who}><Img small src={m.face} alt="" className="u-avatar" /><span className="hand">{m.name}</span></span>
               <span className="m">{m.where}</span>
             </Link>
           ))}

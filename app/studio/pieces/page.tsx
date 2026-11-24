@@ -7,6 +7,7 @@ import { useData } from '@/lib/useData';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
+import Img from '@/components/u/Img';
 
 /** Studio: your pieces (Live / Sold out / Drafts). */
 export default function Pieces() {
@@ -28,7 +29,7 @@ export default function Pieces() {
             const sub = p.madeToOrder ? 'Made to order' : p.oneOfAKind ? (p.sold ? 'Sold · 1 of 1' : '1 of 1') : p.sold ? '0 left · back in stock?' : `${p.stock} of ${p.madeCount} left`;
             return (
               <Link key={p.id} href={`/studio/pieces/${p.id}`}>
-                {p.images[0] ? <img src={p.images[0]} alt="" /> : <span className="gs" style={{ width: 52, height: 52, borderRadius: 14 }} />}
+                {p.images[0] ? <Img small src={p.images[0]} alt="" /> : <span className="gs" style={{ width: 52, height: 52, borderRadius: 14 }} />}
                 <span className={s.grow}><span>{p.title}</span><span className="m">{formatEUR(p.priceCents)} · {sub}</span></span>
                 <span className={`${s.status} ${st === 'live' ? s.live : 'gs'}`}>{st === 'live' ? 'Live' : st === 'sold' ? 'Sold out' : 'Draft'}</span>
               </Link>

@@ -8,19 +8,19 @@ How to work through it: one group per PR, highest first. After each fix run the 
 
 ## P1. Laggy
 
-- [ ] **1.1 Phone feed is rendered on desktop.** `app/(site)/page.tsx` renders `<div className={s.feed}>` (all makers, all photos) **and** `<DeskStage>`; the feed is only `display:none` at ≥820px, so every photo still downloads and every glass card still exists. Live: 93 images on open, 77 of them hidden.
+- [x] **1.1 Phone feed is rendered on desktop.** `app/(site)/page.tsx` renders `<div className={s.feed}>` (all makers, all photos) **and** `<DeskStage>`; the feed is only `display:none` at ≥820px, so every photo still downloads and every glass card still exists. Live: 93 images on open, 77 of them hidden.
   Fix: a `useIsDesktop()` hook (matchMedia `(min-width:820px)`, SSR default phone) and render only one of the two.
   Proof: qa on `/` desktop shows ≤ 24 images; phone ≤ 16.
-- [ ] **1.2 Too many blurs.** Live: 85 elements with `backdrop-filter` in the DOM, 10 visible at once. Every `.gs` chip, pill and nav item blurs.
+- [x] **1.2 Too many blurs.** Live: 85 elements with `backdrop-filter` in the DOM, 10 visible at once. Every `.gs` chip, pill and nav item blurs.
   Fix: `.gs` gets no backdrop-filter (solid `--u-glass-sm`, maybe a bit darker **(Matas)**); only `.g` cards/sheets/bars blur. In the feed only the current and next maker render `.g`.
   Proof: qa "visible backdrop-filter" ≤ 8 on every route; Discover swipe smooth at 4× CPU slowdown.
-- [ ] **1.3 No lazy images.** 0 `loading="lazy"` in the codebase, no `next/image`. qa lists 34 files.
+- [x] **1.3 No lazy images.** 0 `loading="lazy"` in the codebase, no `next/image`. qa lists 34 files.
   Fix: `components/u/Img.tsx` wrapper (`loading="lazy" decoding="async"`, `fetchPriority="high"` only for the first photo of the first maker), use it everywhere.
   Proof: qa code warn for `<img>` is gone; image counts within budget.
-- [ ] **1.4 Heavy files.** Stickers PNG 100–220 KB each (`public/stickers/`), photos full size used as 64px thumbs, `Wash` blurs a full-size photo.
+- [x] **1.4 Heavy files.** Stickers PNG 100–220 KB each (`public/stickers/`), photos full size used as 64px thumbs, `Wash` blurs a full-size photo.
   Fix: WebP stickers ≤ 40 KB, thumb-size copies of photos (or next/image sizes), `Wash` uses a 64px-wide version.
   Proof: Network tab total transfer on `/` under 2 MB.
-- [ ] **1.5 Wash per screen jumps.** `Wash` swaps `src` instantly when the maker changes, so the whole screen colour flips.
+- [x] **1.5 Wash per screen jumps.** `Wash` swaps `src` instantly when the maker changes, so the whole screen colour flips.
   Fix: keep two layers and cross-fade opacity 300ms; change only per maker, not per photo.
   Proof: swipe between makers: background fades, never flashes.
 

@@ -6,6 +6,7 @@ import { ago, plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** 06 Following: your makers (stories row), what's new from them, unfollow in one tap. */
 export default function Following() {
@@ -34,7 +35,7 @@ export default function Following() {
             </button>
             {makers.map((m) => (
               <button key={m.id} type="button" onClick={() => setOnly(only === m.id ? null : m.id)} aria-pressed={only === m.id} aria-label={`Only ${m.name}${recent.has(m.id) ? ', something new' : ''}`} style={{ background: 'none', border: 0, color: 'var(--u-ink)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer', padding: 0 }}>
-                <span style={ring(only === m.id, recent.has(m.id))}><img src={m.portraitUrl} alt="" className="u-avatar" style={{ width: '100%', height: '100%' }} /></span><span className="hand" style={{ fontSize: 13 }}>{m.name}</span>
+                <span style={ring(only === m.id, recent.has(m.id))}><Img small src={m.portraitUrl} alt="" className="u-avatar" style={{ width: '100%', height: '100%' }} /></span><span className="hand" style={{ fontSize: 13 }}>{m.name}</span>
               </button>
             ))}
           </div>
@@ -44,15 +45,15 @@ export default function Following() {
           const m = byId.get(x.makerId)!;
           return (
             <article key={x.kind + x.makerId + x.at} className="g u-card u-stack">
-              <div className="row"><img src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 36, height: 36 }} /><span style={{ flex: 1 }}><Link href={`/m/${m.slug}`} className="hand">{m.name}</Link> <span className="m" style={{ fontSize: 13 }}>{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m" style={{ fontSize: 12 }}>{ago(x.at)}</span></div>
+              <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 36, height: 36 }} /><span style={{ flex: 1 }}><Link href={`/m/${m.slug}`} className="hand">{m.name}</Link> <span className="m" style={{ fontSize: 13 }}>{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m" style={{ fontSize: 12 }}>{ago(x.at)}</span></div>
               {x.kind === 'pieces' ? (
                 <>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>{x.products.slice(0, 3).map((p) => <Link key={p.id} href={`/p/${p.id}`} aria-label={p.title}><img src={p.images[0]} alt="" style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', borderRadius: 14, display: 'block' }} /></Link>)}</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>{x.products.slice(0, 3).map((p) => <Link key={p.id} href={`/p/${p.id}`} aria-label={p.title}><Img small src={p.images[0]} alt="" style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', borderRadius: 14, display: 'block' }} /></Link>)}</div>
                   <Link href={`/m/${m.slug}`} className="sec gs">See new pieces</Link>
                 </>
               ) : (
                 <>
-                  {x.post.imageUrl ? <img src={x.post.imageUrl} alt="" style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 16 }} /> : null}
+                  {x.post.imageUrl ? <Img src={x.post.imageUrl} alt="" style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 16 }} /> : null}
                   <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>{x.post.caption}</p>
                   <Link href={`/m/${m.slug}?tab=journal`} className="sec gs">Open her journal</Link>
                 </>
@@ -65,7 +66,7 @@ export default function Following() {
         <div className="g u-card u-stack">
           {makers.map((m) => (
             <div key={m.id} className="row">
-              <img src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 40, height: 40 }} />
+              <Img small src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 40, height: 40 }} />
               <Link href={`/m/${m.slug}`} style={{ flex: 1 }}><span className="hand" style={{ fontSize: 15 }}>{m.name}</span> <span className="m" style={{ fontSize: 12 }}>{m.city}</span></Link>
               <button type="button" className="chip" aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : '+ Follow'}</button>
             </div>

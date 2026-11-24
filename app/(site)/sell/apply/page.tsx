@@ -5,6 +5,7 @@ import type { Category } from '@/lib/types';
 import { CATEGORY_LABEL, submitApplication, uploadImage } from '@/lib/data';
 import { BackButton } from '@/components/u/Bits';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 const CATS: Category[] = ['jewelry', 'ceramics', 'crochet', 'clothing', 'home', 'prints', 'other'];
 
@@ -61,7 +62,7 @@ export default function Apply() {
             <span className="m" style={{ fontSize: 12, color: tried && photos.length < 3 ? 'var(--u-accent)' : undefined }}>{photos.length} of 3–10 · real pieces you made, at least one of you working</span>
             <div className="row" style={{ flexWrap: 'wrap', gap: 8 }}>
               {photos.map((u, i) => (
-                <span key={i} style={{ position: 'relative', width: 76, height: 76, borderRadius: 14, overflow: 'hidden' }}><img src={u} alt="" className="u-cover" /><button type="button" aria-label="Remove photo" className="gs" style={{ position: 'absolute', right: 3, top: 3, width: 26, height: 26, borderRadius: '50%', color: 'var(--u-ink)', cursor: 'pointer', fontSize: 12 }} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>✕</button></span>
+                <span key={i} style={{ position: 'relative', width: 76, height: 76, borderRadius: 14, overflow: 'hidden' }}><Img small src={u} alt="" className="u-cover" /><button type="button" aria-label="Remove photo" className="gs" style={{ position: 'absolute', right: 3, top: 3, width: 26, height: 26, borderRadius: '50%', color: 'var(--u-ink)', cursor: 'pointer', fontSize: 12 }} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>✕</button></span>
               ))}
               {photos.length < 10 ? <button type="button" aria-label="Add photos" className="gs" style={{ width: 76, height: 76, borderRadius: 14, color: 'var(--u-ink)', fontSize: 26, cursor: 'pointer' }} onClick={() => file.current?.click()}>+</button> : null}
               <input ref={file} type="file" accept="image/*" multiple hidden onChange={async (e) => { const fs = Array.from(e.target.files ?? []).slice(0, 10 - photos.length); setPhotos([...photos, ...(await Promise.all(fs.map(uploadImage)))]); e.target.value = ''; }} />

@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getBagCount, getMe, getUnreadCount } from '@/lib/data';
 import { useData } from '@/lib/useData';
+import { useIsDesktop } from '@/lib/useIsDesktop';
 import { Bag, Chat, Close, Search } from './Icons';
 import Logo from './Logo';
 import BagView from './BagView';
@@ -30,6 +31,7 @@ export default function AppNav() {
   const [bag] = useData(getBagCount);
   const [unread] = useData(getUnreadCount);
   const [drawer, setDrawer] = useState(false);
+  const desktop = useIsDesktop();
   const [q, setQ] = useState('');
   useEffect(() => { setDrawer(false); }, [path]);
   useEffect(() => {
@@ -43,16 +45,16 @@ export default function AppNav() {
 
   return (
     <>
-      {showBottom ? (
+      {desktop === false && showBottom ? (
         <nav aria-label="Main" className={`gs ${s.bottom}`}>
           {[...TABS, { href: '/bag', label: bagLabel }].map((t) => (
             <Link key={t.href} href={t.href} aria-current={isOn(path, t.href) ? 'page' : undefined}>{t.label}<span className={s.dot} /></Link>
           ))}
         </nav>
       ) : null}
-      {showBottom && !hideCorner ? <MeButton className={s.meCorner} /> : null}
+      {desktop === false && showBottom && !hideCorner ? <MeButton className={s.meCorner} /> : null}
 
-      <header className={`gs ${s.top}`}>
+      {desktop ? <header className={`gs ${s.top}`}>
         <Link href="/" aria-label="Uplift home" style={{ lineHeight: 0 }}><Logo height={44} wordmark /></Link>
         <nav aria-label="Main">
           {TABS.map((t) => <Link key={t.href} href={t.href} aria-current={isOn(path, t.href) ? 'page' : undefined}>{t.label}<span className={s.dot} /></Link>)}
@@ -65,7 +67,7 @@ export default function AppNav() {
         <Link href="/messages" aria-label={unread ? `Messages, ${unread} new` : 'Messages'} className="ic" style={{ position: 'relative' }}><Chat size={20} />{unread ? <span className={s.pip} /> : null}</Link>
         <button type="button" aria-label={bag ? `Bag, ${bag} items` : 'Bag'} className="ic" style={{ position: 'relative' }} onClick={() => setDrawer(true)}><Bag size={20} />{bag ? <span className={s.badge}>{bag}</span> : null}</button>
         <MeButton />
-      </header>
+      </header> : null}
 
       {drawer ? (
         <>

@@ -10,6 +10,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Results from './Results';
 import s from './explore.module.css';
+import Img from '@/components/u/Img';
 
 const POPULAR = ['silver ring', 'speckled bowl', 'wool', 'gold', 'print'];
 
@@ -31,7 +32,7 @@ function Explore() {
         <nav aria-label="Categories" className={`g ${s.cats} ${s.catsDesk}`} style={{ display: 'flex' }}>
           {(cats ?? []).map((c) => (
             <Link key={c.id} href={`/explore/${c.id}`}>
-              <img src={c.image ?? '/img/candle.jpg'} alt="" />
+              <Img small src={c.image ?? '/img/candle.jpg'} alt="" />
               <span className={s.t}><span>{c.label}</span><span className="m">{c.count ? plural(c.count, 'piece') : 'Coming soon'}</span></span>
               <span className="m">›</span>
             </Link>

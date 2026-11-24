@@ -7,6 +7,7 @@ import { formatEUR, shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { ProductCard } from './Bits';
 import s from './MakerProfile.module.css';
+import Img from '@/components/u/Img';
 
 export function makerMeta(m: Maker, withCount = false) {
   const r = m.rating ? ` · ★ ${m.rating.avg.toFixed(1)}${withCount ? ` (${m.rating.count})` : ''}` : '';
@@ -33,7 +34,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
   const card = (
     <div className={`g ${s.card}`}>
       <div className={s.who}>
-        <img src={m.portraitUrl} alt="" className="u-avatar" />
+        <Img small src={m.portraitUrl} alt="" className="u-avatar" />
         <span style={{ flex: 1, minWidth: 0 }}><span className="hand">{m.name}</span><span className={`m ${s.meta}`}>{makerMeta(m, true)} · {m.followers} followers</span></span>
       </div>
       <p className={s.bio}>{m.bio}</p>
@@ -47,7 +48,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
   );
   const story = (
     <button type="button" onClick={onStory} className={`g ${s.story}`} aria-label={`${m.name}’s story`}>
-      <img src={m.video?.posterUrl ?? m.portraitUrl} alt="" />
+      <Img src={m.video?.posterUrl ?? m.portraitUrl} alt="" />
       {m.video ? <span className={`gs ${s.play}`}>▶</span> : null}
       <span className={s.storyLbl}>{m.video ? `My story · 0:${String(m.video.seconds).padStart(2, '0')}` : 'Meet ' + m.name}</span>
     </button>
@@ -77,7 +78,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
           {!desktop ? story : null}
           {(posts ?? []).filter((p) => p.kind !== 'video').map((p) => (
             <article key={p.id} className={`g ${s.post}`}>
-              {p.imageUrl ? <img src={p.imageUrl} alt="" /> : null}
+              {p.imageUrl ? <Img src={p.imageUrl} alt="" /> : null}
               <div><span className={`m ${s.kind}`}>{shortDate(p.createdAt)}{p.kind === 'in_progress' ? ' · In progress' : ''}</span><p>{p.caption}</p></div>
             </article>
           ))}
@@ -102,7 +103,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
 
   return (
     <>
-      <div className={s.cover}><img src={m.coverUrl} alt={`${m.name}’s work`} /></div>
+      <div className={s.cover}><Img src={m.coverUrl} alt={`${m.name}’s work`} /></div>
       {desktop ? (
         <div className={s.body}>
           <div className={s.side}>{card}{story}</div>
@@ -113,7 +114,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
           {card}{tabs}{content}
           {next ? (
             <button type="button" className={`gs ${s.next}`} onClick={next.go}>
-              <img src={next.maker.portraitUrl} alt="" className="u-avatar" />
+              <Img small src={next.maker.portraitUrl} alt="" className="u-avatar" />
               <span style={{ flex: 1 }}><span className="m" style={{ display: 'block', fontSize: 12 }}>Next maker</span><span className="hand" style={{ fontSize: 15 }}>{next.maker.name} · {CATEGORY_LABEL[next.maker.categories[0]]}</span></span>
               <span style={{ fontSize: 13 }}>Scroll ↓</span>
             </button>

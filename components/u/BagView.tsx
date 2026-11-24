@@ -6,6 +6,7 @@ import { useData, useNow } from '@/lib/useData';
 import { Clock, Trash } from './Icons';
 import { toast } from './Toast';
 import s from './BagView.module.css';
+import Img from '@/components/u/Img';
 
 /** The bag: one box per maker (her own parcel and button), free-shipping helper, real 15-minute holds. */
 export default function BagView({ compact = false, onNavigate }: { compact?: boolean; onNavigate?: () => void }) {
@@ -26,7 +27,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
         {fromSaved.length ? (
           <div className="u-stack">
             <span className="lbl">From your saved</span>
-            <div className={s.saved}>{fromSaved.map((p) => <Link key={p.id} href={`/p/${p.id}`} onClick={onNavigate}><img src={p.images[0]} alt="" /><span>{p.title}</span></Link>)}</div>
+            <div className={s.saved}>{fromSaved.map((p) => <Link key={p.id} href={`/p/${p.id}`} onClick={onNavigate}><Img small src={p.images[0]} alt="" /><span>{p.title}</span></Link>)}</div>
           </div>
         ) : null}
       </div>
@@ -60,7 +61,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
         return (
           <section key={g.maker.id} className={`${compact ? 'gs' : 'g'} ${s.group}`} aria-label={`From ${g.maker.name}`}>
             <div className={s.ghead}>
-              <img src={g.maker.portraitUrl} alt="" className="u-avatar" />
+              <Img small src={g.maker.portraitUrl} alt="" className="u-avatar" />
               <Link href={`/m/${g.maker.slug}`} className="hand" onClick={onNavigate}>{g.maker.name}</Link>
               <span className="m" style={{ fontSize: 12 }}>{allMto ? shipsLine({ madeToOrder: true, shipsWithinDays: soonest }) : shipsLine({ madeToOrder: false, shipsWithinDays: soonest })}</span>
             </div>
@@ -71,7 +72,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
               const sub = [p.subtitle ?? p.materials[0], l.variant ? Object.entries(l.variant).map(([k, v]) => `${k} ${v}`).join(' · ') : '', p.oneOfAKind ? '1 of 1' : '', p.madeToOrder ? 'Made to order' : ''].filter(Boolean).join(' · ');
               return (
                 <div key={p.id + JSON.stringify(l.variant ?? {})} className={s.line}>
-                  <Link href={`/p/${p.id}`} onClick={onNavigate}><img src={p.images[0]} alt="" /></Link>
+                  <Link href={`/p/${p.id}`} onClick={onNavigate}><Img small src={p.images[0]} alt="" /></Link>
                   <span className={s.info}>
                     <span>{p.title}</span>
                     <span className={`m ${s.sub}`}>{sub}</span>
@@ -103,7 +104,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
                     <div className={s.ups}>
                       {g.upsell.map((u) => (
                         <button key={u.id} type="button" aria-label={`Add ${u.title}`} onClick={async () => { const r = await addToBag({ productId: u.id, qty: 1 }); toast(r.ok ? `Added ${u.title}` : 'Could not add it right now'); }}>
-                          <span className={s.ph}><img src={u.images[0]} alt="" className="u-cover" /><span className={`gs ${s.plus}`}>+</span></span>
+                          <span className={s.ph}><Img small src={u.images[0]} alt="" className="u-cover" /><span className={`gs ${s.plus}`}>+</span></span>
                           <span className={s.nm}>{u.title}</span><span className="m">{formatEUR(u.priceCents)}</span>
                         </button>
                       ))}

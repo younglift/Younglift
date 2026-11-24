@@ -9,6 +9,7 @@ import { BackButton } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** B9 Order → pack, print the label, mark as shipped (+ tracking). */
 export default function Order() {
@@ -35,7 +36,7 @@ export default function Order() {
         <div className="u-head"><BackButton href="/studio/orders" /><span><h1 className="hand">Order #{o.number}</h1><span className="m sub">Paid {shortDate(o.createdAt)} · {shipped ? `shipped ${o.shippedAt ? shortDate(o.shippedAt) : ''}` : `ship by ${longDate(o.shipBy)}`}</span></span></div>
         <div className="g u-card u-stack">
           {o.lines.map((x) => (
-            <div key={x.productId} className="row"><img src={x.product.images[0]} alt="" style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover' }} /><span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}><span className="hand">{x.product.title}</span><span className="m" style={{ fontSize: 13 }}>{[x.product.subtitle, x.variant ? Object.entries(x.variant).map(([k, v]) => `${k} ${v}`).join(' ') : '', `${x.qty} piece${x.qty > 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span></span><b className="num">{formatEUR(x.product.priceCents * x.qty)}</b></div>
+            <div key={x.productId} className="row"><Img small src={x.product.images[0]} alt="" style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover' }} /><span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}><span className="hand">{x.product.title}</span><span className="m" style={{ fontSize: 13 }}>{[x.product.subtitle, x.variant ? Object.entries(x.variant).map(([k, v]) => `${k} ${v}`).join(' ') : '', `${x.qty} piece${x.qty > 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span></span><b className="num">{formatEUR(x.product.priceCents * x.qty)}</b></div>
           ))}
           <hr className="hr" />
           <div className="u-stack" style={{ gap: 8, fontSize: 14 }}>

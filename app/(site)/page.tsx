@@ -6,6 +6,7 @@ import type { FeedItem, Maker, Product } from '@/lib/types';
 import { getBag, getFeed, getMe, hideMaker, markHintsSeen, toggleFollow } from '@/lib/data';
 import { formatEUR, shipsLine } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import { useIsDesktop } from '@/lib/useIsDesktop';
 import { SaveButton, useAddToBag } from '@/components/u/Bits';
 import { Back, Chevron } from '@/components/u/Icons';
 import MakerProfile, { makerMeta } from '@/components/u/MakerProfile';
@@ -13,6 +14,7 @@ import Sticker from '@/components/u/Sticker';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from './discover/discover.module.css';
+import Img from '@/components/u/Img';
 
 const STEP_LABEL = ['The piece', 'Her story', 'Her profile'];
 
@@ -23,7 +25,7 @@ function pieceMeta(p: Product) {
 const firstAvailable = (ps: Product[]) => Math.max(0, ps.findIndex((p) => !p.sold));
 
 /** Name, price, Add to bag, Save, "More from …" (piece step, phone and desktop). */
-function PieceBox({ item, sel, setSel, inBag, desktop, onProfile }: { item: FeedItem; sel: number; setSel: (i: number) => void; inBag: Set<string>; desktop?: boolean; onProfile: () => void }) {
+function PieceBox({ item, sel, setSel, inBag, desktop, onProfile, active = true }: { item: FeedItem; sel: number; setSel: (i: number) => void; inBag: Set<string>; desktop?: boolean; onProfile: () => void; active?: boolean }) {
   const router = useRouter();
   const add = useAddToBag();
   const p = item.products[sel];
@@ -56,7 +58,7 @@ function PieceBox({ item, sel, setSel, inBag, desktop, onProfile }: { item: Feed
       <div className={s.thumbs}>
         {item.products.slice(0, 6).map((x, i) => (
           <button key={x.id} type="button" className={s.thumb} aria-pressed={i === sel} aria-label={`${x.title}, ${formatEUR(x.priceCents)}`} onClick={() => setSel(i)}>
-            <span className="gs"><img src={x.images[0]} alt="" className="u-cover" /></span><span>{x.sold ? 'Sold' : formatEUR(x.priceCents)}</span>
+            <span className="gs">{active ? <Img small src={x.images[0]} alt="" className="u-cover" /> : null}</span><span>{x.sold ? 'Sold' : formatEUR(x.priceCents)}</span>
           </button>
         ))}
       </div>
@@ -64,20 +66,32 @@ function PieceBox({ item, sel, setSel, inBag, desktop, onProfile }: { item: Feed
   );
 }
 
+/** One badge per frame (QUALITY 2.8, FIXES 4.3): "Picked for you" on a surprise maker, else her sticker, else ours. */
 function stickerPair(item: FeedItem, p: Product) {
-  const up = item.reason === 'surprise' ? 'picked_for_you' : p.stickers?.uplift;
-  return { mk: p.stickers?.maker, up };
+  if (item.reason === 'surprise') return { mk: undefined, up: 'picked_for_you' as const };
+  return p.stickers?.maker ? { mk: p.stickers.maker, up: undefined } : { mk: undefined, up: p.stickers?.uplift };
+}
+
+/** Makers away from the screen render only their photo (no glass, no extra images): FIXES 1.1/1.2. */
+function LightCard({ item, index, show }: { item: FeedItem; index: number; show: boolean }) {
+  const p = item.products[firstAvailable(item.products)];
+  return (
+    <section className={s.card} aria-label={`${item.maker.name}, maker ${index + 1}`}>
+      {show ? <span className={s.photo}><Img src={p.images[0]} alt="" /></span> : null}
+    </section>
+  );
 }
 
 /** Phone: one maker per screen. */
-function MakerCard({ item, next, hints, inBag, onNext, index }: { item: FeedItem; next?: Maker; hints: boolean; inBag: Set<string>; onNext: () => void; index: number }) {
+function MakerCard({ item, next, hints, inBag, onNext, index, active }: { item: FeedItem; next?: Maker; hints: boolean; inBag: Set<string>; onNext: () => void; index: number; active: boolean }) {
   const m = item.maker;
   const [sel, setSel] = useState(() => firstAvailable(item.products));
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(true);
   const track = useRef<HTMLDivElement>(null);
   const p = item.products[Math.min(sel, item.products.length - 1)];
-  const go = (i: number) => track.current?.scrollTo({ left: i * track.current.clientWidth, behavior: 'smooth' });
+  const [asked, setAsked] = useState(0); // furthest step asked for (so the profile is ready before the swipe lands)
+  const go = (i: number) => { setAsked((a) => Math.max(a, i)); track.current?.scrollTo({ left: i * track.current.clientWidth, behavior: 'smooth' }); };
   const onScroll = () => {
     const t = track.current; if (!t) return;
     const i = Math.round(t.scrollLeft / t.clientWidth);
@@ -92,16 +106,16 @@ function MakerCard({ item, next, hints, inBag, onNext, index }: { item: FeedItem
         {/* 1 · the piece */}
         <div className={s.panel}>
           <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.photo} ${hints && index === 0 ? s.nudge : ''}`}>
-            <img src={p.images[0]} alt={`${p.title} by ${m.name}`} />
-            <img src={m.video?.posterUrl ?? m.portraitUrl} alt="" aria-hidden="true" className={s.peek} />
+            <Img src={p.images[0]} alt={`${p.title} by ${m.name}`} eager={index === 0} />
+            {hints && index === 0 ? <Img src={m.video?.posterUrl ?? m.portraitUrl} alt="" aria-hidden="true" className={s.peek} /> : null}
           </Link>
           {mk ? <span className={s.stk}><Sticker k={mk} city={m.city} width={mk === 'one_of_one' ? 104 : 120} /></span> : null}
           {up ? <span className={mk ? s.stk2 : s.stk}><Sticker k={up} width={118} tilt={mk ? 6 : -8} /></span> : null}
-          <PieceBox item={item} sel={sel} setSel={setSel} inBag={inBag} onProfile={() => go(2)} />
+          <PieceBox item={item} sel={sel} setSel={setSel} inBag={inBag} onProfile={() => go(2)} active={active} />
         </div>
-        {/* 2 · her story */}
-        <div className={s.panel}>
-          <img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className={s.photo} style={{ objectFit: 'cover', objectPosition: 'center 30%', width: '100%', height: '100%' }} />
+        {/* 2 · her story (only for the maker on screen: the next one loads just her piece) */}
+        <div className={s.panel}>{active ? (<>
+          <Img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className={s.photo} style={{ objectFit: 'cover', objectPosition: 'center 30%', width: '100%', height: '100%' }} />
           <div className={s.shade} />
           {m.video ? (
             <>
@@ -111,21 +125,21 @@ function MakerCard({ item, next, hints, inBag, onNext, index }: { item: FeedItem
             </>
           ) : <span className={`gs ${s.noVideo}`}>Photo · no video yet</span>}
           {hints && index === 0 && step === 1 && next ? (
-            <div className={`gs ${s.upnext}`}><img src={next.portraitUrl} alt="" className="u-avatar" /><span>Up next · {next.name}</span><span className="m" style={{ fontWeight: 400 }}>swipe up ↑</span></div>
+            <div className={`gs ${s.upnext}`}><Img small src={next.portraitUrl} alt="" className="u-avatar" /><span>Up next · {next.name}</span><span className="m" style={{ fontWeight: 400 }}>swipe up ↑</span></div>
           ) : null}
           <div className={`g ${s.mini}`}>
-            <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ lineHeight: 0 }}><img src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 14, objectFit: 'cover', display: 'block' }} /></Link>
+            <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ lineHeight: 0 }}><Img small src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 14, objectFit: 'cover', display: 'block' }} /></Link>
             <span style={{ flex: 1, minWidth: 0 }}><span className="hand">{p.title}</span><span style={{ font: '600 15px var(--u-ui)' }}>{formatEUR(p.priceCents)}</span></span>
             <MiniAdd p={p} inBag={inBag} />
           </div>
-        </div>
+        </>) : null}</div>
         {/* 3 · her profile */}
-        <div className={s.panel}>
-          <img src={m.portraitUrl} alt="" className={s.blur} />
+        <div className={s.panel}>{active && (step >= 1 || asked >= 2) ? (<>
+          <Img src={m.portraitUrl} alt="" className={s.blur} />
           <div className={s.profile}>
             <MakerProfile maker={m} products={item.products} onStory={() => go(1)} next={next ? { maker: next, go: onNext } : undefined} />
           </div>
-        </div>
+        </>) : null}</div>
       </div>
 
       <div className={s.scrim} />
@@ -134,7 +148,7 @@ function MakerCard({ item, next, hints, inBag, onNext, index }: { item: FeedItem
       </div>
       {step !== 2 ? (
         <div className={`gs ${s.pill}`}>
-          <button type="button" onClick={() => go(2)} aria-label={`${m.name}’s profile`} style={{ padding: 0, border: 0, background: 'none', lineHeight: 0, cursor: 'pointer' }}><img src={m.portraitUrl} alt="" className="u-avatar" /></button>
+          <button type="button" onClick={() => go(2)} aria-label={`${m.name}’s profile`} style={{ padding: 0, border: 0, background: 'none', lineHeight: 0, cursor: 'pointer' }}><Img small src={m.portraitUrl} alt="" className="u-avatar" /></button>
           <span className={s.txt}><span className="hand">{m.name}</span><span className="m">{sub}</span></span>
           <button type="button" className={s.follow} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
         </div>
@@ -180,15 +194,16 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
 
   return (
     <div className={s.desk}>
+      <Wash src={item.products[firstAvailable(item.products)]?.images[0]} />
       <div className={s.stage}>
-        {step === 0 ? <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ position: 'absolute', inset: 0, zIndex: 1 }}><img src={bg} alt={`${p.title} by ${m.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 45%' }} /></Link> : null}
-        {step === 1 ? <img src={bg} alt={`${m.name} at work`} /> : null}
+        {step === 0 ? <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ position: 'absolute', inset: 0, zIndex: 1 }}><Img src={bg} alt={`${p.title} by ${m.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 45%' }} /></Link> : null}
+        {step === 1 ? <Img src={bg} alt={`${m.name} at work`} /> : null}
         {step < 2 ? <div className={s.stageShade} /> : null}
         {step === 2 ? <div className={s.dprofile}><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
         <div className={s.dbars}>{[0, 1, 2].map((i) => <span key={i} className={i <= step ? s.on : ''} />)}</div>
         {step < 2 ? (
           <div className={`gs ${s.dpill}`}>
-            <img src={m.portraitUrl} alt="" className="u-avatar" />
+            <Img small src={m.portraitUrl} alt="" className="u-avatar" />
             <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25, paddingRight: 6 }}><span className="hand" style={{ fontSize: 16 }}>{m.name}</span><span className="m" style={{ fontSize: 12 }}>{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
             <button type="button" className={s.follow} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
           </div>
@@ -214,7 +229,7 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
         <div className={s.upnextList}>
         {items.map((x, i) => (
           <button key={x.maker.id} type="button" className={i === mi ? 'g' : 'gs'} aria-pressed={i === mi} onClick={() => { setMi(i); setStep(0); }}>
-            <img src={x.maker.portraitUrl} alt="" className="u-avatar" /><span style={{ font: '600 13px var(--u-ui)' }}>{x.maker.name}</span><span className="m" style={{ fontSize: 12 }}>{makerMeta(x.maker).split(' · ')[1]}</span>
+            <Img small src={x.maker.portraitUrl} alt="" className="u-avatar" /><span style={{ font: '600 13px var(--u-ui)' }}>{x.maker.name}</span><span className="m" style={{ fontSize: 12 }}>{makerMeta(x.maker).split(' · ')[1]}</span>
           </button>
         ))}
         </div>
@@ -232,18 +247,23 @@ export default function Discover() {
   const [items] = useData(getFeed);
   const [bag] = useData(getBag);
   const feed = useRef<HTMLDivElement>(null);
+  const desktop = useIsDesktop();
+  const [cur, setCur] = useState(0);
   useEffect(() => { if (me && !me.onboarded) router.replace('/welcome'); }, [me, router]);
   const inBag = useMemo(() => new Set((bag?.groups ?? []).flatMap((g) => g.lines.map((l) => l.productId))), [bag]);
-  if (!me || !me.onboarded || !items) return <Loading />;
+  if (!me || !me.onboarded || !items || desktop === undefined) return <Loading />;
+  if (desktop) return items.length ? <DeskStage items={items} inBag={inBag} /> : <Loading />;
   const scrollTo = (i: number) => feed.current?.scrollTo({ top: i * feed.current.clientHeight, behavior: 'smooth' });
+  const onFeedScroll = () => { const f = feed.current; if (!f) return; const i = Math.round(f.scrollTop / f.clientHeight); if (i !== cur) setCur(i); };
+  const wash = items[Math.min(cur, items.length - 1)];
 
   return (
     <>
-      <Wash src={items[0]?.products[0]?.images[0]} />
-      <div className={s.feed} ref={feed}>
-        {items.map((it, i) => (
-          <MakerCard key={it.maker.id} item={it} index={i} next={items[i + 1]?.maker} hints={!me.hintsSeen} inBag={inBag} onNext={() => scrollTo(i + 1)} />
-        ))}
+      <Wash src={wash?.products[firstAvailable(wash.products)]?.images[0]} />
+      <div className={s.feed} ref={feed} onScroll={onFeedScroll}>
+        {items.map((it, i) => (i === cur || i === cur + 1
+          ? <MakerCard key={it.maker.id} item={it} index={i} active={i === cur} next={items[i + 1]?.maker} hints={!me.hintsSeen} inBag={inBag} onNext={() => scrollTo(i + 1)} />
+          : <LightCard key={it.maker.id} item={it} index={i} show={i === cur - 1} />))}
         <div className={s.end}>
           <span className="hand" style={{ fontSize: 22 }}>You’ve met everyone for now</span>
           <span className="m">New makers join every week.</span>
@@ -251,7 +271,6 @@ export default function Discover() {
           <button type="button" className="sec gs" onClick={() => scrollTo(0)}>Back to the top</button>
         </div>
       </div>
-      {items.length ? <DeskStage items={items} inBag={inBag} /> : null}
     </>
   );
 }

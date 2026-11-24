@@ -7,6 +7,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Welcome from './welcome/Checklist';
 import s from './studio.module.css';
+import Img from '@/components/u/Img';
 
 /** B8 Studio · Today. */
 export default function Today() {
@@ -30,16 +31,16 @@ export default function Today() {
       <Wash src={me.portraitUrl} />
       <main className="u-page" style={{ paddingBottom: 'calc(96px + env(safe-area-inset-bottom))' }}>
         <div className="u-head">
-          <img src={me.portraitUrl} alt="" className="u-avatar" style={{ width: 48, height: 48 }} />
+          <Img small src={me.portraitUrl} alt="" className="u-avatar" style={{ width: 48, height: 48 }} />
           <span style={{ flex: 1 }}><span className="m" style={{ fontSize: 12 }}>Studio · {dayName(now.toISOString())}, {now.getDate()} {monthName(now.toISOString())}</span><h1 className="hand">Hi, {me.name}</h1></span>
           <Link href={`/m/${me.slug}`} className="sec gs" aria-label="See my profile as buyers do">View profile</Link>
         </div>
         <div className="g u-card u-stack" style={{ gap: 4 }}>
-          <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">To ship · {toShip.length}</span><Link href="/studio/orders" className="m" style={{ fontSize: 13 }}>All orders</Link></div>
+          <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">To ship · {toShip.length}</span><Link href="/studio/orders" className="m tap" style={{ fontSize: 13 }}>All orders</Link></div>
           <div className={s.list} style={{ margin: '0 -14px -14px' }}>
             {toShip.map((o) => (
               <Link key={o.id} href={`/studio/orders/${o.id}`}>
-                <img src={o.lines[0].product.images[0]} alt="" />
+                <Img small src={o.lines[0].product.images[0]} alt="" />
                 <span className={s.grow}><span>{o.lines[0].product.title}{o.lines[0].qty > 1 ? ` × ${o.lines[0].qty}` : ''}</span><span className="m">#{o.number} · {o.buyer.name}, {o.buyer.city}{o.gift?.wrap ? ' · gift wrap' : ''}</span></span>
                 <span className={`${s.status} gs`}>Ship by {dayName(o.shipBy)}</span>
               </Link>
@@ -68,14 +69,14 @@ export default function Today() {
         ))}
         {soldOut.map((p) => (
           <Link key={p.id} href={`/studio/pieces/${p.id}`} className="gs u-card row">
-            <img src={p.images[0]} alt="" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} />
+            <Img small src={p.images[0]} alt="" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} />
             <span className={s.grow}><span>{p.title} is sold out</span><span className="m">Making more? Buyers will see “Back in stock”.</span></span><span>›</span>
           </Link>
         ))}
         {loved?.length ? (
           <div className="g u-card u-stack">
             <span className="lbl">Your live pieces</span>
-            {loved.map((p) => <Link key={p.id} href={`/studio/pieces/${p.id}`} className="row"><img src={p.images[0]} alt="" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} /><span className={s.grow}><span>{p.title}</span><span className="m">{formatEUR(p.priceCents)}</span></span></Link>)}
+            {loved.map((p) => <Link key={p.id} href={`/studio/pieces/${p.id}`} className="row"><Img small src={p.images[0]} alt="" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} /><span className={s.grow}><span>{p.title}</span><span className="m">{formatEUR(p.priceCents)}</span></span></Link>)}
           </div>
         ) : null}
       </main>

@@ -8,6 +8,7 @@ import { BackButton } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** B6 Share something: video, journal post, or "in progress" (adds the In progress sticker to that piece). */
 export default function Post() {
@@ -38,7 +39,7 @@ export default function Post() {
         <div className="u-head"><BackButton href="/studio" /><h1 className="hand">Share something</h1></div>
         <div className="chips">{([['video', 'Video'], ['journal', 'Journal post'], ['in_progress', 'In progress']] as const).map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={kind === k} onClick={() => { setKind(k); setIds([]); }}>{l}</button>)}</div>
         <div style={{ position: 'relative', borderRadius: 26, overflow: 'hidden', aspectRatio: kind === 'video' ? '4/5' : '16/10' }} className="gs">
-          {img ? <img src={img} alt="Preview" className="u-cover" /> : (
+          {img ? <Img src={img} alt="Preview" className="u-cover" /> : (
             <button type="button" onClick={() => file.current?.click()} style={{ position: 'absolute', inset: 0, background: 'none', border: 0, color: 'var(--u-ink)', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, font: '600 15px var(--u-ui)' }}>
               <span style={{ fontSize: 30 }}>+</span>{kind === 'video' ? 'Add a video (15–60 s)' : 'Add a photo (optional)'}
             </button>
@@ -62,7 +63,7 @@ export default function Post() {
             <div style={{ display: 'flex', gap: 10, overflowX: 'auto', scrollbarWidth: 'none' }}>
               {live.map((p) => (
                 <button key={p.id} type="button" aria-pressed={ids.includes(p.id)} onClick={() => pick(p.id)} style={{ padding: 0, border: 0, background: 'none', color: 'var(--u-ink)', display: 'flex', flexDirection: 'column', gap: 4, cursor: 'pointer', flexShrink: 0, width: 72 }}>
-                  <span style={{ width: 72, height: 72, borderRadius: 14, overflow: 'hidden', display: 'block', outline: ids.includes(p.id) ? '2px solid var(--u-accent)' : 'none', outlineOffset: 2 }}><img src={p.images[0]} alt="" className="u-cover" /></span>
+                  <span style={{ width: 72, height: 72, borderRadius: 14, overflow: 'hidden', display: 'block', outline: ids.includes(p.id) ? '2px solid var(--u-accent)' : 'none', outlineOffset: 2 }}><Img small src={p.images[0]} alt="" className="u-cover" /></span>
                   <span style={{ fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.title}</span>
                 </button>
               ))}

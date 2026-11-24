@@ -7,6 +7,7 @@ import { useData } from '@/lib/useData';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
+import Img from '@/components/u/Img';
 
 const LABEL: Record<string, string> = { paid: 'To pack', packing: 'Packing', shipped: 'Shipped', delivered: 'Delivered', refunded: 'Refunded' };
 
@@ -26,7 +27,7 @@ export default function Orders() {
         <div className={`g ${s.list}`}>
           {shown.map((o) => (
             <Link key={o.id} href={`/studio/orders/${o.id}`}>
-              <img src={o.lines[0].product.images[0]} alt="" />
+              <Img small src={o.lines[0].product.images[0]} alt="" />
               <span className={s.grow}><span>{o.lines[0].product.title}{o.lines.length > 1 ? ` + ${o.lines.length - 1}` : o.lines[0].qty > 1 ? ` × ${o.lines[0].qty}` : ''}</span><span className="m">#{o.number} · {o.buyer.name}, {o.buyer.city} · {formatEURExact(o.itemsCents + o.giftWrapCents)}</span></span>
               <span className={`${s.status} ${open.includes(o) ? s.live : 'gs'}`}>{open.includes(o) ? `Ship by ${dayName(o.shipBy)}` : `${LABEL[o.status]} ${o.shippedAt ? shortDate(o.shippedAt) : ''}`}</span>
             </Link>

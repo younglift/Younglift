@@ -10,6 +10,7 @@ import { Close } from '@/components/u/Icons';
 import Wash from '@/components/u/Wash';
 import Filters, { EMPTY, activeCount, applyFilters, type F } from './Filters';
 import s from './explore.module.css';
+import Img from '@/components/u/Img';
 
 const SORTS = [['new', 'Newest'], ['low', 'Price: low to high'], ['high', 'Price: high to low']] as const;
 
@@ -40,7 +41,7 @@ export default function Results({ title, category, q }: { title: string; categor
         </div>
         <div className="u-head" style={{ marginTop: -10 }}><span><h1 className="hand">{title}</h1><span className="m sub">{summary}</span></span></div>
         {foundMakers.length ? (
-          <div className={s.makers}>{foundMakers.map((m) => <Link key={m.id} href={`/m/${m.slug}`} className="gs"><img src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand" style={{ fontSize: 14 }}>{m.name}</span><span className="m" style={{ fontSize: 12 }}>{m.city}</span></Link>)}</div>
+          <div className={s.makers}>{foundMakers.map((m) => <Link key={m.id} href={`/m/${m.slug}`} className="gs"><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand" style={{ fontSize: 14 }}>{m.name}</span><span className="m" style={{ fontSize: 12 }}>{m.city}</span></Link>)}</div>
         ) : null}
         <div className={s.layout}>
           <aside className={`g ${s.aside}`} aria-label="Filter">

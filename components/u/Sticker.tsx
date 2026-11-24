@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import type { MakerSticker, UpliftSticker } from '@/lib/types';
 
-/** File for each sticker key in public/stickers/. Matas can redraw a PNG under the same name; no code change. */
+/** File for each sticker key in public/stickers/. Matas can redraw a PNG under the same name, then run
+ *  `node scripts/optimize-images.cjs` to refresh the small WebP copy the app loads (public/stickers/webp/). */
 const FILE: Record<MakerSticker | UpliftSticker, string> = {
   one_of_one: '1of1', handmade: 'handmade', small_batch: 'small-batch', made_in_city: 'made-in-{city}',
   made_in_collab: 'made-in-collab', made_to_order: 'made-to-order',
@@ -16,7 +17,7 @@ export const STICKER_LABEL: Record<MakerSticker | UpliftSticker, string> = {
 };
 const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-');
 export function stickerSrc(k: MakerSticker | UpliftSticker, city?: string) {
-  return `/stickers/${FILE[k].replace('{city}', slug(city ?? ''))}.png`;
+  return `/stickers/webp/${FILE[k].replace('{city}', slug(city ?? ''))}.webp`;
 }
 
 type Props = { k: MakerSticker | UpliftSticker; city?: string; width?: number; tilt?: number; className?: string; style?: React.CSSProperties };
@@ -26,7 +27,9 @@ export default function Sticker({ k, city, width = 110, tilt = -8, className, st
   if (broken) return null;
   const label = k === 'made_in_city' ? `Made in ${city}` : STICKER_LABEL[k];
   return (
-    <img src={stickerSrc(k, city)} alt={label} className={className} onError={() => setBroken(true)}
-      style={{ width, height: 'auto', display: 'block', transform: `rotate(${tilt}deg)`, filter: 'var(--u-sticker-shadow)', pointerEvents: 'none', ...style }} />
+    <span className={className} style={{ display: 'block', lineHeight: 0, transform: `rotate(${tilt}deg)`, pointerEvents: 'none', ...style }}>
+      <img src={stickerSrc(k, city)} alt={label} loading="lazy" decoding="async" onError={() => setBroken(true)}
+        style={{ width, height: 'auto', display: 'block', objectFit: 'contain', filter: 'var(--u-sticker-shadow)' }} />
+    </span>
   );
 }

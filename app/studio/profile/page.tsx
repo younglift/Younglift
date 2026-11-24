@@ -10,6 +10,7 @@ import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
+import Img from '@/components/u/Img';
 
 const STEPS = [
   ['About you', 'This is how buyers meet you first.'],
@@ -72,7 +73,7 @@ export default function StudioProfile() {
 
             {step === 1 ? (
               <div className="g u-card u-stack">
-                <div className="row"><img src={d.portraitUrl} alt="" className="u-avatar" style={{ width: 72, height: 72 }} /><button type="button" className="sec gs" onClick={() => photo.current?.click()}>Change photo</button>
+                <div className="row"><Img small src={d.portraitUrl} alt="" className="u-avatar" style={{ width: 72, height: 72 }} /><button type="button" className="sec gs" onClick={() => photo.current?.click()}>Change photo</button>
                   <input ref={photo} type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) set({ portraitUrl: await uploadImage(f) }); e.target.value = ''; }} /></div>
                 <label className="fld"><span className="lbl">Your name</span><input className="inp" value={d.name} onChange={(e) => set({ name: e.target.value })} /></label>
                 <label className="fld"><span className="lbl">Studio name</span><input className="inp" value={d.studio} onChange={(e) => set({ studio: e.target.value })} /><span className="m" style={{ fontSize: 12 }}>Optional</span></label>
@@ -89,7 +90,7 @@ export default function StudioProfile() {
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
                     {lib.map((p) => { const k = d.collage.indexOf(p.id); return (
                       <button key={p.id} type="button" aria-pressed={k >= 0} aria-label={p.title} onClick={() => pick(p.id)} style={{ position: 'relative', padding: 0, border: 0, borderRadius: 16, overflow: 'hidden', aspectRatio: '1', cursor: 'pointer', outline: k >= 0 ? '2px solid var(--u-accent)' : 'none', outlineOffset: 2 }}>
-                        <img src={p.images[0]} alt="" className="u-cover" />
+                        <Img small src={p.images[0]} alt="" className="u-cover" />
                         <span style={{ position: 'absolute', right: 6, top: 6, width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', font: '600 13px var(--u-ui)', background: k >= 0 ? 'var(--u-accent)' : 'var(--u-shade)', color: k >= 0 ? 'var(--u-on-accent)' : 'var(--u-ink)' }}>{k >= 0 ? k + 1 : '+'}</span>
                       </button>
                     ); })}
@@ -101,7 +102,7 @@ export default function StudioProfile() {
             {step === 3 ? (
               <div className="g u-card u-stack">
                 <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', aspectRatio: '4/5' }} className="gs">
-                  {d.video ? <><img src={d.video.posterUrl} alt="" className="u-cover" /><span className="gs" style={{ position: 'absolute', left: 12, bottom: 12, borderRadius: 999, padding: '6px 12px', fontSize: 12 }}>0:{String(d.video.seconds).padStart(2, '0')} · plays muted first</span></>
+                  {d.video ? <><Img src={d.video.posterUrl} alt="" className="u-cover" /><span className="gs" style={{ position: 'absolute', left: 12, bottom: 12, borderRadius: 999, padding: '6px 12px', fontSize: 12 }}>0:{String(d.video.seconds).padStart(2, '0')} · plays muted first</span></>
                     : <button type="button" onClick={() => video.current?.click()} style={{ position: 'absolute', inset: 0, background: 'none', border: 0, color: 'var(--u-ink)', cursor: 'pointer', font: '600 15px var(--u-ui)' }}>+ Add a video</button>}
                 </div>
                 <input ref={video} type="file" accept="image/*,video/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) { const poster = f.type.startsWith('video') ? d.portraitUrl : await uploadImage(f); set({ video: { posterUrl: poster, caption: d.video?.caption ?? d.tagline, seconds: 30, hasCaptions: d.video?.hasCaptions ?? true } }); } e.target.value = ''; }} />
@@ -145,7 +146,7 @@ export default function StudioProfile() {
                 </div>
                 <div className="g u-card u-stack">
                   <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">Your pieces · {pieces.length}</span><Link href="/studio/pieces/new" style={{ fontWeight: 600, fontSize: 14 }}>+ Add piece</Link></div>
-                  {pieces.slice(0, 5).map((p) => <Link key={p.id} href={`/studio/pieces/${p.id}`} className="row"><img src={p.images[0]} alt="" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} /><span style={{ flex: 1 }}>{p.title}</span><span className="num">{formatEUR(p.priceCents)}</span></Link>)}
+                  {pieces.slice(0, 5).map((p) => <Link key={p.id} href={`/studio/pieces/${p.id}`} className="row"><Img small src={p.images[0]} alt="" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} /><span style={{ flex: 1 }}>{p.title}</span><span className="num">{formatEUR(p.priceCents)}</span></Link>)}
                 </div>
               </>
             ) : null}
@@ -154,10 +155,10 @@ export default function StudioProfile() {
           <aside className={s.preview} aria-label="Preview">
             <span className="lbl m">How it looks in Discover</span>
             <div className={`g ${s.phone}`}>
-              {cover[0] ? <img src={cover[0]} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} /> : <img src={d.portraitUrl} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} />}
-              <div className="gs row" style={{ position: 'absolute', left: 10, right: 10, top: 12, borderRadius: 999, padding: 5 }}><img src={d.portraitUrl} alt="" className="u-avatar" style={{ width: 32, height: 32 }} /><span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}><span className="hand" style={{ fontSize: 13 }}>{d.name || 'Your name'}</span><span className="m" style={{ fontSize: 11 }}>{d.city}</span></span></div>
+              {cover[0] ? <Img src={cover[0]} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} /> : <Img src={d.portraitUrl} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} />}
+              <div className="gs row" style={{ position: 'absolute', left: 10, right: 10, top: 12, borderRadius: 999, padding: 5 }}><Img small src={d.portraitUrl} alt="" className="u-avatar" style={{ width: 32, height: 32 }} /><span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}><span className="hand" style={{ fontSize: 13 }}>{d.name || 'Your name'}</span><span className="m" style={{ fontSize: 11 }}>{d.city}</span></span></div>
               <div className="g" style={{ position: 'absolute', left: 10, right: 10, bottom: 10, borderRadius: 18, padding: 12, fontSize: 13, lineHeight: 1.45 }}>{d.tagline || 'One line about your work'}
-                {cover.length > 1 ? <div className="row" style={{ gap: 6, marginTop: 8 }}>{cover.map((u, i) => <img key={i} src={u} alt="" style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover' }} />)}</div> : null}
+                {cover.length > 1 ? <div className="row" style={{ gap: 6, marginTop: 8 }}>{cover.map((u, i) => <Img small key={i} src={u} alt="" style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover' }} />)}</div> : null}
               </div>
             </div>
           </aside>
