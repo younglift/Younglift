@@ -83,8 +83,11 @@
 /* ---------- desktop: one stage, ← → photos, ↓ next maker ---------- */
 @media (min-width:820px){
   .feed{display:none}
-  .desk{display:block;position:fixed;inset:0;z-index:1}
-  .stage{position:absolute;left:24px;right:24px;top:96px;bottom:84px;border-radius:32px;overflow:hidden;z-index:2;max-width:1392px;margin:0 auto}
+  /* desktop feed: same vertical snap as phone, one maker per screen */
+  .desk{display:block;position:fixed;inset:0;z-index:1;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
+  .desk::-webkit-scrollbar{display:none}
+  .dslide{position:relative;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always}
+  .stage{position:absolute;left:24px;right:24px;top:96px;bottom:24px;border-radius:32px;overflow:hidden;z-index:2;max-width:1392px;margin:0 auto}
   .stage > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
   /* portrait photos: whole photo on the right, its blurred copy fills the stage (FIXES 4.6) */
   .stagePhoto{position:absolute;inset:0;z-index:1;display:block;overflow:hidden}
@@ -95,10 +98,6 @@
   .dpillText :global(.m){font-size:12px}
   .dplay{position:absolute;right:24px;bottom:24px;z-index:3}
   .dnoVideo{position:absolute;right:24px;bottom:24px;z-index:3;border-radius:var(--u-r-pill);padding:8px 16px;font-size:12px}
-  .upLabel{font-size:13px;margin-right:8px}
-  .upName{font:600 13px var(--u-ui)}
-  .upCat{font-size:12px}
-  .upHint{font-size:13px;white-space:nowrap}
   .stageShade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,var(--u-shade),transparent 45%),linear-gradient(var(--u-shade),transparent 25%);opacity:.75}
   .dbars{position:absolute;left:24px;right:24px;top:16px;display:flex;gap:6px;z-index:3}
   .dbars span{flex:1;height:3px;border-radius:2px;background:var(--u-track)}
@@ -109,7 +108,6 @@
   .dpillWho:hover .dpillText :global(.hand){text-decoration:underline;text-underline-offset:3px}
   .dstep{position:absolute;right:24px;top:40px;padding:7px 14px;border-radius:var(--u-r-pill);font:500 12px var(--u-ui);z-index:3}
   .dstk{position:absolute;right:300px;top:120px;z-index:3}
-  .dstk2{position:absolute;right:120px;top:260px;z-index:3}
   .prev,.nextBtn{position:absolute;top:50%;transform:translateY(-50%);z-index:3}
   .prev{left:16px}.nextBtn{right:16px}
   .dcard{animation:u-step-in var(--u-dur-step) var(--u-ease) both;position:absolute;left:24px;bottom:24px;width:420px;border-radius:var(--u-r-card);padding:20px;z-index:3}
@@ -122,12 +120,4 @@
   .dprog span{display:block;height:100%;width:100%;background:var(--u-accent);transform-origin:left;animation:prog linear infinite}
   .dprofile{position:absolute;inset:0;overflow-y:auto;z-index:3;padding:0 0 24px}
   .dprofile > div:first-child{border-radius:0}
-  .upnextRow{position:absolute;left:24px;right:24px;bottom:18px;height:52px;display:flex;align-items:center;gap:8px;z-index:3;max-width:1392px;margin:0 auto}
-  .upnextList{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;min-width:0;flex:1;padding:2px}
-  .upnextList::-webkit-scrollbar{display:none}
-  .upnextList > button{scroll-snap-align:start}
-  .upnextList > button{flex-shrink:0;height:48px;border-radius:var(--u-r-pill);padding:0 16px 0 6px;display:flex;align-items:center;gap:10px;color:var(--u-ink);cursor:pointer}
-  .upnextList > button[aria-pressed="true"]{outline:2px solid var(--u-accent);outline-offset:1px}
-  .upnextRow img{width:36px;height:36px}
-  .upnextRow > :global(.cta){flex-shrink:0}
 }
