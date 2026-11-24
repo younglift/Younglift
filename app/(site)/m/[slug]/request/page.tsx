@@ -8,6 +8,7 @@ import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 const KINDS: Partial<Record<Category, string[]>> = {
   jewelry: ['Ring', 'Necklace', 'Earrings', 'Bracelet'],
@@ -47,7 +48,7 @@ export default function CustomRequest() {
       <main className="u-page narrow has-bar">
         <div className="u-head"><BackButton href={`/m/${m.slug}`} /><h1 className="hand">Request sent</h1></div>
         <div className="g u-card" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-          <img src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 64, height: 64 }} />
+          <Img small src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 64, height: 64 }} />
           <span className="hand" style={{ fontSize: 20 }}>{m.name} has your idea</span>
           <p className="m" style={{ margin: 0, lineHeight: 1.5 }}>{reply ? `${reply.replace(`${m.name} u`, 'She u')} with questions or a first sketch.` : 'She’ll reply with questions or a first sketch.'} Nothing is ordered or paid yet.</p>
         </div>
@@ -76,7 +77,7 @@ export default function CustomRequest() {
             <div className="row" style={{ flexWrap: 'wrap', gap: 8 }}>
               {photos.map((u, i) => (
                 <span key={u + i} style={{ position: 'relative', width: 72, height: 72, borderRadius: 14, overflow: 'hidden' }}>
-                  <img src={u} alt="" className="u-cover" />
+                  <Img small src={u} alt="" className="u-cover" />
                   <button type="button" aria-label="Remove photo" className="gs" style={{ position: 'absolute', right: 2, top: 2, width: 26, height: 26, borderRadius: '50%', color: 'var(--u-ink)', cursor: 'pointer', fontSize: 12 }} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>✕</button>
                 </span>
               ))}

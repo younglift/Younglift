@@ -6,6 +6,7 @@ import { useData } from '@/lib/useData';
 import { ProductCard } from '@/components/u/Bits';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** 06 Saved + boards. */
 export default function Saved() {
@@ -24,7 +25,7 @@ export default function Saved() {
     return (
       <button key={key} type="button" onClick={() => setOpen(key)} aria-pressed={open === key} style={{ padding: 0, border: 0, background: 'none', color: 'var(--u-ink)', textAlign: 'left', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 6, width: 132, flexShrink: 0 }}>
         <span className="gs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, borderRadius: 18, overflow: 'hidden', aspectRatio: '1', outline: open === key ? '2px solid var(--u-accent)' : 'none', outlineOffset: 2 }}>
-          {[0, 1, 2, 3].map((i) => <span key={i} style={{ display: 'block', minHeight: 0 }}>{imgs[i] ? <img src={imgs[i]} alt="" className="u-cover" /> : null}</span>)}
+          {[0, 1, 2, 3].map((i) => <span key={i} style={{ display: 'block', minHeight: 0 }}>{imgs[i] ? <Img small src={imgs[i]} alt="" className="u-cover" /> : null}</span>)}
         </span>
         <span style={{ fontSize: 13, fontWeight: 600 }}>{title}</span><span className="m" style={{ fontSize: 12, marginTop: -4 }}>{plural(ids.length, 'piece')}</span>
       </button>

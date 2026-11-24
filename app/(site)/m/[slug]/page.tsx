@@ -4,10 +4,12 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { getMaker, getMakerProducts } from '@/lib/data';
 import { useData } from '@/lib/useData';
+import { useIsDesktop } from '@/lib/useIsDesktop';
 import { BackButton } from '@/components/u/Bits';
 import MakerProfile from '@/components/u/MakerProfile';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** Her profile on its own page (links from pieces, Following, Home). Story opens as a full-screen photo + caption. */
 export default function MakerPage() {
@@ -29,7 +31,7 @@ export default function MakerPage() {
       <span style={{ position: 'fixed', left: 14, top: 'calc(14px + env(safe-area-inset-top))', zIndex: 20 }} className="mk-back"><BackButton href="/" /></span>
       {story ? (
         <div role="dialog" aria-modal="true" aria-label={`${m.name}’s story`} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'var(--u-bg)' }}>
-          <img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className="u-cover" style={{ position: 'absolute', inset: 0 }} />
+          <Img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className="u-cover" style={{ position: 'absolute', inset: 0 }} />
           {m.video?.hasCaptions ? <p style={{ position: 'absolute', left: 24, right: 24, bottom: 120, textAlign: 'center', margin: 0 }}><span style={{ background: 'var(--u-shade)', padding: '4px 10px', borderRadius: 8, fontSize: 18, lineHeight: 1.9, boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>“{m.video.caption}”</span></p> : null}
           <button type="button" className="ic gs" aria-label="Close story" style={{ position: 'absolute', right: 16, top: 'calc(16px + env(safe-area-inset-top))' }} onClick={() => setStory(false)}>✕</button>
           <button type="button" className="cta" style={{ position: 'absolute', left: 16, right: 16, bottom: 'calc(24px + env(safe-area-inset-bottom))' }} onClick={() => { setStory(false); router.push(`/messages/${m.slug}`); }}>Message {m.name}</button>
@@ -40,11 +42,9 @@ export default function MakerPage() {
   );
 }
 
+/** Only one layout is rendered (phone OR desktop), so photos load once (FIXES 1.1). */
 function MakerProfileResponsive({ m, products, tab, onStory }: { m: NonNullable<Awaited<ReturnType<typeof getMaker>>>; products: Awaited<ReturnType<typeof getMakerProducts>>; tab: 'works' | 'journal' | 'reviews'; onStory: () => void }) {
-  return (
-    <>
-      <div className="mk-phone"><MakerProfile maker={m} products={products} initialTab={tab} onStory={onStory} /></div>
-      <div className="mk-desk"><MakerProfile maker={m} products={products} initialTab={tab} onStory={onStory} desktop /></div>
-    </>
-  );
+  const desktop = useIsDesktop();
+  if (desktop === undefined) return null;
+  return <MakerProfile maker={m} products={products} initialTab={tab} onStory={onStory} desktop={desktop} />;
 }

@@ -10,6 +10,7 @@ import { BackButton } from '@/components/u/Bits';
 import { Lock } from '@/components/u/Icons';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** Next cut-off for "ships today if you order in …": 15:00 local time on weekdays. */
 function cutoff(now: number) {
@@ -62,7 +63,7 @@ function Checkout() {
         <div className="u-head"><BackButton href="/bag" /><span><h1 className="hand">Checkout</h1><span className="m sub">No account needed</span></span></div>
         <details className="gs u-card">
           <summary style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, listStyle: 'none' }}>
-            <span style={{ display: 'flex' }}>{q.rows.flatMap((r) => r.lines).slice(0, 4).map((l, i) => <img key={l.productId + i} src={l.product.images[0]} alt="" style={{ width: 36, height: 36, borderRadius: 10, objectFit: 'cover', marginLeft: i ? -8 : 0, border: '2px solid var(--u-bg)' }} />)}</span>
+            <span style={{ display: 'flex' }}>{q.rows.flatMap((r) => r.lines).slice(0, 4).map((l, i) => <Img small key={l.productId + i} src={l.product.images[0]} alt="" style={{ width: 36, height: 36, borderRadius: 10, objectFit: 'cover', marginLeft: i ? -8 : 0, border: '2px solid var(--u-bg)' }} />)}</span>
             <span style={{ flex: 1, fontSize: 14 }}>{plural(q.pieces, 'piece')} · {names}</span><b className="num">{formatEURExact(q.totalCents)}</b>
           </summary>
           <div className="u-stack" style={{ marginTop: 12, gap: 8, fontSize: 14 }}>

@@ -5,6 +5,7 @@ import { useData } from '@/lib/useData';
 import { BackButton } from '@/components/u/Bits';
 import Logo from '@/components/u/Logo';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** B1 Sell on Uplift. */
 export default function Sell() {
@@ -14,7 +15,7 @@ export default function Sell() {
       <Wash src="/img/mara-wheel.jpg" />
       <main className="u-page narrow has-bar" style={{ paddingTop: 0 }}>
         <div style={{ position: 'relative', margin: '0 -16px', height: 360 }}>
-          <img src="/img/mara-wheel.jpg" alt="Mara at her pottery wheel" className="u-cover" />
+          <Img src="/img/mara-wheel.jpg" alt="Mara at her pottery wheel" className="u-cover" />
           <div style={{ position: 'absolute', inset: 0, background: 'var(--u-scrim-bottom)' }} />
           <span style={{ position: 'absolute', left: 14, top: 'calc(14px + env(safe-area-inset-top))' }}><BackButton href="/" /></span>
           <span style={{ position: 'absolute', right: 16, top: 'calc(16px + env(safe-area-inset-top))' }}><Logo height={56} /></span>
@@ -29,7 +30,7 @@ export default function Sell() {
           <span className="lbl">How it works</span>
           {['Show us your work (5 minutes)', 'We look at every maker by hand', 'Set up your profile and first pieces'].map((t, i) => <div key={t} className="row"><span className="chk" style={{ borderRadius: '50%' }}>{i + 1}</span><span>{t}</span></div>)}
         </div>
-        <div className="gs u-card row" style={{ alignItems: 'flex-start' }}><img src="/img/inez.jpg" alt="" className="u-avatar" style={{ width: 44, height: 44 }} /><span style={{ display: 'flex', flexDirection: 'column', gap: 6 }}><span style={{ fontSize: 14, lineHeight: 1.5 }}>“I sold my first ring in the second week. Buyers write to me like friends.”</span><span className="hand m" style={{ fontSize: 13 }}>Inez, Vilnius</span></span></div>
+        <div className="gs u-card row" style={{ alignItems: 'flex-start' }}><Img small src="/img/inez.jpg" alt="" className="u-avatar" style={{ width: 44, height: 44 }} /><span style={{ display: 'flex', flexDirection: 'column', gap: 6 }}><span style={{ fontSize: 14, lineHeight: 1.5 }}>“I sold my first ring in the second week. Buyers write to me like friends.”</span><span className="hand m" style={{ fontSize: 13 }}>Inez, Vilnius</span></span></div>
         <span className="m" style={{ fontSize: 13, lineHeight: 1.5 }}>Everything you sell must be made by you. We don’t accept resellers or mass-produced goods.</span>
         <div className="g u-bar">{me ? <Link href="/studio" className="cta">Open your studio</Link> : <Link href="/sell/apply" className="cta">Apply to join</Link>}</div>
       </main>

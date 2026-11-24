@@ -8,6 +8,7 @@ import { Stars } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 const STEPS = ['Paid', 'Packing', 'On the way', 'Delivered'];
 const stepOf = (s: string) => (s === 'paid' ? 0 : s === 'packing' ? 1 : s === 'shipped' ? 2 : 3);
@@ -48,7 +49,7 @@ export default function Account() {
           return (
             <article key={o.id} className="g u-card u-stack">
               <div className="row" style={{ alignItems: 'flex-start' }}>
-                <Link href={`/p/${l.product.id}`}><img src={l.product.images[0]} alt="" style={{ width: 64, height: 64, borderRadius: 14, objectFit: 'cover', display: 'block' }} /></Link>
+                <Link href={`/p/${l.product.id}`}><Img small src={l.product.images[0]} alt="" style={{ width: 64, height: 64, borderRadius: 14, objectFit: 'cover', display: 'block' }} /></Link>
                 <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}><span style={{ fontWeight: 600 }}>{title}</span><Link href={`/m/${o.maker.slug}`} className="m" style={{ fontSize: 13 }}>from {o.maker.name} · #UL-{o.number}</Link><span style={{ fontSize: 13 }}>{line}</span></span>
               </div>
               {o.status === 'delivered' && !o.reviewed ? (

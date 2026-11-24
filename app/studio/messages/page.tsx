@@ -12,6 +12,7 @@ import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
+import Img from '@/components/u/Img';
 
 const euros = (v: string) => Math.round(parseFloat(v.replace(',', '.').replace(/[^0-9.]/g, '')) * 100) || 0;
 
@@ -75,7 +76,7 @@ function Thread({ buyer, name, onBack }: { buyer: string; name: string; onBack: 
       <div className="row"><button type="button" className="ic" aria-label="Back to chats" onClick={onBack}>‹</button><span className="hand" style={{ fontSize: 18 }}>{name}</span></div>
       {msgs.map((x) => (
         <div key={x.id} style={{ alignSelf: x.fromMe ? 'flex-start' : 'flex-end', maxWidth: '80%', background: x.fromMe ? 'var(--u-glass-sm)' : 'var(--u-cta)', color: x.fromMe ? 'var(--u-ink)' : 'var(--u-on-accent)', borderRadius: 18, padding: '9px 13px', fontSize: 14, lineHeight: 1.45 }}>
-          {x.imageUrl ? <img src={x.imageUrl} alt="" style={{ borderRadius: 12, maxWidth: 200, display: 'block' }} /> : null}{x.text}
+          {x.imageUrl ? <Img src={x.imageUrl} alt="" style={{ borderRadius: 12, maxWidth: 200, display: 'block' }} /> : null}{x.text}
           <span style={{ display: 'block', fontSize: 11, opacity: 0.7, textAlign: 'right' }}>{shortDate(x.at)} {clock(x.at)}</span>
         </div>
       ))}
@@ -101,7 +102,7 @@ function Request({ r }: { r: CustomRequest }) {
       <div className="row" style={{ justifyContent: 'space-between' }}><span style={{ fontWeight: 600 }}>{r.buyerName} · {r.kind}</span><span className="m" style={{ fontSize: 12 }}>{shortDate(r.createdAt)} · {label}</span></div>
       <span style={{ fontSize: 14, lineHeight: 1.5 }}>“{r.text}”</span>
       <span className="m" style={{ fontSize: 13 }}>Budget {BUDGET_LABEL[r.budget]} · {r.when === 'by_date' ? `by ${r.date}` : 'no rush'}</span>
-      {r.photos.length ? <div className="row" style={{ gap: 6 }}>{r.photos.map((u, i) => <img key={i} src={u} alt="" style={{ width: 56, height: 56, borderRadius: 12, objectFit: 'cover' }} />)}</div> : null}
+      {r.photos.length ? <div className="row" style={{ gap: 6 }}>{r.photos.map((u, i) => <Img small key={i} src={u} alt="" style={{ width: 56, height: 56, borderRadius: 12, objectFit: 'cover' }} />)}</div> : null}
       {r.status === 'agreed' && r.listingId ? <Link href={`/p/${r.listingId}`} className="sec gs">See the private listing</Link> : null}
       {r.status !== 'agreed' && r.status !== 'declined' && !making ? (
         <div className="row" style={{ gap: 8 }}>
@@ -123,7 +124,7 @@ function Request({ r }: { r: CustomRequest }) {
           </div>
           <label className="fld"><span className="lbl">What you’ll make</span><textarea className="inp" rows={3} value={desc} onChange={(e) => setDesc(e.target.value)} /></label>
           <div className="row" style={{ gap: 8 }}>
-            {img ? <img src={img} alt="" style={{ width: 56, height: 56, borderRadius: 12, objectFit: 'cover' }} /> : null}
+            {img ? <Img small src={img} alt="" style={{ width: 56, height: 56, borderRadius: 12, objectFit: 'cover' }} /> : null}
             <button type="button" className="sec gs" onClick={() => file.current?.click()}>{img ? 'Change sketch' : 'Add a sketch or photo'}</button>
             <input ref={file} type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) setImg(await uploadImage(f)); e.target.value = ''; }} />
           </div>

@@ -7,6 +7,7 @@ import { longDate, plural, shipsLine } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
+import Img from '@/components/u/Img';
 
 /** 07 Thank you. */
 function Done() {
@@ -28,7 +29,7 @@ function Done() {
         <section className="g u-card u-stack">
           {orders.map((o) => (
             <div key={o.id} className="u-stack" style={{ gap: 10 }}>
-              <div className="row"><img src={o.lines[0].product.images[0]} alt="" style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover' }} />
+              <div className="row"><Img small src={o.lines[0].product.images[0]} alt="" style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover' }} />
                 <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}><span className="hand">{o.maker.name}</span><span className="m" style={{ fontSize: 13 }}>{o.lines.every((l) => l.product.madeToOrder) ? shipsLine(o.lines[0].product) : `Ships by ${longDate(o.shipBy)}`} · {plural(o.lines.reduce((a, l) => a + l.qty, 0), 'piece')}</span></span></div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 4, fontSize: 11 }}>
                 {['Paid', 'Packing', 'On the way', 'Delivered'].map((st, i) => <span key={st} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}><span style={{ height: 3, borderRadius: 2, background: i === 0 ? 'var(--u-accent)' : 'var(--u-track)' }} /><span className={i ? 'm' : ''}>{st}</span></span>)}

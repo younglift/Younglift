@@ -11,9 +11,9 @@
      New screens use ONLY these. The old tokens above stay until every screen is moved over. ── */
   --u-bg:#665e58;                                   /* screen base under the blurred photo */
   --u-wash-opacity:.3; --u-wash-filter:blur(60px) saturate(.9);  /* blurred product photo behind every screen */
-  --u-glass:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));  /* cards, sheets, bottom bars */
+  --u-glass:linear-gradient(135deg,rgba(28,18,12,.55),rgba(28,18,12,.40));  /* cards, sheets, bottom bars (darker 2026-11-24, Matas FIXES 4.2) */
   --u-glass-blur:blur(26px) saturate(1.8);
-  --u-glass-sm:rgba(28,18,12,.35);                  /* chips, icon buttons, nav pill */
+  --u-glass-sm:rgba(28,18,12,.55);                  /* chips, icon buttons, nav pill: solid, no blur (Matas FIXES 1.2) */
   --u-glass-sm-blur:blur(16px) saturate(1.6);
   --u-glass-border:rgba(255,255,255,.22);
   --u-glass-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35);
@@ -37,6 +37,9 @@
   --u-online:#4fe061;                               /* "Active now" dot */
   --u-accent-soft:rgba(243,210,122,.16);            /* selected sticker tile */
   --u-sticker-shadow:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+  /* motion (Matas FIXES 3.1): use only these */
+  --u-dur-press:120ms; --u-dur-hover:150ms; --u-dur-ui:180ms; --u-dur-panel:260ms; --u-dur-step:300ms;
+  --u-ease:cubic-bezier(.2,.8,.2,1); --u-ease-out:ease-in;
 }
 *{box-sizing:border-box}
 html,body{height:100%}

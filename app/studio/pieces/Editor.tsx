@@ -12,6 +12,7 @@ import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
+import Img from '@/components/u/Img';
 
 const CATS: Category[] = ['jewelry', 'ceramics', 'crochet', 'clothing', 'accessories', 'home', 'prints', 'other'];
 const STICKERS: (MakerSticker | 'none')[] = ['none', 'one_of_one', 'handmade', 'small_batch', 'made_in_city', 'made_in_collab', 'made_to_order'];
@@ -72,7 +73,7 @@ export default function Editor({ initial }: { initial?: Product }) {
               draggable onDragStart={(e) => e.dataTransfer.setData('text/plain', String(i))} onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => { e.preventDefault(); const from = Number(e.dataTransfer.getData('text/plain')); if (Number.isNaN(from) || from === i) return; const a = [...images]; const [x] = a.splice(from, 1); a.splice(i, 0, x); setImages(a); }}>
               <button type="button" className={s.photo} aria-label={i ? 'Make this the cover photo' : 'Cover photo'} onClick={() => setImages([u, ...images.filter((_, j) => j !== i)])}>
-                <img src={u} alt="" className="u-cover" />{i === 0 ? <span className="u-badge" style={{ top: 'auto', bottom: 6, left: 6 }}>Cover</span> : null}
+                <Img small src={u} alt="" className="u-cover" />{i === 0 ? <span className="u-badge" style={{ top: 'auto', bottom: 6, left: 6 }}>Cover</span> : null}
               </button>
               <button type="button" className={`gs ${s.x}`} aria-label="Remove photo" onClick={() => setImages(images.filter((_, j) => j !== i))}>✕</button>
               {images.length > 1 ? (
@@ -114,7 +115,7 @@ export default function Editor({ initial }: { initial?: Product }) {
         <div className={s.stickers}>
           {STICKERS.map((k) => (
             <button key={k} type="button" className={s.st} aria-pressed={chosen === k} disabled={!allowed(k)} onClick={() => setSticker(k)} title={!allowed(k) ? (k === 'one_of_one' ? 'Only when quantity is 1' : 'Only for made-to-order pieces') : undefined}>
-              {k !== 'none' ? <img src={stickerSrc(k, me.city)} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} /> : null}
+              {k !== 'none' ? <Img src={stickerSrc(k, me.city)} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} /> : null}
               <span>{k === 'none' ? 'No sticker' : k === 'made_in_city' ? `Made in ${me.city}` : STICKER_LABEL[k]}</span>
             </button>
           ))}
@@ -142,7 +143,7 @@ export default function Editor({ initial }: { initial?: Product }) {
           <aside className={s.preview} aria-label="Preview">
             <span className="lbl m">How it looks in Discover</span>
             <div className={`g ${s.phone}`}>
-              {images[0] ? <img src={images[0]} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} /> : null}
+              {images[0] ? <Img src={images[0]} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} /> : null}
               {stickerShown ? <span style={{ position: 'absolute', right: 20, top: 40 }}><Sticker k={stickerShown} city={me.city} width={92} /></span> : null}
               <div className="g" style={{ position: 'absolute', left: 10, right: 10, bottom: 10, borderRadius: 20, padding: 12 }}>
                 <div className="row" style={{ justifyContent: 'space-between' }}><span className="hand" style={{ fontSize: 16 }}>{title || 'Your piece'}</span><b>{euros(price) ? formatEUR(euros(price)) : '–'}</b></div>

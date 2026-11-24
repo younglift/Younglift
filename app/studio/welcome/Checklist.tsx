@@ -8,6 +8,7 @@ import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
+import Img from '@/components/u/Img';
 
 /** B3 You're in: four steps to Go live. Profile stays hidden until she presses Go live. */
 export default function Checklist() {
@@ -28,7 +29,7 @@ export default function Checklist() {
       <Wash src={me.portraitUrl} />
       <main className="u-page narrow has-bar">
         <div style={{ position: 'relative', textAlign: 'center', paddingTop: 16 }}>
-          <img src={me.portraitUrl} alt="" className="u-avatar" style={{ width: 96, height: 96, margin: '0 auto', border: '3px solid var(--u-ink)' }} />
+          <Img small src={me.portraitUrl} alt="" className="u-avatar" style={{ width: 96, height: 96, margin: '0 auto', border: '3px solid var(--u-ink)' }} />
           <span style={{ position: 'absolute', left: 'calc(50% + 30px)', top: 0 }}><Sticker k="new_maker" width={110} /></span>
           <h1 className="hand" style={{ fontSize: 26, margin: '16px 0 6px' }}>{live ? `You’re live, ${me.name}!` : `You’re in, ${me.name}!`}</h1>
           <p className="m" style={{ margin: 0 }}>{live ? 'Buyers can find you in Discover now.' : 'Four short steps and buyers can find you.'}</p>

@@ -11,6 +11,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Inbox from '../Inbox';
 import s from '../messages.module.css';
+import Img from '@/components/u/Img';
 
 const QUICK: Record<string, string[]> = {
   jewelry: ['When does it ship?', 'Gift wrap?', 'Other sizes?'],
@@ -24,7 +25,7 @@ function Listing({ id }: { id: string }) {
   const p = d.product;
   return (
     <Link href={`/p/${p.id}`} className="g" style={{ display: 'flex', gap: 10, alignItems: 'center', borderRadius: 14, padding: 8, marginTop: 4, color: 'var(--u-ink)' }}>
-      <img src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 10, objectFit: 'cover' }} />
+      <Img small src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 10, objectFit: 'cover' }} />
       <span style={{ flex: 1, display: 'flex', flexDirection: 'column' }}><span className="hand" style={{ fontSize: 14 }}>{p.title}</span><span className="m" style={{ fontSize: 12 }}>{p.sold ? 'Bought ✓' : `${formatEUR(p.priceCents)} · only for you`}</span></span>
       {!p.sold ? <span className="cta" style={{ minHeight: 36, padding: '0 12px', fontSize: 13 }}>View</span> : null}
     </Link>
@@ -61,14 +62,14 @@ function Chat() {
         <div className={`${s.chat}`}>
           <div className={`g ${s.head}`}>
             <span className={s.back} style={{ display: 'flex' }}><BackButton href="/messages" label="Back to messages" className="ic" /></span>
-            <Link href={`/m/${m.slug}`} style={{ lineHeight: 0 }}><img src={m.portraitUrl} alt="" className="u-avatar" /></Link>
+            <Link href={`/m/${m.slug}`} style={{ lineHeight: 0 }}><Img small src={m.portraitUrl} alt="" className="u-avatar" /></Link>
             <span style={{ flex: 1, display: 'flex', flexDirection: 'column' }}><span className="hand" style={{ fontSize: 16 }}>{m.name}</span><span className={`m ${s.status}`}><span className={`${s.dot} ${live ? s.live : ''}`} />{live ? 'Active now' : 'Offline'}</span></span>
-            <Link href={`/m/${m.slug}`} className="m" style={{ fontSize: 13, padding: '0 6px' }}>Profile</Link>
+            <Link href={`/m/${m.slug}`} className="m tap" style={{ fontSize: 13, padding: '0 6px' }}>Profile</Link>
           </div>
           <div className={s.msgs} aria-live="polite">
-            {piece ? <Link href={`/p/${piece.id}`} className={`gs ${s.piece}`}><img src={piece.images[0]} alt="" /><span>{piece.title} · <b>{formatEUR(piece.priceCents)}</b></span></Link> : null}
+            {piece ? <Link href={`/p/${piece.id}`} className={`gs ${s.piece}`}><Img small src={piece.images[0]} alt="" /><span>{piece.title} · <b>{formatEUR(piece.priceCents)}</b></span></Link> : null}
             {!msgs.length ? (
-              <div className={`g ${s.empty}`}><img src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand" style={{ fontSize: 18 }}>Ask {m.name} anything</span>{reply ? <span className="m" style={{ fontSize: 14 }}>{reply}. You’ll get a notification when she does.</span> : null}</div>
+              <div className={`g ${s.empty}`}><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand" style={{ fontSize: 18 }}>Ask {m.name} anything</span>{reply ? <span className="m" style={{ fontSize: 14 }}>{reply}. You’ll get a notification when she does.</span> : null}</div>
             ) : null}
             {msgs.map((x) => {
               const day = shortDate(x.at); const show = day !== lastDay; lastDay = day;
@@ -76,7 +77,7 @@ function Chat() {
               return (
                 <div key={x.id} style={{ display: 'contents' }}>
                   {show ? <span className={`m ${s.day}`}>{today ? 'Today' : day}</span> : null}
-                  <div className={`${s.b} ${x.fromMe ? s.mine : `gs ${s.theirs}`}`}>{x.imageUrl ? <img src={x.imageUrl} alt="Photo you sent" /> : null}{x.text ? <span>{x.text}</span> : null}{x.listingId ? <Listing id={x.listingId} /> : null}<time>{clock(x.at)}</time></div>
+                  <div className={`${s.b} ${x.fromMe ? s.mine : `gs ${s.theirs}`}`}>{x.imageUrl ? <Img src={x.imageUrl} alt="Photo you sent" /> : null}{x.text ? <span>{x.text}</span> : null}{x.listingId ? <Listing id={x.listingId} /> : null}<time>{clock(x.at)}</time></div>
                 </div>
               );
             })}

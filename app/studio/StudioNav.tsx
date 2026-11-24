@@ -5,6 +5,7 @@ import { getMyMaker, getStudioOrders, getStudioProducts, getStudioRequests } fro
 import { useData } from '@/lib/useData';
 import Logo from '@/components/u/Logo';
 import s from './studio.module.css';
+import Img from '@/components/u/Img';
 
 const on = (path: string, href: string) => (href === '/studio' ? path === '/studio' : path.startsWith(href));
 /** Pages with the phone bottom nav (forms have their own action bar). */
@@ -41,7 +42,7 @@ export default function StudioNav() {
         ))}
         <div className={s.sideFoot}>
           <Link href="/studio/pieces/new" className="cta">+ Add piece</Link>
-          <Link href={`/m/${me.slug}`} className={`gs ${s.me}`}><img src={me.portraitUrl} alt="" className="u-avatar" /><span style={{ display: 'flex', flexDirection: 'column' }}><span className="hand">{me.name}</span><span className="m" style={{ fontSize: 12 }}>View my profile ↗</span></span></Link>
+          <Link href={`/m/${me.slug}`} className={`gs ${s.me}`}><Img small src={me.portraitUrl} alt="" className="u-avatar" /><span style={{ display: 'flex', flexDirection: 'column' }}><span className="hand">{me.name}</span><span className="m" style={{ fontSize: 12 }}>View my profile ↗</span></span></Link>
         </div>
       </aside>
     </>
