@@ -28,6 +28,15 @@
   --u-ui:Inter, system-ui, sans-serif;              /* everything else */
   --u-r-pill:999px; --u-r-card:28px; --u-r-tile:20px; --u-r-chip:14px;
   --u-h-cta:48px; --u-h-btn:44px;                   /* min tap size 44px */
+  /* Values taken as-is from the 07 screens (inputs, toggles, photo shading), so components never
+     hard-code them. Added by Justinas 2026-11-24; Matas, change freely. */
+  --u-field:rgba(22,16,11,.28); --u-field-border:rgba(255,250,237,.22); --u-focus:rgba(243,210,122,.25);
+  --u-track:rgba(255,250,237,.2);                   /* toggle off, empty progress, step bars */
+  --u-shade:rgba(22,16,11,.72);                     /* caption box on video, badges on photos */
+  --u-scrim-bottom:linear-gradient(rgba(22,16,11,0),rgba(22,16,11,.85));
+  --u-online:#4fe061;                               /* "Active now" dot */
+  --u-accent-soft:rgba(243,210,122,.16);            /* selected sticker tile */
+  --u-sticker-shadow:drop-shadow(0 6px 10px rgba(0,0,0,.35));
 }
 *{box-sizing:border-box}
 html,body{height:100%}

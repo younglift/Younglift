@@ -1,0 +1,33 @@
+.search{position:relative;display:flex;align-items:center;border-radius:var(--u-r-pill)}
+.search span{position:absolute;left:16px;color:var(--u-mute);display:flex}
+.search input{width:100%;min-height:50px;border-radius:var(--u-r-pill);border:0;background:transparent;color:var(--u-ink);padding:0 16px 0 46px;font:400 16px var(--u-ui);outline:none}
+.cats{border-radius:var(--u-r-card);overflow:hidden;display:flex;flex-direction:column}
+.cats a{display:flex;align-items:center;gap:14px;padding:12px 16px;min-height:72px}
+.cats a + a{border-top:1px solid var(--u-line)}
+.cats img{width:52px;height:52px;border-radius:14px;object-fit:cover}
+.cats .t{flex:1;display:flex;flex-direction:column;gap:2px;font-weight:600}
+.cats .t :global(.m){font-weight:400;font-size:13px}
+.pop{display:flex;flex-wrap:wrap;gap:8px}
+.pop a{min-height:40px;padding:0 16px;border-radius:var(--u-r-pill);display:flex;align-items:center;font-size:14px}
+.tools{display:flex;gap:8px}
+.tools > *{flex:1}
+.layout{display:flex;flex-direction:column;gap:14px}
+.aside{display:none}
+.fs{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.fs legend{margin-bottom:6px}
+.opt{display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer;font-size:15px}
+.opt span:nth-child(2){flex:1}
+.makers{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.makers a{display:flex;align-items:center;gap:10px;border-radius:var(--u-r-pill);padding:6px 16px 6px 6px;white-space:nowrap}
+.makers img{width:36px;height:36px}
+.sortMenu{position:absolute;right:0;top:calc(100% + 6px);border-radius:var(--u-r-tile);padding:6px;display:flex;flex-direction:column;z-index:20;min-width:200px}
+.sortMenu button{min-height:44px;text-align:left;padding:0 12px;border:0;background:transparent;color:var(--u-ink);font:500 14px var(--u-ui);cursor:pointer;border-radius:12px}
+.sortMenu button[aria-pressed="true"]{color:var(--u-accent)}
+@media (min-width:820px){
+  .catsDesk{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+  .aside{display:flex;flex-direction:column;gap:18px;border-radius:var(--u-r-card);padding:20px;position:sticky;top:100px}
+  .filterBtn{display:none !important}
+  .tools{justify-content:flex-end}
+  .tools > *{flex:none}
+}

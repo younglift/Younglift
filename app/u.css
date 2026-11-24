@@ -1,0 +1,100 @@
+/* Direction 07 "Tamsus stiklas": shared building blocks.
+   Same class names as Matas's screens (docs/design/screens/*.dc.html): .g .gs .hand .m .cta .sec .ic .lbl .chk .fld .inp .chip .tg
+   Every colour, font and radius comes from the --u-* tokens in globals.css. */
+
+.u-body{background:var(--u-bg);color:var(--u-ink);font-family:var(--u-ui);font-size:15px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.u-body a{color:inherit;text-decoration:none}
+.u-body a.cta{color:var(--u-on-accent)}
+.u-body button{font-family:var(--u-ui)}
+.u-body :focus-visible{outline:2px solid var(--u-accent);outline-offset:2px}
+
+/* glass */
+.g{background:var(--u-glass);-webkit-backdrop-filter:var(--u-glass-blur);backdrop-filter:var(--u-glass-blur);border:1px solid var(--u-glass-border);box-shadow:var(--u-glass-shadow)}
+.gs{background:var(--u-glass-sm);-webkit-backdrop-filter:var(--u-glass-sm-blur);backdrop-filter:var(--u-glass-sm-blur);border:1px solid var(--u-glass-border)}
+
+/* type */
+.hand{font-family:var(--u-hand);font-weight:400;letter-spacing:0}
+.m{color:var(--u-mute)}
+.lbl{font:600 12px var(--u-ui);letter-spacing:.2px}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* buttons */
+.cta{min-height:var(--u-h-cta);padding:0 22px;border-radius:var(--u-r-pill);border:0;background:var(--u-cta);color:var(--u-on-accent);font:600 15px var(--u-ui);display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 3px 0 var(--u-cta-edge);transition:transform .12s ease,box-shadow .12s ease;text-align:center;white-space:nowrap}
+.cta:active{transform:translateY(3px);box-shadow:0 0 0 var(--u-cta-edge)}
+.cta:disabled,.cta[aria-disabled="true"]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:0 3px 0 var(--u-cta-edge)}
+.sec{min-height:var(--u-h-btn);padding:0 18px;border-radius:var(--u-r-pill);color:var(--u-ink);font:600 15px var(--u-ui);display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap}
+button.sec:not(.gs){background:transparent;border:0}
+.sec:disabled{opacity:.45;cursor:not-allowed}
+.ic{width:var(--u-h-btn);height:var(--u-h-btn);border-radius:var(--u-r-pill);display:inline-flex;align-items:center;justify-content:center;color:var(--u-ink);cursor:pointer;padding:0;flex-shrink:0}
+button.ic:not(.gs){background:transparent;border:0}
+.ic:disabled{opacity:.4;cursor:not-allowed}
+.link{background:none;border:0;padding:0;color:var(--u-ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit}
+@media (prefers-reduced-motion:reduce){.cta{transition:none}}
+
+/* forms */
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.inp{min-height:var(--u-h-cta);border-radius:var(--u-r-chip);border:1px solid var(--u-field-border);background:var(--u-field);color:var(--u-ink);padding:0 14px;font:400 16px var(--u-ui);outline:none;width:100%}
+textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
+.inp::placeholder{color:var(--u-mute);opacity:.7}
+.inp:focus{border-color:var(--u-accent);box-shadow:0 0 0 3px var(--u-focus)}
+.inp[aria-invalid="true"]{border-color:var(--u-accent)}
+.chip{min-height:36px;padding:0 14px;border-radius:var(--u-r-pill);border:1px solid var(--u-field-border);background:transparent;color:var(--u-ink);font:500 13px var(--u-ui);cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:6px;position:relative}
+.chip::after{content:'';position:absolute;inset:-4px 0}
+.chip.on,.chip[aria-pressed="true"]{background:var(--u-accent);border-color:var(--u-accent);color:var(--u-on-accent);font-weight:600}
+.chk{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font:700 13px var(--u-ui);border:1.5px solid var(--u-field-border);flex-shrink:0}
+.chk.on{background:var(--u-accent);border-color:var(--u-accent);color:var(--u-on-accent)}
+.tg{width:48px;height:28px;border-radius:var(--u-r-pill);background:var(--u-track);position:relative;flex-shrink:0;border:0;padding:0;cursor:pointer}
+.tg::after{content:'';position:absolute;inset:-8px -2px}
+.tg i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:var(--u-cta);transition:left .15s ease}
+.tg[aria-checked="true"]{background:var(--u-accent)}
+.tg[aria-checked="true"] i{left:23px;background:var(--u-on-accent)}
+@media (prefers-reduced-motion:reduce){.tg i{transition:none}}
+.row{display:flex;align-items:center;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+.chips.scroll::-webkit-scrollbar{display:none}
+.hr{height:1px;background:var(--u-line);border:0;margin:0}
+
+/* screen frame: base colour + the screen's photo, washed out */
+.u-wash{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--u-bg)}
+.u-wash img{position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:var(--u-wash-opacity);filter:var(--u-wash-filter)}
+.u-page{position:relative;z-index:1;min-height:100dvh;padding:calc(18px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.u-page.has-bar{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+.u-head{display:flex;align-items:center;gap:12px;min-height:44px}
+.u-head h1{margin:0;font-size:26px;line-height:1.35}
+.u-head .sub{display:block;font-size:13px;margin-top:2px}
+.u-card{border-radius:var(--u-r-card);padding:16px}
+.u-card.tight{padding:12px}
+.u-stack{display:flex;flex-direction:column;gap:12px}
+.u-tile{border-radius:var(--u-r-tile);overflow:hidden}
+.u-cover{width:100%;height:100%;object-fit:cover;display:block}
+.u-avatar{border-radius:50%;object-fit:cover;object-position:center 20%;flex-shrink:0;display:block}
+.u-badge{position:absolute;left:8px;top:8px;background:var(--u-accent);color:var(--u-on-accent);border-radius:var(--u-r-pill);padding:4px 9px;font:600 11px var(--u-ui)}
+.u-badge.dark{background:var(--u-shade);color:var(--u-ink)}
+/* sticky bottom action bar (Add to bag, Send, Continue…) */
+.u-bar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:30;border-radius:var(--u-r-card);padding:10px;display:flex;align-items:center;gap:10px;max-width:536px;margin:0 auto}
+.u-bar .cta{flex:1}
+/* toast */
+.u-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:80;border-radius:var(--u-r-pill);padding:10px 16px;font:500 14px var(--u-ui);display:flex;gap:12px;align-items:center;white-space:nowrap;max-width:calc(100% - 32px)}
+/* sheets and dialogs */
+.u-scrim{position:fixed;inset:0;z-index:60;background:var(--u-shade);opacity:.6}
+.u-sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;border-radius:var(--u-r-card) var(--u-r-card) 0 0;max-height:88dvh;display:flex;flex-direction:column;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.u-sheet .body{overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:18px;padding:8px 2px}
+/* product grid */
+.u-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 10px}
+.u-grid-item{display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.u-grid-item .ph{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/5;display:block}
+.u-grid-item .save{position:absolute;right:6px;top:6px;z-index:2}
+.u-grid-item .t{font-size:13px;font-weight:600}
+.u-grid-item .p{font-size:13px;margin-top:-4px}
+
+/* desktop (from 820px): same pieces, wider frame */
+@media (min-width:820px){
+  .u-page{max-width:1280px;padding:112px 24px 48px}
+  .u-page.narrow{max-width:760px}
+  .u-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px 16px}
+  .u-bar{position:static;max-width:none;margin:0}
+  .u-toast{bottom:28px}
+  .u-sheet{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 48px));border-radius:var(--u-r-card)}
+}
