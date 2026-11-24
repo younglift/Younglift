@@ -66,8 +66,8 @@ export default function AppNav() {
           <input type="search" aria-label="Search makers or pieces" placeholder="Search makers or pieces" value={q} onChange={(e) => setQ(e.target.value)} />
         </form>
         <Link href="/sell" className={`sec ${s.sell}`}>Sell on Uplift</Link>
-        <Link href="/messages" aria-label={unread ? `Messages, ${unread} new` : 'Messages'} className="ic" style={{ position: 'relative' }}><Chat size={20} />{unread ? <span className={s.pip} /> : null}</Link>
-        <button type="button" aria-label={bag ? `Bag, ${bag} items` : 'Bag'} className="ic" style={{ position: 'relative' }} onClick={() => setDrawer(true)}><Bag size={20} />{bag ? <span key={bag} className={`${s.badge} u-pop`}>{bag}</span> : null}</button>
+        <Link href="/messages" aria-label={unread ? `Messages, ${unread} new` : 'Messages'} className="ic rel"><Chat size={20} />{unread ? <span className={s.pip} /> : null}</Link>
+        <button type="button" aria-label={bag ? `Bag, ${bag} items` : 'Bag'} className="ic rel" onClick={() => setDrawer(true)}><Bag size={20} />{bag ? <span key={bag} className={`${s.badge} u-pop`}>{bag}</span> : null}</button>
         <MeButton />
       </header> : null}
 

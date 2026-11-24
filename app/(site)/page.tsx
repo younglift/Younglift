@@ -20,7 +20,7 @@ import Img from '@/components/u/Img';
 const STEP_LABEL = ['The piece', 'Her story', 'Her profile'];
 
 function pieceMeta(p: Product) {
-  const first = p.oneOfAKind ? '1 of 1' : p.madeToOrder ? (p.sizes ? 'Made to size' : 'Made to order') : p.subtitle ?? (p.madeCount > 1 ? `${p.stock} left` : '');
+  const first = p.oneOfAKind ? '1 of 1' : p.madeToOrder ? 'Made to order' : p.subtitle ?? (p.madeCount > 1 ? `${p.stock} left` : '');
   return [first, p.materials.join(' & '), p.sold ? 'Sold' : shipsLine(p)].filter(Boolean).join(' · ');
 }
 const firstAvailable = (ps: Product[]) => Math.max(0, ps.findIndex((p) => !p.sold));
@@ -42,7 +42,7 @@ function PieceBox({ item, sel, setSel, inBag, desktop, onProfile, active = true 
   return (
     <div className={`g ${desktop ? s.dcard : s.piece}`}>
       <Link href={`/p/${p.id}`} className={s.head} aria-label={`${p.title}, details`}>
-        <span style={{ minWidth: 0 }}><span className={`hand ${s.name}`}>{p.title} <span className={s.chev}>›</span></span><span className={`m ${s.meta}`}>{pieceMeta(p)}</span></span>
+        <span className={s.headText}><span className={`hand ${s.name}`}>{p.title}&nbsp;<span className={s.chev}>›</span></span><span className={`m ${s.meta}`}>{pieceMeta(p)}</span></span>
         <span className={s.price}>{formatEUR(p.priceCents)}</span>
       </Link>
       {item.reason === 'surprise' ? <span className={`m ${s.why}`}>Outside what you picked. Something new we think you might like.</span> : null}
@@ -53,9 +53,9 @@ function PieceBox({ item, sel, setSel, inBag, desktop, onProfile, active = true 
       <div className={s.div} />
       <div className={s.moreHead}>
         <span>More from {m.name}</span>
-        {item.reason === 'surprise' ? <button type="button" className="link m" style={{ fontSize: 12 }} onClick={() => hideMaker(m.id)}>Not for me</button>
-          : desktop ? <button type="button" className="link m" style={{ fontSize: 12, textDecoration: 'none' }} onClick={onProfile}>See her profile →</button>
-            : <span className="m" style={{ fontWeight: 400 }}>Tap to see</span>}
+        {item.reason === 'surprise' ? <button type="button" className={`link m ${s.moreLink}`} onClick={() => hideMaker(m.id)}>Not for me</button>
+          : desktop ? <button type="button" className={`link m ${s.moreLink} ${s.plain}`} onClick={onProfile}>See her profile →</button>
+            : <span className={`m ${s.moreHint}`}>Tap to see</span>}
       </div>
       <div className={s.thumbs}>
         {item.products.slice(0, 4).map((x, i) => (
@@ -117,7 +117,7 @@ function MakerCard({ item, next, hints, inBag, onNext, index, active }: { item: 
         </div>
         {/* 2 · her story (only for the maker on screen: the next one loads just her piece) */}
         <div className={s.panel}>{active ? (<>
-          <Img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className={s.photo} style={{ objectFit: 'cover', objectPosition: 'center 30%', width: '100%', height: '100%' }} />
+          <Img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className={s.storyPhoto} />
           <div className={s.shade} />
           {m.video ? (
             <>
@@ -127,11 +127,11 @@ function MakerCard({ item, next, hints, inBag, onNext, index, active }: { item: 
             </>
           ) : <span className={`gs ${s.noVideo}`}>Photo · no video yet</span>}
           {hints && index === 0 && step === 1 && next ? (
-            <div className={`gs ${s.upnext}`}><Img small src={next.portraitUrl} alt="" className="u-avatar" /><span>Up next · {next.name}</span><span className="m" style={{ fontWeight: 400 }}>swipe up ↑</span></div>
+            <div className={`gs ${s.upnext}`}><Img small src={next.portraitUrl} alt="" className="u-avatar" /><span>Up next · {next.name}</span><span className={`m ${s.moreHint}`}>swipe up ↑</span></div>
           ) : null}
           <div className={`g ${s.mini}`}>
-            <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ lineHeight: 0 }}><Img small src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 14, objectFit: 'cover', display: 'block' }} /></Link>
-            <span style={{ flex: 1, minWidth: 0 }}><span className="hand">{p.title}</span><span style={{ font: '600 15px var(--u-ui)' }}>{formatEUR(p.priceCents)}</span></span>
+            <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={s.miniPh}><Img small src={p.images[0]} alt="" /></Link>
+            <span className={s.miniText}><span className="hand">{p.title}</span><span className={`num ${s.miniPrice}`}>{formatEUR(p.priceCents)}</span></span>
             <MiniAdd p={p} inBag={inBag} />
           </div>
         </>) : null}</div>
@@ -150,7 +150,7 @@ function MakerCard({ item, next, hints, inBag, onNext, index, active }: { item: 
       </div>
       {step !== 2 ? (
         <div className={`gs ${s.pill}`}>
-          <button type="button" onClick={() => go(2)} aria-label={`${m.name}’s profile`} style={{ padding: 0, border: 0, background: 'none', lineHeight: 0, cursor: 'pointer' }}><Img small src={m.portraitUrl} alt="" className="u-avatar" /></button>
+          <button type="button" onClick={() => go(2)} aria-label={`${m.name}’s profile`} className={s.avBtn}><Img small src={m.portraitUrl} alt="" className="u-avatar" /></button>
           <span className={s.txt}><span className="hand">{m.name}</span><span className="m">{sub}</span></span>
           <button type="button" className={s.follow} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
         </div>
@@ -198,7 +198,7 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
     <div className={s.desk}>
       <Wash src={item.products[firstAvailable(item.products)]?.images[0]} />
       <div className={s.stage}>
-        {step === 0 ? <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} style={{ position: 'absolute', inset: 0, zIndex: 1 }}><Img src={bg} alt={`${p.title} by ${m.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 45%' }} /></Link> : null}
+        {step === 0 ? <Link key={`p0${p.id}`} href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.stagePhoto} u-fade-in`}><Img small src={bg} alt="" aria-hidden="true" className={s.stageBlur} /><Img src={bg} alt={`${p.title} by ${m.name}`} eager className={s.stageImg} /></Link> : null}
         {step === 1 ? <Img key={`s1${m.id}`} src={bg} alt={`${m.name} at work`} className="u-fade-in" /> : null}
         {step < 2 ? <div className={s.stageShade} /> : null}
         {step === 2 ? <div key={`s2${m.id}`} className={`${s.dprofile} u-step-in`}><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
@@ -206,7 +206,7 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
         {step < 2 ? (
           <div className={`gs ${s.dpill}`}>
             <Img small src={m.portraitUrl} alt="" className="u-avatar" />
-            <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25, paddingRight: 6 }}><span className="hand" style={{ fontSize: 16 }}>{m.name}</span><span className="m" style={{ fontSize: 12 }}>{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
+            <span className={s.dpillText}><span className="hand">{m.name}</span><span className="m">{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
             <button type="button" className={s.follow} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
           </div>
         ) : null}
@@ -221,21 +221,21 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
             <>
               <p className={s.dcaption}><span>“{m.video.caption}”</span></p>
               <div className={s.dprog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing ? 'running' : 'paused' }} /></div>
-              <button type="button" className="ic gs" aria-label={playing ? 'Pause video' : 'Play video'} style={{ position: 'absolute', right: 24, bottom: 24, zIndex: 3 }} onClick={() => setPlaying(!playing)}>{playing ? '❚❚' : '▶'}</button>
+              <button type="button" className={`ic gs ${s.dplay}`} aria-label={playing ? 'Pause video' : 'Play video'} onClick={() => setPlaying(!playing)}>{playing ? '❚❚' : '▶'}</button>
             </>
-          ) : <span className="gs" style={{ position: 'absolute', right: 24, bottom: 24, zIndex: 3, borderRadius: 999, padding: '7px 14px', fontSize: 12 }}>Photo · no video yet</span>
+          ) : <span className={`gs ${s.dnoVideo}`}>Photo · no video yet</span>
         ) : null}
       </div>
       <div className={s.upnextRow}>
-        <span className="m" style={{ fontSize: 13, marginRight: 6 }}>Up next</span>
+        <span className={`m ${s.upLabel}`}>Up next</span>
         <div className={s.upnextList}>
         {items.map((x, i) => (
           <button key={x.maker.id} type="button" className={i === mi ? 'g' : 'gs'} aria-pressed={i === mi} onClick={() => { setMi(i); setStep(0); }}>
-            <Img small src={x.maker.portraitUrl} alt="" className="u-avatar" /><span style={{ font: '600 13px var(--u-ui)' }}>{x.maker.name}</span><span className="m" style={{ fontSize: 12 }}>{makerMeta(x.maker).split(' · ')[1]}</span>
+            <Img small src={x.maker.portraitUrl} alt="" className="u-avatar" /><span className={s.upName}>{x.maker.name}</span><span className={`m ${s.upCat}`}>{makerMeta(x.maker).split(' · ')[1]}</span>
           </button>
         ))}
         </div>
-        <span className="m" style={{ fontSize: 13, whiteSpace: 'nowrap' }}>← → photos · ↓ next maker</span>
+        <span className={`m ${s.upHint}`}>← → photos · ↓ next maker</span>
         <button type="button" className="cta" onClick={() => nextMaker(1)}>Next maker ↓</button>
       </div>
     </div>
@@ -267,7 +267,7 @@ export default function Discover() {
           ? <MakerCard key={it.maker.id} item={it} index={i} active={i === cur} next={items[i + 1]?.maker} hints={!me.hintsSeen} inBag={inBag} onNext={() => scrollTo(i + 1)} />
           : <LightCard key={it.maker.id} item={it} index={i} show={i === cur - 1} />))}
         <div className={s.end}>
-          <span className="hand" style={{ fontSize: 22 }}>You’ve met everyone for now</span>
+          <span className={`hand ${s.endTitle}`}>You’ve met everyone for now</span>
           <span className="m">New makers join every week.</span>
           <Link href="/explore" className="cta">Explore all pieces</Link>
           <button type="button" className="sec gs" onClick={() => scrollTo(0)}>Back to the top</button>

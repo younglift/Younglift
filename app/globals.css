@@ -11,9 +11,9 @@
      New screens use ONLY these. The old tokens above stay until every screen is moved over. ── */
   --u-bg:#665e58;                                   /* screen base under the blurred photo */
   --u-wash-opacity:.3; --u-wash-filter:blur(60px) saturate(.9);  /* blurred product photo behind every screen */
-  --u-glass:linear-gradient(135deg,rgba(28,18,12,.55),rgba(28,18,12,.40));  /* cards, sheets, bottom bars (darker 2026-11-24, Matas FIXES 4.2) */
+  --u-glass:linear-gradient(135deg,rgba(28,18,12,.58),rgba(28,18,12,.46));  /* cards, sheets, bottom bars (darker 2026-11-24, Matas FIXES 4.2) */
   --u-glass-blur:blur(26px) saturate(1.8);
-  --u-glass-sm:rgba(28,18,12,.55);                  /* chips, icon buttons, nav pill: solid, no blur (Matas FIXES 1.2) */
+  --u-glass-sm:rgba(28,18,12,.62);                  /* chips, icon buttons, nav pill: solid, no blur (Matas FIXES 1.2) */
   --u-glass-sm-blur:blur(16px) saturate(1.6);
   --u-glass-border:rgba(255,255,255,.22);
   --u-glass-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35);

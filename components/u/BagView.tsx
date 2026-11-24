@@ -21,7 +21,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
       <div className="u-stack">
         <div className={`g ${s.empty}`}>
           <span className="hand">Your bag is empty</span>
-          <p className="m" style={{ margin: 0 }}>When you add a 1 of 1 piece, we hold it for you for 15 minutes.</p>
+          <p className="m m0">When you add a 1 of 1 piece, we hold it for you for 15 minutes.</p>
           <Link href="/" className="cta" onClick={onNavigate}>Discover makers</Link>
         </div>
         {fromSaved.length ? (
@@ -46,9 +46,9 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
       {left > 0 ? (
         <div className={`gs ${s.hold}`} role="status">
           <span className={s.ico}><Clock size={18} /></span>
-          <span style={{ display: 'flex', flexDirection: 'column', gap: 2, fontSize: 14 }}>
+          <span className="flex col gap-4 t-small">
             <span>Your 1 of 1 pieces are held for <b>{mmss(left)}</b></span>
-            <span className="m" style={{ fontSize: 12 }}>After that they go back on sale for others.</span>
+            <span className="m t-meta">After that they go back on sale for others.</span>
           </span>
         </div>
       ) : null}
@@ -63,7 +63,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
             <div className={s.ghead}>
               <Img small src={g.maker.portraitUrl} alt="" className="u-avatar" />
               <Link href={`/m/${g.maker.slug}`} className="hand tap" onClick={onNavigate}>{g.maker.name}</Link>
-              <span className="m" style={{ fontSize: 12 }}>{allMto ? shipsLine({ madeToOrder: true, shipsWithinDays: soonest }) : shipsLine({ madeToOrder: false, shipsWithinDays: soonest })}</span>
+              <span className="m t-meta">{allMto ? shipsLine({ madeToOrder: true, shipsWithinDays: soonest }) : shipsLine({ madeToOrder: false, shipsWithinDays: soonest })}</span>
             </div>
             {g.lines.map((l) => {
               const p = l.product;
@@ -100,7 +100,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
                 <span className={s.bar}><span style={{ width: `${pct}%` }} /></span>
                 {g.upsell.length ? (
                   <>
-                    <span className="m" style={{ fontSize: 12 }}>More from {g.maker.name} that would get you there</span>
+                    <span className="m t-meta">More from {g.maker.name} that would get you there</span>
                     <div className={s.ups}>
                       {g.upsell.map((u) => (
                         <button key={u.id} type="button" aria-label={`Add ${u.title}`} onClick={async () => { const r = await addToBag({ productId: u.id, qty: 1 }); toast(r.ok ? `Added ${u.title}` : 'Could not add it right now'); }}>
@@ -112,7 +112,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
                   </>
                 ) : null}
               </div>
-            ) : g.maker.freeShippingFromCents ? <span style={{ fontSize: 13 }}>You get free shipping from {g.maker.name}</span> : null}
+            ) : g.maker.freeShippingFromCents ? <span className="t-small">You get free shipping from {g.maker.name}</span> : null}
             <div className={`m ${s.ship}`}><span>Delivery to parcel locker</span><span>{ship ? formatEURExact(ship) : 'Free'}</span></div>
             <Link href={`/checkout?maker=${g.maker.id}`} className={compact ? 'sec gs' : 'cta'} onClick={onNavigate}>Buy from {g.maker.name} · {formatEURExact(g.itemsCents + ship)}</Link>
           </section>
@@ -122,14 +122,14 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
       {bag.groups.length > 1 || compact ? (
         compact ? (
           <div className={s.foot}>
-            <div className={s.ship} style={{ fontSize: 15, fontWeight: 600 }}><span>Total · {plural(bag.groups.length, 'parcel')}</span><span className="num">{formatEURExact(total)}</span></div>
+            <div className={`${s.ship} t-body fw600`}><span>Total · {plural(bag.groups.length, 'parcel')}</span><span className="num">{formatEURExact(total)}</span></div>
             <Link href="/checkout" className="cta" onClick={onNavigate}>{bag.groups.length > 1 ? 'Pay for all' : 'Checkout'}</Link>
-            <span className="m" style={{ fontSize: 12, textAlign: 'center' }}>One payment. Each maker ships their own parcel.</span>
+            <span className="m t-meta tc">One payment. Each maker ships their own parcel.</span>
           </div>
         ) : (
           <div className={`g u-bar ${s.total}`} style={{ bottom: 'calc(80px + env(safe-area-inset-bottom))' }}>
             <span className={s.sum}><span className="m">{bag.groups.length === 2 ? 'Both makers' : `${bag.groups.length} makers`} · {plural(bag.groups.length, 'parcel')}</span><b>{formatEURExact(total)}</b></span>
-            <Link href="/checkout" className="sec gs" style={{ flex: 'none' }}>Pay for all</Link>
+            <Link href="/checkout" className="sec gs no-flex">Pay for all</Link>
           </div>
         )
       ) : null}

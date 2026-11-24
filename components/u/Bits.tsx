@@ -73,8 +73,8 @@ export function ProductCard({ p, maker, showMaker = true }: { p: Product; maker?
         {p.sold ? <span className="u-badge dark">Sold</span> : p.oneOfAKind ? <span className="u-badge">1 of 1</span> : null}
       </Link>
       <span className="save"><SaveButton p={p} className="ic gs" size={16} /></span>
-      <Link href={`/p/${p.id}`} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {showMaker && maker ? <span className="m" style={{ fontSize: 12 }}>{maker.name}{maker.city ? ` · ${maker.city}` : ''}</span> : null}
+      <Link className="flex col gap-4" href={`/p/${p.id}`}>
+        {showMaker && maker ? <span className="m t-meta">{maker.name}{maker.city ? ` · ${maker.city}` : ''}</span> : null}
         <span className="t">{p.title}</span>
         <span className="p num">{formatEUR(p.priceCents)}</span>
       </Link>

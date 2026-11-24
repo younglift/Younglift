@@ -21,12 +21,12 @@ export default function Admin() {
         <div className="u-head"><span><h1 className="hand">Applications</h1><span className="m sub">{pending.length} waiting · reply within 3 days</span></span></div>
         {pending.map((a) => (
           <article key={a.id} className="g u-card u-stack">
-            <div className="row" style={{ justifyContent: 'space-between' }}><span><b>{a.name}</b> <span className="m">· {a.city}, {a.country}</span></span><span className="m" style={{ fontSize: 12 }}>{shortDate(a.createdAt)}</span></div>
-            <span className="m" style={{ fontSize: 13 }}>{a.email}{a.link ? ` · ${a.link}` : ''} · {a.categories.map((c) => CATEGORY_LABEL[c]).join(', ')}</span>
-            <div className="snap-x" style={{ gap: 6 }}>{a.photos.map((u, i) => <Img small key={i} src={u} alt="" style={{ width: 96, height: 96, borderRadius: 14, objectFit: 'cover', flexShrink: 0 }} />)}</div>
-            <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>{a.about}</p>
-            <span className="m" style={{ fontSize: 13 }}>{a.makesItself ? '✓ Makes everything herself' : '✗ Did not confirm she makes it herself'}</span>
-            <div className="row" style={{ gap: 8 }}>
+            <div className="row between"><span><b>{a.name}</b> <span className="m">· {a.city}, {a.country}</span></span><span className="m t-meta">{shortDate(a.createdAt)}</span></div>
+            <span className="m t-small">{a.email}{a.link ? ` · ${a.link}` : ''} · {a.categories.map((c) => CATEGORY_LABEL[c]).join(', ')}</span>
+            <div className="snap-x gap-8">{a.photos.map((u, i) => <Img className="ph ph-96" small key={i} src={u} alt="" />)}</div>
+            <p className="m0 t-small lh-15">{a.about}</p>
+            <span className="m t-small">{a.makesItself ? '✓ Makes everything herself' : '✗ Did not confirm she makes it herself'}</span>
+            <div className="row gap-8">
               <button type="button" className="sec gs" style={{ flex: 1 }} onClick={async () => { await rejectApplication(a.id); toast(`Rejected ${a.name.split(' ')[0]}`); }}>Reject</button>
               <button type="button" className="cta" style={{ flex: 1 }} onClick={async () => { await approveApplication(a.id); toast(`${a.name.split(' ')[0]} is in. Her studio is open (demo: it’s now yours).`); }}>Approve</button>
             </div>
@@ -35,10 +35,10 @@ export default function Admin() {
         {!pending.length ? <div className="g u-card m">No applications waiting.</div> : null}
         {done.length ? <span className="lbl m">Decided</span> : null}
         {done.map((a) => (
-          <div key={a.id} className="gs u-card row" style={{ justifyContent: 'space-between' }}><span>{a.name} <span className="m">· {a.city}</span></span>
-            {a.status === 'approved' ? <Link href="/studio/welcome" style={{ fontWeight: 600 }}>Approved · open studio →</Link> : <span className="m">Rejected</span>}</div>
+          <div key={a.id} className="gs u-card row between"><span>{a.name} <span className="m">· {a.city}</span></span>
+            {a.status === 'approved' ? <Link className="fw600" href="/studio/welcome">Approved · open studio →</Link> : <span className="m">Rejected</span>}</div>
         ))}
-        <div className="gs u-card u-stack" style={{ fontSize: 13 }}>
+        <div className="gs u-card u-stack t-small">
           <span className="m">Demo: approving makes that maker “you” in Studio. Switch back to Mara’s studio any time.</span>
           <button type="button" className="sec gs" onClick={async () => { await switchToDemoMaker(); toast('Studio is Mara’s again'); }}>Use Mara’s demo studio</button>
         </div>

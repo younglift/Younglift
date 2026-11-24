@@ -44,7 +44,7 @@ export default function StudioNav() {
         ))}
         <div className={s.sideFoot}>
           <Link href="/studio/pieces/new" className="cta">+ Add piece</Link>
-          <Link href={`/m/${me.slug}`} className={`gs ${s.me}`}><Img small src={me.portraitUrl} alt="" className="u-avatar" /><span style={{ display: 'flex', flexDirection: 'column' }}><span className="hand">{me.name}</span><span className="m" style={{ fontSize: 12 }}>View my profile ↗</span></span></Link>
+          <Link href={`/m/${me.slug}`} className={`gs ${s.me}`}><Img small src={me.portraitUrl} alt="" className="u-avatar" /><span className="flex col"><span className="hand">{me.name}</span><span className="m t-meta">View my profile ↗</span></span></Link>
         </div>
       </aside> : null}
     </>

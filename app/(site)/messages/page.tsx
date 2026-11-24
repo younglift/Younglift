@@ -15,8 +15,8 @@ export default function Messages() {
       <main className="u-page narrow">
         <div className="u-head"><span><h1 className="hand">Messages</h1><span className="m sub">{unread ? `${unread} new` : 'All read'}</span></span></div>
         <Inbox />
-        <Link href="/following" className="gs u-card row" style={{ justifyContent: 'space-between' }}>
-          <span style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><span style={{ fontWeight: 600 }}>Custom requests</span><span className="m" style={{ fontSize: 13 }}>Ask a maker to make something just for you. Open a maker and tap “Ask for a custom piece”.</span></span><span>›</span>
+        <Link href="/following" className="gs u-card row between">
+          <span className="flex col gap-4"><span className="fw600">Custom requests</span><span className="m t-small">Ask a maker to make something just for you. Open a maker and tap “Ask for a custom piece”.</span></span><span>›</span>
         </Link>
       </main>
     </>

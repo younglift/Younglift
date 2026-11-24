@@ -37,32 +37,32 @@ export default function Results({ title, category, q }: { title: string; categor
     <>
       <Wash src={list[0]?.images[0] ?? '/img/flow-ring.jpg'} />
       <main className="u-page">
-        <div className="u-head" style={{ flexWrap: 'wrap' }}>
+        <div className="u-head wrap">
           <BackButton href="/explore" text="Explore" className="sec" />
         </div>
         <div className="u-head" style={{ marginTop: -10 }}><span><h1 className="hand">{title}</h1><span className="m sub">{summary}</span></span></div>
         {foundMakers.length ? (
-          <div className={s.makers}>{foundMakers.map((m) => <Link key={m.id} href={`/m/${m.slug}`} className="gs"><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand" style={{ fontSize: 14 }}>{m.name}</span><span className="m" style={{ fontSize: 12 }}>{m.city}</span></Link>)}</div>
+          <div className={s.makers}>{foundMakers.map((m) => <Link key={m.id} href={`/m/${m.slug}`} className="gs"><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand t-small">{m.name}</span><span className="m t-meta">{m.city}</span></Link>)}</div>
         ) : null}
         <div className={s.layout}>
           <aside className={`g ${s.aside}`} aria-label="Filter">
-            <div className="row" style={{ justifyContent: 'space-between' }}><span className="hand" style={{ fontSize: 18 }}>Filter</span>{n ? <button type="button" className="link" onClick={() => setF(EMPTY)}>Clear all</button> : null}</div>
+            <div className="row between"><span className="hand t-18">Filter</span>{n ? <button type="button" className="link" onClick={() => setF(EMPTY)}>Clear all</button> : null}</div>
             <Filters list={base} f={f} set={setF} countryOf={countryOf} />
           </aside>
-          <div className="u-stack" style={{ minWidth: 0, gap: 14 }}>
+          <div className="u-stack minw0 gap-12">
             {kinds.length > 2 ? <div className="chips scroll">{kinds.map((k) => <button key={k} type="button" className="chip" aria-pressed={kind === k} onClick={() => setKind(k)}>{k}</button>)}</div> : null}
             <div className={s.tools}>
               <button type="button" className={`sec gs ${s.filterBtn}`} onClick={() => setSheet(true)}>Filter{n ? ` (${n})` : ''}</button>
-              <span style={{ position: 'relative', display: 'flex' }}>
-                <button type="button" className="sec gs" style={{ flex: 1 }} aria-expanded={sortOpen} onClick={() => setSortOpen(!sortOpen)}>{SORTS.find((x) => x[0] === sort)![1].replace('Price: ', '')} ▾</button>
+              <span className="rel flex">
+                <button type="button" className="sec gs grow" aria-expanded={sortOpen} onClick={() => setSortOpen(!sortOpen)}>{SORTS.find((x) => x[0] === sort)![1].replace('Price: ', '')} ▾</button>
                 {sortOpen ? <div className={`g ${s.sortMenu}`} role="menu">{SORTS.map(([k, l]) => <button key={k} type="button" role="menuitemradio" aria-checked={sort === k} aria-pressed={sort === k} onClick={() => { setSort(k); setSortOpen(false); }}>{l}</button>)}</div> : null}
               </span>
             </div>
             {res ? (list.length ? (
               <div className="u-grid">{list.map((p) => <ProductCard key={p.id} p={p} maker={byId.get(p.makerId)} />)}</div>
             ) : (
-              <div className="g u-card u-stack" style={{ alignItems: 'flex-start' }}>
-                <span className="hand" style={{ fontSize: 18 }}>Nothing found</span>
+              <div className="g u-card u-stack ai-start">
+                <span className="hand t-18">Nothing found</span>
                 <span className="m">Try fewer filters or another word.</span>
                 {n ? <button type="button" className="sec gs" onClick={() => setF(EMPTY)}>Clear filters</button> : <Link href="/explore" className="sec gs">All categories</Link>}
               </div>

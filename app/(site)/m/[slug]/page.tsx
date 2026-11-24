@@ -21,7 +21,7 @@ export default function MakerPage() {
   const [products] = useData(async () => { const x = await getMaker(slug); return x ? getMakerProducts(x.id) : []; }, [slug]);
   const [story, setStory] = useState(false);
   useLockBody(story, () => setStory(false));
-  if (m === null) return (<main className="u-page"><Wash /><BackButton /><span className="hand" style={{ fontSize: 22 }}>Maker not found</span><Link href="/" className="cta">Discover makers</Link></main>);
+  if (m === null) return (<main className="u-page"><Wash /><BackButton /><span className="hand t-22">Maker not found</span><Link href="/" className="cta">Discover makers</Link></main>);
   if (!m || !products) return <Loading />;
   const tab = (q.get('tab') as 'reviews' | 'journal' | null) ?? 'works';
   return (

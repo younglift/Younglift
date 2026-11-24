@@ -28,7 +28,7 @@ export default function Taste() {
     <>
       <Wash src={OPTIONS.find((o) => picked.includes(o.id))?.img ?? '/img/earrings.jpg'} />
       <main className={`u-page ${s.taste}`}>
-        <div className="u-head"><span><h1 className="hand" style={{ fontSize: 28 }}>What do you love?</h1><span className="m sub">Pick a few. We’ll show you makers you’ll like.</span></span></div>
+        <div className="u-head"><span><h1 className="hand t-28">What do you love?</h1><span className="m sub">Pick a few. We’ll show you makers you’ll like.</span></span></div>
         <div className={s.grid}>
           {OPTIONS.map((o) => {
             const on = picked.includes(o.id);

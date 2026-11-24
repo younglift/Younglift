@@ -59,8 +59,8 @@ export default function Post() {
           <label className="fld"><span className="lbl">{kind === 'in_progress' ? 'What are you making?' : 'Caption'}</span><textarea className="inp" rows={2} value={caption} onChange={(e) => setCaption(e.target.value)} placeholder={kind === 'in_progress' ? 'Pouring six new candle cups this week.' : 'Glazing day. Two coats, then into the kiln on Thursday.'} /></label>
           <div className="fld">
             <span className="lbl">{kind === 'in_progress' ? 'Which piece?' : kind === 'video' ? 'Pieces in this video' : 'Pieces in this post'}</span>
-            <span className="m" style={{ fontSize: 12 }}>{kind === 'in_progress' ? 'It gets an “In progress” sticker for 30 days.' : 'Buyers can tap to see them'}</span>
-            <div className="snap-x" style={{ gap: 10 }}>
+            <span className="m t-meta">{kind === 'in_progress' ? 'It gets an “In progress” sticker for 30 days.' : 'Buyers can tap to see them'}</span>
+            <div className="snap-x gap-8">
               {live.map((p) => (
                 <button key={p.id} type="button" aria-pressed={ids.includes(p.id)} onClick={() => pick(p.id)} style={{ padding: 0, border: 0, background: 'none', color: 'var(--u-ink)', display: 'flex', flexDirection: 'column', gap: 4, cursor: 'pointer', flexShrink: 0, width: 72 }}>
                   <span style={{ width: 72, height: 72, borderRadius: 14, overflow: 'hidden', display: 'block', outline: ids.includes(p.id) ? '2px solid var(--u-accent)' : 'none', outlineOffset: 2 }}><Img small src={p.images[0]} alt="" className="u-cover" /></span>
@@ -71,7 +71,7 @@ export default function Post() {
           </div>
         </div>
         {kind === 'video' ? (
-          <div className="g u-card row"><span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}><span>Show as my story in Discover</span><span className="m" style={{ fontSize: 12 }}>Replaces your current video on the second slide</span></span><button type="button" role="switch" aria-checked={story} aria-label="Show as my story in Discover" className="tg" onClick={() => setStory(!story)}><i /></button></div>
+          <div className="g u-card row"><span className="grow flex col gap-4"><span>Show as my story in Discover</span><span className="m t-meta">Replaces your current video on the second slide</span></span><button type="button" role="switch" aria-checked={story} aria-label="Show as my story in Discover" className="tg" onClick={() => setStory(!story)}><i /></button></div>
         ) : null}
         <div className="g u-bar"><button type="button" className="cta" onClick={post}>Post</button></div>
       </main>

@@ -32,20 +32,20 @@ export default function Checklist() {
           <Img small src={me.portraitUrl} alt="" className="u-avatar" style={{ width: 96, height: 96, margin: '0 auto', border: '3px solid var(--u-ink)' }} />
           <span style={{ position: 'absolute', left: 'calc(50% + 30px)', top: 0 }}><Sticker k="new_maker" width={110} /></span>
           <h1 className="hand" style={{ fontSize: 26, margin: '16px 0 6px' }}>{live ? `You’re live, ${me.name}!` : `You’re in, ${me.name}!`}</h1>
-          <p className="m" style={{ margin: 0 }}>{live ? 'Buyers can find you in Discover now.' : 'Four short steps and buyers can find you.'}</p>
+          <p className="m m0">{live ? 'Buyers can find you in Discover now.' : 'Four short steps and buyers can find you.'}</p>
         </div>
         <div className="g u-card u-stack">
-          <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">Get ready to go live</span><span className="m" style={{ fontSize: 13 }}>{c.done} of 4</span></div>
+          <div className="row between"><span className="lbl">Get ready to go live</span><span className="m t-small">{c.done} of 4</span></div>
           <div className={s.steps}>{[0, 1, 2, 3].map((i) => <span key={i} className={i < c.done ? s.on : ''} />)}</div>
           {rows.map((r) => (
             <Link key={r.t} href={r.href} className="row" style={{ minHeight: 56 }}>
               <span className={`chk ${r.done ? 'on' : ''}`}>{r.done ? '✓' : ''}</span>
               <span className={s.grow}><span>{r.t}</span><span className="m">{r.d}</span></span>
-              {next === r ? <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--u-accent)' }}>Next</span> : null}<span className="m">›</span>
+              {next === r ? <span className="t-meta fw600 accent">Next</span> : null}<span className="m">›</span>
             </Link>
           ))}
         </div>
-        <span className="m" style={{ fontSize: 13, lineHeight: 1.5 }}>Your profile stays hidden until you press Go live. “New maker” shows on it for your first 30 days.</span>
+        <span className="m t-small lh-15">Your profile stays hidden until you press Go live. “New maker” shows on it for your first 30 days.</span>
         <div className="g u-bar">
           {live ? <Link href="/studio" className="cta">Open Studio</Link>
             : c.canGoLive ? <button type="button" className="cta" onClick={async () => { if (await goLive()) { toast('You’re live!'); router.push('/studio'); } }}>Go live</button>
