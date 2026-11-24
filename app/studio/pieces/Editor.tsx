@@ -66,20 +66,20 @@ export default function Editor({ initial }: { initial?: Product }) {
   const form = (
     <div className="u-stack">
       <div className="g u-card u-stack">
-        <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">Photos</span><span className="m" style={{ fontSize: 12 }}>{images.length} of up to 8 · drag or use ← → to reorder</span></div>
+        <div className="row between"><span className="lbl">Photos</span><span className="m t-meta">{images.length} of up to 8 · drag or use ← → to reorder</span></div>
         <div className={s.photos}>
           {images.map((u, i) => (
-            <span key={u.slice(-24) + i} style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}
+            <span className="rel flex col gap-4 ai-center" key={u.slice(-24) + i}
               draggable onDragStart={(e) => e.dataTransfer.setData('text/plain', String(i))} onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => { e.preventDefault(); const from = Number(e.dataTransfer.getData('text/plain')); if (Number.isNaN(from) || from === i) return; const a = [...images]; const [x] = a.splice(from, 1); a.splice(i, 0, x); setImages(a); }}>
               <button type="button" className={s.photo} aria-label={i ? 'Make this the cover photo' : 'Cover photo'} onClick={() => setImages([u, ...images.filter((_, j) => j !== i)])}>
-                <Img small src={u} alt="" className="u-cover" />{i === 0 ? <span className="u-badge" style={{ top: 'auto', bottom: 6, left: 6 }}>Cover</span> : null}
+                <Img small src={u} alt="" className="u-cover" />{i === 0 ? <span className={`u-badge ${s.coverTag}`}>Cover</span> : null}
               </button>
               <button type="button" className={`gs ${s.x}`} aria-label="Remove photo" onClick={() => setImages(images.filter((_, j) => j !== i))}>✕</button>
               {images.length > 1 ? (
-                <span style={{ display: 'flex', gap: 2 }}>
-                  <button type="button" className="ic" style={{ width: 40, height: 32 }} aria-label="Move photo left" disabled={!i} onClick={() => { const a = [...images]; [a[i - 1], a[i]] = [a[i], a[i - 1]]; setImages(a); }}>←</button>
-                  <button type="button" className="ic" style={{ width: 40, height: 32 }} aria-label="Move photo right" disabled={i === images.length - 1} onClick={() => { const a = [...images]; [a[i + 1], a[i]] = [a[i], a[i + 1]]; setImages(a); }}>→</button>
+                <span className="flex gap-4">
+                  <button type="button" className={`ic ${s.moveBtn}`} aria-label="Move photo left" disabled={!i} onClick={() => { const a = [...images]; [a[i - 1], a[i]] = [a[i], a[i - 1]]; setImages(a); }}>←</button>
+                  <button type="button" className={`ic ${s.moveBtn}`} aria-label="Move photo right" disabled={i === images.length - 1} onClick={() => { const a = [...images]; [a[i + 1], a[i]] = [a[i], a[i + 1]]; setImages(a); }}>→</button>
                 </span>
               ) : null}
             </span>
@@ -87,8 +87,8 @@ export default function Editor({ initial }: { initial?: Product }) {
           {images.length < 8 ? <button type="button" className={`gs ${s.add}`} aria-label="Add photos" onClick={() => file.current?.click()}>+</button> : null}
           <input ref={file} type="file" accept="image/*" multiple hidden onChange={async (e) => { const fs = Array.from(e.target.files ?? []).slice(0, 8 - images.length); const urls = await Promise.all(fs.map(uploadImage)); setImages([...images, ...urls]); e.target.value = ''; }} />
         </div>
-        <span className="m" style={{ fontSize: 12 }}>Daylight, plain background. The first photo is what people see in Discover.</span>
-        {tried && !images.length ? <span role="alert" style={{ fontSize: 12, color: 'var(--u-accent)' }}>Add at least one photo</span> : null}
+        <span className="m t-meta">Daylight, plain background. The first photo is what people see in Discover.</span>
+        {tried && !images.length ? <span className="t-meta accent" role="alert">Add at least one photo</span> : null}
       </div>
       <div className="g u-card u-stack">
         <label className="fld"><span className="lbl">Name</span><input className="inp" value={title} onChange={(e) => setTitle(e.target.value)} aria-invalid={tried && !title.trim()} placeholder="e.g. Speckled plates" /></label>
@@ -103,15 +103,15 @@ export default function Editor({ initial }: { initial?: Product }) {
         <span className="lbl">How is it made?</span>
         <div className="chips"><button type="button" className="chip" aria-pressed={!mto} onClick={() => setMto(false)}>Ready to ship</button><button type="button" className="chip" aria-pressed={mto} onClick={() => setMto(true)}>Made to order</button></div>
         <div className={s.two}>
-          {!mto ? <label className="fld"><span className="lbl">How many?</span><input className="inp" inputMode="numeric" value={qty} onChange={(e) => setQty(e.target.value.replace(/\D/g, ''))} /><span className="m" style={{ fontSize: 12 }}>1 = one of a kind</span></label> : null}
+          {!mto ? <label className="fld"><span className="lbl">How many?</span><input className="inp" inputMode="numeric" value={qty} onChange={(e) => setQty(e.target.value.replace(/\D/g, ''))} /><span className="m t-meta">1 = one of a kind</span></label> : null}
           <label className="fld"><span className="lbl">{mto ? 'Ready within (days)' : 'Ships within (days)'}</span><input className="inp" inputMode="numeric" value={days} onChange={(e) => setDays(e.target.value.replace(/\D/g, ''))} /></label>
         </div>
-        <div className="row"><span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}><span>Sizes</span><span className="m" style={{ fontSize: 12 }}>For rings, clothing and anything with a fit</span></span><button type="button" role="switch" aria-checked={hasSizes} aria-label="Sizes" className="tg" onClick={() => setHasSizes(!hasSizes)}><i /></button></div>
+        <div className="row"><span className="grow flex col gap-4"><span>Sizes</span><span className="m t-meta">For rings, clothing and anything with a fit</span></span><button type="button" role="switch" aria-checked={hasSizes} aria-label="Sizes" className="tg" onClick={() => setHasSizes(!hasSizes)}><i /></button></div>
         {hasSizes ? <input className="inp" value={sizes} onChange={(e) => setSizes(e.target.value)} placeholder="52, 54, 56, 58" aria-label="Sizes" /> : null}
       </div>
       <div className="g u-card u-stack">
-        <div className="row" style={{ justifyContent: 'space-between' }}><span className="lbl">Add a sticker</span><span className="m" style={{ fontSize: 12 }}>optional · one per piece</span></div>
-        <span className="m" style={{ fontSize: 13 }}>Shown on your photo in Discover. Pick one that’s true for this piece.</span>
+        <div className="row between"><span className="lbl">Add a sticker</span><span className="m t-meta">optional · one per piece</span></div>
+        <span className="m t-small">Shown on your photo in Discover. Pick one that’s true for this piece.</span>
         <div className={s.stickers}>
           {STICKERS.map((k) => (
             <button key={k} type="button" className={s.st} aria-pressed={chosen === k} disabled={!allowed(k)} onClick={() => setSticker(k)} title={!allowed(k) ? (k === 'one_of_one' ? 'Only when quantity is 1' : 'Only for made-to-order pieces') : undefined}>
@@ -120,14 +120,14 @@ export default function Editor({ initial }: { initial?: Product }) {
             </button>
           ))}
         </div>
-        {chosen === 'small_batch' ? <label className="fld"><span className="lbl">How many in this batch?</span><input className="inp" inputMode="numeric" value={batch} onChange={(e) => setBatch(e.target.value.replace(/\D/g, ''))} placeholder={String(n || 5)} /><span className="m" style={{ fontSize: 12 }}>Shown as “only {batch || n || 5} made”.</span></label> : null}
-        {chosen === 'made_in_collab' ? <label className="fld"><span className="lbl">Made with</span><select className="inp" value={collab} onChange={(e) => setCollab(e.target.value)}><option value="">Pick a maker</option>{(makers ?? []).filter((m) => m.id !== me.id).map((m) => <option key={m.id} value={m.id}>{m.name} · {m.city}</option>)}</select><span className="m" style={{ fontSize: 12 }}>They get a note and can show the piece on their profile too.</span></label> : null}
-        {sticker === 'one_of_one' && !one ? <span className="m" style={{ fontSize: 12 }}>“1 of 1” is only for pieces with quantity 1, so it was removed.</span> : null}
+        {chosen === 'small_batch' ? <label className="fld"><span className="lbl">How many in this batch?</span><input className="inp" inputMode="numeric" value={batch} onChange={(e) => setBatch(e.target.value.replace(/\D/g, ''))} placeholder={String(n || 5)} /><span className="m t-meta">Shown as “only {batch || n || 5} made”.</span></label> : null}
+        {chosen === 'made_in_collab' ? <label className="fld"><span className="lbl">Made with</span><select className="inp" value={collab} onChange={(e) => setCollab(e.target.value)}><option value="">Pick a maker</option>{(makers ?? []).filter((m) => m.id !== me.id).map((m) => <option key={m.id} value={m.id}>{m.name} · {m.city}</option>)}</select><span className="m t-meta">They get a note and can show the piece on their profile too.</span></label> : null}
+        {sticker === 'one_of_one' && !one ? <span className="m t-meta">“1 of 1” is only for pieces with quantity 1, so it was removed.</span> : null}
       </div>
       {initial ? (
         confirmDel
-          ? <div className="gs u-card row"><span style={{ flex: 1 }}>Delete {initial.title}? This can’t be undone.</span><button type="button" className="sec" onClick={() => setConfirmDel(false)}>Keep</button><button type="button" className="cta" onClick={async () => { await deleteProduct(initial.id); toast('Piece deleted'); router.push('/studio/pieces'); }}>Delete</button></div>
-          : <button type="button" className="link m" style={{ alignSelf: 'flex-start' }} onClick={() => setConfirmDel(true)}>Delete this piece</button>
+          ? <div className="gs u-card row"><span className="grow">Delete {initial.title}? This can’t be undone.</span><button type="button" className="sec" onClick={() => setConfirmDel(false)}>Keep</button><button type="button" className="cta" onClick={async () => { await deleteProduct(initial.id); toast('Piece deleted'); router.push('/studio/pieces'); }}>Delete</button></div>
+          : <button type="button" className="link m self-start" onClick={() => setConfirmDel(true)}>Delete this piece</button>
       ) : null}
     </div>
   );
@@ -137,17 +137,17 @@ export default function Editor({ initial }: { initial?: Product }) {
     <>
       <Wash src={images[0] ?? me.coverUrl} />
       <main className="u-page has-bar">
-        <div className="u-head"><BackButton href="/studio/pieces" /><span style={{ flex: 1 }}><h1 className="hand">{initial ? 'Edit piece' : 'New piece'}</h1><span className="m sub">{initial?.status === 'live' ? 'Live' : 'Draft'}</span></span></div>
+        <div className="u-head"><BackButton href="/studio/pieces" /><span className="grow"><h1 className="hand">{initial ? 'Edit piece' : 'New piece'}</h1><span className="m sub">{initial?.status === 'live' ? 'Live' : 'Draft'}</span></span></div>
         <div className={s.editor}>
           {form}
           <aside className={s.preview} aria-label="Preview">
             <span className="lbl m">How it looks in Discover</span>
             <div className={`g ${s.phone}`}>
-              {images[0] ? <Img src={images[0]} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} /> : null}
-              {stickerShown ? <span style={{ position: 'absolute', right: 20, top: 40 }}><Sticker k={stickerShown} city={me.city} width={92} /></span> : null}
-              <div className="g" style={{ position: 'absolute', left: 10, right: 10, bottom: 10, borderRadius: 20, padding: 12 }}>
-                <div className="row" style={{ justifyContent: 'space-between' }}><span className="hand" style={{ fontSize: 16 }}>{title || 'Your piece'}</span><b>{euros(price) ? formatEUR(euros(price)) : '–'}</b></div>
-                <span className="m" style={{ fontSize: 12 }}>{[one ? '1 of 1' : mto ? 'Made to order' : '', materials.split(',')[0]].filter(Boolean).join(' · ')}</span>
+              {images[0] ? <Img src={images[0]} alt="" className={`u-cover ${'fill'}`} /> : null}
+              {stickerShown ? <span className={s.prevStk}><Sticker k={stickerShown} city={me.city} width={92} /></span> : null}
+              <div className={`g ${s.prevCard}`}>
+                <div className="row between"><span className="hand t-16">{title || 'Your piece'}</span><b>{euros(price) ? formatEUR(euros(price)) : '–'}</b></div>
+                <span className="m t-meta">{[one ? '1 of 1' : mto ? 'Made to order' : '', materials.split(',')[0]].filter(Boolean).join(' · ')}</span>
               </div>
             </div>
           </aside>

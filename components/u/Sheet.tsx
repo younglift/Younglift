@@ -24,7 +24,7 @@ export default function Sheet({ title, onClose, children, footer, left, right }:
           onTouchMove={(e) => { if (y0.current != null) setDrag(Math.max(0, e.touches[0].clientY - y0.current)); }}
           onTouchEnd={() => { if (drag > 80) close(); setDrag(0); y0.current = null; }}>
           <span className="u-grab" aria-hidden="true" />
-          <div className="row" style={{ justifyContent: 'space-between' }}>
+          <div className="row between">
             {left ?? <span className="hand u-sheet-title">{title}</span>}
             {left ? <span className="hand u-sheet-title">{title}</span> : null}
             {right ?? <button type="button" className="ic" aria-label="Close" onClick={close}><Close /></button>}

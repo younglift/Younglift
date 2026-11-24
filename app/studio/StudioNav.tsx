@@ -38,13 +38,13 @@ export default function StudioNav() {
         </nav>
       ) : null}
       {desktop ? <aside className={`g ${s.side}`} aria-label="Studio">
-        <div className={s.brand}><Link href="/" aria-label="Uplift home"><Logo height={36} wordmark /></Link><span className="m lbl">STUDIO</span></div>
+        <div className={s.brand}><Link href="/" aria-label="Uplift home" className="tap"><Logo height={26} wordmark /></Link><span className="m lbl">STUDIO</span></div>
         {[...items, { href: '/studio/payouts', label: 'Payouts' }].map((t) => (
           <Link key={t.href} href={t.href} aria-current={on(path, t.href) ? 'page' : undefined}><span className={s.bul} /><span>{t.label.split(' · ')[0]}</span>{'n' in t && t.n ? <span className={`m ${s.n}`}>{t.n}</span> : null}</Link>
         ))}
         <div className={s.sideFoot}>
           <Link href="/studio/pieces/new" className="cta">+ Add piece</Link>
-          <Link href={`/m/${me.slug}`} className={`gs ${s.me}`}><Img small src={me.portraitUrl} alt="" className="u-avatar" /><span style={{ display: 'flex', flexDirection: 'column' }}><span className="hand">{me.name}</span><span className="m" style={{ fontSize: 12 }}>View my profile ↗</span></span></Link>
+          <Link href={`/m/${me.slug}`} className={`gs ${s.me}`}><Img small src={me.portraitUrl} alt="" className="u-avatar" /><span className="flex col"><span className="hand">{me.name}</span><span className="m t-meta">View my profile ↗</span></span></Link>
         </div>
       </aside> : null}
     </>

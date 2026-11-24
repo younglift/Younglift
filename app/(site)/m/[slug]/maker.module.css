@@ -1,0 +1,7 @@
+.capBig{font-size:18px}
+.storyCta{position:absolute;left:16px;right:16px;bottom:calc(24px + env(safe-area-inset-bottom))}
+.storyCap{position:absolute;left:24px;right:24px;bottom:120px;text-align:center;margin:0}
+.storyClose{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top))}
+.story{position:fixed;inset:0;z-index:90;background:var(--u-bg)}
+.back{position:fixed;left:16px;top:calc(16px + env(safe-area-inset-top));z-index:20}
+.wrap{position:relative;z-index:1}

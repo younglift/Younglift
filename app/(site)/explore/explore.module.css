@@ -12,6 +12,8 @@
 .tools{display:flex;gap:8px}
 .tools > *{flex:1}
 .layout{display:flex;flex-direction:column;gap:14px}
+.head{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.head :global(.u-head){gap:14px;align-items:baseline}
 .aside{display:none}
 .fs{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
 .fs legend{margin-bottom:6px}
@@ -26,9 +28,17 @@
 .sortMenu button[aria-pressed="true"]{color:var(--u-accent)}
 @media (min-width:820px){
   .catsDesk{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-  .layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+  .layout{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
   .aside{display:flex;flex-direction:column;gap:18px;border-radius:var(--u-r-card);padding:20px;position:sticky;top:100px}
   .filterBtn{display:none !important}
   .tools{justify-content:flex-end}
   .tools > *{flex:none}
+  /* desktop-Explore: filter panel left from the top; title, count and sort on one row */
+  .main{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 16px;align-items:end}
+  .main > *{grid-column:1 / -1}
+  .head{grid-column:1;grid-row:1}
+  .head :global(.sec){padding:0 !important}
+  .tools{grid-column:2;grid-row:1;align-self:center}
+  .kinds{margin-top:-4px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px 18px}
 }

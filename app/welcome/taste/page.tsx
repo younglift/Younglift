@@ -7,6 +7,7 @@ import { getMe, markOnboarded, saveTaste } from '@/lib/data';
 import Wash from '@/components/u/Wash';
 import s from '../welcome.module.css';
 import Img from '@/components/u/Img';
+import Logo from '@/components/u/Logo';
 
 const OPTIONS: { id: Category; label: string; img: string }[] = [
   { id: 'jewelry', label: 'Jewellery', img: '/img/earrings.jpg' },
@@ -27,14 +28,15 @@ export default function Taste() {
   return (
     <>
       <Wash src={OPTIONS.find((o) => picked.includes(o.id))?.img ?? '/img/earrings.jpg'} />
+      <header className={s.tasteHead}><Logo height={28} wordmark /><span className="m t-small">Step 1 of 1 · takes 10 seconds</span></header>
       <main className={`u-page ${s.taste}`}>
-        <div className="u-head"><span><h1 className="hand" style={{ fontSize: 28 }}>What do you love?</h1><span className="m sub">Pick a few. We’ll show you makers you’ll like.</span></span></div>
+        <div className={`u-head ${s.tasteTitle}`}><span><h1 className="hand t-28">What do you love?</h1><span className="m sub">Pick a few. We’ll show you makers you’ll like.</span></span></div>
         <div className={s.grid}>
           {OPTIONS.map((o) => {
             const on = picked.includes(o.id);
             return (
               <button key={o.id} type="button" className={s.tile} aria-pressed={on} onClick={() => toggle(o.id)}>
-                <Img src={o.img} alt="" className="u-cover" />
+                <Img src={o.img} alt="" className="u-cover" eager />
                 <span className={s.nm}>{o.label}</span>
                 {on ? <span className={`chk on ${s.chk}`}>✓</span> : null}
               </button>

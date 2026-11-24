@@ -1,0 +1,19 @@
+.lead{margin:8px 0 0;line-height:1.5}
+:global(.u-page).page{padding-top:0}
+.shade{position:absolute;inset:0;background:var(--u-scrim-bottom)}
+.back{position:absolute;left:16px;top:calc(16px + env(safe-area-inset-top))}
+.heroText{position:absolute;left:16px;right:16px;bottom:16px}
+.logo{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top))}
+.hero{position:relative;margin:0 -16px;height:360px}
+.icon{width:36px;height:36px;border-radius:12px;font-size:15px}
+.dPhoto{position:fixed;inset:0;z-index:0}
+.dPhoto img{width:100%;height:100%;object-fit:cover}
+.dPhoto::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--u-shade),transparent 65%),var(--u-scrim-top)}
+.dHead{position:fixed;top:0;left:0;right:0;height:112px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;z-index:20}
+.dPage{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column;justify-content:space-between;gap:48px;padding:170px 96px 56px}
+.dText{max-width:560px;display:flex;flex-direction:column;gap:20px}
+.dText h1{font-size:40px;line-height:1.35}
+.dText .lead{margin:0;font-size:17px}
+.dText :global(.cta){min-width:160px}
+.dCards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:1250px}
+.dCards > *{min-height:190px}

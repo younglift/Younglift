@@ -21,7 +21,7 @@ export default function Pieces() {
     <>
       <Wash src={list[0]?.images[0]} />
       <main className="u-page">
-        <div className="u-head"><span style={{ flex: 1 }}><h1 className="hand">Your pieces</h1><span className="m sub">{plural(list.length, 'piece')} · {live} live</span></span><Link href="/studio/pieces/new" className="cta">+ Add</Link></div>
+        <div className="u-head"><span className="grow"><h1 className="hand">Your pieces</h1><span className="m sub">{plural(list.length, 'piece')} · {live} live</span></span><Link href="/studio/pieces/new" className="cta">+ Add</Link></div>
         <div className="chips scroll">{([['all', 'All'], ['live', 'Live'], ['sold', 'Sold out'], ['draft', 'Drafts']] as const).map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={f === k} onClick={() => setF(k)}>{l}</button>)}</div>
         <div className={`g ${s.list}`}>
           {shown.map((p) => {

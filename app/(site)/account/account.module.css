@@ -1,0 +1,46 @@
+.navRow{display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.navBtn{width:100%;background:none;border:0;color:var(--u-ink);font:500 15px var(--u-ui);cursor:pointer;padding:0}
+.track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;font-size:12px}
+.bar{height:3px;border-radius:2px;background:var(--u-track)}
+.barOn{background:var(--u-accent)}
+.switchRow{min-height:48px}
+.panel{padding:0 0 12px;font-size:13px;line-height:1.5}
+.nav{padding-top:4px;padding-bottom:4px}
+.me{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.left,.right,.orders{display:contents}
+.nav{order:4}
+.studio{order:5}
+.stats,.love,.status,.studioCta{display:none}
+.review{display:flex}
+.reviewOpen{display:flex}
+/* desktop-Profile: profile card, taste and links left; orders table and "You make things too?" right */
+@media (min-width:820px){
+  .page{display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;align-items:start;max-width:1328px}
+  .left,.right{display:flex;flex-direction:column;gap:16px;min-width:0}
+  .left{grid-column:1;grid-row:1}
+  .right{grid-column:2;grid-row:1}
+  .nav{order:0}
+  .head{flex-direction:column;text-align:center;background:var(--u-glass);border:1px solid var(--u-glass-border);border-radius:var(--u-r-card);padding:22px 20px 20px;gap:10px}
+  .head .me{width:88px;height:88px;font-size:34px}
+  .head h1{font-size:22px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;width:100%}
+  .stats a{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;border-radius:var(--u-r-chip);font-size:12px}
+  .stats b{font-size:18px}
+  .love{display:flex;flex-direction:column;gap:10px}
+  .orders{display:flex;flex-direction:column;background:var(--u-glass);border:1px solid var(--u-glass-border);border-radius:var(--u-r-card);padding:18px 22px 6px}
+  .orders > :global(.hand){margin-bottom:6px}
+  .orders > article{background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:0;padding:14px 0}
+  .orders > article + article{border-top:1px solid var(--u-line)}
+  .orders > article > :global(.row){align-items:center}
+  .orders > article :global(.ph-64){width:56px;height:56px}
+  .line,.track,.thanks{display:none}
+  .status{display:grid;grid-template-columns:130px 140px 90px;align-items:center;gap:12px}
+  .status > :last-child{justify-self:end;font-weight:600;min-height:44px}
+  .pill{justify-self:start;padding:5px 12px;border-radius:var(--u-r-pill);background:var(--u-glass-sm);font-size:12px;font-weight:600}
+  .pillOn{background:var(--u-accent);color:var(--u-on-accent)}
+  .review{display:none}
+  .reviewOpen{display:flex;padding-left:68px}
+  .studio{order:0;align-items:center}
+  .arrow{display:none}
+  .studioCta{display:flex;flex:none;padding:0 20px}
+}

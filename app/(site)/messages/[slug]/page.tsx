@@ -25,8 +25,8 @@ function Listing({ id }: { id: string }) {
   const p = d.product;
   return (
     <Link href={`/p/${p.id}`} className="g" style={{ display: 'flex', gap: 10, alignItems: 'center', borderRadius: 14, padding: 8, marginTop: 4, color: 'var(--u-ink)' }}>
-      <Img small src={p.images[0]} alt="" style={{ width: 52, height: 52, borderRadius: 10, objectFit: 'cover' }} />
-      <span style={{ flex: 1, display: 'flex', flexDirection: 'column' }}><span className="hand" style={{ fontSize: 14 }}>{p.title}</span><span className="m" style={{ fontSize: 12 }}>{p.sold ? 'Bought ✓' : `${formatEUR(p.priceCents)} · only for you`}</span></span>
+      <Img className="ph ph-52" small src={p.images[0]} alt="" />
+      <span className="grow flex col"><span className="hand t-small">{p.title}</span><span className="m t-meta">{p.sold ? 'Bought ✓' : `${formatEUR(p.priceCents)} · only for you`}</span></span>
       {!p.sold ? <span className="cta" style={{ minHeight: 36, padding: '0 12px', fontSize: 13 }}>View</span> : null}
     </Link>
   );
@@ -61,15 +61,15 @@ function Chat() {
         <aside className={s.side}><h1 className="hand" style={{ margin: '4px 4px 0', fontSize: 24 }}>Messages</h1><Inbox current={slug} /></aside>
         <div className={`${s.chat}`}>
           <div className={`g ${s.head}`}>
-            <span className={s.back} style={{ display: 'flex' }}><BackButton href="/messages" label="Back to messages" className="ic" /></span>
+            <span className={`${s.back} flex`}><BackButton href="/messages" label="Back to messages" className="ic" /></span>
             <Link href={`/m/${m.slug}`} aria-label={`${m.name}’s profile`} className={s.avLink}><Img small src={m.portraitUrl} alt="" className="u-avatar" /></Link>
-            <span style={{ flex: 1, display: 'flex', flexDirection: 'column' }}><span className="hand" style={{ fontSize: 16 }}>{m.name}</span><span className={`m ${s.status}`}><span className={`${s.dot} ${live ? s.live : ''}`} />{live ? 'Active now' : 'Offline'}</span></span>
+            <span className="grow flex col"><span className="hand t-16">{m.name}</span><span className={`m ${s.status}`}><span className={`${s.dot} ${live ? s.live : ''}`} />{live ? 'Active now' : 'Offline'}</span></span>
             <Link href={`/m/${m.slug}`} className="m tap" style={{ fontSize: 13, padding: '0 6px' }}>Profile</Link>
           </div>
           <div className={s.msgs} aria-live="polite">
             {piece ? <Link href={`/p/${piece.id}`} className={`gs ${s.piece}`}><Img small src={piece.images[0]} alt="" /><span>{piece.title} · <b>{formatEUR(piece.priceCents)}</b></span></Link> : null}
             {!msgs.length ? (
-              <div className={`g ${s.empty}`}><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand" style={{ fontSize: 18 }}>Ask {m.name} anything</span>{reply ? <span className="m" style={{ fontSize: 14 }}>{reply}. You’ll get a notification when she does.</span> : null}</div>
+              <div className={`g ${s.empty}`}><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand t-18">Ask {m.name} anything</span>{reply ? <span className="m t-small">{reply}. You’ll get a notification when she does.</span> : null}</div>
             ) : null}
             {msgs.map((x) => {
               const day = shortDate(x.at); const show = day !== lastDay; lastDay = day;
@@ -83,9 +83,7 @@ function Chat() {
             })}
             <div ref={end} />
           </div>
-          {msgs.length < 2 ? (
-            <div className={s.quick}>{(QUICK[m.categories[0]] ?? ['When does it ship?', 'Gift wrap?', 'Do you take custom orders?']).map((q) => <button key={q} type="button" className="gs" onClick={() => send(q)}>{q}</button>)}</div>
-          ) : null}
+          <div className={s.quick}>{(QUICK[m.categories[0]] ?? ['When does it ship?', 'Gift wrap?', 'Do you take custom orders?']).map((q) => <button key={q} type="button" className="gs" onClick={() => send(q)}>{q}</button>)}</div>
           <form className={`g ${s.compose}`} onSubmit={(e) => { e.preventDefault(); send(text); }}>
             <button type="button" className="ic" aria-label="Add a photo" onClick={() => file.current?.click()}><Camera size={20} /></button>
             <input ref={file} type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) await send('', await uploadImage(f)); e.target.value = ''; }} />

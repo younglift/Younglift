@@ -26,7 +26,7 @@ export default function Order() {
     <div className="row" style={{ alignItems: 'flex-start', minHeight: 52 }}>
       {onTick ? <button type="button" className="ic" aria-label={`Mark “${t}” done`} onClick={onTick} style={{ margin: -8 }}><span className="chk" style={{ width: 28, height: 28 }}>{n}</span></button>
         : <span className={`chk ${done ? 'on' : ''}`} style={{ width: 28, height: 28 }} aria-label={done ? `${t}: done` : undefined}>{done ? '✓' : n}</span>}
-      <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, fontSize: 14 }}><span style={{ fontWeight: 600 }}>{t}</span><span className="m">{d}</span></span>{extra}
+      <span className="grow flex col gap-4 t-small"><span className="fw600">{t}</span><span className="m">{d}</span></span>{extra}
     </div>
   );
   return (
@@ -36,13 +36,13 @@ export default function Order() {
         <div className="u-head"><BackButton href="/studio/orders" /><span><h1 className="hand">Order #{o.number}</h1><span className="m sub">Paid {shortDate(o.createdAt)} · {shipped ? `shipped ${o.shippedAt ? shortDate(o.shippedAt) : ''}` : `ship by ${longDate(o.shipBy)}`}</span></span></div>
         <div className="g u-card u-stack">
           {o.lines.map((x) => (
-            <div key={x.productId} className="row"><Img small src={x.product.images[0]} alt="" style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover' }} /><span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}><span className="hand">{x.product.title}</span><span className="m" style={{ fontSize: 13 }}>{[x.product.subtitle, x.variant ? Object.entries(x.variant).map(([k, v]) => `${k} ${v}`).join(' ') : '', `${x.qty} piece${x.qty > 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span></span><b className="num">{formatEUR(x.product.priceCents * x.qty)}</b></div>
+            <div key={x.productId} className="row"><Img className="ph ph-56" small src={x.product.images[0]} alt="" /><span className="grow flex col gap-4"><span className="hand">{x.product.title}</span><span className="m t-small">{[x.product.subtitle, x.variant ? Object.entries(x.variant).map(([k, v]) => `${k} ${v}`).join(' ') : '', `${x.qty} piece${x.qty > 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span></span><b className="num">{formatEUR(x.product.priceCents * x.qty)}</b></div>
           ))}
           <hr className="hr" />
-          <div className="u-stack" style={{ gap: 8, fontSize: 14 }}>
-            <div className="row" style={{ justifyContent: 'space-between' }}><span className="m">Buyer</span><span>{o.buyer.name}, {o.buyer.city}</span></div>
-            <div className="row" style={{ justifyContent: 'space-between' }}><span className="m">Delivery</span><span>{o.delivery === 'locker' ? 'Parcel locker' : 'To the door'} · {o.shippingCents ? formatEURExact(o.shippingCents) : 'Free'}</span></div>
-            <div className="row" style={{ justifyContent: 'space-between' }}><span className="m">Gift wrap</span><span>{o.gift?.wrap ? `Yes · +${formatEUR(o.giftWrapCents)} (yours)` : 'No'}</span></div>
+          <div className="u-stack gap-8 t-small">
+            <div className="row between"><span className="m">Buyer</span><span>{o.buyer.name}, {o.buyer.city}</span></div>
+            <div className="row between"><span className="m">Delivery</span><span>{o.delivery === 'locker' ? 'Parcel locker' : 'To the door'} · {o.shippingCents ? formatEURExact(o.shippingCents) : 'Free'}</span></div>
+            <div className="row between"><span className="m">Gift wrap</span><span>{o.gift?.wrap ? `Yes · +${formatEUR(o.giftWrapCents)} (yours)` : 'No'}</span></div>
           </div>
           {o.gift?.note ? <div className="gs u-card"><span className="lbl">Card says</span><p className="hand" style={{ margin: '8px 0 0', fontSize: 15, lineHeight: 1.6 }}>“{o.gift.note}”</p></div> : null}
         </div>
@@ -52,7 +52,7 @@ export default function Order() {
           {step(3, shipped, 'Mark as shipped', `${o.buyer.name.split(' ')[0]} gets the tracking link right away.`)}
         </div>
         {!shipped ? (
-          <div className="g u-card"><label className="fld"><span className="lbl">Tracking number</span><input className="inp" value={tracking} onChange={(e) => setTracking(e.target.value.toUpperCase())} placeholder="e.g. CE473920115LT" /><span className="m" style={{ fontSize: 12 }}>Optional, but buyers love it.</span></label></div>
+          <div className="g u-card"><label className="fld"><span className="lbl">Tracking number</span><input className="inp" value={tracking} onChange={(e) => setTracking(e.target.value.toUpperCase())} placeholder="e.g. CE473920115LT" /><span className="m t-meta">Optional, but buyers love it.</span></label></div>
         ) : o.trackingNumber ? <div className="gs u-card">Tracking: <b>{o.trackingNumber}</b></div> : null}
         <Link href="/studio/messages" className="sec gs">Message {o.buyer.name.split(' ')[0]}</Link>
         <div className="g u-bar">

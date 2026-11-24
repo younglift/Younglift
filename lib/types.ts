@@ -67,7 +67,8 @@ export type Board = { id: string; name: string; productIds: string[] }
 export type Taste = { categories: Category[]; styles: string[]; materials: string[] }
 export type BagLine = { productId: string; qty: number; variant?: Record<string, string> }
 /** A real 15-minute hold on a one-of-a-kind piece (table cart_holds). */
-export type CartHold = { pieceId: string; cartId: string; expiresAt: string }
+/** A real 15-minute hold on pieces with limited stock (1 of 1, small batch, "X left"); not made to order (table cart_holds). */
+export type CartHold = { pieceId: string; cartId: string; qty: number; expiresAt: string }
 
 export type OrderStatus = 'paid' | 'packing' | 'shipped' | 'delivered' | 'refunded'
 export type Delivery = 'locker' | 'door'

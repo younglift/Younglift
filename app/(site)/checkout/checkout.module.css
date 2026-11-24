@@ -1,0 +1,6 @@
+.ship{border-radius:var(--u-r-chip);padding:12px;font-size:13px}
+.wrap{border-radius:var(--u-r-chip);padding:12px;cursor:pointer;align-items:flex-start}
+.sum{cursor:pointer;display:flex;align-items:center;gap:12px;list-style:none;min-height:44px}
+.or{text-align:center;font-size:13px;margin-top:-8px}
+.stackImg{width:36px;height:36px;border-radius:10px;object-fit:cover;border:2px solid var(--u-bg)}
+.overlap{margin-left:-8px}

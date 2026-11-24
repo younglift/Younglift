@@ -29,7 +29,7 @@ function Explore() {
           <span><Search /></span>
           <input type="search" aria-label="Search pieces" placeholder="Silver ring, bowl, wool bag…" value={text} onChange={(e) => setText(e.target.value)} />
         </form>
-        <nav aria-label="Categories" className={`g ${s.cats} ${s.catsDesk}`} style={{ display: 'flex' }}>
+        <nav aria-label="Categories" className={`g ${s.cats} ${s.catsDesk} flex`}>
           {(cats ?? []).map((c) => (
             <Link key={c.id} href={`/explore/${c.id}`}>
               <Img small src={c.image ?? '/img/candle.jpg'} alt="" />
@@ -38,7 +38,7 @@ function Explore() {
             </Link>
           ))}
         </nav>
-        <div className="u-stack" style={{ gap: 10 }}>
+        <div className="u-stack gap-8">
           <span className="lbl m">Popular searches</span>
           <div className={s.pop}>{POPULAR.map((p) => <Link key={p} href={`/explore?q=${encodeURIComponent(p)}`} className="gs">{p}</Link>)}</div>
         </div>

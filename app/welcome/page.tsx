@@ -17,8 +17,8 @@ export default function Welcome() {
       <Wash src="/img/studio-table.jpg" />
       <div className={s.photo} aria-hidden="true"><Img src="/img/studio-table.jpg" alt="" eager /></div>
       <div className={s.logo}><Logo height={92} /></div>
-      <header className={`gs ${s.deskHead}`}>
-        <Logo height={44} wordmark /><span className={s.grow} />
+      <header className={s.deskHead}>
+        <Logo height={30} wordmark /><span className={s.grow} />
         <Link href="/account" className="sec">Sign in</Link>
         <Link href="/sell" className="sec gs">Sell on Uplift</Link>
       </header>

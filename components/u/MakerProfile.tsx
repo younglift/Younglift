@@ -35,15 +35,15 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
     <div className={`g ${s.card}`}>
       <div className={s.who}>
         <Img small src={m.portraitUrl} alt="" className="u-avatar" />
-        <span style={{ flex: 1, minWidth: 0 }}><span className="hand">{m.name}</span><span className={`m ${s.meta}`}>{makerMeta(m, true)} · {m.followers} followers</span></span>
+        <span className="grow minw0"><span className="hand">{m.name}</span><span className={`m ${s.meta}`}>{makerMeta(m, true)} · {m.followers} followers</span></span>
       </div>
       <p className={s.bio}>{m.bio}</p>
       <div className={s.acts}>
         <button type="button" className="cta" aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
         <Link href={`/messages/${m.slug}`} className="sec gs">Message</Link>
       </div>
-      {m.customRequestsOpen ? <Link href={`/m/${m.slug}/request`} className="sec" style={{ width: '100%', marginTop: 6 }}>Ask for a custom piece</Link> : null}
-      <span className={`m ${s.info}`}>{makerInfo(m)}{extras ? <><br />{extras}</> : null}</span>
+      {m.customRequestsOpen && desktop ? <Link href={`/m/${m.slug}/request`} className="sec w-full mt-8">Ask for a custom piece</Link> : null}
+      <span className={`m ${s.info}`}>{makerInfo(m)}{extras && desktop ? <><br />{extras}</> : null}</span>
     </div>
   );
   const story = (
@@ -60,15 +60,15 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
       ))}
     </div>
   );
+  const filters = (
+    <div className={s.filters}>
+      {([['all', 'All'], ['ready', 'Ready to ship'], ['order', 'Made to order'], ['sold', 'Sold']] as const).map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={filter === k} onClick={() => setFilter(k)}>{l}</button>)}
+    </div>
+  );
   const content = (
     <div key={tab} className={`u-fade-in ${s.tabBody}`}>
       {tab === 'works' ? (
         <>
-          {desktop ? (
-            <div className={s.filters}>
-              {([['all', 'All'], ['ready', 'Ready to ship'], ['order', 'Made to order'], ['sold', 'Sold']] as const).map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={filter === k} onClick={() => setFilter(k)}>{l}</button>)}
-            </div>
-          ) : null}
           <div className="u-grid">{shown.map((p) => <ProductCard key={p.id} p={p} showMaker={false} />)}</div>
           {!shown.length ? <span className="m">Nothing here yet.</span> : null}
         </>
@@ -89,10 +89,10 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
         <>
           {(reviews ?? []).map((r) => (
             <div key={r.id} className={`g ${s.review}`}>
-              <div className={s.top}><span>{r.who}</span><span style={{ color: 'var(--u-accent)' }} aria-label={`${r.rating} of 5`}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span></div>
+              <div className={s.top}><span>{r.who}</span><span className="accent" aria-label={`${r.rating} of 5`}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span></div>
               <p>{r.text}</p>
-              <span className="m" style={{ display: 'block', marginTop: 6, fontSize: 12 }}>Bought {r.productTitle} · Verified purchase</span>
-              {r.reply ? <p className="m" style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.5, paddingLeft: 10, borderLeft: '2px solid var(--u-line)' }}><b style={{ color: 'var(--u-ink)' }}>{m.name}:</b> {r.reply}</p> : null}
+              <span className="m mt-8 t-meta">Bought {r.productTitle} · Verified purchase</span>
+              {r.reply ? <p className="m" style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.5, paddingLeft: 10, borderLeft: '2px solid var(--u-line)' }}><b className="ink">{m.name}:</b> {r.reply}</p> : null}
             </div>
           ))}
           {reviews && !reviews.length ? <span className="m">No reviews yet. Only people who bought from {m.name} can leave one.</span> : null}
@@ -107,7 +107,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
       {desktop ? (
         <div className={s.body}>
           <div className={s.side}>{card}{story}</div>
-          <div className={s.main}><div className={`g ${s.tabsBar}`}>{tabs}</div>{content}</div>
+          <div className={s.main}><div className={`g ${s.tabsBar}`}>{tabs}{tab === 'works' ? filters : null}</div>{content}</div>
         </div>
       ) : (
         <div className={s.body}>
@@ -115,8 +115,8 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
           {next ? (
             <button type="button" className={`gs ${s.next}`} onClick={next.go}>
               <Img small src={next.maker.portraitUrl} alt="" className="u-avatar" />
-              <span style={{ flex: 1 }}><span className="m" style={{ display: 'block', fontSize: 12 }}>Next maker</span><span className="hand" style={{ fontSize: 15 }}>{next.maker.name} · {CATEGORY_LABEL[next.maker.categories[0]]}</span></span>
-              <span style={{ fontSize: 13 }}>Scroll ↓</span>
+              <span className="grow"><span className="m t-meta">Next maker</span><span className="hand t-body">{next.maker.name} · {CATEGORY_LABEL[next.maker.categories[0]]}</span></span>
+              <span className="t-small">Scroll ↓</span>
             </button>
           ) : null}
         </div>

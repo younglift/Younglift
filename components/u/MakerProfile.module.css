@@ -30,10 +30,12 @@
 .next img{width:40px;height:40px}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
 @media (min-width:820px){
-  .cover{height:340px;border-radius:32px;overflow:hidden}
-  .body{margin:-120px 24px 0;display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start;padding-bottom:40px}
+  .cover{height:300px;border-radius:32px;overflow:hidden}
+  .body{margin:16px 0 0;display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;padding-bottom:40px}
   .side{display:flex;flex-direction:column;gap:14px;position:sticky;top:100px}
   .main{display:flex;flex-direction:column;gap:14px;min-width:0}
-  .tabsBar{border-radius:var(--u-r-pill);padding:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .tabsBar{border-radius:var(--u-r-pill);padding:6px;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+  .tabsBar .filters{display:flex;gap:6px;flex-wrap:wrap}
+  .main :global(.u-grid){grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 .tabBody{display:flex;flex-direction:column;gap:12px}

@@ -56,8 +56,8 @@ export default function AppNav() {
       ) : null}
       {desktop === false && showBottom && !hideCorner ? <MeButton className={s.meCorner} /> : null}
 
-      {desktop ? <header className={`gs ${s.top}`}>
-        <Link href="/" aria-label="Uplift home" style={{ lineHeight: 0 }}><Logo height={44} wordmark /></Link>
+      {desktop && path !== '/sell' && path !== '/sell/apply' ? <header className={`gs ${s.top}`}>
+        <Link href="/" aria-label="Uplift home" className="tap"><Logo height={30} wordmark /></Link>
         <nav aria-label="Main">
           {TABS.map((t) => <Link key={t.href} href={t.href} aria-current={isOn(path, t.href) ? 'page' : undefined}>{t.label}<span className={s.dot} /></Link>)}
         </nav>
@@ -66,8 +66,8 @@ export default function AppNav() {
           <input type="search" aria-label="Search makers or pieces" placeholder="Search makers or pieces" value={q} onChange={(e) => setQ(e.target.value)} />
         </form>
         <Link href="/sell" className={`sec ${s.sell}`}>Sell on Uplift</Link>
-        <Link href="/messages" aria-label={unread ? `Messages, ${unread} new` : 'Messages'} className="ic" style={{ position: 'relative' }}><Chat size={20} />{unread ? <span className={s.pip} /> : null}</Link>
-        <button type="button" aria-label={bag ? `Bag, ${bag} items` : 'Bag'} className="ic" style={{ position: 'relative' }} onClick={() => setDrawer(true)}><Bag size={20} />{bag ? <span key={bag} className={`${s.badge} u-pop`}>{bag}</span> : null}</button>
+        <Link href="/messages" aria-label={unread ? `Messages, ${unread} new` : 'Messages'} className="ic rel"><Chat size={20} />{unread ? <span className={s.pip} /> : null}</Link>
+        <button type="button" aria-label={bag ? `Bag, ${bag} items` : 'Bag'} className="ic rel" onClick={() => setDrawer(true)}><Bag size={20} />{bag ? <span key={bag} className={`${s.badge} u-pop`}>{bag}</span> : null}</button>
         <MeButton />
       </header> : null}
 

@@ -1,5 +1,5 @@
 // Mock backend for design 07. Same rules the Supabase version will have (docs/design/HANDOFF-07.md):
-// real 15-minute holds on one-of-a-kind pieces, stickers computed from data, one order per maker,
+// real 15-minute holds on every piece with limited stock (HANDOFF-07, FIXES 5.6), stickers computed from data, one order per maker,
 // maker applications with approve/reject, reviews only from delivered orders, posts with kinds.
 // State lives in memory and, in the browser, in localStorage, so a reload keeps everything.
 import type {
@@ -14,7 +14,7 @@ import {
 export const HOLD_MINUTES = 15;
 const MY_CART = 'me';
 const DAY = 864e5;
-const KEY = 'uplift-demo-v2';
+const KEY = 'uplift-demo-v3';
 
 type State = ReturnType<typeof fresh>;
 function fresh() {
@@ -32,7 +32,7 @@ function fresh() {
     ] as Board[],
     bag: [] as BagLine[],
     // Demo: another shopper holds Inez's Soft loop, so "In someone's bag" can be seen.
-    holds: [{ pieceId: 'soft', cartId: 'someone-else', expiresAt: new Date(Date.now() + 11 * 60e3).toISOString() }] as CartHold[],
+    holds: [{ pieceId: 'soft', cartId: 'someone-else', qty: 1, expiresAt: new Date(Date.now() + 11 * 60e3).toISOString() }] as CartHold[],
     orders: seedOrders().map((o) => ({ ...o, lines: o.lines.map((l) => ({ ...l, product: { ...byId.get(l.productId)! } })) })) as Order[],
     reviews: seedReviews(),
     posts: seedPosts(),
@@ -105,8 +105,18 @@ function activeHolds() {
   state.holds = state.holds.filter((h) => new Date(h.expiresAt).getTime() > now() || h.cartId === MY_CART);
   return state.holds.filter((h) => new Date(h.expiresAt).getTime() > now());
 }
-const heldByOther = (id: string) => activeHolds().some((h) => h.pieceId === id && h.cartId !== MY_CART);
+/** Pieces others hold right now. Free stock for me = stock − that. */
+const othersHold = (id: string) => activeHolds().filter((h) => h.pieceId === id && h.cartId !== MY_CART).reduce((a, h) => a + h.qty, 0);
+const limited = (p: Product) => !p.madeToOrder;
+const freeFor = (p: Product) => (p.madeToOrder ? Infinity : Math.max(0, p.stock - othersHold(p.id)));
+const heldByOther = (id: string) => { const p = productOf(id); return !!p && limited(p) && !p.sold && freeFor(p) <= 0; };
 const myHold = (id: string) => state.holds.find((h) => h.pieceId === id && h.cartId === MY_CART);
+const bagQty = (id: string) => state.bag.filter((l) => l.productId === id).reduce((a, l) => a + l.qty, 0);
+/** (Re)hold everything of this piece in my bag for 15 minutes. */
+function holdMine(id: string) {
+  const p = productOf(id); state.holds = state.holds.filter((h) => !(h.pieceId === id && h.cartId === MY_CART));
+  const q = bagQty(id); if (p && limited(p) && q > 0) state.holds.push({ pieceId: id, cartId: MY_CART, qty: q, expiresAt: new Date(now() + HOLD_MINUTES * 60e3).toISOString() });
+}
 
 function view(p: Product): Product {
   const m = makerOf(p.makerId);
@@ -271,7 +281,8 @@ export type BagView = {
     lines: (BagLine & { product: Product; hold?: { expiresAt: string; expired: boolean } })[]
     itemsCents: number; shippingCents: number; freeShippingLeftCents?: number; upsell: Product[]
   }[]
-  holdEndsAt?: string   // earliest active hold on my one-of-a-kind pieces
+  holdEndsAt?: string   // earliest active hold in my bag
+  heldCount: number     // pieces held for me right now
   count: number
 }
 function shippingFor(m: Maker, itemsCents: number, delivery: Delivery = 'locker') {
@@ -294,8 +305,11 @@ export async function getBag(): Promise<BagView> {
     return { maker: viewMaker(m), lines: mine, itemsCents, shippingCents: shippingFor(m, itemsCents), freeShippingLeftCents: left, upsell };
   });
   const active = state.holds.filter((h) => h.cartId === MY_CART && new Date(h.expiresAt).getTime() > now()).map((h) => h.expiresAt).sort();
-  return clone({ groups, holdEndsAt: active[0], count: lines.reduce((a, l) => a + l.qty, 0) });
+  const heldCount = state.holds.filter((h) => h.cartId === MY_CART && new Date(h.expiresAt).getTime() > now()).reduce((a, h) => a + h.qty, 0);
+  return clone({ groups, holdEndsAt: active[0], heldCount, count: lines.reduce((a, l) => a + l.qty, 0) });
 }
+/** For checkout: the hold timer and how many pieces it covers. */
+export async function getHoldInfo() { const b = await getBag(); return { endsAt: b.holdEndsAt, count: b.heldCount }; }
 export async function getBagCount() { load(); return state.bag.reduce((a, l) => a + l.qty, 0); }
 
 export type AddResult = { ok: true } | { ok: false; reason: 'sold' | 'held' | 'size' | 'missing' };
@@ -305,16 +319,12 @@ export async function addToBag(line: BagLine): Promise<AddResult> {
   if (!p || !buyable(p)) return { ok: false, reason: 'missing' };
   if (p.sold) return { ok: false, reason: 'sold' };
   if (p.sizes && !line.variant?.[p.sizes.label]) return { ok: false, reason: 'size' };
-  if (p.oneOfAKind) {
-    if (heldByOther(p.id)) return { ok: false, reason: 'held' };
-    state.holds = state.holds.filter((h) => !(h.pieceId === p.id && h.cartId === MY_CART));
-    state.holds.push({ pieceId: p.id, cartId: MY_CART, expiresAt: new Date(now() + HOLD_MINUTES * 60e3).toISOString() });
-    if (!state.bag.some((l) => l.productId === p.id)) state.bag.push({ productId: p.id, qty: 1 });
-    save(); return { ok: true };
-  }
+  const free = freeFor(p) - bagQty(p.id);
+  if (limited(p) && free <= 0) return bagQty(p.id) ? { ok: true } : { ok: false, reason: 'held' };
   const same = state.bag.find((l) => l.productId === p.id && JSON.stringify(l.variant ?? {}) === JSON.stringify(line.variant ?? {}));
-  const max = p.madeToOrder ? 10 : p.stock;
-  if (same) same.qty = Math.min(max, same.qty + line.qty); else state.bag.push({ productId: p.id, qty: Math.min(max, line.qty), variant: line.variant });
+  const add = Math.min(line.qty, p.madeToOrder ? 10 : free);
+  if (same) same.qty += add; else state.bag.push({ productId: p.id, qty: add, variant: line.variant });
+  holdMine(p.id);
   save(); return { ok: true };
 }
 export async function isInBag(productId: string) { load(); return state.bag.some((l) => l.productId === productId); }
@@ -322,20 +332,20 @@ export async function setBagQty(productId: string, variant: Record<string, strin
   load(); const p = productOf(productId);
   const l = state.bag.find((x) => x.productId === productId && JSON.stringify(x.variant ?? {}) === JSON.stringify(variant ?? {}));
   if (!l || !p) return;
-  l.qty = Math.max(1, Math.min(p.madeToOrder ? 10 : p.stock, qty)); save();
+  const others = bagQty(productId) - l.qty;
+  l.qty = Math.max(1, Math.min(p.madeToOrder ? 10 : freeFor(p) - others, qty)); holdMine(productId); save();
 }
 export async function removeFromBag(productId: string, variant?: Record<string, string>) {
   load();
   state.bag = state.bag.filter((x) => !(x.productId === productId && JSON.stringify(x.variant ?? {}) === JSON.stringify(variant ?? {})));
-  if (!state.bag.some((x) => x.productId === productId)) state.holds = state.holds.filter((h) => !(h.pieceId === productId && h.cartId === MY_CART));
+  holdMine(productId);
   save();
 }
-/** Hold ended: hold it again if nobody else has it now. */
+/** Hold ended: hold it again if enough is still free. */
 export async function holdAgain(productId: string): Promise<AddResult> {
-  load(); if (heldByOther(productId)) return { ok: false, reason: 'held' };
-  state.holds = state.holds.filter((h) => !(h.pieceId === productId && h.cartId === MY_CART));
-  state.holds.push({ pieceId: productId, cartId: MY_CART, expiresAt: new Date(now() + HOLD_MINUTES * 60e3).toISOString() });
-  save(); return { ok: true };
+  load(); const p = productOf(productId); if (!p) return { ok: false, reason: 'missing' };
+  if (freeFor(p) < bagQty(productId)) return { ok: false, reason: 'held' };
+  holdMine(productId); save(); return { ok: true };
 }
 
 // ---------- checkout (one order + PaymentIntent per maker; "Pay for all" = one group) ----------
@@ -365,7 +375,7 @@ export async function placeOrder(input: CheckoutInput): Promise<CheckoutResult> 
     const p = productOf(l.productId)!;
     if (!buyable(p)) return { ok: false, reason: `${p.title} is no longer available.` };
     if (p.sold || (!p.madeToOrder && p.stock < l.qty)) return { ok: false, reason: `${p.title} just sold out.` };
-    if (p.oneOfAKind && heldByOther(p.id)) return { ok: false, reason: `${p.title} is in someone else’s bag right now.` };
+    if (limited(p) && freeFor(p) < l.qty) return { ok: false, reason: `${p.title} is in someone else’s bag right now.` };
   }
   const groupId = uid('g-');
   let n = Math.max(1042, ...state.orders.map((o) => o.number));
@@ -384,7 +394,7 @@ export async function placeOrder(input: CheckoutInput): Promise<CheckoutResult> 
       const p = productOf(l.productId)!;
       if (!p.madeToOrder) p.stock = Math.max(0, p.stock - l.qty);
       p.sold = !p.madeToOrder && p.stock <= 0;
-      state.holds = state.holds.filter((h) => h.pieceId !== p.id);
+      state.holds = state.holds.filter((h) => !(h.pieceId === p.id && h.cartId === MY_CART));
       state.bag = state.bag.filter((b) => b.productId !== p.id);
     }
   }
