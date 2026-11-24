@@ -23,7 +23,7 @@ export default function Admin() {
           <article key={a.id} className="g u-card u-stack">
             <div className="row" style={{ justifyContent: 'space-between' }}><span><b>{a.name}</b> <span className="m">· {a.city}, {a.country}</span></span><span className="m" style={{ fontSize: 12 }}>{shortDate(a.createdAt)}</span></div>
             <span className="m" style={{ fontSize: 13 }}>{a.email}{a.link ? ` · ${a.link}` : ''} · {a.categories.map((c) => CATEGORY_LABEL[c]).join(', ')}</span>
-            <div style={{ display: 'flex', gap: 6, overflowX: 'auto' }}>{a.photos.map((u, i) => <Img small key={i} src={u} alt="" style={{ width: 96, height: 96, borderRadius: 14, objectFit: 'cover', flexShrink: 0 }} />)}</div>
+            <div className="snap-x" style={{ gap: 6 }}>{a.photos.map((u, i) => <Img small key={i} src={u} alt="" style={{ width: 96, height: 96, borderRadius: 14, objectFit: 'cover', flexShrink: 0 }} />)}</div>
             <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>{a.about}</p>
             <span className="m" style={{ fontSize: 13 }}>{a.makesItself ? '✓ Makes everything herself' : '✗ Did not confirm she makes it herself'}</span>
             <div className="row" style={{ gap: 8 }}>

@@ -29,7 +29,7 @@ export default function Following() {
       <main className="u-page">
         <div className="u-head"><span><h1 className="hand">Following</h1><span className="m sub">{plural(followed.length, 'maker')}</span></span></div>
         {makers.length ? (
-          <div style={{ display: 'flex', gap: 14, overflowX: 'auto', scrollbarWidth: 'none', margin: '0 -16px', padding: '4px 16px' }}>
+          <div className="snap-x bleed" style={{ gap: 14 }}>
             <button type="button" onClick={() => setOnly(null)} aria-pressed={!only} style={{ background: 'none', border: 0, color: 'var(--u-ink)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer', padding: 0 }}>
               <span className="gs" style={{ ...ring(!only, false), display: 'flex', alignItems: 'center', justifyContent: 'center', font: '600 13px var(--u-ui)' }}>All</span><span style={{ fontSize: 13 }}>&nbsp;</span>
             </button>

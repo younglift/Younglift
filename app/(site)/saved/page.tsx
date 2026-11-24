@@ -36,7 +36,7 @@ export default function Saved() {
       <Wash src={list[0]?.images[0] ?? '/img/plates.jpg'} />
       <main className="u-page">
         <div className="u-head"><span><h1 className="hand">Saved</h1><span className="m sub">{plural(saved.length, 'piece')} · {plural(boards.length, 'board')}</span></span></div>
-        <div style={{ display: 'flex', gap: 12, overflowX: 'auto', scrollbarWidth: 'none', margin: '0 -16px', padding: '4px 16px' }}>
+        <div className="snap-x bleed" style={{ gap: 12 }}>
           {tile('all', 'All saved', saved.map((p) => p.id))}
           {boards.map((b) => tile(b.id, b.name, b.productIds))}
           {naming ? (

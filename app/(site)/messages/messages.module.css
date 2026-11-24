@@ -29,7 +29,8 @@
 .b img{border-radius:14px;max-width:220px}
 .empty{align-self:stretch;border-radius:var(--u-r-card);padding:20px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;margin-top:12px}
 .empty img{width:56px;height:56px}
-.quick{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 12px 8px;flex-shrink:0}
+.quick{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:12px;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 12px 8px;flex-shrink:0}
+.quick > *{scroll-snap-align:start;flex-shrink:0}
 .quick button{min-height:40px;padding:0 14px;border-radius:var(--u-r-pill);color:var(--u-ink);font:500 13px var(--u-ui);cursor:pointer;white-space:nowrap}
 .compose{margin:0 12px calc(12px + env(safe-area-inset-bottom));border-radius:var(--u-r-pill);padding:6px;display:flex;align-items:center;gap:6px;flex-shrink:0}
 .compose input{flex:1;min-width:0;min-height:44px;border:0;background:transparent;color:var(--u-ink);font:400 16px var(--u-ui);outline:none;padding:0 8px}

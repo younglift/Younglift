@@ -6,6 +6,7 @@ import type { Product } from '@/lib/types';
 import { addToBag, addToBoard, createBoard, getBoards, toggleSave, type AddResult } from '@/lib/data';
 import { formatEUR } from '@/lib/format';
 import { useData } from '@/lib/useData';
+import { useLockBody } from '@/lib/useLockBody';
 import { Back, Bookmark, Close } from './Icons';
 import { toast } from './Toast';
 import { openBag } from './Nav';
@@ -47,6 +48,7 @@ export function SaveButton({ p, className = 'ic gs', size = 18, onBoard }: { p: 
 export function BoardSheet({ productId, onClose }: { productId: string; onClose: () => void }) {
   const [boards] = useData(getBoards);
   const [name, setName] = useState('');
+  useLockBody(true, onClose);
   return (
     <>
       <div className="u-scrim" onClick={onClose} />

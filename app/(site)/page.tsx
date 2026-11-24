@@ -56,7 +56,7 @@ function PieceBox({ item, sel, setSel, inBag, desktop, onProfile, active = true 
             : <span className="m" style={{ fontWeight: 400 }}>Tap to see</span>}
       </div>
       <div className={s.thumbs}>
-        {item.products.slice(0, 6).map((x, i) => (
+        {item.products.slice(0, 4).map((x, i) => (
           <button key={x.id} type="button" className={s.thumb} aria-pressed={i === sel} aria-label={`${x.title}, ${formatEUR(x.priceCents)}`} onClick={() => setSel(i)}>
             <span className="gs">{active ? <Img small src={x.images[0]} alt="" className="u-cover" /> : null}</span><span>{x.sold ? 'Sold' : formatEUR(x.priceCents)}</span>
           </button>

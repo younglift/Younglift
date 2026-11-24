@@ -55,8 +55,15 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 @media (prefers-reduced-motion:reduce){.tg i{transition:none}}
 .row{display:flex;align-items:center;gap:12px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+/* Every sideways row snaps and stops flush with the page margin (QUALITY 2.5). A row that fits does not scroll. */
+.snap-x{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:16px;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.snap-x::-webkit-scrollbar{display:none}
+.snap-x > *{scroll-snap-align:start;flex-shrink:0}
+.snap-x.bleed{margin:0 -16px;padding:2px 16px}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:16px;overscroll-behavior-x:contain;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
 .chips.scroll::-webkit-scrollbar{display:none}
+.chips.scroll > *{scroll-snap-align:start}
+@media (min-width:820px){.snap-x{scroll-padding-inline:24px}.chips.scroll{margin:0;padding:2px 0;scroll-padding-inline:0}.snap-x.bleed{margin:0;padding:2px 0}}
 .hr{height:1px;background:var(--u-line);border:0;margin:0}
 
 /* screen frame: base colour + the screen's photo, washed out */

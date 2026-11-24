@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getBagCount, getMe, getUnreadCount } from '@/lib/data';
 import { useData } from '@/lib/useData';
 import { useIsDesktop } from '@/lib/useIsDesktop';
+import { useLockBody } from '@/lib/useLockBody';
 import { Bag, Chat, Close, Search } from './Icons';
 import Logo from './Logo';
 import BagView from './BagView';
@@ -32,6 +33,7 @@ export default function AppNav() {
   const [unread] = useData(getUnreadCount);
   const [drawer, setDrawer] = useState(false);
   const desktop = useIsDesktop();
+  useLockBody(drawer, () => setDrawer(false));
   const [q, setQ] = useState('');
   useEffect(() => { setDrawer(false); }, [path]);
   useEffect(() => {
