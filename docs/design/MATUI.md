@@ -13,6 +13,8 @@ Visas 07 dizainas jau įdėtas į app'ą ir veikia `main` šakoje (https://young
 - **Nauji tokenai** `app/globals.css` (laukai, perjungikliai, šešėliai): `--u-field`, `--u-field-border`, `--u-focus`, `--u-track`, `--u-shade`, `--u-scrim-bottom`, `--u-online`, `--u-accent-soft`, `--u-sticker-shadow`. Reikšmės paimtos iš tavo ekranų, keisk laisvai.
 - **Ekranai, kurių nebuvo:** dydžių gidas, privatus listingas po individualaus užsakymo, Studio žinutės (pokalbiai / užklausos / atsiliepimai), adresai, pranešimai, grąžinimas, `/admin`, 404 ir klaidos puslapis, krovimo taškelis. Visi pagal tavo stilių, bet nepiešti.
 
+- **Kompo Discover (Justino prašymu):** slenka kaip telefone (pelė/touchpad = kitas kūrėjas). Nebėra „Next maker“ mygtuko ir kūrėjų eilės apačioje, kaip `desktop-Discover.jpg`.
+
 ## 3. Ko reikia iš tavęs (nupiešti)
 - **C1–C4:** prisijungimas, tušti ekranai ir klaidos, teisiniai puslapiai (taisyklės, privatumas, grąžinimas, slapukai).
 - **Admin:** paraiškų peržiūra.
