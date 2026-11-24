@@ -12,6 +12,7 @@ import { Close } from '@/components/u/Icons';
 import MakerProfile from '@/components/u/MakerProfile';
 import Sticker from '@/components/u/Sticker';
 import Loading from '@/components/u/Loading';
+import Sheet from '@/components/u/Sheet';
 import Wash from '@/components/u/Wash';
 import s from './product.module.css';
 import Img from '@/components/u/Img';
@@ -31,7 +32,6 @@ export default function ProductPage() {
   const [size, setSize] = useState<string>();
   const [guide, setGuide] = useState(false);
   const desktop = useIsDesktop();
-  useLockBody(guide, () => setGuide(false));
   useLockBody(!!desktop && !guide, () => { if (window.history.length > 1) router.back(); });
   if (data === null) return (<main className="u-page"><Wash /><BackButton /><span className="hand" style={{ fontSize: 22 }}>This piece is gone</span><Link href="/explore" className="cta">Explore</Link></main>);
   if (!data) return <Loading />;
@@ -52,8 +52,8 @@ export default function ProductPage() {
     <>
       <Wash src={p.images[0]} />
       {desktop ? <div className={`${s.behind} ${s.deskOnly}`} aria-hidden="true">{all ? <div style={{ width: '100%' }}><MakerProfile maker={m} products={all} desktop /></div> : null}</div> : null}
-      {desktop ? <button type="button" className={`${s.scrimD} ${s.deskOnly}`} aria-label="Close" onClick={close} /> : null}
-      <div className={`${s.scroll}`} role="dialog" aria-label={p.title}>
+      {desktop ? <button type="button" className={`${s.scrimD} ${s.deskOnly} u-scrim`} aria-label="Close" onClick={close} /> : null}
+      <div className={`${s.scroll} u-fade-in`} role="dialog" aria-label={p.title}>
         <div className={s.hero}>
           <Img src={p.images[img] ?? p.images[0]} alt={`${p.title} by ${m.name}`} eager />
           {p.stickers?.maker && !p.sold ? <span className={s.stk}><Sticker k={p.stickers.maker} city={m.city} width={110} /></span> : null}
@@ -119,11 +119,8 @@ export default function ProductPage() {
         </div>
       </div>
       {guide && p.sizes ? (
-        <>
-          <div className="u-scrim" onClick={() => setGuide(false)} />
-          <div role="dialog" aria-modal="true" aria-label="Size guide" className="u-sheet g">
-            <div className="row" style={{ justifyContent: 'space-between' }}><span className="hand" style={{ fontSize: 18 }}>Size guide</span><button type="button" className="ic" aria-label="Close" onClick={() => setGuide(false)}>✕</button></div>
-            <div className="body" style={{ fontSize: 14, lineHeight: 1.55 }}>
+        <Sheet title="Size guide" onClose={() => setGuide(false)}>
+            <div className="u-stack" style={{ fontSize: 14, lineHeight: 1.55, gap: 16 }}>
               {p.category === 'jewelry' ? (
                 <>
                   <span>EU ring size = the inside circumference of the ring in millimetres.</span>
@@ -136,8 +133,7 @@ export default function ProductPage() {
               ) : <span>{p.description}</span>}
               <Link href={`/messages/${m.slug}?piece=${p.id}`} className="sec gs">Still not sure? Ask {m.name}</Link>
             </div>
-          </div>
-        </>
+        </Sheet>
       ) : null}
       {desktop === false ? <>
       <span className={s.back}><BackButton href={`/m/${m.slug}`} label={`Back`} /></span>

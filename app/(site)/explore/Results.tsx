@@ -5,9 +5,9 @@ import type { Category, Maker, Product } from '@/lib/types';
 import { getMakers, search } from '@/lib/data';
 import { plural } from '@/lib/format';
 import { useData } from '@/lib/useData';
-import { useLockBody } from '@/lib/useLockBody';
 import { BackButton, ProductCard } from '@/components/u/Bits';
 import { Close } from '@/components/u/Icons';
+import Sheet from '@/components/u/Sheet';
 import Wash from '@/components/u/Wash';
 import Filters, { EMPTY, activeCount, applyFilters, type F } from './Filters';
 import s from './explore.module.css';
@@ -24,7 +24,6 @@ export default function Results({ title, category, q }: { title: string; categor
   const [sheet, setSheet] = useState(false);
   const [sort, setSort] = useState<(typeof SORTS)[number][0]>('new');
   const [sortOpen, setSortOpen] = useState(false);
-  useLockBody(sheet, () => setSheet(false));
   const byId = useMemo(() => new Map((makers ?? []).map((m) => [m.id, m])), [makers]);
   const countryOf = (p: Product) => byId.get(p.makerId)?.country ?? 'LT';
   const base = (res?.products ?? []).filter((p) => kind === 'All' || p.kind === kind);
@@ -72,18 +71,12 @@ export default function Results({ title, category, q }: { title: string; categor
         </div>
       </main>
       {sheet ? (
-        <>
-          <div className="u-scrim" onClick={() => setSheet(false)} />
-          <div role="dialog" aria-modal="true" aria-label="Filter" className="u-sheet g">
-            <div className="row" style={{ justifyContent: 'space-between' }}>
-              <button type="button" aria-label="Close filter" className="ic" onClick={() => setSheet(false)}><Close /></button>
-              <span className="hand" style={{ fontSize: 18 }}>Filter</span>
-              <button type="button" className="link" onClick={() => setF(EMPTY)} disabled={!n} style={{ opacity: n ? 1 : 0.4 }}>Clear all</button>
-            </div>
-            <div className="body"><Filters list={base} f={f} set={setF} countryOf={countryOf} /></div>
-            <button type="button" className="cta" onClick={() => setSheet(false)}>Show {plural(list.length, 'piece')}</button>
-          </div>
-        </>
+        <Sheet title="Filter" onClose={() => setSheet(false)}
+          right={<button type="button" className="link" onClick={() => setF(EMPTY)} disabled={!n} style={{ opacity: n ? 1 : 0.45 }}>Clear all</button>}
+          left={<button type="button" aria-label="Close filter" className="ic" onClick={() => setSheet(false)}><Close /></button>}
+          footer={<button type="button" className="cta" onClick={() => setSheet(false)}>Show {plural(list.length, 'piece')}</button>}>
+          <Filters list={base} f={f} set={setF} countryOf={countryOf} />
+        </Sheet>
       ) : null}
     </>
   );

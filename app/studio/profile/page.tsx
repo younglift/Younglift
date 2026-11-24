@@ -66,9 +66,9 @@ export default function StudioProfile() {
           <span style={{ flex: 1, textAlign: 'center', fontWeight: 600 }}>Your profile</span>
           <button type="button" className="sec gs" onClick={async () => { await save(); router.push(`/m/${d.slug}`); }}>Preview</button>
         </div>
-        <div className={s.steps}>{[1, 2, 3, 4, 5].map((i) => <button key={i} type="button" aria-label={`Step ${i}: ${STEPS[i - 1][0]}`} onClick={() => setStep(i)} style={{ flex: 1, height: 18, padding: '7px 0', border: 0, background: 'none', cursor: 'pointer' }}><span style={{ display: 'block', height: 3, borderRadius: 2, background: i <= step ? 'var(--u-accent)' : 'var(--u-track)' }} /></button>)}</div>
+        <div className={s.steps}>{[1, 2, 3, 4, 5].map((i) => <button key={i} type="button" aria-label={`Step ${i}: ${STEPS[i - 1][0]}`} onClick={() => setStep(i)} className={s.stepBtn}><span style={{ display: 'block', height: 3, borderRadius: 2, background: i <= step ? 'var(--u-accent)' : 'var(--u-track)' }} /></button>)}</div>
         <div className={s.editor}>
-          <div className="u-stack">
+          <div key={step} className="u-stack u-step-in">
             <div><span className="m lbl">STEP {step} OF 5</span><h1 className="hand" style={{ margin: '6px 0', fontSize: 24 }}>{STEPS[step - 1][0]}</h1><span className="m" style={{ fontSize: 14 }}>{STEPS[step - 1][1]}</span></div>
 
             {step === 1 ? (

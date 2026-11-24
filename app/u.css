@@ -21,9 +21,9 @@
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;opacity:0}
 
 /* buttons */
-.cta{min-height:var(--u-h-cta);padding:0 22px;border-radius:var(--u-r-pill);border:0;background:var(--u-cta);color:var(--u-on-accent);font:600 15px var(--u-ui);display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 3px 0 var(--u-cta-edge);transition:transform .12s ease,box-shadow .12s ease;text-align:center;white-space:nowrap}
+.cta{min-height:var(--u-h-cta);padding:0 22px;border-radius:var(--u-r-pill);border:0;background:var(--u-cta);color:var(--u-on-accent);font:600 15px var(--u-ui);display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 3px 0 var(--u-cta-edge);transition:transform var(--u-dur-press) var(--u-ease),box-shadow var(--u-dur-press) var(--u-ease),opacity var(--u-dur-ui) var(--u-ease);text-align:center;white-space:nowrap}
 .cta:active{transform:translateY(3px);box-shadow:0 0 0 var(--u-cta-edge)}
-.cta:disabled,.cta[aria-disabled="true"]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:0 3px 0 var(--u-cta-edge)}
+.cta:disabled,.cta[aria-disabled="true"]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 .sec{min-height:var(--u-h-btn);padding:0 18px;border-radius:var(--u-r-pill);color:var(--u-ink);font:600 15px var(--u-ui);display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap}
 button.sec:not(.gs){background:transparent;border:0}
 .sec:disabled{opacity:.45;cursor:not-allowed}
@@ -49,9 +49,10 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 .chk.on{background:var(--u-accent);border-color:var(--u-accent);color:var(--u-on-accent)}
 .tg{width:48px;height:28px;border-radius:var(--u-r-pill);background:var(--u-track);position:relative;flex-shrink:0;border:0;padding:0;cursor:pointer}
 .tg::after{content:'';position:absolute;inset:-8px -2px}
-.tg i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:var(--u-cta);transition:left .15s ease}
+.tg{transition:background-color var(--u-dur-ui) var(--u-ease)}
+.tg i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:var(--u-cta);transition:transform var(--u-dur-ui) var(--u-ease)}
 .tg[aria-checked="true"]{background:var(--u-accent)}
-.tg[aria-checked="true"] i{left:23px;background:var(--u-on-accent)}
+.tg[aria-checked="true"] i{transform:translateX(20px);background:var(--u-on-accent)}
 @media (prefers-reduced-motion:reduce){.tg i{transition:none}}
 .row{display:flex;align-items:center;gap:12px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -71,7 +72,7 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 .u-wash img{position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:0;filter:var(--u-wash-filter);transition:opacity var(--u-dur-step) var(--u-ease)}
 .u-wash img.on{opacity:var(--u-wash-opacity)}
 @media (prefers-reduced-motion:reduce){.u-wash img{transition:none}}
-.u-page{position:relative;z-index:1;min-height:100dvh;padding:calc(18px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.u-page{position:relative;z-index:1;min-height:100dvh;overflow-x:clip;padding:calc(18px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 .u-page.has-bar{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 .u-head{display:flex;align-items:center;gap:12px;min-height:44px}
 .u-head h1{margin:0;font-size:26px;line-height:1.35}
@@ -116,3 +117,49 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 @keyframes u-pulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
 @media (prefers-reduced-motion:reduce){.u-pulse{animation:none;opacity:.6}}
 .u-page > .u-wash{z-index:-1}  /* when a page puts the wash inside itself, keep it under the content */
+
+/* ---------- feedback and motion (QUALITY 2.4, FIXES 3.x). Only transform and opacity move. ---------- */
+.gs,.chip,.ic,.sec,.press,.u-grid-item .ph,.chk,summary{transition:transform var(--u-dur-press) var(--u-ease),opacity var(--u-dur-ui) var(--u-ease)}
+:is(a,button,summary,label).gs:active,.chip:active,.ic:active,.sec:active,.press:active,.u-grid-item .ph:active,a.g:active,button.g:active{transform:scale(.97)}
+.chip{transition:transform var(--u-dur-press) var(--u-ease),background-color var(--u-dur-ui) var(--u-ease),color var(--u-dur-ui) var(--u-ease)}
+@media (hover:hover){
+  :is(a,button).gs:hover,.sec:hover,.ic:hover,a.g:hover,button.g:hover{opacity:.88}
+  .u-grid-item .ph:hover{opacity:.92}
+  .cta:hover{opacity:.94}
+  .link:hover,.tap:hover{opacity:.8}
+}
+/* a step or tab that changes: new content slides 24px and fades in */
+.u-step-in{animation:u-step-in var(--u-dur-step) var(--u-ease) both}
+@keyframes u-step-in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.u-fade-in{animation:u-fade-in var(--u-dur-ui) var(--u-ease) both}
+@keyframes u-fade-in{from{opacity:0}to{opacity:1}}
+/* sheets come up from the bottom (phone) or scale in (desktop); drawers from the right; scrims fade */
+.u-scrim{animation:u-scrim-in var(--u-dur-panel) var(--u-ease) both}
+@keyframes u-scrim-in{from{opacity:0}to{opacity:.6}}
+.u-sheet{animation:u-sheet-in var(--u-dur-panel) var(--u-ease) both}
+@keyframes u-sheet-in{from{transform:translateY(100%)}to{transform:none}}
+.u-sheet.leaving,.u-scrim.leaving{animation:none;transition:transform 200ms var(--u-ease-out),opacity 200ms var(--u-ease-out)}
+.u-sheet.leaving{transform:translateY(100%)}
+.u-scrim.leaving{opacity:0}
+.u-drawer{animation:u-drawer-in var(--u-dur-panel) var(--u-ease) both}
+@keyframes u-drawer-in{from{transform:translateX(105%)}to{transform:none}}
+.u-pop{animation:u-pop 250ms var(--u-ease)}
+@keyframes u-pop{0%{transform:scale(1)}45%{transform:scale(1.15)}100%{transform:scale(1)}}
+.u-toast{animation:u-toast-in var(--u-dur-ui) var(--u-ease) both}
+@keyframes u-toast-in{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translateX(-50%)}}
+@media (min-width:820px){
+  @keyframes u-sheet-in{from{opacity:0;transform:translate(-50%,-48%) scale(.98)}to{opacity:1;transform:translate(-50%,-50%)}}
+  .u-sheet.leaving{transform:translate(-50%,-48%) scale(.98);opacity:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .gs,.chip,.ic,.sec,.press,.u-grid-item .ph,.chk,summary,.tg,.tg i{transition:opacity var(--u-dur-ui) linear}
+  :is(a,button,summary,label).gs:active,.chip:active,.ic:active,.sec:active,.press:active,.u-grid-item .ph:active,a.g:active,button.g:active{transform:none}
+  .u-step-in,.u-sheet,.u-drawer{animation:u-fade-in var(--u-dur-ui) linear both}
+  .u-pop,.u-toast{animation:none}
+  .u-sheet.leaving{transform:none}
+  @media (min-width:820px){.u-sheet{transform:translate(-50%,-50%)}}
+}
+.u-sheet-head{touch-action:none;display:flex;flex-direction:column;gap:6px}
+.u-grab{align-self:center;width:40px;height:4px;border-radius:2px;background:var(--u-track)}
+.u-sheet-title{font-size:18px}
+@media (min-width:820px){.u-grab{display:none}}
