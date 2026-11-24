@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Uplift · Add a piece</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Rock+Salt&amp;display=swap">
+<style>
+body{margin:0}
+a,button{position:relative}
+a::after,button::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.g{background:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35)}
+.gs{background:rgba(28,18,12,.35);-webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.hand{font-family:'Rock Salt',cursive;font-weight:400}
+.ui{font-family:Inter,system-ui,sans-serif}
+.sc{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.m{color:rgba(255,250,237,.78)}
+.cta{height:44px;border-radius:999px;border:0;background:#fffaed;color:#2a1a10;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 #b8912f}
+.sec{height:44px;border-radius:999px;color:#fffaed;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fffaed;cursor:pointer;padding:0}
+.lbl{font:600 12px Inter,sans-serif;letter-spacing:.2px}
+.cta:active{transform:translateY(3px);box-shadow:none}
+.chk{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 13px Inter,sans-serif}
+.fld{display:flex;flex-direction:column;gap:6px}
+.inp{height:48px;border-radius:14px;border:1px solid rgba(255,250,237,.22);background:rgba(22,16,11,.28);color:#fffaed;padding:0 14px;font:400 15px Inter,sans-serif;outline:none;box-sizing:border-box;width:100%}
+textarea.inp{height:auto;padding:12px 14px;line-height:1.5;resize:none}
+.inp:focus{border-color:#f3d27a;box-shadow:0 0 0 3px rgba(243,210,122,.25)}
+.chip{height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,250,237,.22);background:transparent;color:#fffaed;font:500 13px Inter,sans-serif;cursor:pointer;flex-shrink:0}
+.chip.on{background:#f3d27a;border-color:#f3d27a;color:#2a1a10;font-weight:600}
+.tg{width:48px;height:28px;border-radius:999px;background:rgba(255,250,237,.2);position:relative;flex-shrink:0;border:0;padding:0;cursor:pointer}
+.tg i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fffaed;transition:left .15s ease}
+.tg.on{background:#f3d27a}.tg.on i{left:23px;background:#2a1a10}
+@media (prefers-reduced-motion:reduce){.tg i{transition:none}}
+</style>
+</helmet>
+<div class="ui" style="width:390px;height:844px;position:relative;overflow:hidden;background:#665e58;color:#fffaed">
+  <img src="/img/plates.jpg" alt="" style="position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:.3;filter:blur(60px) saturate(.9)">
+  <div class="sc" style="bottom:0;padding-bottom:110px">
+    <div style="padding:20px 16px 0;display:flex;align-items:center;gap:12px"><a href="#" aria-label="Back" class="ic gs" style="flex-shrink:0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fffaed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a><span style="flex:1;min-width:0"><h1 class="hand" style="margin:0;font-size:26px;line-height:1.3">New piece</h1><span class="m" style="display:block;font-size:13px;margin-top:6px;line-height:1.45">Draft saved</span></span></div>
+    <div style="padding:16px 12px 0;display:flex;flex-direction:column;gap:12px">
+      <div class="g" style="border-radius:24px;padding:16px;"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="lbl">Photos</span><span class="m" style="font-size:12px">3 of up to 8 · drag to reorder</span></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px"><span style="position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden"><img src="/img/plates.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><span style=position:absolute;left:6px;bottom:6px;background:#f3d27a;color:#2a1a10;border-radius:999px;padding:3px 8px;font:600 11px Inter,sans-serif>Cover</span></span><span style="position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden"><img src="/img/dish.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></span><span style="position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden"><img src="/img/morning-cup.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></span><button type="button" aria-label="Add photos" style="aspect-ratio:4/5;border-radius:14px;border:1.5px dashed rgba(255,250,237,.4);background:transparent;color:#fffaed;font-size:22px;cursor:pointer">+</button></div><span class="m" style="display:block;font-size:12px;margin-top:10px;line-height:1.45">Daylight, plain background. The first photo is what people see in Discover.</span></div>
+      <div class="g" style="border-radius:24px;padding:16px;"><div style="display:flex;flex-direction:column;gap:14px"><label class="fld"><span class="lbl">Name</span><input class="inp" type="text" value="Speckled plates" placeholder=""></label><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label class="fld"><span class="lbl">Price</span><input class="inp" type="text" value="96€" placeholder=""></label><label class="fld"><span class="lbl">Category</span><input class="inp" type="text" value="Ceramics" placeholder=""></label></div><label class="fld"><span class="lbl">Description</span><textarea class="inp" rows="3" placeholder="">Set of 3 side plates, 19 cm. Wheel-thrown stoneware with my speckled oat glaze. Dishwasher safe.</textarea></label><label class="fld"><span class="lbl">Materials</span><input class="inp" type="text" value="Stoneware, food-safe glaze" placeholder=""></label></div></div>
+      <div class="g" style="border-radius:24px;padding:16px;"><div style="display:flex;flex-direction:column;gap:12px"><span class="lbl">How is it made?</span><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="chip on" aria-pressed="true">Ready to ship</button><button type="button" class="chip" aria-pressed="false">Made to order</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label class="fld"><span class="lbl">How many?</span><input class="inp" type="text" value="3" placeholder=""><span class="m" style="font-size:12px;line-height:1.4">1 = one of a kind</span></label><label class="fld"><span class="lbl">Ships within</span><input class="inp" type="text" value="3 days" placeholder=""></label></div><div style="display:flex;align-items:center;gap:12px;padding:12px 0"><span style="flex:1"><span style="display:block;font-size:15px;font-weight:600">Sizes</span><span class="m" style="display:block;font-size:12px;margin-top:3px;line-height:1.4">For rings, clothing and anything with a fit</span></span><button type="button" role="switch" aria-checked="false" aria-label="Sizes" class="tg"><i></i></button></div></div></div>
+      <div class="g" style="border-radius:24px;padding:16px;"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="lbl">Add a sticker</span><span class="m" style="font-size:12px">optional · one per piece</span></div><span class="m" style="display:block;font-size:12px;margin-top:4px;line-height:1.45">Shown on your photo in Discover. Pick one that’s true for this piece.</span><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px"><sc-for list="{{stickers}}" as="s" hint-placeholder-count="7"><button type="button" onClick="{{s.pick}}" aria-pressed="{{s.on}}" aria-label="{{s.label}}" style="height:96px;border-radius:16px;border:1.5px solid {{s.border}};background:{{s.bg}};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;padding:6px"><sc-if value="{{s.hasImg}}" hint-placeholder-val="{{true}}"><img src="{{s.img}}" alt="" style="max-width:84px;max-height:54px;object-fit:contain"></sc-if><span style="font:500 11px Inter,sans-serif;color:#fffaed">{{s.label}}</span></button></sc-for></div><sc-if value="{{isBatch}}" hint-placeholder-val="{{true}}"><div style="margin-top:12px"><label class="fld"><span class="lbl">How many in this batch?</span><input class="inp" type="text" value="5" placeholder=""><span class="m" style="font-size:12px;line-height:1.4">Shown as “only 5 made”.</span></label></div></sc-if><sc-if value="{{isCollab}}" hint-placeholder-val="{{false}}"><div style="margin-top:12px"><label class="fld"><span class="lbl">Made with</span><input class="inp" type="text" value="@inez" placeholder=""><span class="m" style="font-size:12px;line-height:1.4">They get a note and can show the piece on their profile too.</span></label></div></sc-if><sc-if value="{{isOne}}" hint-placeholder-val="{{false}}"><span class="m" style="display:block;margin-top:12px;font-size:12px">Only for pieces with quantity 1. We’ll remove it if you add more.</span></sc-if></div>
+    </div>
+  </div>
+<div class="g" style="position:absolute;left:12px;right:12px;bottom:12px;z-index:9;border-radius:999px;padding:6px;display:flex;align-items:center;gap:8px"><button type="button" class="sec" style="padding:0 18px;background:transparent;border:0">Preview</button><button type="button" class="cta" style="flex:1;height:46px">Publish piece</button></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { st: 'batch' }; }
+  renderVals() {
+    const L = [['none', null, 'No sticker'], ['one', '/stickers/1of1.png', '1 of 1'], ['hand', '/stickers/handmade.png', 'Handmade'], ['batch', '/stickers/small-batch.png', 'Small batch'], ['city', '/stickers/made-in-berlin.png', 'Made in Berlin'], ['collab', '/stickers/made-in-collab.png', 'Collab'], ['order', '/stickers/made-to-order.png', 'Made to order']];
+    const st = this.state.st;
+    return {
+      stickers: L.map(([k, img, label]) => { const on = k === st; return { label, img: img || '', hasImg: !!img, on, border: on ? '#f3d27a' : 'rgba(255,250,237,.2)', bg: on ? 'rgba(243,210,122,.16)' : 'transparent', pick: () => this.setState({ st: k }) }; }),
+      isBatch: st === 'batch', isCollab: st === 'collab', isOne: st === 'one'
+    };
+  }
+}
+</script>
+</body>
+</html>

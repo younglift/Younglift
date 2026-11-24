@@ -1,4 +1,4 @@
-# Young Lift: planas dviem
+# Uplift: planas dviem
 
 **Tikslas:** per 2 savaites (iki ~lapkričio 26 d.) veikianti svetainė, kurioje žmonės scrollina kūrėjus, juos seka, išsisaugo ir perka.
 
@@ -22,6 +22,9 @@
 4. Teisiniai tekstai: taisyklės, privatumas, grąžinimai
 
 ---
+
+## Dizaino etapas (pirmos ~3 dienos, Matas)
+Išvaizdą perdarom žingsnis po žingsnio: pirma pirkėjo kelias, tada pardavėjo. Kas kur atsidaro, nesikeičia. Visa eiga aprašyta `docs/design/JOURNEY.md`. Tuo metu Justinas daro variklį, tad laiko neprarandam.
 
 ## Savaitės
 

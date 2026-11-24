@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Discover phone: one maker card, three slides</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@600&display=swap">
+<style>
+body{margin:0}
+a{color:#4fe061}a:hover{color:#7cf08a}
+@keyframes yl-pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}100%{box-shadow:0 0 0 14px rgba(255,255,255,0)}}
+.yl-pulse{animation:yl-pulse 1.4s ease-out 3}
+@keyframes yl-peek{0%,30%{transform:translateX(0)}45%{transform:translateX(-64px)}60%{transform:translateX(-64px)}78%,100%{transform:translateX(0)}}
+.yl-peek{animation:yl-peek 2.6s cubic-bezier(.3,.7,.3,1) 1.2s 2 both}
+@keyframes yl-up{0%,25%{transform:translateY(0)}45%,65%{transform:translateY(-104px)}85%,100%{transform:translateY(0)}}
+.yl-up{animation:yl-up 2.8s cubic-bezier(.3,.7,.3,1) .6s 3 both}
+@keyframes yl-fade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+.yl-hint{font-family:Caveat,'Comic Sans MS',cursive;font-size:24px;line-height:1;color:#ffffff;text-shadow:0 2px 10px rgba(0,0,0,.55);animation:yl-fade .6s ease-out 1s both;pointer-events:none}
+.yl-glass-dark{background:rgba(18,20,18,.48);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 1px rgba(255,255,255,.12),0 6px 18px rgba(0,0,0,.25)}
+.yl-glass{background:rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.35),0 6px 18px rgba(18,20,18,.18)}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #121412; color: #f1efe9; font-family: Archivo, Arial, sans-serif;">
+
+  <sc-if value="{{s1}}" hint-placeholder-val="{{true}}">
+    <div class="{{peekClass}}" style="position: absolute; left: 0; top: 0; width: 390px; height: 612px;">
+      <img src="/_blob/43cc8248789551a9e40281a0a78225c4" alt="Mara's work: ripple bowl, twist vase and morning cup" style="position: absolute; left: 0; top: 0; width: 390px; height: 612px; object-fit: cover; object-position: 35% center;">
+      <img src="/_blob/4d5d9ddd16544d5e92f74eee0d109a08" alt="" aria-hidden="true" style="position: absolute; left: 398px; top: 0; width: 390px; height: 612px; object-fit: cover; object-position: center 22%;">
+    </div>
+  </sc-if>
+  <sc-if value="{{s2}}" hint-placeholder-val="{{false}}">
+    <img src="/_blob/4d5d9ddd16544d5e92f74eee0d109a08" alt="Mara in her studio, intro video" style="position: absolute; left: 0; top: 0; width: 390px; height: 612px; object-fit: cover; object-position: center 22%;">
+  </sc-if>
+
+<sc-if value="{{tapZones}}" hint-placeholder-val="{{true}}">
+  <button type="button" onClick="{{prev}}" aria-label="Previous" style="position: absolute; left: 0; top: 0; width: 96px; height: 612px; background: transparent; border: 0; cursor: w-resize;"></button>
+  <button type="button" onClick="{{next}}" aria-label="Next" style="position: absolute; right: 0; top: 0; width: 96px; height: 612px; background: transparent; border: 0; cursor: e-resize;"></button>
+  </sc-if>
+
+  <div style="position: absolute; left: 16px; right: 16px; top: 12px; display: flex; gap: 4px;">
+    <button type="button" onClick="{{go0}}" aria-label="Slide 1, the work" style="flex-grow: 1; height: 3px; padding: 0; border: 0; cursor: pointer; background: {{bar0}};"></button>
+    <button type="button" onClick="{{go1}}" aria-label="Slide 2, her story" style="flex-grow: 1; height: 3px; padding: 0; border: 0; cursor: pointer; background: {{bar1}};"></button>
+    <button type="button" onClick="{{go2}}" aria-label="Slide 3, more pieces" style="flex-grow: 1; height: 3px; padding: 0; border: 0; cursor: pointer; background: {{bar2}};"></button>
+  </div>
+
+  <sc-if value="{{showSurprise}}" hint-placeholder-val="{{false}}">
+    <span class="yl-glass" style="position: absolute; left: 16px; top: 26px; display: flex; align-items: center; gap: 7px; padding: 6px 12px 6px 9px; border-radius: 999px; color: #121412; font-size: 12px; font-weight: 600;"><span aria-hidden="true" style="color: #1f8a3a; font-size: 13px;">✦</span>Something new · picked for you</span>
+  </sc-if>
+  <sc-if value="{{showLive}}" hint-placeholder-val="{{true}}">
+    <span class="yl-glass" style="position: absolute; left: 16px; top: 26px; display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px; border-radius: 999px; color: #121412; font-size: 12px; font-weight: 600;"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #4fe061; box-shadow: 0 0 0 3px rgba(79,224,97,.25);"></span>{{viewers}} looking now</span>
+  </sc-if>
+
+  <sc-if value="{{s1}}" hint-placeholder-val="{{true}}">
+    <div style="position: absolute; right: 106px; top: 236px; display: flex; align-items: center; gap: 6px; flex-direction: row-reverse;">
+      <button type="button" onClick="{{toggleVase}}" aria-expanded="{{vaseOpen}}" aria-label="Twist vase: show price" class="{{dotClass}}" style="width: 30px; height: 30px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{vaseDot}}; box-shadow: 0 1px 3px rgba(18,20,18,.35);"></span></button>
+      <sc-if value="{{vaseOpen}}" hint-placeholder-val="{{true}}">
+        <a href="#" class="{{tagClass}}" style="display: flex; align-items: center; gap: 8px; color: {{tagText}}; padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap;">Twist vase <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500;">120€</span><span aria-hidden="true" style="opacity: .6;">›</span></a>
+      </sc-if>
+    </div>
+    <div style="position: absolute; left: 52px; top: 420px; display: flex; align-items: center; gap: 6px;">
+      <button type="button" onClick="{{toggleBowl}}" aria-expanded="{{bowlOpen}}" aria-label="Ripple bowl: show price" class="{{dotClass}}" style="width: 30px; height: 30px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{bowlDot}}; box-shadow: 0 1px 3px rgba(18,20,18,.35);"></span></button>
+      <sc-if value="{{bowlOpen}}" hint-placeholder-val="{{false}}">
+        <a href="#" class="{{tagClass}}" style="display: flex; align-items: center; gap: 8px; color: {{tagText}}; padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap;">Ripple bowl <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500;">78€</span><span aria-hidden="true" style="opacity: .6;">›</span></a>
+      </sc-if>
+    </div>
+    <div style="position: absolute; right: 18px; top: 450px; display: flex; align-items: center; gap: 6px; flex-direction: row-reverse;">
+      <button type="button" onClick="{{toggleCup}}" aria-expanded="{{cupOpen}}" aria-label="Morning cup: show price" class="{{dotClass}}" style="width: 30px; height: 30px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{cupDot}}; box-shadow: 0 1px 3px rgba(18,20,18,.35);"></span></button>
+      <sc-if value="{{cupOpen}}" hint-placeholder-val="{{false}}">
+        <a href="#" class="{{tagClass}}" style="display: flex; align-items: center; gap: 8px; color: {{tagText}}; padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap;">Morning cup <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500;">32€</span><span aria-hidden="true" style="opacity: .6;">›</span></a>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{s2}}" hint-placeholder-val="{{false}}">
+    <button type="button" aria-label="Play Mara's intro video" style="position: absolute; left: 163px; top: 250px; width: 64px; height: 64px; border-radius: 50%; border: 0; background: #f1efe9; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="#121412"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+    <button type="button" onClick="{{toggleCc}}" aria-pressed="{{cc}}" aria-label="Subtitles" class="yl-glass" style="position: absolute; right: 16px; top: 26px; height: 30px; padding: 0 10px; border-radius: 999px; border: 0; color: #121412; font: 700 11px Archivo, Arial, sans-serif; letter-spacing: 1px; cursor: pointer; opacity: {{ccOpacity}};">CC</button>
+    <sc-if value="{{cc}}" hint-placeholder-val="{{true}}">
+      <p style="position: absolute; left: 32px; right: 32px; top: 440px; margin: 0; text-align: center;"><span style="background: rgba(0,0,0,.62); color: #ffffff; padding: 3px 8px; font-size: 15px; line-height: 1.7; font-weight: 500; -webkit-box-decoration-break: clone; box-decoration-break: clone;">I pinch every rim by hand, so no two bowls are the same.</span></p>
+    </sc-if>
+    <div style="position: absolute; left: 16px; top: 540px; background: #121412; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-size: 14px; font-weight: 600;">Why I leave the edges uneven</span>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">0:24 · sound on</span>
+    </div>
+    <button type="button" onClick="{{next}}" style="position: absolute; right: 16px; top: 576px; background: #121412; color: #f1efe9; border: 0; padding: 5px 8px; font: 400 11px 'IBM Plex Mono', monospace; cursor: pointer;">MORE PIECES →</button>
+  </sc-if>
+
+  <sc-if value="{{s3}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; right: 0; top: 24px; height: 588px; overflow-y: auto; box-sizing: border-box; padding: 12px 16px 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;"><span style="font-family: Anton, Impact, sans-serif; font-size: 22px;">MORE FROM MARA</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b8a85;">10 PIECES</span></div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: #1c1f1c;">
+          <a href="#" style="display: block; width: 100%; height: 100%;"><img src="/_blob/3e1c04a8e00317072d7077768622f3d8" alt="Twist vase" style="width: 100%; height: 100%; object-fit: cover; object-position: center; "></a>
+          <button type="button" aria-label="Save Twist vase" class="yl-glass" style="position: absolute; right: 8px; top: 8px; width: 34px; height: 34px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button>
+          <span style="position: absolute; left: 8px; bottom: 8px; background: #121412; color: #f1efe9; padding: 4px 7px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px;">1 OF 1</span>
+        </div>
+        <a href="#" style="display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: #f1efe9;">
+          <span style="font-size: 14px; font-weight: 600;">Twist vase</span>
+          <span style="font-size: 13px; color: #8b8a85;">Stoneware, hand-built</span>
+          <span style="margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">120€</span>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: #1c1f1c;">
+          <a href="#" style="display: block; width: 100%; height: 100%;"><img src="/_blob/c250021ba43e28825ae41415a4005f27" alt="Morning cup" style="width: 100%; height: 100%; object-fit: cover; object-position: center; "></a>
+          <button type="button" aria-label="Save Morning cup" class="yl-glass" style="position: absolute; right: 8px; top: 8px; width: 34px; height: 34px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button>
+          
+        </div>
+        <a href="#" style="display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: #f1efe9;">
+          <span style="font-size: 14px; font-weight: 600;">Morning cup</span>
+          <span style="font-size: 13px; color: #8b8a85;">Speckled glaze</span>
+          <span style="margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">32€</span>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: #1c1f1c;">
+          <a href="#" style="display: block; width: 100%; height: 100%;"><img src="/_blob/5bf0b89334514376f2638484cbb3bfb9" alt="Ripple bowl" style="width: 100%; height: 100%; object-fit: cover; object-position: center; "></a>
+          <button type="button" aria-label="Save Ripple bowl" class="yl-glass" style="position: absolute; right: 8px; top: 8px; width: 34px; height: 34px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button>
+          <span style="position: absolute; left: 8px; bottom: 8px; background: #121412; color: #f1efe9; padding: 4px 7px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px;">SPECIAL WAX USED</span>
+        </div>
+        <a href="#" style="display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: #f1efe9;">
+          <span style="font-size: 14px; font-weight: 600;">Ripple bowl</span>
+          <span style="font-size: 13px; color: #8b8a85;">Beeswax finish</span>
+          <span style="margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">78€</span>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: #1c1f1c;">
+          <a href="#" style="display: block; width: 100%; height: 100%;"><img src="/_blob/43cc8248789551a9e40281a0a78225c4" alt="Studio set" style="width: 100%; height: 100%; object-fit: cover; object-position: center; filter: grayscale(1); opacity: .5;"></a>
+          <button type="button" aria-label="Save Studio set" class="yl-glass" style="position: absolute; right: 8px; top: 8px; width: 34px; height: 34px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121412" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button>
+          <span style="position: absolute; left: 8px; bottom: 8px; background: #f1efe9; color: #121412; padding: 4px 7px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px;">SOLD</span>
+        </div>
+        <a href="#" style="display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: #8b8a85;">
+          <span style="font-size: 14px; font-weight: 600;">Studio set</span>
+          <span style="font-size: 13px; color: #8b8a85;">Bowl, vase and cup</span>
+          <span style="margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 14px;">210€</span>
+        </a>
+      </div>
+      </div>
+      <a href="#" style="margin-top: 28px; height: 48px; display: flex; align-items: center; justify-content: center; border: 1.5px solid #3a3d39; color: #f1efe9; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: 1.5px;">ALL 10 PIECES →</a>
+    </div>
+  </sc-if>
+
+  <div style="position: absolute; left: 0; right: 0; top: 612px; height: 168px; box-sizing: border-box; padding: 16px 16px 12px; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="/_blob/4d5d9ddd16544d5e92f74eee0d109a08" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: center 20%;">
+      <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0;">
+        <h1 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 26px; line-height: 1;">MARA</h1>
+        <span style="font-size: 13px; color: #8b8a85; white-space: nowrap;">Berlin · Ceramics · <span style="color: #f1efe9;">★ 4.9</span></span>
+      </div>
+      <button type="button" onClick="{{toggleFollow}}" style="height: 40px; padding: 0 4px; background: transparent; border: 0; color: {{followColor}}; font: 600 14px Archivo, Arial, sans-serif; cursor: pointer;">{{followLabel}}</button>
+    </div>
+    <p style="margin: 0; font-size: 14px; line-height: 1.4; color: #b9b8b2;">“I leave the edges a little uneven. That is where the character lives.”</p>
+    <a href="#" style="margin-top: auto; height: 48px; display: flex; align-items: center; justify-content: center; background: #4fe061; color: #121412; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 1.5px;">EXPLORE HER STUDIO →</a>
+  </div>
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid #222421; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 12px; font-weight: 600;">
+    <a href="#" style="color: #f1efe9; text-decoration: none;">Discover</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Following</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Saved</a>
+    <a href="#" style="color: #8b8a85; text-decoration: none;">Bag</a>
+  </nav>
+  <sc-if value="{{upHint}}" hint-placeholder-val="{{false}}">
+    <button type="button" onClick="{{doneUp}}" class="yl-up" aria-label="Next maker: Inez" style="position: absolute; left: 0; right: 0; top: 844px; height: 120px; padding: 14px 16px 0; border: 0; border-top: 1px solid #2a2c2a; background: #1c1f1c; color: #f1efe9; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; text-align: left;">
+      <img src="/_blob/d7bb7bc69d58d2724047c0554e8a6a6c" alt="" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; object-position: center 25%;">
+      <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8b8a85;">UP NEXT</span><span style="font-size: 14px; font-weight: 600;">Inez · Silver rings</span></span>
+    </button>
+    <span class="yl-hint" style="position: absolute; right: 20px; top: 560px;">swipe up ↑ next maker</span>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"surprise":{"editor":"boolean","default":false},"showHints":{"editor":"boolean","default":false},"tagTone":{"editor":"enum","options":["light","dark"],"default":"light"},"startSlide":{"editor":"int","default":0,"min":0,"max":2},"viewers":{"editor":"int","default":128,"min":0,"max":5000},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { slide: null, open: 'vase', follow: false, saved: false, hintsDone: false, cc: true, sided: false, upDone: false };
+  }
+  renderVals() {
+    const st = this.state;
+    const slide = st.slide == null ? (this.props.startSlide ?? 0) : st.slide;
+    const go = (n) => () => this.setState({ slide: Math.max(0, Math.min(2, n)), sided: true });
+    const flip = (id) => () => this.setState({ open: st.open === id ? null : id });
+    const dot = (id) => (st.open === id ? '#4fe061' : '#ffffff');
+    const bar = (n) => (n <= slide ? (slide === 0 ? '#121412' : '#f1efe9') : (slide === 0 ? 'rgba(18,20,18,.25)' : 'rgba(241,239,233,.35)'));
+    return {
+      s1: slide === 0, s2: slide === 1, s3: slide === 2, tapZones: slide !== 2,
+      tagClass: (this.props.tagTone === 'dark') ? 'yl-glass-dark' : 'yl-glass',
+      tagText: (this.props.tagTone === 'dark') ? '#ffffff' : '#121412',
+      dotClass: ((this.props.tagTone === 'dark') ? 'yl-glass-dark' : 'yl-glass') + ((this.props.showHints && !st.sided) ? ' yl-pulse' : ''),
+      peekClass: (this.props.showHints && !st.sided && slide === 0) ? 'yl-peek' : '',
+      sideHint: !!this.props.showHints && !st.sided && slide === 0,
+      upHint: !!this.props.showHints && st.sided && !st.upDone,
+      doneUp: () => this.setState({ upDone: true }),
+      cc: st.cc, ccOpacity: st.cc ? '1' : '.55', toggleCc: () => this.setState({ cc: !st.cc }),
+      viewers: this.props.viewers ?? 128, showLive: !this.props.surprise && (this.props.viewers ?? 128) > 50 && slide === 0,
+      showSurprise: !!this.props.surprise && slide === 0,
+      prev: go(slide - 1), next: go(slide + 1), go0: go(0), go1: go(1), go2: go(2),
+      bar0: bar(0), bar1: bar(1), bar2: bar(2),
+      vaseOpen: st.open === 'vase', bowlOpen: st.open === 'bowl', cupOpen: st.open === 'cup',
+      vaseDot: dot('vase'), bowlDot: dot('bowl'), cupDot: dot('cup'),
+      toggleVase: flip('vase'), toggleBowl: flip('bowl'), toggleCup: flip('cup'),
+      followLabel: st.follow ? 'Following' : '+ Follow',
+      followColor: st.follow ? '#8b8a85' : '#f1efe9',
+      toggleFollow: () => this.setState({ follow: !st.follow }),
+      saved: st.saved, heartFill: st.saved ? '#f1efe9' : 'none',
+      toggleSave: () => this.setState({ saved: !st.saved })
+    };
+  }
+}
+</script>
+</body>
+</html>

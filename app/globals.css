@@ -6,6 +6,28 @@
   --display:Anton, Impact, "Arial Narrow", sans-serif; --body:Archivo, "Helvetica Neue", Arial, sans-serif;
   --meta:var(--font-geist-sans), Geist, Archivo, "Helvetica Neue", Arial, sans-serif; --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
   color-scheme:light;
+
+  /* ── Direction 07 "Tamsus stiklas" (decided by Matas 2026-11-23, see docs/design/HANDOFF-07.md).
+     New screens use ONLY these. The old tokens above stay until every screen is moved over. ── */
+  --u-bg:#665e58;                                   /* screen base under the blurred photo */
+  --u-wash-opacity:.3; --u-wash-filter:blur(60px) saturate(.9);  /* blurred product photo behind every screen */
+  --u-glass:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));  /* cards, sheets, bottom bars */
+  --u-glass-blur:blur(26px) saturate(1.8);
+  --u-glass-sm:rgba(28,18,12,.35);                  /* chips, icon buttons, nav pill */
+  --u-glass-sm-blur:blur(16px) saturate(1.6);
+  --u-glass-border:rgba(255,255,255,.22);
+  --u-glass-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35);
+  --u-ink:#fffaed;                                  /* text on glass */
+  --u-mute:rgba(255,250,237,.78);                   /* secondary text */
+  --u-line:rgba(255,250,237,.16);                   /* dividers */
+  --u-accent:#f3d27a;                               /* butter: the only accent (selected, active dot, progress) */
+  --u-on-accent:#2a1a10;                            /* text on butter / cream */
+  --u-cta:#fffaed; --u-cta-edge:#b8912f;            /* primary pill: cream with hard 3px bottom edge */
+  --u-scrim-top:linear-gradient(rgba(22,16,11,.6),rgba(22,16,11,.25) 55%,rgba(22,16,11,0));  /* keeps top bar readable on white photos */
+  --u-hand:"Rock Salt", cursive;                    /* maker names, piece titles, screen titles */
+  --u-ui:Inter, system-ui, sans-serif;              /* everything else */
+  --u-r-pill:999px; --u-r-card:28px; --u-r-tile:20px; --u-r-chip:14px;
+  --u-h-cta:48px; --u-h-btn:44px;                   /* min tap size 44px */
 }
 *{box-sizing:border-box}
 html,body{height:100%}

@@ -13,8 +13,8 @@ import '@fontsource/ibm-plex-mono/600.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Young Lift',
-  description: 'Meet young makers. Buy what they make by hand.',
+  title: 'Uplift',
+  description: 'A community of upcoming makers. Buy what they make by hand.',
 };
 
 export const viewport: Viewport = {

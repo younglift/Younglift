@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Uplift · Studio profile editor</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Rock+Salt&amp;display=swap">
+<style>
+body{margin:0}
+a,button{position:relative}
+a::after,button::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.g{background:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35)}
+.gs{background:rgba(28,18,12,.35);-webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.hand{font-family:'Rock Salt',cursive;font-weight:400}
+.ui{font-family:Inter,system-ui,sans-serif}
+.sc{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.m{color:rgba(255,250,237,.78)}
+.cta{height:44px;border-radius:999px;border:0;background:#fffaed;color:#2a1a10;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 #b8912f}
+.sec{height:44px;border-radius:999px;color:#fffaed;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fffaed;cursor:pointer;padding:0}
+.lbl{font:600 12px Inter,sans-serif;letter-spacing:.2px}
+.cta:active{transform:translateY(3px);box-shadow:none}
+.chk{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 13px Inter,sans-serif}
+.fld{display:flex;flex-direction:column;gap:6px}
+.inp{height:48px;border-radius:14px;border:1px solid rgba(255,250,237,.22);background:rgba(22,16,11,.28);color:#fffaed;padding:0 14px;font:400 15px Inter,sans-serif;outline:none;box-sizing:border-box;width:100%}
+textarea.inp{height:auto;padding:12px 14px;line-height:1.5;resize:none}
+.inp:focus{border-color:#f3d27a;box-shadow:0 0 0 3px rgba(243,210,122,.25)}
+.chip{height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,250,237,.22);background:transparent;color:#fffaed;font:500 13px Inter,sans-serif;cursor:pointer;flex-shrink:0}
+.chip.on{background:#f3d27a;border-color:#f3d27a;color:#2a1a10;font-weight:600}
+.tg{width:48px;height:28px;border-radius:999px;background:rgba(255,250,237,.2);position:relative;flex-shrink:0;border:0;padding:0;cursor:pointer}
+.tg i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fffaed;transition:left .15s ease}
+.tg.on{background:#f3d27a}.tg.on i{left:23px;background:#2a1a10}
+@media (prefers-reduced-motion:reduce){.tg i{transition:none}}
+</style>
+</helmet>
+<div class="ui" style="width:390px;height:844px;position:relative;overflow:hidden;background:#665e58;color:#fffaed">
+  <img src="/img/plates.jpg" alt="" style="position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:.3;filter:blur(60px) saturate(.9)">
+  <div class="sc" style="bottom:0;padding-bottom:110px">
+    <div style="padding:16px 16px 0;display:flex;align-items:center;gap:10px"><a href="#" aria-label="Close" class="ic gs" style="flex-shrink:0;font-size:16px">✕</a><span style="flex:1;font:600 15px Inter,sans-serif;text-align:center">Your profile</span><button type="button" class="sec gs" style="padding:0 16px;height:40px;font-size:13px">Preview</button></div>
+    <div style="padding:16px 16px 0;display:flex;gap:4px"><sc-for list="{{bars}}" as="b" hint-placeholder-count="5"><span style="flex:1;height:3px;border-radius:2px;background:{{b.c}}"></span></sc-for></div>
+    <div style="padding:14px 16px 0"><span class="m" style="font:600 12px Inter,sans-serif;letter-spacing:.4px">STEP {{stepNo}} OF 5</span><h1 class="hand" style="margin:6px 0 0;font-size:26px;line-height:1.3">{{title}}</h1><span class="m" style="display:block;font-size:13px;margin-top:6px;line-height:1.45">{{sub}}</span></div>
+    <div style="padding:16px 12px 0">
+      <sc-if value="{{s1}}" hint-placeholder-val="{{true}}"><div class="g" style="border-radius:24px;padding:16px;"><div style="display:flex;flex-direction:column;gap:14px"><div style="display:flex;align-items:center;gap:14px"><img src="/img/mara.jpg" alt="" style="width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><button type="button" class="sec gs" style="padding:0 16px;height:40px;font-size:13px">Change photo</button></div><label class="fld"><span class="lbl">Your name</span><input class="inp" type="text" value="Mara" placeholder=""></label><label class="fld"><span class="lbl">Studio name</span><input class="inp" type="text" value="Studio Lehm" placeholder=""><span class="m" style="font-size:12px;line-height:1.4">Optional</span></label><label class="fld"><span class="lbl">One line about your work</span><textarea class="inp" rows="2" placeholder="">Speckled stoneware for slow mornings. Thrown and glazed by hand in Berlin.</textarea><span class="m" style="font-size:12px;line-height:1.4">72 / 140</span></label><label class="fld"><span class="lbl">City</span><input class="inp" type="text" value="Berlin" placeholder=""><span class="m" style="font-size:12px;line-height:1.4">Shown on your profile and on “Made in” stickers.</span></label></div></div></sc-if>
+      <sc-if value="{{s2}}" hint-placeholder-val="{{false}}"><div class="g" style="border-radius:24px;padding:16px;"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px"><span class="lbl">Pick three</span><span class="m" style="font-size:12px">{{pickCount}} / 3</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><sc-for list="{{lib}}" as="p" hint-placeholder-count="6"><button type="button" onClick="{{p.pick}}" aria-pressed="{{p.on}}" style="position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;padding:0;border:0;cursor:pointer;outline:{{p.ring}} solid #f3d27a;outline-offset:2px"><img src="{{p.img}}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><span style="position:absolute;right:6px;top:6px;width:24px;height:24px;border-radius:50%;background:{{p.badgeBg}};color:{{p.badgeFg}};font:700 12px Inter,sans-serif;display:flex;align-items:center;justify-content:center">{{p.badge}}</span></button></sc-for></div></div></sc-if>
+      <sc-if value="{{s3}}" hint-placeholder-val="{{false}}"><div class="g" style="border-radius:24px;padding:16px;"><div style="position:relative;border-radius:18px;overflow:hidden;height:300px"><img src="/img/mara-wheel.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><span class="gs" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px">▶</span><span class="gs" style="position:absolute;left:10px;bottom:10px;padding:5px 10px;border-radius:999px;font-size:12px">0:32 · plays muted first</span></div><div style="display:flex;gap:8px;margin-top:12px"><button type="button" class="sec gs" style="flex:1">Replace</button><button type="button" class="sec gs" style="flex:1">Add captions</button></div><span class="m" style="display:block;font-size:12px;margin-top:10px;line-height:1.45">No video? That’s fine. Your photo is shown instead, clearly labelled.</span></div></sc-if>
+      <sc-if value="{{s4}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{seq}}" as="s" hint-placeholder-count="4"><div class="gs" style="border-radius:16px;padding:8px 8px 8px 14px;display:flex;align-items:center;gap:10px"><span style="width:24px;height:24px;border-radius:50%;background:rgba(255,250,237,.16);font:600 12px Inter,sans-serif;display:flex;align-items:center;justify-content:center">{{s.n}}</span><span style="flex:1;font-size:15px">{{s.name}}</span><button type="button" onClick="{{s.up}}" aria-label="Move {{s.name}} up" class="ic" style="width:40px;height:40px;background:transparent;border:0;opacity:{{s.upOp}}">↑</button><button type="button" onClick="{{s.down}}" aria-label="Move {{s.name}} down" class="ic" style="width:40px;height:40px;background:transparent;border:0;opacity:{{s.downOp}}">↓</button></div></sc-for></div></sc-if>
+      <sc-if value="{{s5}}" hint-placeholder-val="{{false}}"><div class="g" style="border-radius:24px;padding:6px 16px;"><div style="display:flex;align-items:center;gap:12px;padding:12px 0"><span style="flex:1"><span style="display:block;font-size:15px;font-weight:600">Custom requests</span><span class="m" style="display:block;font-size:12px;margin-top:3px;line-height:1.4">Open · buyers can ask you for personal pieces</span></span><button type="button" role="switch" aria-checked="true" aria-label="Custom requests" class="tg on"><i></i></button></div><div style="height:1px;background:rgba(255,250,237,.16)"></div><div style="display:flex;align-items:center;gap:12px;padding:12px 0"><span style="flex:1"><span style="display:block;font-size:15px;font-weight:600">Gift wrap</span><span class="m" style="display:block;font-size:12px;margin-top:3px;line-height:1.4">+6€ · Linen bag and a handwritten card. You keep 100%.</span></span><button type="button" role="switch" aria-checked="true" aria-label="Gift wrap" class="tg on"><i></i></button></div><div style="height:1px;background:rgba(255,250,237,.16)"></div><div style="display:flex;align-items:center;gap:12px;padding:12px 0"><span style="flex:1"><span style="display:block;font-size:15px;font-weight:600">Free shipping from</span><span class="m" style="display:block;font-size:12px;margin-top:3px;line-height:1.4">150€ · shown in buyers’ bags as a goal</span></span><button type="button" role="switch" aria-checked="true" aria-label="Free shipping from" class="tg on"><i></i></button></div></div><div style="height:12px"></div><div class="g" style="border-radius:24px;padding:16px;"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="lbl">Your pieces · 3</span><a href="#" style="color:#f3d27a;font:600 13px Inter,sans-serif;text-decoration:none">+ Add piece</a></div><div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:0;margin-top:10px"><img src="/img/plates.jpg" alt="" style="width:44px;height:44px;border-radius:12px;object-fit:cover"><span style="flex:1;font-size:14px">Speckled plates</span><span style="font-weight:600;font-size:14px">96€</span></div><div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(255,250,237,.16);margin-top:0"><img src="/img/dish.jpg" alt="" style="width:44px;height:44px;border-radius:12px;object-fit:cover"><span style="flex:1;font-size:14px">Incense dish</span><span style="font-weight:600;font-size:14px">38€</span></div><div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(255,250,237,.16);margin-top:0"><img src="/img/candle.jpg" alt="" style="width:44px;height:44px;border-radius:12px;object-fit:cover"><span style="flex:1;font-size:14px">Candle cup</span><span style="font-weight:600;font-size:14px">42€</span></div></div></sc-if>
+    </div>
+  </div>
+  <div class="g" style="position:absolute;left:12px;right:12px;bottom:12px;z-index:9;border-radius:999px;padding:6px;display:flex;align-items:center;gap:8px"><button type="button" onClick="{{back}}" class="sec" style="padding:0 18px;background:transparent;border:0;opacity:{{backOp}}">Back</button><button type="button" onClick="{{next}}" class="cta" style="flex:1;height:46px">{{nextLabel}}</button></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startOn":{"editor":"enum","options":["1","2","3","4","5"],"default":"1"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { step: +(props.startOn || 1), picks: [1, 2, 3], seq: ['Your work', 'Meet Mara', 'Your process', 'A piece'] }; }
+  renderVals() {
+    const st = this.state;
+    const T = [['About you', 'This is how buyers meet you first.'], ['Your collage', 'Three pieces that show what you do best. They open your profile in Discover.'], ['Your video', 'Optional. 15–60 seconds of you at work. Buyers love seeing hands and tools.'], ['Order of your slides', 'What buyers see when they swipe across your profile.'], ['Pieces and requests', 'Last step. You can change all of this later in Studio.']];
+    const LIB = ['/img/mara.jpg', '/img/plates.jpg', '/img/dish.jpg', '/img/candle.jpg', '/img/morning-cup.jpg', '/img/mara-wheel.jpg'];
+    const mv = (i, d) => { const s = st.seq.slice(); const j = i + d; if (j < 0 || j >= s.length) return; [s[i], s[j]] = [s[j], s[i]]; this.setState({ seq: s }); };
+    return {
+      s1: st.step === 1, s2: st.step === 2, s3: st.step === 3, s4: st.step === 4, s5: st.step === 5,
+      stepNo: String(st.step), title: T[st.step - 1][0], sub: T[st.step - 1][1],
+      bars: [1, 2, 3, 4, 5].map((i) => ({ c: i <= st.step ? '#f3d27a' : 'rgba(255,250,237,.2)' })),
+      lib: LIB.map((img, i) => { const k = st.picks.indexOf(i); const on = k >= 0; return { img, on, ring: on ? '2px' : '0px', badge: on ? String(k + 1) : '+', badgeBg: on ? '#f3d27a' : 'rgba(22,16,11,.6)', badgeFg: on ? '#2a1a10' : '#fffaed', pick: () => this.setState({ picks: on ? st.picks.filter((x) => x !== i) : (st.picks.length < 3 ? st.picks.concat([i]) : st.picks) }) }; }),
+      pickCount: String(st.picks.length),
+      seq: st.seq.map((name, i) => ({ name, n: String(i + 1), up: () => mv(i, -1), down: () => mv(i, 1), upOp: i ? '1' : '.3', downOp: i < st.seq.length - 1 ? '1' : '.3' })),
+      back: () => this.setState({ step: Math.max(1, st.step - 1) }), backOp: st.step > 1 ? '1' : '.4',
+      next: () => this.setState({ step: Math.min(5, st.step + 1) }), nextLabel: st.step < 5 ? 'Continue' : 'Save profile'
+    };
+  }
+}
+</script>
+</body>
+</html>
