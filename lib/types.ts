@@ -60,6 +60,7 @@ export type Product = {
   isSaved?: boolean
   stickers?: Stickers        // filled by the data layer
   heldByOther?: boolean      // in someone else's bag right now (cart_holds)
+  freeStock?: number         // stock minus other buyers' active holds (filled by the data layer)
 }
 
 export type FeedItem = { maker: Maker; products: Product[]; reason?: 'taste' | 'surprise' }

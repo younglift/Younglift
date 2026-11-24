@@ -20,7 +20,7 @@ import Img from '@/components/u/Img';
 const STEP_LABEL = ['The piece', 'Her story', 'Her profile'];
 
 function pieceMeta(p: Product) {
-  const first = p.oneOfAKind ? '1 of 1' : p.madeToOrder ? 'Made to order' : p.subtitle ?? (p.madeCount > 1 ? `${p.stock} left` : '');
+  const first = p.oneOfAKind ? '1 of 1' : p.madeToOrder ? 'Made to order' : p.subtitle ?? (p.madeCount > 1 ? `${p.freeStock ?? p.stock} left` : '');
   return [first, p.materials.join(' & '), p.sold ? 'Sold' : shipsLine(p)].filter(Boolean).join(' · ');
 }
 const firstAvailable = (ps: Product[]) => Math.max(0, ps.findIndex((p) => !p.sold));

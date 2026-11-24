@@ -89,7 +89,7 @@ function validMakerSticker(p: Product): MakerSticker | undefined {
 }
 function upliftSticker(p: Product, m: Maker | undefined): UpliftSticker | undefined {
   if (state.posts.some((x) => x.kind === 'in_progress' && x.productIds.includes(p.id) && within(x.createdAt, 30))) return 'in_progress';
-  if (!p.madeToOrder && p.madeCount > 1 && p.stock === 1) return 'last_one_left';
+  if (!p.madeToOrder && p.madeCount > 1 && freeFor(p) === 1) return 'last_one_left';
   if (within(p.restockedAt, 7) && p.stock > 0) return 'back_in_stock';
   if (within(p.createdAt, 7)) return 'just_dropped';
   if (m && within(m.liveAt, 30)) return 'new_maker';
@@ -120,7 +120,7 @@ function holdMine(id: string) {
 
 function view(p: Product): Product {
   const m = makerOf(p.makerId);
-  return { ...p, isSaved: state.saves.includes(p.id), stickers: stickersFor(p, m), heldByOther: heldByOther(p.id) };
+  return { ...p, isSaved: state.saves.includes(p.id), stickers: stickersFor(p, m), heldByOther: heldByOther(p.id), freeStock: p.madeToOrder ? undefined : freeFor(p) };
 }
 function rating(makerId: string) {
   const r = state.reviews.filter((x) => x.makerId === makerId);
@@ -197,11 +197,12 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 };
 export async function getCategories() {
   load();
-  const live = state.products.filter((p) => visible(p) && !p.sold);
+  // Same pieces the category page lists (sold ones included), so the tile count matches the results (QUALITY 2.9).
+  const live = state.products.filter((p) => visible(p));
   const cats: Category[] = ['jewelry', 'ceramics', 'clothing', 'accessories', 'home', 'prints', 'crochet'];
   return cats.map((c) => {
     const list = live.filter((p) => p.category === c);
-    return { id: c, label: CATEGORY_LABEL[c], count: list.length, image: list[0]?.images[0] };
+    return { id: c, label: CATEGORY_LABEL[c], count: list.length, image: (list.find((p) => !p.sold) ?? list[0])?.images[0] };
   });
 }
 
