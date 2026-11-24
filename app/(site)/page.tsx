@@ -187,7 +187,7 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
     const to = Math.max(0, Math.min(items.length, i)) * f.clientHeight;
     cancelAnimationFrame(anim.current);
     if (!smooth || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { f.scrollTop = to; return; }
-    const from = f.scrollTop, t0 = performance.now(), dur = 320;
+    const from = f.scrollTop, t0 = performance.now(), dur = 280;
     f.style.scrollSnapType = 'none'; sliding.current = true;
     const tick = (now: number) => {
       const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
@@ -211,28 +211,39 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
     };
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
   }, [cur, curId, steps, setStep, scrollTo]);
-  // Mouse wheel / trackpad: one gesture = one maker. A new gesture can start as soon as the slide lands;
-  // the trackpad's fading momentum (smaller and smaller deltas) is ignored. Her profile (step 3) scrolls inside.
+  // Mouse wheel / touchpad anywhere on the page (also over the top bar): one gesture = one maker, up or down.
+  // A new swipe always counts: a pause, a change of direction or a speed-up. A swipe that starts while the
+  // previous slide is still moving is queued and runs the moment it lands. The fading tail of the same swipe
+  // (touchpad momentum) is ignored, so one swipe never skips two makers. Her profile (step 3) scrolls inside.
   useEffect(() => {
-    const f = feed.current; if (!f) return;
-    let acc = 0, busyUntil = 0, last = 0, lastAbs = 0, needFresh = false;
+    let acc = 0, busyUntil = 0, last = 0, lastSign = 0, peak = 0, trough = 0, needFresh = false, queued = 0, timer = 0;
+    const go = (dir: number) => {
+      const f = feed.current; if (!f) return;
+      acc = 0; needFresh = true; busyUntil = performance.now() + 280;
+      scrollTo(Math.round(f.scrollTop / f.clientHeight) + dir);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => { if (queued) { const d = queued; queued = 0; go(d); } }, 290);
+    };
     const w = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      if ((e.target as HTMLElement)?.closest('[data-own-scroll]')) return;
+      if (Math.abs(e.deltaY) < Math.abs(e.deltaX) || e.ctrlKey) return;
+      const t = e.target as HTMLElement | null;
+      if (t?.closest('[data-own-scroll],.u-drawer,.u-sheet,.u-scrim,[role="dialog"],input,textarea,select')) return;
       e.preventDefault();
-      const now = performance.now(), abs = Math.abs(e.deltaY);
-      const fresh = now - last > 120 || (now >= busyUntil && abs > lastAbs * 1.4 + 4);   // new flick, not momentum
-      last = now; lastAbs = abs;
-      if (fresh) needFresh = false;
+      const now = performance.now(), abs = Math.abs(e.deltaY), sign = Math.sign(e.deltaY);
+      // new swipe = a pause, the other direction, or speeding up again after this swipe had slowed down
+      const fresh = now - last > 80 || sign !== lastSign || (trough < peak * 0.6 && abs > trough * 1.5 + 4);
+      if (fresh) { peak = abs; trough = abs; } else { if (abs > peak) { peak = abs; trough = abs; } else if (abs < trough) trough = abs; }
+      last = now; lastSign = sign;
+      if (fresh) {
+        needFresh = false;
+        if (now < busyUntil) { queued = sign; needFresh = true; return; }
+      }
       if (now < busyUntil || needFresh) return;
       acc += e.deltaY;
-      if (Math.abs(acc) < 20) return;
-      const i = Math.round(f.scrollTop / f.clientHeight) + (acc > 0 ? 1 : -1);
-      acc = 0; busyUntil = now + 300; needFresh = true;
-      scrollTo(i);
+      if (Math.abs(acc) >= 15) go(sign);
     };
-    f.addEventListener('wheel', w, { passive: false });
-    return () => f.removeEventListener('wheel', w);
+    window.addEventListener('wheel', w, { passive: false });
+    return () => { window.removeEventListener('wheel', w); window.clearTimeout(timer); };
   }, [scrollTo]);
   // Logo / Discover tapped while already here: back to the very start of the feed.
   useEffect(() => {
