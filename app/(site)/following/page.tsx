@@ -45,7 +45,7 @@ export default function Following() {
           const m = byId.get(x.makerId)!;
           return (
             <article key={x.kind + x.makerId + x.at} className="g u-card u-stack">
-              <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 36, height: 36 }} /><span style={{ flex: 1 }}><Link href={`/m/${m.slug}`} className="hand">{m.name}</Link> <span className="m" style={{ fontSize: 13 }}>{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m" style={{ fontSize: 12 }}>{ago(x.at)}</span></div>
+              <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar" style={{ width: 36, height: 36 }} /><span style={{ flex: 1 }}><Link href={`/m/${m.slug}`} className="hand tap">{m.name}</Link> <span className="m" style={{ fontSize: 13 }}>{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m" style={{ fontSize: 12 }}>{ago(x.at)}</span></div>
               {x.kind === 'pieces' ? (
                 <>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>{x.products.slice(0, 3).map((p) => <Link key={p.id} href={`/p/${p.id}`} aria-label={p.title}><Img small src={p.images[0]} alt="" style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', borderRadius: 14, display: 'block' }} /></Link>)}</div>
