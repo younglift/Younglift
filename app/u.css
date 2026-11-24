@@ -105,7 +105,7 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 
 /* desktop (from 820px): same pieces, wider frame */
 @media (min-width:820px){
-  .u-page{max-width:1392px;padding:104px 24px 48px}
+  .u-page{max-width:1328px;padding:104px 24px 48px}
   .u-page.narrow{max-width:760px}
   .u-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px 16px}
   /* card text as drawn on desktop: title + price on one row, "Inez · Vilnius" below */

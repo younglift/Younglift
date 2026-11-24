@@ -112,7 +112,7 @@ function MakerCard({ item, next, hints, inBag, onNext, index, active }: { item: 
             {hints && index === 0 ? <Img src={m.video?.posterUrl ?? m.portraitUrl} alt="" aria-hidden="true" className={s.peek} /> : null}
           </Link>
           {mk ? <span className={s.stk}><Sticker k={mk} city={m.city} width={mk === 'one_of_one' ? 104 : 120} /></span> : null}
-          {up ? <span className={mk ? s.stk2 : s.stk}><Sticker k={up} width={118} tilt={mk ? 6 : -8} /></span> : null}
+          {up && !mk ? <span className={s.stk}><Sticker k={up} width={118} tilt={-8} /></span> : null}
           <PieceBox item={item} sel={sel} setSel={setSel} inBag={inBag} onProfile={() => go(2)} active={active} />
         </div>
         {/* 2 · her story (only for the maker on screen: the next one loads just her piece) */}
@@ -212,7 +212,7 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
         ) : null}
         <span className={`gs ${s.dstep}`}>{step + 1} / 3 · {STEP_LABEL[step]}</span>
         {step === 0 && mk ? <span className={s.dstk}><Sticker k={mk} city={m.city} width={150} /></span> : null}
-        {step === 0 && up ? <span className={mk ? s.dstk2 : s.dstk}><Sticker k={up} width={150} tilt={mk ? 6 : -8} /></span> : null}
+        {step === 0 && up && !mk ? <span className={s.dstk}><Sticker k={up} width={150} tilt={-8} /></span> : null}
         {step > 0 ? <button type="button" aria-label="Previous" className={`ic gs ${s.prev}`} onClick={() => setStep(step - 1)}><Back /></button> : null}
         {step < 2 ? <button type="button" aria-label={step === 0 ? 'Next: her story' : 'Next: her profile'} className={`ic gs ${s.nextBtn}`} onClick={() => setStep(step + 1)}><Chevron /></button> : null}
         {step === 0 ? <PieceBox key={`p${m.id}`} item={item} sel={sel} setSel={(i) => setSels({ ...sels, [m.id]: i })} inBag={inBag} desktop onProfile={() => setStep(2)} /> : null}

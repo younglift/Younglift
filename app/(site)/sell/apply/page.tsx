@@ -43,7 +43,7 @@ export default function Apply() {
   return (
     <>
       <Wash src={photos[0] ?? '/img/plates.jpg'} />
-      <header className={ap.head}><Link href="/" aria-label="Uplift home"><Logo height={28} wordmark /></Link></header>
+      <header className={ap.head}><Link href="/" aria-label="Uplift home" className="tap"><Logo height={28} wordmark /></Link></header>
       <main className={`u-page narrow has-bar ${ap.page}`}>
         <div className="u-head"><span className={ap.back}><BackButton href="/sell" /></span><span><h1 className="hand">Show us your work</h1><span className="m sub">Takes about 5 minutes. We reply within 3 days.</span></span></div>
         {tried && !ok ? <div className="gs u-card t-small" role="alert">A few things are missing. They’re marked below.</div> : null}

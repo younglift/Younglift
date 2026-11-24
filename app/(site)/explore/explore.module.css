@@ -37,7 +37,7 @@
   .main{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 16px;align-items:end}
   .main > *{grid-column:1 / -1}
   .head{grid-column:1;grid-row:1}
-  .head :global(.sec){min-height:28px;padding:0 !important}
+  .head :global(.sec){padding:0 !important}
   .tools{grid-column:2;grid-row:1;align-self:center}
   .kinds{margin-top:-4px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px 18px}

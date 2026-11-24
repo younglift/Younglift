@@ -52,4 +52,8 @@
   .bar{display:none}
   .deskOnly{display:flex}
   .close{position:absolute;right:16px;top:16px;z-index:3}
+  /* desktop-Product: solid panel (nothing shows through), tags on the close-button row */
+  .scroll{background:var(--u-bg);grid-template-rows:minmax(0,1fr);height:min(740px,calc(100dvh - 140px))}
+  .hero{min-height:0 !important;height:100%}
+  .tags{order:-1;min-height:44px;align-items:center;padding-right:56px}
 }

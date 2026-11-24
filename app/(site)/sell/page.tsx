@@ -20,7 +20,7 @@ export default function Sell() {
     /* desktop-Sell: full-bleed photo, text and Apply left, four cards along the bottom */
     <>
       <div className={se.dPhoto} aria-hidden="true"><Img src="/img/mara-wheel.jpg" alt="" eager /></div>
-      <header className={se.dHead}><Link href="/" aria-label="Uplift home"><Logo height={30} wordmark /></Link><Link href="/account" className="sec">Sign in</Link></header>
+      <header className={se.dHead}><Link href="/" aria-label="Uplift home" className="tap"><Logo height={30} wordmark /></Link><Link href="/account" className="sec">Sign in</Link></header>
       <main className={se.dPage}>
         <div className={se.dText}>
           <h1 className="hand m0">Sell what you make</h1>

@@ -57,7 +57,7 @@ export default function AppNav() {
       {desktop === false && showBottom && !hideCorner ? <MeButton className={s.meCorner} /> : null}
 
       {desktop && path !== '/sell' && path !== '/sell/apply' ? <header className={`gs ${s.top}`}>
-        <Link href="/" aria-label="Uplift home" style={{ lineHeight: 0 }}><Logo height={30} wordmark /></Link>
+        <Link href="/" aria-label="Uplift home" className="tap"><Logo height={30} wordmark /></Link>
         <nav aria-label="Main">
           {TABS.map((t) => <Link key={t.href} href={t.href} aria-current={isOn(path, t.href) ? 'page' : undefined}>{t.label}<span className={s.dot} /></Link>)}
         </nav>

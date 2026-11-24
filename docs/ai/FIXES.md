@@ -49,17 +49,17 @@ How to work through it: one group per PR, highest first. After each fix run the 
 
 ## P4. Cheap look (layout and consistency)
 
-- [ ] **4.1 420 inline `style={{}}` objects.** Worst: `studio/profile/page.tsx` 31, `checkout/page.tsx` 31, `account/page.tsx` 22, `studio/pieces/Editor.tsx` 20, `studio/page.tsx` 19, `(site)/page.tsx` 18. Each has its own font sizes and gaps (13px here, 12 there, 18px gap), which is why the screens don't line up.
+- [x] **4.1 420 inline `style={{}}` objects.** Worst: `studio/profile/page.tsx` 31, `checkout/page.tsx` 31, `account/page.tsx` 22, `studio/pieces/Editor.tsx` 20, `studio/page.tsx` 19, `(site)/page.tsx` 18. Each has its own font sizes and gaps (13px here, 12 there, 18px gap), which is why the screens don't line up.
   Fix: move to CSS modules using the 4/8 spacing and the type sizes in QUALITY 2.1–2.2. Do it screen by screen against the reference PNG.
   Proof: inline count per file ≤ 5 (qa), screenshot matches reference.
-- [ ] **4.2 Glass goes pale over light photos** (white plates, cream ceramics). Text loses contrast and the screen "changes colour". Cause: `--u-glass` is 28–42% dark; over white it reads as grey.
+- [x] **4.2 Glass goes pale over light photos** (white plates, cream ceramics). Text loses contrast and the screen "changes colour". Cause: `--u-glass` is 28–42% dark; over white it reads as grey.
   Fix **(Matas)**: darker glass (e.g. 55/40%) or a darker `--u-bg` under the wash; check every screen over the lightest photo.
-- [ ] **4.3 Two stickers per frame + a chip saying the same.** Discover uses `.stk` and `.stk2`; product tags add "1 of 1" again. Rule: one badge per frame (QUALITY 2.8).
-- [ ] **4.4 "Made to size" vs "Made to order".** `(site)/page.tsx` line 20 and `p/[id]/page.tsx` line 32 say "Made to size" for sized pieces; Studio and filters say "Made to order". Pick one word everywhere **(Matas)**: design uses "Made to order".
-- [ ] **4.5 Long titles wrap to 2+ lines and push the card.** Clamp to 2 lines with ellipsis.
-- [ ] **4.6 Desktop stage photo cropped and soft** (`object-fit:cover` on a 1392px stage with portrait photos). Use a contain + blurred backdrop for portrait photos, or a wider crop source.
-- [ ] **4.7 Desktop Home doesn't match `desktop-Home.jpg`.** Compare and rebuild.
-- [ ] **4.8 Single-photo pieces still show a dot.** Hide dots/arrows when there is one photo.
+- [x] **4.3 Two stickers per frame + a chip saying the same.** Discover uses `.stk` and `.stk2`; product tags add "1 of 1" again. Rule: one badge per frame (QUALITY 2.8).
+- [x] **4.4 "Made to size" vs "Made to order".** `(site)/page.tsx` line 20 and `p/[id]/page.tsx` line 32 say "Made to size" for sized pieces; Studio and filters say "Made to order". Pick one word everywhere **(Matas)**: design uses "Made to order".
+- [x] **4.5 Long titles wrap to 2+ lines and push the card.** Clamp to 2 lines with ellipsis.
+- [x] **4.6 Desktop stage photo cropped and soft** (`object-fit:cover` on a 1392px stage with portrait photos). Use a contain + blurred backdrop for portrait photos, or a wider crop source.
+- [x] **4.7 Desktop Home doesn't match `desktop-Home.jpg`.** Compare and rebuild.
+- [x] **4.8 Single-photo pieces still show a dot.** Hide dots/arrows when there is one photo.
 
 ## P5. Copy and honesty
 

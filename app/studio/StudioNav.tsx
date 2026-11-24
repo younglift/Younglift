@@ -38,7 +38,7 @@ export default function StudioNav() {
         </nav>
       ) : null}
       {desktop ? <aside className={`g ${s.side}`} aria-label="Studio">
-        <div className={s.brand}><Link href="/" aria-label="Uplift home"><Logo height={26} wordmark /></Link><span className="m lbl">STUDIO</span></div>
+        <div className={s.brand}><Link href="/" aria-label="Uplift home" className="tap"><Logo height={26} wordmark /></Link><span className="m lbl">STUDIO</span></div>
         {[...items, { href: '/studio/payouts', label: 'Payouts' }].map((t) => (
           <Link key={t.href} href={t.href} aria-current={on(path, t.href) ? 'page' : undefined}><span className={s.bul} /><span>{t.label.split(' · ')[0]}</span>{'n' in t && t.n ? <span className={`m ${s.n}`}>{t.n}</span> : null}</Link>
         ))}
