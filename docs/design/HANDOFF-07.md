@@ -53,7 +53,7 @@ Pagal `CLAUDE.md` srautai užrakinti, todėl šitie du laukia tavęs:
 - **Mokėjimai:** jau suplanuota viena PaymentIntent kiekvienai kūrėjai, tinka. „Pay for all“ = viena Checkout sesija su keliais mokėjimais.
 - **Lipdukai** (taisyklės galutinės, bet Matas kai kurių piešinukų dar gali keisti: `Sticker` komponentas tegul ima `public/stickers/<raktas>.png`, kad pakeitus failą nereiktų keisti kodo):
   - *kūrėja pasirenka* (ne daugiau kaip 1 kūriniui): `product.maker_sticker` ∈ `one_of_one | handmade | small_batch | made_in_city | made_in_collab | made_to_order`, plius `collab_maker_id` (jei collab) ir `batch_size` (jei small batch). „Made in …“ miestas imamas iš kūrėjos profilio.
-  - *Uplift uždeda automatiškai*, tik kai tiesa: `new_maker` (pirmos 30 d.), `just_dropped` (pirmos 7 d.), `last_one_left` (liko tikrai 1 iš kelių), `back_in_stock` (kiekis vėl > 0), `in_progress` (kūrėja pažymėjo, kad gamina), `you_might_like` (tik Discover, kai feed'as įmeta už skonio ribų). Skaičiuoti serveryje iš duomenų, nesaugoti ranka.
+  - *Uplift uždeda automatiškai*, tik kai tiesa: `new_maker` (pirmos 30 d.), `just_dropped` (pirmos 7 d.), `last_one_left` (liko tikrai 1 iš kelių), `back_in_stock` (kiekis vėl > 0), `in_progress` (kūrėja pažymėjo, kad gamina), `picked_for_you` (tik Discover, kai feed'as įmeta už skonio ribų). Skaičiuoti serveryje iš duomenų, nesaugoti ranka.
   - Ant vieno kūrinio daugiausia 1 kūrėjos + 1 Uplift lipdukas, ir ne ant kiekvieno.
 - **Kūrėjos profilis:** reikia `cover_url` (atskiras nuo avataro), Journal įrašų (`posts` jau yra) ir atsiliepimų (`reviews`: order_item_id, rating, text). Atsiliepimų lentelės dar nėra.
 

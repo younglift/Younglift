@@ -17,7 +17,7 @@ Nuspręsta 2026-11-23. Pirmiausia skaityk `docs/design/HANDOFF-07.md`.
 | `03-discover-profile` | Discover 3: jos profilis (Works · Journal · Reviews, „Next maker“) |
 | `03-discover-hints` | Naujiems: nuotrauka po 1 s pati pasislenka ir parodo kito kadro kraštą (prop `hints="1"`) |
 | `03-discover-hints-upnext` | Naujiems po pirmo braukimo: „Up next · Mara · swipe up ↑“ |
-| `03-discover-surprise` | Netikėtas kūrėjas (už skonio ribų, lipdukas „We think you might like this“) |
+| `03-discover-surprise` | Netikėtas kūrėjas (už skonio ribų, lipdukas „Picked for you“) |
 | `04-product` | Kūrinys: paruoštas siųsti |
 | `04-product-ring` | Kūrinys: su dydžiais (EU) |
 | `04-product-sold` | Kūrinys: parduotas (+ panašūs) |
