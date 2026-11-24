@@ -21,7 +21,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
       <div className="u-stack">
         <div className={`g ${s.empty}`}>
           <span className="hand">Your bag is empty</span>
-          <p className="m m0">When you add a 1 of 1 piece, we hold it for you for 15 minutes.</p>
+          <p className="m m0">When you add a piece, we hold it for you for 15 minutes.</p>
           <Link href="/" className="cta" onClick={onNavigate}>Discover makers</Link>
         </div>
         {fromSaved.length ? (
@@ -47,8 +47,8 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
         <div className={`gs ${s.hold}`} role="status">
           <span className={s.ico}><Clock size={18} /></span>
           <span className="flex col gap-4 t-small">
-            <span>Your 1 of 1 pieces are held for <b>{mmss(left)}</b></span>
-            <span className="m t-meta">After that they go back on sale for others.</span>
+            <span>{bag.heldCount === 1 ? 'Your piece is held for ' : `Your ${bag.heldCount} pieces are held for `}<b className="num">{mmss(left)}</b></span>
+            <span className="m t-meta">{bag.heldCount === 1 ? 'After that it goes back on sale for others.' : 'After that they go back on sale for others.'}</span>
           </span>
         </div>
       ) : null}
@@ -76,8 +76,8 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
                   <span className={s.info}>
                     <span>{p.title}</span>
                     <span className={`m ${s.sub}`}>{sub}</span>
-                    {p.oneOfAKind && h && holdLeft > 0 ? <span className={`${s.sub} ${s.held}`}>Held for you · {mmss(holdLeft)}</span> : null}
-                    {p.oneOfAKind && (!h || holdLeft <= 0) ? (
+                    {!p.madeToOrder && h && holdLeft > 0 ? <span className={`${s.sub} ${s.held} num`}>Held for you · {mmss(holdLeft)}</span> : null}
+                    {!p.madeToOrder && (!h || holdLeft <= 0) ? (
                       p.heldByOther ? <span className={`${s.sub} ${s.held}`}>In someone’s bag right now</span>
                         : <span className={s.sub}><span className="m">Hold ended, still available · </span><button type="button" className="link" onClick={() => holdAgain(p.id)}>Hold again</button></span>
                     ) : null}
@@ -127,7 +127,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
             <span className="m t-meta tc">One payment. Each maker ships their own parcel.</span>
           </div>
         ) : (
-          <div className={`g u-bar ${s.total}`} style={{ bottom: 'calc(80px + env(safe-area-inset-bottom))' }}>
+          <div className={`g u-bar ${s.total} ${s.totalBar}`}>
             <span className={s.sum}><span className="m">{bag.groups.length === 2 ? 'Both makers' : `${bag.groups.length} makers`} · {plural(bag.groups.length, 'parcel')}</span><b>{formatEURExact(total)}</b></span>
             <Link href="/checkout" className="sec gs no-flex">Pay for all</Link>
           </div>

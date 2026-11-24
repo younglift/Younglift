@@ -66,10 +66,10 @@ export default function StudioProfile() {
           <span className="grow tc fw600">Your profile</span>
           <button type="button" className="sec gs" onClick={async () => { await save(); router.push(`/m/${d.slug}`); }}>Preview</button>
         </div>
-        <div className={s.steps}>{[1, 2, 3, 4, 5].map((i) => <button key={i} type="button" aria-label={`Step ${i}: ${STEPS[i - 1][0]}`} onClick={() => setStep(i)} className={s.stepBtn}><span style={{ display: 'block', height: 3, borderRadius: 2, background: i <= step ? 'var(--u-accent)' : 'var(--u-track)' }} /></button>)}</div>
+        <div className={s.steps}>{[1, 2, 3, 4, 5].map((i) => <button key={i} type="button" aria-label={`Step ${i}: ${STEPS[i - 1][0]}`} onClick={() => setStep(i)} className={s.stepBtn}><span className={s.stepBar + (i <= step ? ' ' + s.stepOn : '')} /></button>)}</div>
         <div className={s.editor}>
           <div key={step} className="u-stack u-step-in">
-            <div><span className="m lbl">STEP {step} OF 5</span><h1 className="hand" style={{ margin: '6px 0', fontSize: 24 }}>{STEPS[step - 1][0]}</h1><span className="m t-small">{STEPS[step - 1][1]}</span></div>
+            <div><span className="m lbl">STEP {step} OF 5</span><h1 className={`hand ${s.stepTitle}`}>{STEPS[step - 1][0]}</h1><span className="m t-small">{STEPS[step - 1][1]}</span></div>
 
             {step === 1 ? (
               <div className="g u-card u-stack">
@@ -87,11 +87,11 @@ export default function StudioProfile() {
               <div className="g u-card u-stack">
                 <div className="row between"><span className="lbl">Pick three</span><span className="m">{d.collage.length} / 3</span></div>
                 {lib.length ? (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
+                  <div className={s.grid3}>
                     {lib.map((p) => { const k = d.collage.indexOf(p.id); return (
-                      <button key={p.id} type="button" aria-pressed={k >= 0} aria-label={p.title} onClick={() => pick(p.id)} style={{ position: 'relative', padding: 0, border: 0, borderRadius: 16, overflow: 'hidden', aspectRatio: '1', cursor: 'pointer', outline: k >= 0 ? '2px solid var(--u-accent)' : 'none', outlineOffset: 2 }}>
+                      <button className={s.pick + (k >= 0 ? ' ' + s.pickOn : '')} key={p.id} type="button" aria-pressed={k >= 0} aria-label={p.title} onClick={() => pick(p.id)}>
                         <Img small src={p.images[0]} alt="" className="u-cover" />
-                        <span style={{ position: 'absolute', right: 6, top: 6, width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', font: '600 13px var(--u-ui)', background: k >= 0 ? 'var(--u-accent)' : 'var(--u-shade)', color: k >= 0 ? 'var(--u-on-accent)' : 'var(--u-ink)' }}>{k >= 0 ? k + 1 : '+'}</span>
+                        <span className={s.pickNo + (k >= 0 ? ' ' + s.pickNoOn : '')}>{k >= 0 ? k + 1 : '+'}</span>
                       </button>
                     ); })}
                   </div>
@@ -101,9 +101,9 @@ export default function StudioProfile() {
 
             {step === 3 ? (
               <div className="g u-card u-stack">
-                <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', aspectRatio: '4/5' }} className="gs">
-                  {d.video ? <><Img src={d.video.posterUrl} alt="" className="u-cover" /><span className="gs" style={{ position: 'absolute', left: 12, bottom: 12, borderRadius: 999, padding: '6px 12px', fontSize: 12 }}>0:{String(d.video.seconds).padStart(2, '0')} · plays muted first</span></>
-                    : <button type="button" onClick={() => video.current?.click()} style={{ position: 'absolute', inset: 0, background: 'none', border: 0, color: 'var(--u-ink)', cursor: 'pointer', font: '600 15px var(--u-ui)' }}>+ Add a video</button>}
+                <div className={`gs ${s.vidBox}`}>
+                  {d.video ? <><Img src={d.video.posterUrl} alt="" className="u-cover" /><span className={`gs ${s.vidTag}`}>0:{String(d.video.seconds).padStart(2, '0')} · plays muted first</span></>
+                    : <button className={s.fillBtn} type="button" onClick={() => video.current?.click()}>+ Add a video</button>}
                 </div>
                 <input ref={video} type="file" accept="image/*,video/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) { const poster = f.type.startsWith('video') ? d.portraitUrl : await uploadImage(f); set({ video: { posterUrl: poster, caption: d.video?.caption ?? d.tagline, seconds: 30, hasCaptions: d.video?.hasCaptions ?? true } }); } e.target.value = ''; }} />
                 <div className="row gap-8">
@@ -119,8 +119,8 @@ export default function StudioProfile() {
             {step === 4 ? (
               <div className="u-stack gap-8">
                 {d.slideOrder.map((sl, i) => (
-                  <div key={sl} className="gs row" style={{ borderRadius: 18, padding: '6px 6px 6px 16px' }}>
-                    <span className="m" style={{ width: 18 }}>{i + 1}</span><span className="grow fw600">{SLIDE_LABEL(d.name)[sl]}</span>
+                  <div key={sl} className={`gs row ${s.slideRow}`}>
+                    <span className={`m ${s.slideNo}`}>{i + 1}</span><span className="grow fw600">{SLIDE_LABEL(d.name)[sl]}</span>
                     <button type="button" className="ic" aria-label={`Move ${SLIDE_LABEL(d.name)[sl]} up`} disabled={!i} onClick={() => move(i, -1)}>↑</button>
                     <button type="button" className="ic" aria-label={`Move ${SLIDE_LABEL(d.name)[sl]} down`} disabled={i === d.slideOrder.length - 1} onClick={() => move(i, 1)}>↓</button>
                   </div>
@@ -155,9 +155,9 @@ export default function StudioProfile() {
           <aside className={s.preview} aria-label="Preview">
             <span className="lbl m">How it looks in Discover</span>
             <div className={`g ${s.phone}`}>
-              {cover[0] ? <Img src={cover[0]} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} /> : <Img src={d.portraitUrl} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} />}
-              <div className="gs row" style={{ position: 'absolute', left: 10, right: 10, top: 12, borderRadius: 999, padding: 5 }}><Img small src={d.portraitUrl} alt="" className="u-avatar ph ph-32" /><span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}><span className="hand t-small">{d.name || 'Your name'}</span><span className="m" style={{ fontSize: 11 }}>{d.city}</span></span></div>
-              <div className="g" style={{ position: 'absolute', left: 10, right: 10, bottom: 10, borderRadius: 18, padding: 12, fontSize: 13, lineHeight: 1.45 }}>{d.tagline || 'One line about your work'}
+              {cover[0] ? <Img src={cover[0]} alt="" className={`u-cover ${s.fill}`} /> : <Img src={d.portraitUrl} alt="" className={`u-cover ${s.fill}`} />}
+              <div className={`gs row ${s.prevPill}`}><Img small src={d.portraitUrl} alt="" className="u-avatar ph ph-32" /><span className={s.prevName}><span className="hand t-small">{d.name || 'Your name'}</span><span className={`m ${s.t11}`}>{d.city}</span></span></div>
+              <div className={`g ${s.prevCard}`}>{d.tagline || 'One line about your work'}
                 {cover.length > 1 ? <div className="row gap-8 mt-8">{cover.map((u, i) => <Img className="ph ph-40" small key={i} src={u} alt="" />)}</div> : null}
               </div>
             </div>

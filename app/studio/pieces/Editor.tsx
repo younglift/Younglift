@@ -73,13 +73,13 @@ export default function Editor({ initial }: { initial?: Product }) {
               draggable onDragStart={(e) => e.dataTransfer.setData('text/plain', String(i))} onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => { e.preventDefault(); const from = Number(e.dataTransfer.getData('text/plain')); if (Number.isNaN(from) || from === i) return; const a = [...images]; const [x] = a.splice(from, 1); a.splice(i, 0, x); setImages(a); }}>
               <button type="button" className={s.photo} aria-label={i ? 'Make this the cover photo' : 'Cover photo'} onClick={() => setImages([u, ...images.filter((_, j) => j !== i)])}>
-                <Img small src={u} alt="" className="u-cover" />{i === 0 ? <span className="u-badge" style={{ top: 'auto', bottom: 6, left: 6 }}>Cover</span> : null}
+                <Img small src={u} alt="" className="u-cover" />{i === 0 ? <span className={`u-badge ${s.coverTag}`}>Cover</span> : null}
               </button>
               <button type="button" className={`gs ${s.x}`} aria-label="Remove photo" onClick={() => setImages(images.filter((_, j) => j !== i))}>✕</button>
               {images.length > 1 ? (
                 <span className="flex gap-4">
-                  <button type="button" className="ic" style={{ width: 40, height: 32 }} aria-label="Move photo left" disabled={!i} onClick={() => { const a = [...images]; [a[i - 1], a[i]] = [a[i], a[i - 1]]; setImages(a); }}>←</button>
-                  <button type="button" className="ic" style={{ width: 40, height: 32 }} aria-label="Move photo right" disabled={i === images.length - 1} onClick={() => { const a = [...images]; [a[i + 1], a[i]] = [a[i], a[i + 1]]; setImages(a); }}>→</button>
+                  <button type="button" className={`ic ${s.moveBtn}`} aria-label="Move photo left" disabled={!i} onClick={() => { const a = [...images]; [a[i - 1], a[i]] = [a[i], a[i - 1]]; setImages(a); }}>←</button>
+                  <button type="button" className={`ic ${s.moveBtn}`} aria-label="Move photo right" disabled={i === images.length - 1} onClick={() => { const a = [...images]; [a[i + 1], a[i]] = [a[i], a[i + 1]]; setImages(a); }}>→</button>
                 </span>
               ) : null}
             </span>
@@ -143,9 +143,9 @@ export default function Editor({ initial }: { initial?: Product }) {
           <aside className={s.preview} aria-label="Preview">
             <span className="lbl m">How it looks in Discover</span>
             <div className={`g ${s.phone}`}>
-              {images[0] ? <Img src={images[0]} alt="" className="u-cover" style={{ position: 'absolute', inset: 0 }} /> : null}
-              {stickerShown ? <span style={{ position: 'absolute', right: 20, top: 40 }}><Sticker k={stickerShown} city={me.city} width={92} /></span> : null}
-              <div className="g" style={{ position: 'absolute', left: 10, right: 10, bottom: 10, borderRadius: 20, padding: 12 }}>
+              {images[0] ? <Img src={images[0]} alt="" className={`u-cover ${'fill'}`} /> : null}
+              {stickerShown ? <span className={s.prevStk}><Sticker k={stickerShown} city={me.city} width={92} /></span> : null}
+              <div className={`g ${s.prevCard}`}>
                 <div className="row between"><span className="hand t-16">{title || 'Your piece'}</span><b>{euros(price) ? formatEUR(euros(price)) : '–'}</b></div>
                 <span className="m t-meta">{[one ? '1 of 1' : mto ? 'Made to order' : '', materials.split(',')[0]].filter(Boolean).join(' · ')}</span>
               </div>

@@ -39,7 +39,7 @@
 .thumb{padding:0;border:0;background:transparent;color:var(--u-ink);display:flex;flex-direction:column;gap:4px;cursor:pointer;text-align:left;flex-shrink:0}
 .thumb > span:first-child{display:block;width:58px;height:58px;border-radius:14px;overflow:hidden}
 .thumb[aria-pressed="true"] > span:first-child{outline:2px solid var(--u-accent);outline-offset:2px}
-.thumb > span:last-child{font:500 12px var(--u-ui);color:var(--u-mute)}
+.thumb > span:last-child{font:500 12px var(--u-ui);color:var(--u-ink)}
 /* story */
 .shade{position:absolute;left:0;right:0;bottom:0;height:55%;z-index:2;background:var(--u-scrim-bottom)}
 .playBtn{position:absolute;right:14px;top:calc(96px + env(safe-area-inset-top));z-index:6}

@@ -83,9 +83,7 @@ function Chat() {
             })}
             <div ref={end} />
           </div>
-          {msgs.length < 2 ? (
-            <div className={s.quick}>{(QUICK[m.categories[0]] ?? ['When does it ship?', 'Gift wrap?', 'Do you take custom orders?']).map((q) => <button key={q} type="button" className="gs" onClick={() => send(q)}>{q}</button>)}</div>
-          ) : null}
+          <div className={s.quick}>{(QUICK[m.categories[0]] ?? ['When does it ship?', 'Gift wrap?', 'Do you take custom orders?']).map((q) => <button key={q} type="button" className="gs" onClick={() => send(q)}>{q}</button>)}</div>
           <form className={`g ${s.compose}`} onSubmit={(e) => { e.preventDefault(); send(text); }}>
             <button type="button" className="ic" aria-label="Add a photo" onClick={() => file.current?.click()}><Camera size={20} /></button>
             <input ref={file} type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) await send('', await uploadImage(f)); e.target.value = ''; }} />

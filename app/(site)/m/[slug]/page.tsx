@@ -11,6 +11,7 @@ import MakerProfile from '@/components/u/MakerProfile';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
+import mk from './maker.module.css';
 
 /** Her profile on its own page (links from pieces, Following, Home). Story opens as a full-screen photo + caption. */
 export default function MakerPage() {
@@ -27,15 +28,15 @@ export default function MakerPage() {
   return (
     <>
       <Wash src={m.portraitUrl} />
-      <div className="mk-wrap" style={{ position: 'relative', zIndex: 1 }}>
+      <div className={`mk-wrap ${mk.wrap}`}>
         <MakerProfileResponsive m={m} products={products} tab={tab} onStory={() => setStory(true)} />
       </div>
-      <span style={{ position: 'fixed', left: 14, top: 'calc(14px + env(safe-area-inset-top))', zIndex: 20 }} className="mk-back"><BackButton href="/" /></span>
+      <span className={`mk-back ${mk.back}`}><BackButton href="/" /></span>
       {story ? (
-        <div role="dialog" aria-modal="true" aria-label={`${m.name}’s story`} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'var(--u-bg)' }}>
-          <Img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className="u-cover" style={{ position: 'absolute', inset: 0 }} />
-          {m.video?.hasCaptions ? <p style={{ position: 'absolute', left: 24, right: 24, bottom: 120, textAlign: 'center', margin: 0 }}><span style={{ background: 'var(--u-shade)', padding: '4px 10px', borderRadius: 8, fontSize: 18, lineHeight: 1.9, boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>“{m.video.caption}”</span></p> : null}
-          <button type="button" className="ic gs" aria-label="Close story" style={{ position: 'absolute', right: 16, top: 'calc(16px + env(safe-area-inset-top))' }} onClick={() => setStory(false)}>✕</button>
+        <div className={mk.story} role="dialog" aria-modal="true" aria-label={`${m.name}’s story`}>
+          <Img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className={`u-cover ${'fill'}`} />
+          {m.video?.hasCaptions ? <p className={mk.storyCap}><span className={'u-cap ' + mk.capBig}>“{m.video.caption}”</span></p> : null}
+          <button type="button" className={`ic gs ${mk.storyClose}`} aria-label="Close story" onClick={() => setStory(false)}>✕</button>
           <button type="button" className="cta" style={{ position: 'absolute', left: 16, right: 16, bottom: 'calc(24px + env(safe-area-inset-bottom))' }} onClick={() => { setStory(false); router.push(`/messages/${m.slug}`); }}>Message {m.name}</button>
         </div>
       ) : null}

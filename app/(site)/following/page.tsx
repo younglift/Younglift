@@ -7,6 +7,7 @@ import { useData } from '@/lib/useData';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
+import fo from './following.module.css';
 
 /** 06 Following: your makers (stories row), what's new from them, unfollow in one tap. */
 export default function Following() {
@@ -22,7 +23,6 @@ export default function Following() {
   const byId = new Map(makers.map((m) => [m.id, m]));
   const recent = new Set(feed.filter((x) => Date.now() - new Date(x.at).getTime() < 7 * 864e5).map((x) => x.makerId));
   const items = feed.filter((x) => (!only || x.makerId === only) && followed.some((m) => m.id === x.makerId));
-  const ring = (on: boolean, fresh: boolean) => ({ width: 64, height: 64, borderRadius: '50%', padding: 3, border: `2px solid ${fresh ? 'var(--u-accent)' : 'var(--u-line)'}`, display: 'block', outline: on ? '2px solid var(--u-ink)' : 'none', outlineOffset: 2 });
   return (
     <>
       <Wash src={makers[0]?.portraitUrl ?? '/img/mara.jpg'} />
@@ -30,12 +30,12 @@ export default function Following() {
         <div className="u-head"><span><h1 className="hand">Following</h1><span className="m sub">{plural(followed.length, 'maker')}</span></span></div>
         {makers.length ? (
           <div className="snap-x bleed gap-12">
-            <button type="button" onClick={() => setOnly(null)} aria-pressed={!only} style={{ background: 'none', border: 0, color: 'var(--u-ink)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer', padding: 0 }}>
-              <span className="gs" style={{ ...ring(!only, false), display: 'flex', alignItems: 'center', justifyContent: 'center', font: '600 13px var(--u-ui)' }}>All</span><span className="t-small">&nbsp;</span>
+            <button className={fo.story} type="button" onClick={() => setOnly(null)} aria-pressed={!only}>
+              <span className={`gs ${fo.ring + ' ' + fo.all + (!only ? ' ' + fo.sel : '')}`}>All</span><span className="t-small">&nbsp;</span>
             </button>
             {makers.map((m) => (
-              <button key={m.id} type="button" onClick={() => setOnly(only === m.id ? null : m.id)} aria-pressed={only === m.id} aria-label={`Only ${m.name}${recent.has(m.id) ? ', something new' : ''}`} style={{ background: 'none', border: 0, color: 'var(--u-ink)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer', padding: 0 }}>
-                <span style={ring(only === m.id, recent.has(m.id))}><Img small src={m.portraitUrl} alt="" className="u-avatar" style={{ width: '100%', height: '100%' }} /></span><span className="hand t-small">{m.name}</span>
+              <button className={fo.story} key={m.id} type="button" onClick={() => setOnly(only === m.id ? null : m.id)} aria-pressed={only === m.id} aria-label={`Only ${m.name}${recent.has(m.id) ? ', something new' : ''}`}>
+                <span className={`${fo.ring}${recent.has(m.id) ? ' ' + fo.fresh : ''}${only === m.id ? ' ' + fo.sel : ''}`}><Img small src={m.portraitUrl} alt="" className={`u-avatar ${fo.fullImg}`} /></span><span className="hand t-small">{m.name}</span>
               </button>
             ))}
           </div>
@@ -48,12 +48,12 @@ export default function Following() {
               <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-36" /><span className="grow"><Link href={`/m/${m.slug}`} className="hand tap">{m.name}</Link> <span className="m t-small">{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m t-meta">{ago(x.at)}</span></div>
               {x.kind === 'pieces' ? (
                 <>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>{x.products.slice(0, 3).map((p) => <Link key={p.id} href={`/p/${p.id}`} aria-label={p.title}><Img small src={p.images[0]} alt="" style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', borderRadius: 14, display: 'block' }} /></Link>)}</div>
+                  <div className={'grid3'}>{x.products.slice(0, 3).map((p) => <Link key={p.id} href={`/p/${p.id}`} aria-label={p.title}><Img className={'u-sq'} small src={p.images[0]} alt="" /></Link>)}</div>
                   <Link href={`/m/${m.slug}`} className="sec gs">See new pieces</Link>
                 </>
               ) : (
                 <>
-                  {x.post.imageUrl ? <Img src={x.post.imageUrl} alt="" style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 16 }} /> : null}
+                  {x.post.imageUrl ? <Img className={'u-photo-wide ' + fo.postImg} src={x.post.imageUrl} alt="" /> : null}
                   <p className="m0 t-small lh-15">{x.post.caption}</p>
                   <Link href={`/m/${m.slug}?tab=journal`} className="sec gs">Open her journal</Link>
                 </>

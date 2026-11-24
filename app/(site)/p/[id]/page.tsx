@@ -10,7 +10,6 @@ import { useLockBody } from '@/lib/useLockBody';
 import { BackButton, SaveButton, useAddToBag } from '@/components/u/Bits';
 import { Close } from '@/components/u/Icons';
 import MakerProfile from '@/components/u/MakerProfile';
-import Sticker from '@/components/u/Sticker';
 import Loading from '@/components/u/Loading';
 import Sheet from '@/components/u/Sheet';
 import Wash from '@/components/u/Wash';
@@ -56,7 +55,6 @@ export default function ProductPage() {
       <div className={`${s.scroll} u-fade-in`} role="dialog" aria-label={p.title}>
         <div className={s.hero}>
           <Img src={p.images[img] ?? p.images[0]} alt={`${p.title} by ${m.name}`} eager />
-          {p.stickers?.maker && !p.sold ? <span className={s.stk}><Sticker k={p.stickers.maker} city={m.city} width={110} /></span> : null}
           {p.images.length > 1 ? (
             <>
               <div className={s.dots}>{p.images.map((_, i) => <button key={i} type="button" aria-label={`Photo ${i + 1}`} aria-current={i === img} onClick={() => setImg(i)}><span /></button>)}</div>
@@ -66,8 +64,8 @@ export default function ProductPage() {
         </div>
         <div className={`g ${s.card}`}>
           {desktop ? <button type="button" className={`ic gs ${s.close} ${s.deskOnly}`} aria-label="Close" onClick={close}><Close /></button> : null}
-          <div className={s.tags}>{tags.map((t) => <span key={t} className="gs">{t}</span>)}</div>
           <div className={s.title}><h1 className="hand">{p.title}</h1><span>{formatEUR(p.priceCents)}</span></div>
+          <div className={s.tags}>{tags.map((t) => <span key={t} className="gs">{t}</span>)}</div>
           {p.sold ? (
             <>
               <div className={`gs ${s.found}`}><span className="hand">This piece found a home</span><span className="m t-small">{p.oneOfAKind ? 'It was one of a kind.' : 'This run is sold out.'} {m.name} can make you something in the same spirit.</span></div>
@@ -136,7 +134,7 @@ export default function ProductPage() {
         </Sheet>
       ) : null}
       {desktop === false ? <>
-      <span className={s.back}><BackButton href={`/m/${m.slug}`} label={`Back`} /></span>
+      <span className={s.back}>{p.sizes || p.sold ? <BackButton href={`/m/${m.slug}`} label={`Back to ${m.name}`} text={m.name} /> : <BackButton href={`/m/${m.slug}`} label="Back" />}</span>
       <span className={s.save}><SaveButton p={p} /></span>
       <div className={`g ${s.bar}`}>
         {p.sold ? (

@@ -42,8 +42,8 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
         <button type="button" className="cta" aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
         <Link href={`/messages/${m.slug}`} className="sec gs">Message</Link>
       </div>
-      {m.customRequestsOpen ? <Link href={`/m/${m.slug}/request`} className="sec w-full mt-8">Ask for a custom piece</Link> : null}
-      <span className={`m ${s.info}`}>{makerInfo(m)}{extras ? <><br />{extras}</> : null}</span>
+      {m.customRequestsOpen && desktop ? <Link href={`/m/${m.slug}/request`} className="sec w-full mt-8">Ask for a custom piece</Link> : null}
+      <span className={`m ${s.info}`}>{makerInfo(m)}{extras && desktop ? <><br />{extras}</> : null}</span>
     </div>
   );
   const story = (

@@ -100,7 +100,7 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 .u-grid-item .ph{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/5;display:block}
 .u-grid-item .save{position:absolute;right:6px;top:6px;z-index:2}
 .u-grid-item > a:last-child{min-height:var(--u-h-btn)}
-.u-grid-item .t{font-size:13px;font-weight:600}
+.u-grid-item .t{font-size:13px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .u-grid-item .p{font-size:13px;margin-top:-4px}
 
 /* desktop (from 820px): same pieces, wider frame */
@@ -108,7 +108,7 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
   .u-page{max-width:1280px;padding:112px 24px 48px}
   .u-page.narrow{max-width:760px}
   .u-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px 16px}
-  .u-bar{position:static;max-width:none;margin:0}
+  .u-bar{position:sticky;bottom:24px;max-width:none;margin:0;z-index:30}  /* action bar stays in reach on long forms (FIXES 5.5) */
   .u-toast{bottom:28px}
   .u-sheet{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 48px));border-radius:var(--u-r-card)}
 }
@@ -182,3 +182,14 @@ textarea.inp{padding:12px 14px;line-height:1.5;resize:vertical}
 .av-32{width:32px;height:32px}.av-36{width:36px;height:36px}.av-40{width:40px;height:40px}.av-44{width:44px;height:44px}.av-48{width:48px;height:48px}.av-56{width:56px;height:56px}.av-64{width:64px;height:64px}.av-72{width:72px;height:72px}.av-96{width:96px;height:96px}
 .circle{border-radius:50%}
 .ring-ink{border:3px solid var(--u-ink)}
+.fill{position:absolute;inset:0}
+.u-cap{background:var(--u-shade);padding:4px 12px;border-radius:8px;line-height:1.9;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.u-note{border-radius:var(--u-r-chip);padding:12px;font-size:13px}
+.u-photo-wide{width:100%;object-fit:cover;border-radius:var(--u-r-chip);display:block}
+.u-sq{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--u-r-chip);display:block}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.plain-btn{padding:0;border:0;background:none;color:var(--u-ink);cursor:pointer;font:inherit}
+
+.desk-only{display:none}
+@media (min-width:820px){.desk-only{display:inline}.phone-only{display:none !important}}
+.ph-32{width:32px;height:32px;border-radius:10px}.ph-40{width:40px;height:40px;border-radius:12px}.ph-48{width:48px;height:48px;border-radius:12px}\n.u-avatar.ph{border-radius:50%}

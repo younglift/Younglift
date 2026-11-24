@@ -1,0 +1,9 @@
+.navRow{display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.navBtn{width:100%;background:none;border:0;color:var(--u-ink);font:500 15px var(--u-ui);cursor:pointer;padding:0}
+.track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;font-size:12px}
+.bar{height:3px;border-radius:2px;background:var(--u-track)}
+.barOn{background:var(--u-accent)}
+.switchRow{min-height:48px}
+.panel{padding:0 0 12px;font-size:13px;line-height:1.5}
+.nav{padding-top:4px;padding-bottom:4px}
+.me{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}

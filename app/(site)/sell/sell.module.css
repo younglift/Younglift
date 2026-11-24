@@ -1,0 +1,8 @@
+.lead{margin:8px 0 0;line-height:1.5}
+:global(.u-page).page{padding-top:0}
+.shade{position:absolute;inset:0;background:var(--u-scrim-bottom)}
+.back{position:absolute;left:16px;top:calc(16px + env(safe-area-inset-top))}
+.heroText{position:absolute;left:16px;right:16px;bottom:16px}
+.logo{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top))}
+.hero{position:relative;margin:0 -16px;height:360px}
+.icon{width:36px;height:36px;border-radius:12px;font-size:15px}

@@ -40,10 +40,10 @@ export default function StudioMessages() {
           open ? <Thread buyer={open} name={threads.find((t) => t.buyer === open)?.name ?? 'Buyer'} onBack={() => setOpen(null)} /> : (
             <div className={`g ${s.list}`}>
               {threads.map((t) => (
-                <button key={t.buyer} type="button" onClick={() => setOpen(t.buyer)} style={{ background: 'none', border: 0, color: 'var(--u-ink)', textAlign: 'left', cursor: 'pointer', width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', minHeight: 68 }}>
-                  <span className="gs" style={{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><span className="hand">{t.name.slice(0, 1)}</span></span>
-                  <span className={s.grow}><span>{t.name}</span><span className="m" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.last.fromMe ? '' : 'You: '}{t.last.text || 'Photo'}</span></span>
-                  <span className="m t-meta">{ago(t.last.at)}</span>{t.waiting ? <span style={{ width: 9, height: 9, borderRadius: '50%', background: 'var(--u-accent)' }} aria-label="Waiting for your reply" /> : null}
+                <button className={s.threadBtn} key={t.buyer} type="button" onClick={() => setOpen(t.buyer)}>
+                  <span className={`gs ${s.initial}`}><span className="hand">{t.name.slice(0, 1)}</span></span>
+                  <span className={s.grow}><span>{t.name}</span><span className={`m ${'ellipsis'}`}>{t.last.fromMe ? '' : 'You: '}{t.last.text || 'Photo'}</span></span>
+                  <span className="m t-meta">{ago(t.last.at)}</span>{t.waiting ? <span className={s.pip} aria-label="Waiting for your reply" /> : null}
                 </button>
               ))}
               {!threads.length ? <div className="m">No messages yet. Buyers can write to you from your profile and pieces.</div> : null}
@@ -75,9 +75,9 @@ function Thread({ buyer, name, onBack }: { buyer: string; name: string; onBack: 
     <div className="g u-card u-stack gap-8">
       <div className="row"><button type="button" className="ic" aria-label="Back to chats" onClick={onBack}>‹</button><span className="hand t-18">{name}</span></div>
       {msgs.map((x) => (
-        <div key={x.id} style={{ alignSelf: x.fromMe ? 'flex-start' : 'flex-end', maxWidth: '80%', background: x.fromMe ? 'var(--u-glass-sm)' : 'var(--u-cta)', color: x.fromMe ? 'var(--u-ink)' : 'var(--u-on-accent)', borderRadius: 18, padding: '9px 13px', fontSize: 14, lineHeight: 1.45 }}>
-          {x.imageUrl ? <Img src={x.imageUrl} alt="" style={{ borderRadius: 12, maxWidth: 200, display: 'block' }} /> : null}{x.text}
-          <span style={{ display: 'block', fontSize: 11, opacity: 0.7, textAlign: 'right' }}>{shortDate(x.at)} {clock(x.at)}</span>
+        <div className={s.bub + ' ' + (x.fromMe ? s.bubThem : s.bubMe)} key={x.id}>
+          {x.imageUrl ? <Img className={s.bubImg} src={x.imageUrl} alt="" /> : null}{x.text}
+          <span className={s.bubTime}>{shortDate(x.at)} {clock(x.at)}</span>
         </div>
       ))}
       <form className="row" onSubmit={async (e) => { e.preventDefault(); if (!text.trim()) return; await replyAsMaker(text, buyer); setText(''); }}>
@@ -143,7 +143,7 @@ function ReviewReply({ r }: { r: Awaited<ReturnType<typeof getStudioReviews>>[nu
       <div className="row between"><span className="fw600">{r.who}</span><span className="accent" aria-label={`${r.rating} of 5`}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span></div>
       <span className="t-small lh-15">{r.text || <span className="m">No text, just stars.</span>}</span>
       <span className="m t-meta">Bought {r.productTitle} · {shortDate(r.createdAt)}</span>
-      {r.reply && !edit ? <div className="gs" style={{ borderRadius: 14, padding: '10px 12px', fontSize: 14 }}><span className="m t-meta">Your reply</span><br />{r.reply} <button type="button" className="link m t-meta" onClick={() => setEdit(true)}>Edit</button></div> : (
+      {r.reply && !edit ? <div className={`gs ${'u-note'}`}><span className="m t-meta">Your reply</span><br />{r.reply} <button type="button" className="link m t-meta" onClick={() => setEdit(true)}>Edit</button></div> : (
         <form className="row" onSubmit={async (e) => { e.preventDefault(); await replyToReview(r.id, text); setEdit(false); toast(text.trim() ? 'Reply posted on your profile' : 'Reply removed'); }}>
           <input className="inp" placeholder="Say thank you (shown on your profile)" value={text} onChange={(e) => setText(e.target.value)} aria-label="Reply to review" />
           <button type="submit" className="cta">{r.reply ? 'Save' : 'Reply'}</button>

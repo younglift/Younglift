@@ -9,6 +9,7 @@ import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
+import ac from './account.module.css';
 
 const STEPS = ['Paid', 'Packing', 'On the way', 'Delivered'];
 const stepOf = (s: string) => (s === 'paid' ? 0 : s === 'packing' ? 1 : s === 'shipped' ? 2 : 3);
@@ -28,9 +29,9 @@ export default function Account() {
   if (!me || !orders) return <Loading />;
   const a = addr ?? me.address;
   const since = `${monthName(me.since)} ${new Date(me.since).getFullYear()}`;
-  const panel = (k: string, body: React.ReactNode) => (open === k ? <div className="m" style={{ padding: '0 0 12px', fontSize: 14, lineHeight: 1.55 }}>{body}</div> : null);
+  const panel = (k: string, body: React.ReactNode) => (open === k ? <div className={`m ${ac.panel}`}>{body}</div> : null);
   const row = (k: string, label: string, right: string) => (
-    <button type="button" onClick={() => setOpen(open === k ? null : k)} aria-expanded={open === k} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: 52, width: '100%', background: 'none', border: 0, color: 'var(--u-ink)', font: '500 15px var(--u-ui)', cursor: 'pointer', padding: 0 }}>
+    <button className={ac.navRow + ' ' + ac.navBtn} type="button" onClick={() => setOpen(open === k ? null : k)} aria-expanded={open === k}>
       <span>{label}</span><span className="m t-small">{right} {open === k ? '⌃' : '›'}</span>
     </button>
   );
@@ -38,7 +39,7 @@ export default function Account() {
     <>
       <Wash src={orders[0]?.lines[0].product.images[0] ?? '/img/bracelet.jpg'} />
       <main className="u-page narrow">
-        <div className="u-head"><span className="gs" style={{ width: 56, height: 56, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}><span className="hand">{me.name.slice(0, 1)}</span></span><span><h1 className="hand">{me.name}</h1><span className="m sub">{me.city} · with us since {since}</span></span></div>
+        <div className="u-head"><span className={`gs ${ac.me}`}><span className="hand">{me.name.slice(0, 1)}</span></span><span><h1 className="hand">{me.name}</h1><span className="m sub">{me.city} · with us since {since}</span></span></div>
         <span className="hand t-18">Your orders</span>
         {orders.map((o) => {
           const st = stepOf(o.status);
@@ -50,7 +51,7 @@ export default function Account() {
             <article key={o.id} className="g u-card u-stack">
               <div className="row ai-start">
                 <Link href={`/p/${l.product.id}`}><Img className="ph ph-64" small src={l.product.images[0]} alt="" /></Link>
-                <span className="grow flex col gap-4"><span className="fw600">{title}</span><Link href={`/m/${o.maker.slug}`} className="m t-small">from {o.maker.name} · #UL-{o.number}</Link><span className="t-small">{line}</span></span>
+                <span className="grow flex col gap-4"><span className="fw600">{title}</span><span className="m t-small">from {o.maker.name}</span><span className="t-small">{line}</span></span>
               </div>
               {o.status === 'delivered' && !o.reviewed ? (
                 <div className="u-stack gap-8">
@@ -65,13 +66,10 @@ export default function Account() {
                 </div>
               ) : o.status === 'delivered' ? <span className="m t-small">Thanks for your review ★</span> : (
                 <>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 4, fontSize: 11 }}>
-                    {STEPS.map((x, i) => <span className="flex col gap-4" key={x}><span style={{ height: 3, borderRadius: 2, background: i <= st ? 'var(--u-accent)' : 'var(--u-track)' }} /><span className={i <= st ? '' : 'm'}>{x}</span></span>)}
+                  <div className={ac.track}>
+                    {STEPS.map((x, i) => <span className="flex col gap-4" key={x}><span className={ac.bar + (i <= st ? ' ' + ac.barOn : '')} /><span className={i <= st ? '' : 'm'}>{x}</span></span>)}
                   </div>
-                  <div className="row gap-8">
-                    <Link href={`/messages/${o.maker.slug}`} className="sec gs grow">Message {o.maker.name}</Link>
-                    {o.status === 'shipped' ? <button type="button" className="sec gs grow" onClick={() => markDelivered(o.id)}>It arrived</button> : null}
-                  </div>
+                  {o.status === 'shipped' ? <button type="button" className="link m t-small self-start" onClick={() => markDelivered(o.id)}>It arrived? Let us know</button> : null}
                 </>
               )}
               {o.returnRequestedAt ? <span className="m t-small">Return requested · {o.maker.name} will reply in Messages</span> : canReturn(o) ? (
@@ -86,10 +84,10 @@ export default function Account() {
           );
         })}
         {!orders.length ? <div className="g u-card m">No orders yet.</div> : null}
-        <nav className="g u-card" style={{ paddingTop: 4, paddingBottom: 4 }}>
-          <Link href="/messages" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: 52 }}><span>Messages</span><span className="m t-small">{unread ? `${unread} new ` : ''}›</span></Link>
+        <nav className={`g u-card ${ac.nav}`}>
+          <Link className={ac.navRow} href="/messages"><span>Messages</span><span className="m t-small">{unread ? `${unread} new ` : ''}›</span></Link>
           <hr className="hr" />
-          <Link href="/welcome/taste" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: 52 }}><span>Your taste</span><span className="m t-small">{me.taste.categories.map((c) => CATEGORY_LABEL[c]).join(' · ') || 'Not set'} ›</span></Link>
+          <Link className={ac.navRow} href="/welcome/taste"><span>Your taste</span><span className="m t-small">{me.taste.categories.map((c) => CATEGORY_LABEL[c]).join(' · ') || 'Not set'} ›</span></Link>
           <hr className="hr" />
           {row('addr', 'Addresses & payment', '')}
           {panel('addr', (
@@ -107,7 +105,7 @@ export default function Account() {
           {panel('notif', (
             <div className="u-stack gap-4 ink">
               {([['replies', 'A maker replies to you'], ['shipping', 'Your order ships or arrives'], ['newFromFollowed', 'New pieces from makers you follow']] as const).map(([k, l]) => (
-                <div key={k} className="row" style={{ minHeight: 48 }}><span className="grow">{l}</span><button type="button" role="switch" aria-checked={me.notify[k]} aria-label={l} className="tg" onClick={() => saveNotify({ ...me.notify, [k]: !me.notify[k] })}><i /></button></div>
+                <div key={k} className={`row ${ac.switchRow}`}><span className="grow">{l}</span><button type="button" role="switch" aria-checked={me.notify[k]} aria-label={l} className="tg" onClick={() => saveNotify({ ...me.notify, [k]: !me.notify[k] })}><i /></button></div>
               ))}
               <span className="m t-meta">By email to {me.email}.</span>
             </div>

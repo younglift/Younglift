@@ -40,7 +40,7 @@ export default function Results({ title, category, q }: { title: string; categor
         <div className="u-head wrap">
           <BackButton href="/explore" text="Explore" className="sec" />
         </div>
-        <div className="u-head" style={{ marginTop: -10 }}><span><h1 className="hand">{title}</h1><span className="m sub">{summary}</span></span></div>
+        <div className="u-head" style={{ marginTop: -10 }}><span><h1 className="hand">{title}</h1><span className="desk-only"><span className="m sub">{summary}</span></span></span></div>
         {foundMakers.length ? (
           <div className={s.makers}>{foundMakers.map((m) => <Link key={m.id} href={`/m/${m.slug}`} className="gs"><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand t-small">{m.name}</span><span className="m t-meta">{m.city}</span></Link>)}</div>
         ) : null}
@@ -58,6 +58,7 @@ export default function Results({ title, category, q }: { title: string; categor
                 {sortOpen ? <div className={`g ${s.sortMenu}`} role="menu">{SORTS.map(([k, l]) => <button key={k} type="button" role="menuitemradio" aria-checked={sort === k} aria-pressed={sort === k} onClick={() => { setSort(k); setSortOpen(false); }}>{l}</button>)}</div> : null}
               </span>
             </div>
+            <span className="m t-small phone-only">{summary}</span>
             {res ? (list.length ? (
               <div className="u-grid">{list.map((p) => <ProductCard key={p.id} p={p} maker={byId.get(p.makerId)} />)}</div>
             ) : (
