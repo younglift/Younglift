@@ -170,94 +170,120 @@ function MiniAdd({ p, inBag }: { p: Product; inBag: Set<string> }) {
   );
 }
 
-/** Desktop: a big stage, ← → through her steps, ↓ next maker. */
+/** Desktop: the same vertical feed as phone. Scroll (wheel / trackpad / ↓) snaps to the next maker;
+    ← → through her steps: piece → her story → her profile. */
 function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) {
-  const [mi, setMi] = useState(0);
-  const [step, setStep] = useState(0);
+  const feed = useRef<HTMLDivElement>(null);
+  const [cur, setCur] = useState(0);
+  const [steps, setSteps] = useState<Record<string, number>>({});
   const [sels, setSels] = useState<Record<string, number>>({});
-  const [playing, setPlaying] = useState(true);
-  const item = items[Math.min(mi, items.length - 1)];
-  const m = item.maker;
-  const sel = sels[m.id] ?? firstAvailable(item.products);
-  const p = item.products[Math.min(sel, item.products.length - 1)];
-  const nextMaker = useCallback((d: number) => { setMi((i) => (i + d + items.length) % items.length); setStep(0); }, [items.length]);
+  const stepOf = (id: string) => steps[id] ?? 0;
+  const setStep = useCallback((id: string, n: number) => setSteps((x) => ({ ...x, [id]: Math.max(0, Math.min(2, n)) })), []);
+  const scrollTo = useCallback((i: number, smooth = true) => {
+    const f = feed.current; if (!f) return;
+    f.scrollTo({ top: Math.max(0, Math.min(items.length, i)) * f.clientHeight, behavior: smooth ? 'smooth' : 'auto' });
+  }, [items.length]);
+  const onScroll = () => { const f = feed.current; if (!f) return; const i = Math.round(f.scrollTop / f.clientHeight); if (i !== cur) setCur(i); };
+  const curId = items[Math.min(cur, items.length - 1)]?.maker.id;
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.closest('input,textarea')) return;
-      if (e.key === 'ArrowRight') setStep((x) => Math.min(2, x + 1));
-      else if (e.key === 'ArrowLeft') setStep((x) => Math.max(0, x - 1));
-      else if (e.key === 'ArrowDown' && step !== 2) { e.preventDefault(); nextMaker(1); }
-      else if (e.key === 'ArrowUp' && step !== 2) { e.preventDefault(); nextMaker(-1); }
+      if ((e.target as HTMLElement)?.closest('input,textarea') || !curId) return;
+      const st = steps[curId] ?? 0;
+      if (e.key === 'ArrowRight') setStep(curId, st + 1);
+      else if (e.key === 'ArrowLeft') setStep(curId, st - 1);
+      else if ((e.key === 'ArrowDown' || e.key === 'PageDown') && st !== 2) { e.preventDefault(); scrollTo(cur + 1); }
+      else if ((e.key === 'ArrowUp' || e.key === 'PageUp') && st !== 2) { e.preventDefault(); scrollTo(cur - 1); }
     };
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
-  }, [nextMaker, step]);
-  // Mouse wheel / trackpad scroll = the vertical feed: one maker per scroll gesture. Her profile (step 3) scrolls normally.
-  const deskRef = useRef<HTMLDivElement>(null);
-  const wheelLock = useRef(0);
+  }, [cur, curId, steps, setStep, scrollTo]);
+  // Mouse wheel / trackpad: one gesture = one maker, sliding like the phone feed. (Plain scroll-snap would
+  // snap a 100px mouse-wheel notch back to the same maker.) Her profile (step 3) scrolls normally inside.
   useEffect(() => {
-    const el = deskRef.current; if (!el) return;
+    const f = feed.current; if (!f) return;
+    let acc = 0, locked = false, last = 0, started = 0, timer = 0;
+    const unlock = () => { if (Date.now() - last > 180 && Date.now() - started > 650) { locked = false; acc = 0; } else timer = window.setTimeout(unlock, 60); };
     const w = (e: WheelEvent) => {
-      if (step === 2 || Math.abs(e.deltaY) < Math.abs(e.deltaX) || (e.target as HTMLElement)?.closest('input,textarea,[data-scroll]')) return;
-      e.preventDefault();
-      if (Math.abs(e.deltaY) < 12 || Date.now() < wheelLock.current) return;
-      wheelLock.current = Date.now() + 700;
-      nextMaker(e.deltaY > 0 ? 1 : -1);
+      if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      if ((e.target as HTMLElement)?.closest('[data-own-scroll]')) return;
+      e.preventDefault(); last = Date.now();
+      if (locked) return;
+      acc += e.deltaY;
+      if (Math.abs(acc) < 30) return;
+      locked = true; started = Date.now();
+      const i = Math.round(f.scrollTop / f.clientHeight) + (acc > 0 ? 1 : -1);
+      f.scrollTo({ top: Math.max(0, Math.min(items.length, i)) * f.clientHeight, behavior: 'smooth' });
+      timer = window.setTimeout(unlock, 60);
     };
-    el.addEventListener('wheel', w, { passive: false }); return () => el.removeEventListener('wheel', w);
-  }, [nextMaker, step]);
+    f.addEventListener('wheel', w, { passive: false });
+    return () => { f.removeEventListener('wheel', w); window.clearTimeout(timer); };
+  }, [items.length]);
+  // Logo / Discover tapped while already here: back to the very start of the feed.
   useEffect(() => {
-    const home = () => { setMi(0); setStep(0); window.scrollTo({ top: 0 }); };
+    const home = () => { setSteps({}); scrollTo(0, false); setCur(0); };
     window.addEventListener('u:home', home); return () => window.removeEventListener('u:home', home);
-  }, []);
-  const { mk, up } = stickerPair(item, p);
-  const bg = step === 0 ? p.images[0] : m.video?.posterUrl ?? m.portraitUrl;
+  }, [scrollTo]);
+  const washItem = items[Math.min(cur, items.length - 1)];
 
   return (
-    <div className={s.desk} ref={deskRef}>
-      <Wash src={item.products[firstAvailable(item.products)]?.images[0]} />
-      <div className={s.stage}>
-        {step === 0 ? <Link key={`p0${p.id}`} href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.stagePhoto} u-fade-in`}><Img small src={bg} alt="" aria-hidden="true" className={s.stageBlur} /><Img src={bg} alt={`${p.title} by ${m.name}`} eager className={s.stageImg} /></Link> : null}
-        {step === 1 ? <Img key={`s1${m.id}`} src={bg} alt={`${m.name} at work`} className="u-fade-in" /> : null}
-        {step < 2 ? <div className={s.stageShade} /> : null}
-        {step === 2 ? <div key={`s2${m.id}`} className={`${s.dprofile} u-step-in`}><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
-        <div className={s.dbars}>{[0, 1, 2].map((i) => <span key={i} className={i <= step ? s.on : ''} />)}</div>
-        {step < 2 ? (
-          <div className={`gs ${s.dpill}`}>
-            <button type="button" className={s.dpillWho} onClick={() => setStep(2)} aria-label={`${m.name}’s profile`}>
-              <Img small src={m.portraitUrl} alt="" className="u-avatar" />
-              <span className={s.dpillText}><span className="hand">{m.name}</span><span className="m">{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
-            </button>
-            <button type="button" className={s.follow} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
-          </div>
-        ) : null}
-        <span className={`gs ${s.dstep}`}>{step + 1} / 3 · {STEP_LABEL[step]}</span>
-        {step === 0 && mk ? <span className={s.dstk}><Sticker k={mk} city={m.city} width={150} /></span> : null}
-        {step === 0 && up && !mk ? <span className={s.dstk}><Sticker k={up} width={150} tilt={-8} /></span> : null}
-        {step > 0 ? <button type="button" aria-label="Previous" className={`ic gs ${s.prev}`} onClick={() => setStep(step - 1)}><Back /></button> : null}
-        {step < 2 ? <button type="button" aria-label={step === 0 ? 'Next: her story' : 'Next: her profile'} className={`ic gs ${s.nextBtn}`} onClick={() => setStep(step + 1)}><Chevron /></button> : null}
-        {step === 0 ? <PieceBox key={`p${m.id}`} item={item} sel={sel} setSel={(i) => setSels({ ...sels, [m.id]: i })} inBag={inBag} desktop onProfile={() => setStep(2)} /> : null}
-        {step === 1 ? (
-          m.video ? (
-            <>
-              <p className={s.dcaption}><span>“{m.video.caption}”</span></p>
-              <div className={s.dprog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing ? 'running' : 'paused' }} /></div>
-              <button type="button" className={`ic gs ${s.dplay}`} aria-label={playing ? 'Pause video' : 'Play video'} onClick={() => setPlaying(!playing)}>{playing ? '❚❚' : '▶'}</button>
-            </>
-          ) : <span className={`gs ${s.dnoVideo}`}>Photo · no video yet</span>
-        ) : null}
-      </div>
-      <div className={s.upnextRow}>
-        <span className={`m ${s.upLabel}`}>Up next</span>
-        <div className={s.upnextList}>
-        {items.map((x, i) => (
-          <button key={x.maker.id} type="button" className={i === mi ? 'g' : 'gs'} aria-pressed={i === mi} onClick={() => { setMi(i); setStep(0); }}>
-            <Img small src={x.maker.portraitUrl} alt="" className="u-avatar" /><span className={s.upName}>{x.maker.name}</span><span className={`m ${s.upCat}`}>{makerMeta(x.maker).split(' · ')[1]}</span>
-          </button>
+    <>
+      <Wash src={washItem?.products[firstAvailable(washItem.products)]?.images[0]} />
+      <div className={s.desk} ref={feed} onScroll={onScroll}>
+        {items.map((it, i) => (
+          <section key={it.maker.id} className={s.dslide} aria-label={it.maker.name}>
+            {Math.abs(i - cur) <= 1 ? (
+              <DeskSlide item={it} active={i === cur} step={stepOf(it.maker.id)} setStep={(n) => setStep(it.maker.id, n)}
+                sel={sels[it.maker.id] ?? firstAvailable(it.products)} setSel={(n) => setSels((x) => ({ ...x, [it.maker.id]: n }))} inBag={inBag} />
+            ) : <div className={s.stage} />}
+          </section>
         ))}
-        </div>
-        <span className={`m ${s.upHint}`}>← → photos · ↓ next maker</span>
-        <button type="button" className="cta" onClick={() => nextMaker(1)}>Next maker ↓</button>
+        <section className={`${s.dslide} ${s.end}`}>
+          <span className={`hand ${s.endTitle}`}>You’ve met everyone for now</span>
+          <span className="m">New makers join every week.</span>
+          <Link href="/explore" className="cta">Explore all pieces</Link>
+          <button type="button" className="sec gs" onClick={() => scrollTo(0)}>Back to the top</button>
+        </section>
       </div>
+    </>
+  );
+}
+
+function DeskSlide({ item, active, step, setStep, sel, setSel, inBag }: { item: FeedItem; active: boolean; step: number; setStep: (n: number) => void; sel: number; setSel: (n: number) => void; inBag: Set<string> }) {
+  const [playing, setPlaying] = useState(true);
+  const m = item.maker;
+  const p = item.products[Math.min(sel, item.products.length - 1)];
+  const { mk, up } = stickerPair(item, p);
+  const bg = step === 0 ? p.images[0] : m.video?.posterUrl ?? m.portraitUrl;
+  return (
+    <div className={s.stage}>
+      {step === 0 ? <Link key={`p0${p.id}`} href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.stagePhoto} u-fade-in`}><Img small src={bg} alt="" aria-hidden="true" className={s.stageBlur} /><Img src={bg} alt={`${p.title} by ${m.name}`} eager={active} className={s.stageImg} /></Link> : null}
+      {step === 1 ? <Img key={`s1${m.id}`} src={bg} alt={`${m.name} at work`} className="u-fade-in" /> : null}
+      {step < 2 ? <div className={s.stageShade} /> : null}
+      {step === 2 ? <div key={`s2${m.id}`} className={`${s.dprofile} u-step-in`} data-own-scroll><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
+      <div className={s.dbars}>{[0, 1, 2].map((i) => <span key={i} className={i <= step ? s.on : ''} />)}</div>
+      {step < 2 ? (
+        <div className={`gs ${s.dpill}`}>
+          <button type="button" className={s.dpillWho} onClick={() => setStep(2)} aria-label={`${m.name}’s profile`}>
+            <Img small src={m.portraitUrl} alt="" className="u-avatar" />
+            <span className={s.dpillText}><span className="hand">{m.name}</span><span className="m">{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
+          </button>
+          <button type="button" className={s.follow} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
+        </div>
+      ) : null}
+      <span className={`gs ${s.dstep}`}>{step + 1} / 3 · {STEP_LABEL[step]}</span>
+      {step === 0 && mk ? <span className={s.dstk}><Sticker k={mk} city={m.city} width={150} /></span> : null}
+      {step === 0 && up && !mk ? <span className={s.dstk}><Sticker k={up} width={150} tilt={-8} /></span> : null}
+      {step > 0 ? <button type="button" aria-label="Previous" className={`ic gs ${s.prev}`} onClick={() => setStep(step - 1)}><Back /></button> : null}
+      {step < 2 ? <button type="button" aria-label={step === 0 ? 'Next: her story' : 'Next: her profile'} className={`ic gs ${s.nextBtn}`} onClick={() => setStep(step + 1)}><Chevron /></button> : null}
+      {step === 0 ? <PieceBox key={`p${m.id}`} item={item} sel={sel} setSel={setSel} inBag={inBag} desktop onProfile={() => setStep(2)} /> : null}
+      {step === 1 ? (
+        m.video ? (
+          <>
+            <p className={s.dcaption}><span>“{m.video.caption}”</span></p>
+            <div className={s.dprog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing && active ? 'running' : 'paused' }} /></div>
+            <button type="button" className={`ic gs ${s.dplay}`} aria-label={playing ? 'Pause video' : 'Play video'} onClick={() => setPlaying(!playing)}>{playing ? '❚❚' : '▶'}</button>
+          </>
+        ) : <span className={`gs ${s.dnoVideo}`}>Photo · no video yet</span>
+      ) : null}
     </div>
   );
 }
@@ -272,10 +298,6 @@ export default function Discover() {
   const desktop = useIsDesktop();
   const [cur, setCur] = useState(0);
   useEffect(() => { if (me && !me.onboarded) router.replace('/welcome'); }, [me, router]);
-  useEffect(() => {
-    const home = () => feed.current?.scrollTo({ top: 0, behavior: 'smooth' });
-    window.addEventListener('u:home', home); return () => window.removeEventListener('u:home', home);
-  }, []);
   const inBag = useMemo(() => new Set((bag?.groups ?? []).flatMap((g) => g.lines.map((l) => l.productId))), [bag]);
   if (!me || !me.onboarded || !items || desktop === undefined) return <Loading />;
   if (desktop) return items.length ? <DeskStage items={items} inBag={inBag} /> : <Loading />;
