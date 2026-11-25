@@ -25,9 +25,6 @@ export default function Editor({ initial }: { initial?: Product }) {
   const [me] = useData(getMyMaker);
   const [makers] = useData(getMakers);
   const [images, setImages] = useState<string[]>(initial?.images ?? []);
-  // cover photo focal point (0 top – 1 bottom): Discover keeps this inside the safe zone (DISCOVER.md 1.5)
-  const [focusY, setFocusY] = useState<number>(initial?.imageFocus?.[0] ?? 0.5);
-  const drag = useRef<{ y: number; f: number } | null>(null);
   const [title, setTitle] = useState(initial?.title ?? '');
   const [price, setPrice] = useState(initial ? String(initial.priceCents / 100).replace('.', ',') : '');
   const [category, setCategory] = useState<Category>(initial?.category ?? 'other');
@@ -57,7 +54,7 @@ export default function Editor({ initial }: { initial?: Product }) {
     if (status === 'live' && !valid) { toast('Add a photo, a name and a price first'); return; }
     const p = await upsertProduct({
       id: initial?.id, title: title.trim() || 'Untitled piece', priceCents: euros(price), category, description: description.trim(),
-      materials: materials.split(',').map((x) => x.trim()).filter(Boolean), images, imageFocus: images.length ? [focusY, ...(initial?.imageFocus?.slice(1) ?? [])] : undefined, madeToOrder: mto, stock: mto ? 0 : n,
+      materials: materials.split(',').map((x) => x.trim()).filter(Boolean), images, madeToOrder: mto, stock: mto ? 0 : n,
       madeCount: mto ? 0 : Math.max(n, initial && !initial.madeToOrder ? initial.madeCount : n),
       shipsWithinDays: parseInt(days, 10) || 3, sizes: hasSizes && sizes.trim() ? { label: 'Size', options: sizes.split(',').map((x) => x.trim()).filter(Boolean) } : undefined,
       makerSticker: chosen === 'none' ? undefined : chosen, batchSize: chosen === 'small_batch' ? parseInt(batch, 10) || n : undefined,
@@ -146,19 +143,15 @@ export default function Editor({ initial }: { initial?: Product }) {
           {form}
           <aside className={s.preview} aria-label="Preview">
             <span className="lbl m">How it looks in Discover</span>
-            <div className={`g ${s.phone}`}
-              onPointerDown={(e) => { if (!images[0]) return; drag.current = { y: e.clientY, f: focusY }; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); }}
-              onPointerMove={(e) => { if (!drag.current) return; const h = (e.currentTarget as HTMLElement).clientHeight; setFocusY(Math.min(1, Math.max(0, drag.current.f - (e.clientY - drag.current.y) / h))); }}
-              onPointerUp={() => { drag.current = null; }}>
-              {images[0] ? <Img src={images[0]} alt="" draggable={false} className={`u-cover ${'fill'} ${s.prevPhoto}`} style={{ objectPosition: `50% ${Math.round(focusY * 100)}%` }} /> : null}
-              {images[0] ? <span className={s.safeFrame} aria-hidden="true" /> : null}
+            <div className={`g ${s.phone}`}>
+              {images[0] ? <Img src={images[0]} alt="" className={`u-cover ${'fill'}`} /> : null}
               {stickerShown ? <span className={s.prevStk}><Sticker k={stickerShown} city={me.city} width={92} /></span> : null}
               <div className={`g ${s.prevCard}`}>
                 <div className="row between"><span className="hand t-16">{title || 'Your piece'}</span><b>{euros(price) ? formatEUR(euros(price)) : '–'}</b></div>
                 <span className="m t-meta">{[one ? '1 of 1' : mto ? 'Made to order' : '', materials.split(',')[0]].filter(Boolean).join(' · ')}</span>
               </div>
             </div>
-            {images[0] ? <span className="m t-meta">Keep your piece inside the frame. Drag the photo up or down.</span> : null}
+            {images[0] ? <span className="m t-meta">Keep your piece inside the frame.</span> : null}
           </aside>
         </div>
         <div className="g u-bar">

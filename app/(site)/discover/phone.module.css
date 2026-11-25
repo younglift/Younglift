@@ -10,7 +10,14 @@
 
 /* the photo: full width, centred in the safe zone, fading into its own blurred copy at the bottom */
 .under{position:absolute;inset:-40px;width:calc(100% + 80px);max-width:none;height:calc(100% + 80px);object-fit:cover;filter:blur(28px) brightness(.7)}
-.hero{position:absolute;left:0;top:calc(var(--u-safe-shift) + var(--t) / 2);width:100%;max-width:none;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
+/* safe zone (DISCOVER.md 1.5, FIXES 10.2): the largest 4:5 box that fits between the maker row and the bar */
+.zone{position:absolute;left:0;right:0;top:calc(var(--u-safe-top) + var(--t));bottom:calc(var(--u-safe-bottom) + var(--b));display:grid;place-items:center;container-type:size}
+.hero{width:min(100cqw,100cqh * .8);height:auto;max-width:none;aspect-ratio:4/5;object-fit:cover;display:block;
+  /* fade into the blur over 24px on the edges that do not touch the screen edge */
+  -webkit-mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);
+  mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+@container (max-aspect-ratio:4/5){ .hero{-webkit-mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent)} }
+@container (min-aspect-ratio:4/5){ .hero{-webkit-mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-composite:intersect} }
 .fill{position:absolute;inset:0;width:100%;max-width:none;height:100%;object-fit:cover}
 .swap{animation:swap 250ms var(--u-ease) both}
 @keyframes swap{from{opacity:0}to{opacity:1}}
@@ -19,11 +26,14 @@
 .shadeStory{position:absolute;left:0;right:0;bottom:0;height:calc(380px + var(--b));pointer-events:none;background:var(--u-scrim-bottom)}
 
 /* top: centred tabs at 16, maker row 12 below */
-.top{position:absolute;left:16px;right:16px;top:calc(16px + var(--t));z-index:7;display:flex;flex-direction:column;gap:12px}
+.top{position:absolute;left:16px;right:16px;top:calc(16px + var(--t));z-index:30;display:flex;flex-direction:column;gap:12px}
 .tabs{display:flex;gap:20px;justify-content:center}
+.tabs{position:relative}
 .tabs button{position:relative;background:none;border:0;padding:0 0 4px;font:500 12px/1 var(--u-ui);color:var(--u-mute);border-bottom:2px solid transparent;cursor:pointer}
 .tabs button::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
-.tabs .tabOn{color:var(--u-ink);font-weight:600;border-bottom-color:var(--u-accent)}
+.tabs .tabOn{color:var(--u-ink);font-weight:600}
+.tabLine{position:absolute;left:0;bottom:0;height:2px;width:0;border-radius:1px;background:var(--u-accent);pointer-events:none}  /* glides with the finger (FIXES 10.1) */
+.dim{position:absolute;inset:0;background:var(--u-scrim);opacity:0;pointer-events:none;z-index:20}
 .who{display:flex;align-items:center;gap:10px}
 .whoBtn{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;color:var(--u-ink);text-align:left;cursor:pointer;min-height:44px}
 .av40{width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center 20%;flex-shrink:0}
@@ -63,7 +73,7 @@
 
 /* 3 · all about her */
 .prof{position:absolute;inset:0;overflow-y:auto;padding:0 16px;scrollbar-width:none;overscroll-behavior-y:contain}
-.profTop{padding-top:calc(16px + var(--t))}
+.profTop{height:calc(16px + 16px + var(--t))}  /* room for the fixed tabs */
 .aboutHead{display:flex;align-items:center;gap:14px;margin-top:18px}
 .av72{width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:center 20%;flex-shrink:0}
 .name24{display:block;font-size:24px;line-height:1.3}
@@ -108,5 +118,5 @@
 .av32{width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:center 20%;flex-shrink:0}
 
 .end{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 16px;text-align:center}
-.endTitle{font-size:22px}
+.endTitle{font-size:22px;line-height:1.15}  /* FIXES 10.4: only the gap between the title lines */
 @media (prefers-reduced-motion:reduce){.swap,.page{animation:none;transition:none}}

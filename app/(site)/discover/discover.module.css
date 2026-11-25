@@ -33,7 +33,7 @@
 .miniPh img{width:52px;height:52px;border-radius:var(--u-r-chip);object-fit:cover;display:block}
 .miniText{flex:1;min-width:0;display:flex;flex-direction:column}
 .miniPrice{font:600 15px var(--u-ui)}
-.endTitle{font-size:22px}
+.endTitle{font-size:22px;line-height:1.15}  /* FIXES 10.4: only the gap between the title lines */
 .moreHead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font:600 12px var(--u-ui)}
 .thumbs{display:flex;gap:10px}
 .thumb{padding:0;border:0;background:transparent;color:var(--u-ink);display:flex;flex-direction:column;gap:4px;cursor:pointer;text-align:left;flex-shrink:0}

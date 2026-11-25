@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import type { Maker, Product } from '@/lib/types';
-import { CATEGORY_LABEL, getPosts, getReviews, replyLine, toggleFollow } from '@/lib/data';
+import { CATEGORY_LABEL, getPosts, getReviews, replyLine } from '@/lib/data';
 import { formatEUR, shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
-import { ProductCard } from './Bits';
+import { FollowButton, ProductCard } from './Bits';
 import s from './MakerProfile.module.css';
 import Img from '@/components/u/Img';
 
@@ -39,7 +39,7 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
       </div>
       <p className={s.bio}>{m.bio}</p>
       <div className={s.acts}>
-        <button type="button" className="cta" aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
+        <FollowButton m={m} className="cta" />
         <Link href={`/messages/${m.slug}`} className="sec gs">Message</Link>
       </div>
       {m.customRequestsOpen && desktop ? <Link href={`/m/${m.slug}/request`} className="sec w-full mt-8">Ask for a custom piece</Link> : null}
