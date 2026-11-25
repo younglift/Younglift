@@ -153,6 +153,39 @@ Spec: `docs/design/screens/03-discover-v3.dc.html`. References (real Rock Salt):
 - [x] **9.1** Build it. Data from `@/lib/data` (pieces of the maker, first = the one Discover picked). Replaces the phone feed in `app/(site)/page.tsx`; desktop stays P7.
 - [x] **9.2** Proof: screenshots at 390×844 and iPhone Safari next to the four references; every left edge at x=16 and right edge at x=374 (qa: no element between 0–15 or 375–390 except full-bleed photos); thumbs row and bar the same width; tap a thumb → everything switches; details open/close returns to the same piece and photo; sideways snaps per panel; up/down snaps per maker.
 
+## P10. Phone Discover v3 after Matas's iPhone test (Matas, 2026-11-25 17:00)
+
+Matas tested P9 on his iPhone (Safari, toolbar shown). Everything else is fixed; these four are left. Full values are also in `docs/design/DISCOVER.md` (1.2, 1.4, 1.5).
+
+- [ ] **10.1 Sideways swipe feels like jumping to another page.** Cause: each panel (Pieces / Her story / All about her) is its own full screen with its own photo, its own tabs and its own maker row (`phone_pan` inside `phone_lay`), so mid-swipe you see two different screens with a hard seam and the tabs + Follow pill slide away and duplicate.
+  Fix:
+  - Tabs, maker row and nav = one fixed layer per maker above the panels. Only the panel content moves.
+  - Tab underline x/width interpolated from `scrollLeft / panelWidth` on every frame.
+  - Parallax: leaving panel at 0.3× speed + black overlay 0 → .4; incoming panel has `box-shadow: -12px 0 24px rgb(0 0 0 / .35)` on its leading edge.
+  - Keep native snap (`x mandatory`, `snap-stop: always`). `transform`/`opacity` only. Reduced motion: plain snap.
+  Proof: screen-record a slow swipe on iPhone Safari; tabs, avatar, name and Follow do not move at any frame; underline glides with the finger; no hard vertical edge between two photos.
+- [ ] **10.2 Product still outside the safe zone** (granny bag and flower hood go under the bar; necklace beads touch it). Cause: the photo is `cover` over the full screen height, so a 4:5 photo is scaled ~1.7× and big pieces fill the whole screen.
+  Fix (replaces the −79px shift and `focusY`):
+  - Zone box: `position:absolute; top:var(--u-safe-top); bottom:var(--u-safe-bottom); left:0; right:0; display:grid; place-items:center`.
+  - Sharp photo inside it: `width: min(100%, (zoneHeight) * .8); aspect-ratio: 4/5; object-fit: cover`, where zoneHeight = panel height − safe-top − safe-bottom (390×844 → 390×488 at y 100–588).
+  - Behind it: the same photo `cover` over the whole panel, `filter: blur(28px) brightness(.7)`, `inset:-40px`.
+  - Sharp photo fades into the blur over 24px on edges that do not touch the screen edge (`mask-image`).
+  - Remove the drag-to-frame / `focusY` step from Studio; keep the copy "Keep your piece inside the frame." over a plain 4:5 crop.
+  Proof: iPhone Safari with toolbar shown and hidden, every maker: the whole piece is visible between the maker row and the bar; nothing of it under the bar, thumbs or nav.
+- [ ] **10.3 Cut-off dark rectangles under stickers.** Cause (checked live): `filter: drop-shadow(0 6px 10px rgba(0,0,0,.35))` is on the sticker `<img>`; iPhone Safari clips the filter to the img box (`overflow: clip` on replaced elements), leaving a hard-edged dark rectangle.
+  Fix: move the shadow to the wrapper span and make it smaller: `filter: drop-shadow(0 2px 6px rgb(0 0 0 / .25))`. Same for every sticker on the site (Discover, product page, cards, desktop).
+  Proof: zoom on iPhone Safari around "1 of 1" and "New maker": soft shadow follows the sticker shape, no straight edges.
+- [ ] **10.4 End screen "You've met everyone for now" sits too low and the title breaks badly** ("…FOR" / far below "NOW"). Cause: block centred on the whole screen, Rock Salt default line-height is huge.
+  Fix, top to bottom:
+  - Block centred between the top of the screen and the top of the nav, at 45% of that height (optical centre).
+  - Row of the makers you just met: avatars 40px, overlap −8px, 2px cream ring, max 6 + "+N".
+  - 16px → title Rock Salt 26px, line-height 1.3, `text-wrap: balance` → "You've met everyone / for now".
+  - 8px → "New makers join every week." Inter 14px, cream 70%.
+  - 24px → Explore all pieces (primary 48px) → 12px → Back to the top (secondary 48px).
+  Proof: 390×844 and iPhone Safari screenshot: two balanced title lines with normal spacing, block visibly a bit above the middle of the free area.
+
+Order: 10.3 (quick) → 10.2 → 10.4 → 10.1. One PR, QUALITY loop, then ask Matas to test on his iPhone again.
+
 ---
 
 ## Why it ended up like this (so it doesn't happen again)
