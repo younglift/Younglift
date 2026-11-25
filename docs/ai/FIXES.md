@@ -73,6 +73,22 @@ How to work through it: one group per PR, highest first. After each fix run the 
   Fix: `lib/data/mock.ts` hold kurti kiekvienam ne made-to-order kūriniui su `qty`; laisvas kiekis = stock − kitų holds; `components/u/BagView.tsx` tekstai („When you add a piece, we hold it for you for 15 minutes.“ tuščiame krepšelyje) „Your pieces are held for …“ ir „Held for you · mm:ss“ prie kiekvienos rezervuotos eilutės; laikmatis checkout'e; Supabase `cart_holds.qty`.
   Proof: įdėk Morning cup (ne 1 of 1) → krepšelyje „Held for you“; antroje naršyklėje to paties kūrinio laisvas kiekis sumažėjo; made-to-order žiedas be laikmačio.
 
+## P6. Matas's phone test, 2026-11-25 (iPhone, Safari)
+
+Screenshots were taken on an iPhone in Safari with the toolbar at the bottom. Test every item there too (or Playwright `devices['iPhone 15 Pro']`), not only at 390×844 in desktop Chrome.
+
+- [ ] **6.1 Background stops short.** On Thanks, Checkout, Bag, Account, Following, Explore results the lighter blurred photo is a rectangle that ends ~85% across and above the bottom bar, so the right edge and bottom are a flat darker band ("cut corner"). Started after ce532bd (baked wash). Likely causes: `.u-wash` rendered inside `.u-page` (`.u-page > .u-wash`) under an ancestor with a transform/animation (`.u-step-in`, page transitions), so `position:fixed` is relative to that box; or the baked `/img/w/` copy box not covering. Fix: render `Wash` once at layout level, outside any transformed element; image `inset:-60px` with `object-fit:cover`; height `100lvh` so it also covers under Safari's toolbar.
+  Proof: iPhone Safari, toolbar shown and hidden, scroll to bottom: the photo tint covers the whole screen edge to edge on every route.
+- [ ] **6.2 Following: selected maker ring is cut at the top.** The scroll row clips the 3px ring + outline. Fix: vertical padding on the row (≥ 6px) or draw the ring inside the circle (`box-shadow: inset`). Also check "All" ring.
+- [ ] **6.3 Saved boards look broken.** Cover photo fills only part of the tile, the selected yellow border is clipped, the "Board name" input's top border is clipped. Rebuild boards like Pinterest: tile = 2×2 collage of the first 4 photos (1 photo = full, 2 = halves, 3 = one big + two small), `object-fit:cover`, rounded 20px, name under it (600 15px), "N pieces" meta under that; selected = butter outline drawn with `outline-offset:-3px` so nothing clips; "New board" opens a sheet with the name field, not an inline input in the scroll row.
+  Proof: screenshot of Saved with 0, 1, 2, 3, 4+ pieces per board, nothing clipped.
+- [ ] **6.4 "Next maker" bar at the end of a maker** (`components/u/MakerProfile.tsx` ~118): label and name run together ("Next makerOna"), Rock Salt wraps to 2 lines and the block is not centred. Fix: two lines stacked: "Next maker" (meta, mute) above, name only in Rock Salt 18px one line with ellipsis; category goes to the meta line ("Next maker · Art & prints"); avatar 44px, "Scroll ↓" right, everything vertically centred, bar min-height 72px.
+- [ ] **6.5 The floating "L" profile circle** sits top-right over every page and overlaps headers (Bag, Saved, Following, Explore). Pick one place: in the page header row (same 44px as the back button, aligned with the title), never floating over content.
+- [ ] **6.6 Content hidden behind bottom bars.** Checkout: "Pay 132,90€" bar covers the name/phone fields and the gift section. Account: review stars sit under the nav. Fix: page bottom padding = bar height + 12px + safe area (QUALITY 2.1), and the field in focus scrolls above the bar.
+- [ ] **6.7 Bag copy:** "Hold ended, still available ·" ends with a dangling dot. Should be "Hold ended · still available" and the "Hold again" link on the same line if it fits.
+- [ ] **6.8 Thin strip of the next panel** shows on the right edge of Discover on phone (~2px). Panels must be exactly 100% wide with no gap/rounding (`width:100%` of the scroller, not `100vw`).
+- [ ] **6.9 Low-resolution photos look soft** (`public/img/pink-necklace.jpg` 335px, `morning-cup.jpg` 406, `twist-vase.jpg` 440, `flower-hood.jpg` 472, `crochet-detail(s).jpg` ~380). Matas's side will replace them with ≥1200px versions; do not upscale in code. Keep the same file names.
+
 ---
 
 ## Why it ended up like this (so it doesn't happen again)
