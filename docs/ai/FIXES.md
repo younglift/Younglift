@@ -179,7 +179,15 @@ Matas tested P9 on his iPhone (Safari, toolbar shown). Everything else is fixed;
   Fix: title `line-height: 1.15` (nothing else changes; no new elements, no moving the block).
   Proof: iPhone Safari screenshot: "now" sits right under the first line, the gap between the lines looks like normal text spacing.
 
-Order: 10.3 (quick) → 10.2 → 10.4 → 10.1. One PR, QUALITY loop, then ask Matas to test on his iPhone again.
+- [ ] **10.5 Tapping Follow / Following changes the screen.** Matas: "tap Following and the screens change". Follow must only switch the button and update who she follows; it must not touch Discover or anything else.
+  Cause (in the code): `getFeed()` in `lib/data/mock.ts` sorts makers with followed ones first (`score = follows.includes(id)`), and `useData` reloads the feed on every data change. So `toggleFollow` → feed reloads → order changes → a different maker sits under your finger, panels and photos remount.
+  Fix:
+  - Discover order is decided **once** when Discover opens and stays frozen until the page is reloaded. Follow/unfollow, save, add to bag never reorder or remount the feed. (Keep a ref with the first list of maker ids; later updates are mapped onto that order by id.) Same in `getFeed` for Supabase later: following only affects the order of the *next* session.
+  - Follow is optimistic: only the button label (Follow ↔ Following, 150ms cross-fade) and the maker's follower count change. Same maker, same panel (Pieces / Her story / All about her), same piece, same photo, same scroll position. The button has a fixed width (the width of "Following"), label centred, so nothing next to it moves.
+  - The only other places that change: `/following` (list of makers she follows) and the follower count on her profile. Same behaviour on desktop Discover, `/m/[slug]` and All about her.
+  Proof: on iPhone Safari, scroll to the 3rd maker, open Her story, tap Following → Follow → Following: nothing on screen moves except the button text; you are still on the same maker and panel. `/following` shows the change.
+
+Order: 10.5 + 10.3 (quick) → 10.2 → 10.4 → 10.1. One PR, QUALITY loop, then ask Matas to test on his iPhone again.
 
 ---
 
