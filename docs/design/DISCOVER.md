@@ -37,6 +37,7 @@ Spec (clickable): `screens/03-discover-v3.dc.html`. References use the real Rock
 - The tab underline follows the finger live: its x and width are interpolated from `scrollLeft / panelWidth` on every scroll frame, not set when the snap ends.
 - Parallax: the panel being left moves at 0.3× the finger and darkens to 60% (black overlay 0 → .4). The incoming panel slides over it with a shadow on its leading edge (`-12px 0 24px rgb(0 0 0 / .35)`). No hard seam between two different photos.
 - Snap stays native CSS (`scroll-snap-type: x mandatory`, `scroll-snap-stop: always`) so momentum feels like iOS. Parallax only with `transform`/`opacity`, driven by scroll (scroll-driven animations or one rAF reading `scrollLeft`). Reduced motion: no parallax, no darkening, same snap.
+- **P11.2 (22:30): it must always land on a panel.** Matas: "you can stop it in the middle, it moves only as far as your finger, laggy". Whatever was added for P10.1 must not take over the scroll: no JS writing `scrollLeft`/`transform` on the scroller while the finger is down, no `scroll-snap-type: none` or `proximity`. Release anywhere → it finishes the move to the nearest panel (or the next one if the flick went that way). No panel may ever rest half on screen.
 
 Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories / Tinder (tap to browse), Depop/Vinted ("more from this seller" right next to the item), NN/g bottom-sheet guidance (sheets short, ✕ + back close them, never stack).
 
@@ -64,8 +65,9 @@ Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories
 
 - The product must never sit under the bar/thumbs (bottom) or the tabs/maker row (top).
 - Tokens in `app/globals.css`: `--u-safe-top:104px`, `--u-safe-bottom:262px`, 16px sides → zone x 16–374, y 104–582.
-- **Changed 2026-11-25 17:00 (Matas, after the iPhone test, FIXES P10.2):** the whole 4:5 photo always sits inside the zone, never cropped by `cover`. Sharp photo = the largest 4:5 box that fits in the zone (`width: min(100%, zoneHeight × 0.8)`, `aspect-ratio: 4/5`), centred in it. On a 390×844 screen that is 390×488 at y 100–588, so it looks full width. Everything around it (top, bottom, and the sides when Safari's toolbar makes the zone shorter) is the same photo, `cover`, blurred 28px, brightness .7. The sharp photo fades into it over 24px on every edge that does not touch the screen edge (`mask-image`).
-- `focusY` and the drag-to-frame step in Studio are no longer needed. Studio "Add piece" just shows the 4:5 crop with the copy "Keep your piece inside the frame."
+- **Changed again 2026-11-25 22:30 (Matas, FIXES P11.1). This is the rule now; P10.2 is cancelled.** The photo is **full screen, never shrunk, never framed by a blur**, exactly like the reference above. The product lands in the safe zone because the photo itself is made for the screen: every piece has a **tall 9:16 hero** (`public/img/tall/<name>.jpg`, same photo with more background above and below) for the phone and a **wide 4:3 hero** (`public/img/wide/<name>.jpg`) for the desktop.
+- Phone placement (no blur layer at all): `object-fit: cover; position:absolute; left:0; width:100%; top: calc(var(--u-safe-top) - var(--u-safe-bottom)); height: calc(100% + var(--u-safe-bottom) - var(--u-safe-top))`. That puts the photo centre at the centre of the safe zone (y 343 on 390×844) on every screen height, with photo above and below to fill the whole screen.
+- Studio later (Supabase): when a maker uploads a photo, the server makes the tall and wide versions (AI outpaint, same as these) and shows them for approval with the safe-zone frame. Until then the mock uses the files from `scripts/fetch-hero-photos.mjs`. Pieces without a tall/wide hero use the normal photo with the same placement.
 - Any future screen with UI over a product photo follows the same rule. If you move an overlay, recompute the tokens so the zone ends 8px before it.
 
 ---
@@ -79,7 +81,8 @@ Spec: `screens/desktop/03-discover.dc.html`.
 - Left: **one big photo of the current piece only**, cover, radius `--u-r-card`. Nothing over it except one sticker, ← → buttons and dots for **this piece's photos**.
 - Right: 400px glass card: maker row (avatar 52, name Rock Salt 22, city · category · rating, Follow) → title (Rock Salt 26) + price → meta → Add to bag + save → "Watch Inez at work" video row → "More from Inez" (4 thumbs; click = becomes the big piece) + "Her profile →" → "Next maker · Ceramics / Mara · Scroll ↓" pinned at the bottom.
 - Wheel / ↓ = next maker. ← → keys = this piece's photos.
-- **Built 2026-11-25 (P7) with free page scrolling** (Justinas): the page scrolls like a shop, one maker per screen height, no snap. "Next maker · Scroll ↓" scrolls to her. Change only if both founders decide.
+- **Changed 2026-11-25 22:34 (Matas, FIXES P11.3): one maker per scroll on desktop too.** Not free scrolling like a shop: a wheel flick, trackpad swipe, ↓ or PageDown moves exactly one maker, and the page always stops with one maker filling the screen. This replaces Justinas's free scrolling from P7 (Matas asked for it; tell Justinas).
+- Desktop photo: the wide 4:3 hero, `object-fit: cover`, centred. The piece is never cut by the frame (Matas's screenshot: the granny bag was cropped top and bottom).
 - **Removed on desktop:** the 3-panel sideways strip (piece → video → profile) and the glass card floating over the photo. Note: commit 567a6bd (11:37) sped up the old 3-step arrows; that strip goes away with P7.
 
 ---
