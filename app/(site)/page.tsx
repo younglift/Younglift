@@ -235,13 +235,33 @@ function DeskSlide({ item, active, step, setStep, sel, setSel, inBag }: { item: 
   const m = item.maker;
   const p = item.products[Math.min(sel, item.products.length - 1)];
   const { mk, up } = stickerPair(item, p);
-  const bg = step === 0 ? p.images[0] : m.video?.posterUrl ?? m.portraitUrl;
+  const pic = p.images[0];
+  const story = m.video?.posterUrl ?? m.portraitUrl;
+  // All three steps stay in the page (photos already loaded and decoded), so › ‹ switch instantly instead of
+  // waiting for a photo to download. Her profile is added once this maker is on screen.
+  const [profileReady, setProfileReady] = useState(false);
+  useEffect(() => {
+    if (step === 2) { setProfileReady(true); return; }
+    if (!active || profileReady) return;
+    // Wait until scrolling has stopped and the browser is idle, so building her profile never stutters the scroll.
+    let idle = 0, t = 0;
+    const arm = () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(() => {
+        const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+        idle = ric ? ric(() => setProfileReady(true), { timeout: 1500 }) : window.setTimeout(() => setProfileReady(true), 0);
+      }, 600);
+    };
+    arm(); window.addEventListener('scroll', arm, { passive: true });   // restart the wait on every scroll
+    return () => { window.clearTimeout(t); window.removeEventListener('scroll', arm); (window as Window & { cancelIdleCallback?: (n: number) => void }).cancelIdleCallback?.(idle); };
+  }, [active, step, profileReady]);
+  const layer = (n: number, anim: string) => (step === n ? anim : s.off);
   return (
     <div className={s.stage}>
-      {step === 0 ? <Link key={`p0${p.id}`} href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={`${s.stagePhoto} u-fade-in`}><img src={washSrc(bg)} alt="" aria-hidden="true" decoding="async" className={`${s.stageBlur} ${washSrc(bg).startsWith('/img/w/') ? s.baked : ''}`} /><Img src={bg} alt={`${p.title} by ${m.name}`} eager={active} className={s.stageImg} /></Link> : null}
-      {step === 1 ? <Img key={`s1${m.id}`} src={bg} alt={`${m.name} at work`} className="u-fade-in" /> : null}
+      <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} aria-hidden={step !== 0} tabIndex={step === 0 ? 0 : -1} className={`${s.stagePhoto} ${layer(0, 'u-fade-in')}`}><img key={washSrc(pic)} src={washSrc(pic)} alt="" aria-hidden="true" decoding="async" className={`${s.stageBlur} ${washSrc(pic).startsWith('/img/w/') ? s.baked : ''}`} /><Img key={pic} src={pic} alt={`${p.title} by ${m.name}`} eager={active} className={`${s.stageImg} u-fade-in`} /></Link>
+      <Img src={story} alt={`${m.name} at work`} aria-hidden={step !== 1} className={`${s.storyImg} ${layer(1, 'u-fade-in')}`} />
       {step < 2 ? <div className={s.stageShade} /> : null}
-      {step === 2 ? <div key={`s2${m.id}`} className={`${s.dprofile} u-step-in`} data-own-scroll><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
+      {profileReady ? <div className={`${s.dprofile} ${layer(2, 'u-step-in')}`} aria-hidden={step !== 2} data-own-scroll><MakerProfile maker={m} products={item.products} desktop onStory={() => setStep(1)} /></div> : null}
       <div className={s.dbars}>{[0, 1, 2].map((i) => <span key={i} className={i <= step ? s.on : ''} />)}</div>
       {step < 2 ? (
         <div className={`gs ${s.dpill}`}>
