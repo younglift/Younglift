@@ -37,6 +37,9 @@
   --u-online:#4fe061;                               /* "Active now" dot */
   --u-accent-soft:rgba(243,210,122,.16);            /* selected sticker tile */
   --u-sticker-shadow:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+  /* Discover v3 product safe zone (Matas 2026-11-25, DISCOVER.md 1.5): the piece stays between these */
+  --u-safe-top:104px; --u-safe-bottom:262px; --u-safe-shift:calc((var(--u-safe-top) - var(--u-safe-bottom)) / 2);
+  --u-panel:#30231a;                                /* solid dark panel: All about her, piece details (03-discover-v3) */
   /* motion (Matas FIXES 3.1): use only these */
   --u-dur-press:120ms; --u-dur-hover:150ms; --u-dur-ui:180ms; --u-dur-panel:260ms; --u-dur-step:300ms;
   --u-ease:cubic-bezier(.2,.8,.2,1); --u-ease-out:ease-in;

@@ -150,8 +150,8 @@ Spec: `docs/design/screens/03-discover-v3.dc.html`. References (real Rock Salt):
   - Studio "Add piece" photo step: show this dashed safe-zone frame over the preview and let the maker drag the photo to set a focal point (`images[].focusY`, 0–1, default .5). Discover uses `focusY` instead of the plain centre when present. Copy under the preview: "Keep your piece inside the frame."
   - Same rule for any future screen that puts UI over a product photo: nothing important of the product outside `--u-safe-*`.
 
-- [ ] **9.1** Build it. Data from `@/lib/data` (pieces of the maker, first = the one Discover picked). Replaces the phone feed in `app/(site)/page.tsx`; desktop stays P7.
-- [ ] **9.2** Proof: screenshots at 390×844 and iPhone Safari next to the four references; every left edge at x=16 and right edge at x=374 (qa: no element between 0–15 or 375–390 except full-bleed photos); thumbs row and bar the same width; tap a thumb → everything switches; details open/close returns to the same piece and photo; sideways snaps per panel; up/down snaps per maker.
+- [x] **9.1** Build it. Data from `@/lib/data` (pieces of the maker, first = the one Discover picked). Replaces the phone feed in `app/(site)/page.tsx`; desktop stays P7.
+- [x] **9.2** Proof: screenshots at 390×844 and iPhone Safari next to the four references; every left edge at x=16 and right edge at x=374 (qa: no element between 0–15 or 375–390 except full-bleed photos); thumbs row and bar the same width; tap a thumb → everything switches; details open/close returns to the same piece and photo; sideways snaps per panel; up/down snaps per maker.
 
 ---
 
