@@ -97,7 +97,7 @@ Screenshots were taken on an iPhone in Safari with the toolbar at the bottom. Te
 
 ## P7. Desktop Discover v2 (Matas decided 2026-11-25)
 
-- [ ] **7.1 Rebuild desktop Discover (≥ 820px) as "one piece".** Spec: `docs/design/screens/desktop/03-discover.dc.html`, reference `docs/design/screens/png/desktop-Discover.jpg` (rendered with real Rock Salt).
+- [x] **7.1 Rebuild desktop Discover (≥ 820px) as "one piece".** Spec: `docs/design/screens/desktop/03-discover.dc.html`, reference `docs/design/screens/png/desktop-Discover.jpg` (rendered with real Rock Salt).
   - Left: one big photo of the current piece only, `object-fit:cover`, radius `--u-r-card`, no glass over it except the sticker (one), ← → buttons and dots for **this piece's photos only**.
   - Right: 400px `.g` card: maker row (avatar 52, name Rock Salt 22, city · category · rating, Follow) → divider → title (Rock Salt 26) + price → meta → Add to bag + save → "Watch Inez at work" video row (92×60 thumb, opens her story) → "More from Inez" 4 thumbs (click = that piece becomes the big one) + "Her profile →" → spacer → "Next maker · Ceramics / Mara · Scroll ↓" pinned at the bottom.
   - Wheel / ↓ / swipe = next maker (as now). ← → keys = this piece's photos.
