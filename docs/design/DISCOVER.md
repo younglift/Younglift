@@ -72,6 +72,7 @@ Spec: `screens/desktop/03-discover.dc.html`.
 - Left: **one big photo of the current piece only**, cover, radius `--u-r-card`. Nothing over it except one sticker, ← → buttons and dots for **this piece's photos**.
 - Right: 400px glass card: maker row (avatar 52, name Rock Salt 22, city · category · rating, Follow) → title (Rock Salt 26) + price → meta → Add to bag + save → "Watch Inez at work" video row → "More from Inez" (4 thumbs; click = becomes the big piece) + "Her profile →" → "Next maker · Ceramics / Mara · Scroll ↓" pinned at the bottom.
 - Wheel / ↓ = next maker. ← → keys = this piece's photos.
+- **Built 2026-11-25 (P7) with free page scrolling** (Justinas): the page scrolls like a shop, one maker per screen height, no snap. "Next maker · Scroll ↓" scrolls to her. Change only if both founders decide.
 - **Removed on desktop:** the 3-panel sideways strip (piece → video → profile) and the glass card floating over the photo. Note: commit 567a6bd (11:37) sped up the old 3-step arrows; that strip goes away with P7.
 
 ---
