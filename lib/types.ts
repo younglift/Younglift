@@ -43,6 +43,7 @@ export type Product = {
   id: string; makerId: string; title: string; description: string
   subtitle?: string          // short line, e.g. "Set of 3", "Oat glaze"
   priceCents: number; currency: 'EUR'; images: string[]
+  hero?: { tall: string; wide: string }   // Discover photos made for the screen: tall 9:16 phone, wide 4:3 desktop (DISCOVER.md 1.5)
   category: Category; kind?: string   // e.g. Rings, Necklaces (Explore sub-filter)
   materials: string[]
   sizes?: { label: string; options: string[]; unavailable?: string[] }

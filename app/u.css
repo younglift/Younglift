@@ -208,3 +208,5 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top));scroll-padding-bot
 .u-follow{display:inline-grid;place-items:center}
 .u-follow-l{grid-area:1/1;transition:opacity var(--u-dur-hover) var(--u-ease)}
 .u-follow-l[aria-hidden="true"]{opacity:0}
+/* desktop Discover (FIXES 11.3): the page stops on one maker at a time; 100px = the glass header + gap */
+html.u-snap-y{scroll-snap-type:y mandatory;scroll-padding-top:100px}

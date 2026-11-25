@@ -9,6 +9,12 @@ const DAY = 864e5;
 export const ago = (days: number, now = Date.now()) => new Date(now - days * DAY).toISOString();
 export const ahead = (days: number, now = Date.now()) => new Date(now + days * DAY).toISOString();
 const img = (n: string) => `/img/${n}.jpg`;
+/** Discover heroes from scripts/fetch-hero-photos.mjs (FIXES P11): named after the piece's first image. */
+const HEROES = new Set(['bracelet', 'candle', 'cardigan', 'crochet-bag', 'dish', 'earrings', 'flow-ring', 'flower-hood', 'fold-ring', 'morning-cup', 'pink-necklace', 'plates', 'print', 'rings-set', 'ripple-bowl', 'soft-loop', 'studio-table', 'twist-vase', 'wallet']);
+const heroFor = (first: string) => {
+  const n = first.replace(/^\/img\//, '').replace(/\.jpg$/, '');
+  return HEROES.has(n) ? { tall: `/img/tall/${n}.jpg`, wide: `/img/wide/${n}.jpg` } : undefined;
+};
 
 export function seedMakers(): Maker[] {
   return [
@@ -78,6 +84,7 @@ function piece(p: P): Product {
     shipsWithinDays: 1, madeToOrder, madeCount, stock,
     oneOfAKind: !madeToOrder && madeCount === 1,
     sold: !madeToOrder && stock <= 0,
+    hero: heroFor(p.images[0]),
     ...p,
   } as Product;
 }
