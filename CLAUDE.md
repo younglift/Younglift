@@ -29,6 +29,7 @@ Current look: **direction 07 "Tamsus stiklas" (decided 2026-11-23, buyer journey
 ## Quality: check your own work
 - Before saying any UI work is done, follow `docs/ai/QUALITY.md`: run `node scripts/qa.mjs`, look at your screenshots next to the references in `docs/design/screens/png/`, use the screen by hand at 390 and 1440, fix and repeat until clean.
 - Open UI problems and their fixes: `docs/ai/FIXES.md`.
+- New rules from Matas (Discover v3 logic and gestures, the bar, safe zone, centring, desktop Discover): `docs/design/DISCOVER.md`. Read it before touching Discover, buttons, icons or nav.
 
 ## Working together
 - Work on a branch (`git checkout -b name/feature`), open a pull request, merge to `main`.
