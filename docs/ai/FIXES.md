@@ -89,6 +89,15 @@ Screenshots were taken on an iPhone in Safari with the toolbar at the bottom. Te
 - [ ] **6.8 Thin strip of the next panel** shows on the right edge of Discover on phone (~2px). Panels must be exactly 100% wide with no gap/rounding (`width:100%` of the scroller, not `100vw`).
 - [ ] **6.9 Low-resolution photos look soft** (`public/img/pink-necklace.jpg` 335px, `morning-cup.jpg` 406, `twist-vase.jpg` 440, `flower-hood.jpg` 472, `crochet-detail(s).jpg` ~380). Matas's side will replace them with ≥1200px versions; do not upscale in code. Keep the same file names.
 
+## P7. Desktop Discover v2 (Matas decided 2026-11-25)
+
+- [ ] **7.1 Rebuild desktop Discover (≥ 820px) as "one piece".** Spec: `docs/design/screens/desktop/03-discover.dc.html`, reference `docs/design/screens/png/desktop-Discover.jpg` (rendered with real Rock Salt).
+  - Left: one big photo of the current piece only, `object-fit:cover`, radius `--u-r-card`, no glass over it except the sticker (one), ← → buttons and dots for **this piece's photos only**.
+  - Right: 400px `.g` card: maker row (avatar 52, name Rock Salt 22, city · category · rating, Follow) → divider → title (Rock Salt 26) + price → meta → Add to bag + save → "Watch Inez at work" video row (92×60 thumb, opens her story) → "More from Inez" 4 thumbs (click = that piece becomes the big one) + "Her profile →" → spacer → "Next maker · Ceramics / Mara · Scroll ↓" pinned at the bottom.
+  - Wheel / ↓ / swipe = next maker (as now). ← → keys = this piece's photos.
+  - Removed on desktop: the 3-panel sideways strip (piece → video → profile) and the floating glass card over the photo. Phone stays as it is until the phone navigation decision.
+  - Proof: qa at 1440×900 and 1280×800 next to the reference; nothing covers the product photo; title and maker name in Rock Salt.
+
 ---
 
 ## Why it ended up like this (so it doesn't happen again)
