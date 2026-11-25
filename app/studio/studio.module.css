@@ -55,7 +55,7 @@
 @media (min-width:820px){
   .editor{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
   .preview{display:flex;flex-direction:column;gap:10px;position:sticky;top:32px}
-  .phone{border-radius:32px;overflow:hidden;aspect-ratio:390/700;position:relative}
+  .phone{border-radius:32px;overflow:hidden;aspect-ratio:390/844;position:relative;max-height:calc(100vh - 220px)}
   .stats{grid-template-columns:repeat(4,1fr)}
 }
 .slideRow{border-radius:var(--u-r-tile);padding:4px 4px 4px 16px}
@@ -159,3 +159,6 @@
   .about > :nth-child(2){grid-column:2}
   .about > :nth-child(3){grid-column:3}
 }
+/* safe zone in the Discover preview (DISCOVER.md 1.5): x 16–374, y 104–582 of a 390×844 phone */
+.safeFrame{position:absolute;left:calc(16 / 390 * 100%);right:calc(16 / 390 * 100%);top:calc(104 / 844 * 100%);bottom:calc(262 / 844 * 100%);border:1.5px dashed var(--u-accent);border-radius:12px;pointer-events:none;z-index:2}
+.prevPhoto{cursor:grab;touch-action:none;user-select:none}
