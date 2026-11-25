@@ -55,7 +55,7 @@ Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories
 - **Bar ("the bubble"):** glass (`.g`), radius 22, height 64, padding 8 8 8 16. Line 1: title in Rock Salt 16, **always the full title, never an ellipsis**. Line 2: "68€ · Details ›" (price 600 14px, rest 12px). Right: Add to bag, 46px, cream with the hard bottom edge.
 - **Title length:** Studio "Add piece" title field has a hard limit of **20 characters** with a live counter ("19/20"). Shorten longer titles in the data.
 - Sticker: right 16, top 128, 104px wide, rotated 6°. Shadow `drop-shadow(0 2px 6px rgb(0 0 0 / .25))` on the **wrapper**, never on the `<img>` (iPhone Safari clips a filter on an img to the img's box, which made the cut-off dark rectangles). Same rule for every sticker on the site.
-- **End of the feed** ("You've met everyone for now", P10.4): block centred between the top of the screen and the top of the nav, at the optical centre (45% of that height). Row of the makers you met (avatars 40px, overlapping −8px, white 2px ring) → 16 → title Rock Salt 26px, line-height 1.3, `text-wrap: balance` (breaks as "You've met everyone / for now") → 8 → "New makers join every week." 14px → 24 → Explore all pieces (primary 48) → 12 → Back to the top (secondary 48).
+- **End of the feed** ("You've met everyone for now", P10.4): layout stays as built; only the title gets `line-height: 1.15` so the second line ("now") sits close under the first.
 - Details page: photo 420px, padding 16, title Rock Salt 22 + price 20/600, Add to bag 48 + save 48, fact rows 14px with a 1px line.
 
 ### 1.5 Product safe zone
