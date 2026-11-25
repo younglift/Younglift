@@ -85,12 +85,16 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
   // FIXES 10.1: one continuous screen. Tabs + maker row are one fixed layer (they never move); on every scroll
   // frame the underline glides between tabs, the panel being left moves at 0.3× and darkens to 60%, the incoming
   // panel slides over it with a shadow on its leading edge, and the small maker row fades out over All about her.
+  // FIXES 11.2: the scroll itself is native snap only. Nothing here writes scrollLeft or moves the scroller or a
+  // panel; the parallax moves only the layer inside the leaving panel (.panIn), read from scrollLeft in one rAF.
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const line = useRef<HTMLSpanElement>(null);
   const whoRef = useRef<HTMLDivElement>(null);
   const panRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const inRefs = useRef<(HTMLDivElement | null)[]>([]);
   const dimRefs = useRef<(HTMLDivElement | null)[]>([]);
   const frame = useRef(0);
+  const bounceAnim = useRef<Animation | undefined>(undefined);
   const paint = () => {
     const l = lay.current; if (!l) return;
     const w = l.clientWidth || 1; const pr = Math.max(0, Math.min(2, l.scrollLeft / w));
@@ -104,7 +108,7 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
     if (reduced()) return;
     panRefs.current.forEach((el, j) => {
       if (!el) return; const d = pr - j;
-      el.style.transform = d > 0 && d < 1 ? `translateX(${d * w * 0.7}px)` : '';
+      const inner = inRefs.current[j]; if (inner) inner.style.transform = d > 0 && d < 1 ? `translateX(${d * w * 0.7}px)` : '';
       el.style.boxShadow = d < 0 && d > -1 ? 'var(--u-pan-shadow)' : '';
       const dim = dimRefs.current[j]; if (dim) dim.style.opacity = d > 0 && d < 1 ? String(0.4 * d) : '0';
     });
@@ -118,7 +122,7 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
   // First visit only: 1.2s after Discover opens the panels bounce left so the next one peeks out. No hint text.
   useEffect(() => {
     if (!bounce || reduced()) return;
-    const t = window.setTimeout(() => { lay.current?.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-64px)', offset: 0.3 }, { transform: 'translateX(0)', offset: 0.55 }, { transform: 'translateX(-18px)', offset: 0.75 }, { transform: 'translateX(0)' }], { duration: 1600, easing: 'cubic-bezier(.2,.8,.2,1)' }); markHintsSeen(); }, 1200);
+    const t = window.setTimeout(() => { bounceAnim.current = lay.current?.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-64px)', offset: 0.3 }, { transform: 'translateX(0)', offset: 0.55 }, { transform: 'translateX(-18px)', offset: 0.75 }, { transform: 'translateX(0)' }], { duration: 1600, easing: 'cubic-bezier(.2,.8,.2,1)' }); markHintsSeen(); }, 1200);
     return () => window.clearTimeout(t);
   }, [bounce]);
 
@@ -131,12 +135,13 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
 
   return (
     <>
-      <div className={s.lay} ref={lay} onScroll={onLay}>
+      {/* a finger on the panels stops the first-visit bounce at once, so it never fights the swipe */}
+      <div className={s.lay} ref={lay} onScroll={onLay} onPointerDown={() => bounceAnim.current?.cancel()} onTouchStart={() => bounceAnim.current?.cancel()}>
         {/* 1 · Pieces */}
         <div className={s.pan} ref={(el) => { panRefs.current[0] = el; }} style={{ zIndex: 1 }}>
-          {/* FIXES 10.2: the whole 4:5 photo sits inside the safe zone; around it the same photo, blurred */}
-          <Img key={`b${p.id}`} src={p.images[0]} small alt="" aria-hidden="true" className={s.under} />
-          <div className={s.zone}><Img key={`h${p.id}`} src={p.images[0]} eager={active} alt={`${p.title} by ${m.name}`} className={`${s.hero} ${s.swap}`} /></div>
+          <div className={s.panIn} ref={(el) => { inRefs.current[0] = el; }}>
+          {/* FIXES 11.1: one full-screen photo (the tall hero), its centre at the centre of the safe zone */}
+          <Img key={`h${p.id}`} src={p.hero?.tall ?? p.images[0]} eager={active} alt={`${p.title} by ${m.name}`} className={`${s.hero} ${s.swap}`} />
           <div className={s.shadeTop} /><div className={s.shadeBottom} />
           {mk ? <span key={`k${p.id}`} className={`${s.stk} ${s.swap}`}><Sticker k={mk} city={m.city} width={104} tilt={6} /></span>
             : up ? <span key={`u${p.id}`} className={`${s.stk} ${s.swap}`}><Sticker k={up} width={104} tilt={6} /></span> : null}
@@ -161,11 +166,13 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
               <Icon name="arrow-down" size={14} /><span>Next:</span><span className={`hand ${s.nxtName}`}>{next.maker.name}</span><span className="m">· {makes(next)}</span>
             </button>
           ) : null}
+          </div>
           <div className={s.dim} ref={(el) => { dimRefs.current[0] = el; }} />
         </div>
 
         {/* 2 · Her story */}
         <div className={s.pan} ref={(el) => { panRefs.current[1] = el; }} style={{ zIndex: 2 }}>
+          <div className={s.panIn} ref={(el) => { inRefs.current[1] = el; }}>
           <Img src={poster} alt={`${m.name} at work`} className={s.fill} />
           <div className={s.shadeTop} /><div className={s.shadeStory} />
           <button type="button" className={s.play} aria-label={playing ? 'Pause her story' : 'Play her story'} onClick={() => setPlaying(!playing)}><Icon name={playing ? 'pause' : 'play'} size={28} /></button>
@@ -174,6 +181,7 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
             <p>“{m.video?.caption ?? m.tagline}”</p>
           </div>
           {m.video ? <div className={s.prog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing && panel === 1 && active ? 'running' : 'paused' }} /></div> : null}
+          </div>
           <div className={s.dim} ref={(el) => { dimRefs.current[1] = el; }} />
         </div>
 

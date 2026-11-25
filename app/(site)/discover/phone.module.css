@@ -5,19 +5,16 @@
 .mk{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;--b:env(safe-area-inset-bottom,0px);--t:env(safe-area-inset-top,0px)}
 .ghost{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(20px) brightness(.7);transform:scale(1.1)}
 .lay{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
-.pan{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.pan{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;contain:paint}
+/* FIXES 11.2: the parallax moves this inner layer only, never the panel or the scroller */
+.panIn{position:absolute;inset:0}
 .panDark{background:var(--u-panel)}
 
-/* the photo: full width, centred in the safe zone, fading into its own blurred copy at the bottom */
-.under{position:absolute;inset:-40px;width:calc(100% + 80px);max-width:none;height:calc(100% + 80px);object-fit:cover;filter:blur(28px) brightness(.7)}
-/* safe zone (DISCOVER.md 1.5, FIXES 10.2): the largest 4:5 box that fits between the maker row and the bar */
-.zone{position:absolute;left:0;right:0;top:calc(var(--u-safe-top) + var(--t));bottom:calc(var(--u-safe-bottom) + var(--b));display:grid;place-items:center;container-type:size}
-.hero{width:min(100cqw,100cqh * .8);height:auto;max-width:none;aspect-ratio:4/5;object-fit:cover;display:block;
-  /* fade into the blur over 24px on the edges that do not touch the screen edge */
-  -webkit-mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);
-  mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent)}
-@container (max-aspect-ratio:4/5){ .hero{-webkit-mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent)} }
-@container (min-aspect-ratio:4/5){ .hero{-webkit-mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-composite:intersect} }
+/* the photo (DISCOVER.md 1.5, FIXES 11.1): full screen, never shrunk, no blur frame. The tall 9:16 hero is made for
+   the screen; its centre sits at the centre of the safe zone, the photo above and below fills the rest. */
+.hero{position:absolute;left:0;width:100%;max-width:none;object-fit:cover;display:block;
+  top:calc(var(--u-safe-top) + var(--t) - var(--u-safe-bottom) - var(--b));
+  height:calc(100% + var(--u-safe-bottom) + var(--b) - var(--u-safe-top) - var(--t))}
 .fill{position:absolute;inset:0;width:100%;max-width:none;height:100%;object-fit:cover}
 .swap{animation:swap 250ms var(--u-ease) both}
 @keyframes swap{from{opacity:0}to{opacity:1}}

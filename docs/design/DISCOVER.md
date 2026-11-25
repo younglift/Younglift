@@ -103,4 +103,4 @@ Spec: `screens/desktop/03-discover.dc.html`.
 Follow `docs/ai/QUALITY.md`: `node scripts/qa.mjs` with 0 FAIL, your screenshots next to the references above, use it by hand at 390×844 **and in iPhone Safari** (toolbar shown and hidden) and at 1440×900, fix and repeat.
 
 ## 4. Order of work
-P6, P7, P8, P9 are done. Now: **P10** (Matas's iPhone test of v3: continuous sideways swipe, whole photo inside the safe zone, sticker shadows, end screen). One PR per part, QUALITY loop each time, tick the boxes in FIXES.md.
+P6–P11 are done (P11, 2026-11-25: tall/wide heroes, sideways always lands on a panel, desktop one maker per scroll; waits for Matas's iPhone + computer test). One PR per part, QUALITY loop each time, tick the boxes in FIXES.md.

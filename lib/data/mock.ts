@@ -56,7 +56,12 @@ function load() {
   loaded = true;
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (raw) state = { ...fresh(), ...JSON.parse(raw) };
+    if (raw) {
+      state = { ...fresh(), ...JSON.parse(raw) };
+      // FIXES P11: demo data saved before the Discover heroes existed gets them from the seed (same piece id).
+      const seed = new Map(seedProducts().map((p) => [p.id, p.hero]));
+      state.products = state.products.map((p) => (p.hero || !seed.get(p.id) ? p : { ...p, hero: seed.get(p.id) }));
+    }
   } catch { /* storage blocked or corrupt: start fresh */ }
 }
 function save() {

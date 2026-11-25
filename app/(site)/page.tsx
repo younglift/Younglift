@@ -38,7 +38,9 @@ const deskStep = () => window.innerHeight - 100;
 
 /** Desktop Discover v2 (FIXES P7, Matas 2026-11-25): one piece per maker. Left: the piece's photos (← →, dots).
     Right: one card with the maker, the piece, Add to bag, her story, more from her, next maker.
-    The page scrolls freely like a shop (Justinas 2026-11-25); one maker per screen height. */
+    FIXES 11.3 (Matas 2026-11-25 22:34, replaces P7's free scrolling): one maker per scroll. The page snaps
+    (html.u-snap-y, every maker scroll-snap-stop: always); one wheel flick / trackpad swipe, ↓ PageDown Space or
+    ↑ PageUp moves exactly one maker, then input is locked until the move and the trackpad momentum are over. */
 function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) {
   const [cur, setCur] = useState(0);
   const [sels, setSels] = useState<Record<string, number>>({});
@@ -46,11 +48,60 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
   const scrollTo = useCallback((i: number, smooth = true) => {
     window.scrollTo({ top: Math.max(0, Math.min(items.length, i)) * deskStep(), behavior: smooth ? 'smooth' : 'auto' });
   }, [items.length]);
+  const desk = useRef<HTMLDivElement>(null);
+  const target = useRef(0);
+  const lockUntil = useRef(0);
+  const lastWheel = useRef(0);
+  const acc = useRef(0);
+  const tail = useRef(false);
+  const step = useCallback((dir: 1 | -1) => {
+    const from = performance.now() < lockUntil.current ? target.current : Math.round(window.scrollY / deskStep());
+    const i = Math.max(0, Math.min(items.length, from + dir));
+    target.current = i; lockUntil.current = performance.now() + 600; acc.current = 0; tail.current = true;
+    scrollTo(i, !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }, [items.length, scrollTo]);
   useEffect(() => {
-    let raf = 0;
-    const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => setCur(Math.round(window.scrollY / deskStep()))); };
-    window.addEventListener('scroll', on, { passive: true }); return () => { window.removeEventListener('scroll', on); cancelAnimationFrame(raf); };
-  }, []);
+    document.documentElement.classList.add('u-snap-y');
+    const wheel = (e: WheelEvent) => {
+      if (e.ctrlKey || !desk.current?.contains(e.target as Node) || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      const t = performance.now(); const quiet = t - lastWheel.current > 160; lastWheel.current = t;
+      if (quiet) { tail.current = false; acc.current = 0; }
+      // locked while the move runs (600ms) and for the rest of that gesture's trackpad momentum (no 160ms pause yet)
+      if (t < lockUntil.current || tail.current) return;
+      acc.current += e.deltaY;
+      if (Math.abs(acc.current) >= 24) step(acc.current > 0 ? 1 : -1);
+    };
+    const key = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement;
+      if (el?.closest('input,textarea,select,[contenteditable],[role="dialog"]') || e.altKey || e.metaKey || e.ctrlKey) return;
+      const down = e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey);
+      const up = e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey);
+      if (!down && !up) return;
+      if (e.key === ' ' && el?.closest('button,a')) return;  // Space on a button presses the button
+      e.preventDefault();
+      if (performance.now() < lockUntil.current - 300) return;  // holding the key: one maker at a time
+      step(down ? 1 : -1);
+    };
+    window.addEventListener('wheel', wheel, { passive: false });
+    window.addEventListener('keydown', key);
+    return () => { document.documentElement.classList.remove('u-snap-y'); window.removeEventListener('wheel', wheel); window.removeEventListener('keydown', key); };
+  }, [step]);
+  useEffect(() => {
+    let raf = 0; let settle = 0;
+    const on = () => {
+      cancelAnimationFrame(raf); raf = requestAnimationFrame(() => setCur(Math.round(window.scrollY / deskStep())));
+      // never rest between two makers (scrollbar drag, browsers that skip snapping): 180ms after the last scroll
+      // event, finish the move to the nearest maker
+      window.clearTimeout(settle);
+      settle = window.setTimeout(() => {
+        if (performance.now() < lockUntil.current) return;
+        const y = window.scrollY, st = deskStep(), i = Math.round(y / st);
+        if (Math.abs(y - i * st) > 1 && y < document.documentElement.scrollHeight - window.innerHeight - 1) { target.current = i; lockUntil.current = performance.now() + 600; scrollTo(i); }
+      }, 180);
+    };
+    window.addEventListener('scroll', on, { passive: true }); return () => { window.removeEventListener('scroll', on); cancelAnimationFrame(raf); window.clearTimeout(settle); };
+  }, [scrollTo]);
   const curItem = items[Math.min(cur, items.length - 1)];
   const selOf = (it: FeedItem) => Math.min(sels[it.maker.id] ?? firstAvailable(it.products), it.products.length - 1);
   // ← → = this piece's photos
@@ -72,13 +123,13 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
   return (
     <>
       <Wash src={washItem?.products[selOf(washItem)]?.images[0]} />
-      <div className={s.desk}>
+      <div className={s.desk} ref={desk}>
         {items.map((it, i) => (
           <section key={it.maker.id} className={s.dslide} aria-label={it.maker.name}>
             <DeskSlide item={it} next={items[i + 1]} active={i === cur} inBag={inBag}
               sel={selOf(it)} setSel={(n) => { setSels((x) => ({ ...x, [it.maker.id]: n })); setPics((x) => ({ ...x, [it.maker.id]: 0 })); }}
               pic={pics[it.maker.id] ?? 0} setPic={(n) => setPics((x) => ({ ...x, [it.maker.id]: n }))}
-              onNext={() => scrollTo(i + 1)} />
+              onNext={() => { lockUntil.current = performance.now() + 600; scrollTo(i + 1); }} />
           </section>
         ))}
         <section className={`${s.dslide} ${s.end}`}>
@@ -98,7 +149,9 @@ function DeskSlide({ item, next, active, inBag, sel, setSel, pic, setPic, onNext
   const [story, setStory] = useState(false);
   const m = item.maker;
   const p = item.products[sel];
-  const n = p.images.length;
+  // FIXES 11.3: the first photo is the wide 4:3 hero made for this frame, so the whole piece shows
+  const photos = p.hero?.wide ? [p.hero.wide, ...p.images.slice(1)] : p.images;
+  const n = photos.length;
   const k = ((pic % n) + n) % n;
   const { mk, up } = stickerPair(item, p);
   const added = inBag.has(p.id);
@@ -114,14 +167,14 @@ function DeskSlide({ item, next, active, inBag, sel, setSel, pic, setPic, onNext
       {/* the piece: big photo, nothing over it but one sticker, arrows and dots */}
       <div className={s.dphoto}>
         <Link href={`/p/${p.id}`} aria-label={`Open ${p.title}`} className={s.dphotoLink}>
-          {p.images.map((u, i) => <Img key={u + i} src={u} alt={i === k ? `${p.title} by ${m.name}` : ''} eager={active && i === 0} className={`${s.dimg} ${i === k ? s.dimgOn : ''}`} />)}
+          {photos.map((u, i) => <Img key={u + i} src={u} alt={i === k ? `${p.title} by ${m.name}` : ''} eager={active && i === 0} className={`${s.dimg} ${i === k ? s.dimgOn : ''}`} />)}
         </Link>
         {mk ? <span className={s.dstk}><Sticker k={mk} city={m.city} width={150} /></span> : up ? <span className={s.dstk}><Sticker k={up} width={150} tilt={6} /></span> : null}
         {n > 1 ? (
           <>
             <button type="button" className={`ic gs ${s.dprev}`} aria-label="Previous photo" onClick={() => setPic(k - 1)}><Back size={18} /></button>
             <button type="button" className={`ic gs ${s.dnext}`} aria-label="Next photo" onClick={() => setPic(k + 1)}><Chevron size={18} /></button>
-            <div className={s.ddots}>{p.images.map((_, i) => <button key={i} type="button" aria-label={`Photo ${i + 1} of ${n}`} aria-current={i === k} className={i === k ? s.on : ''} onClick={() => setPic(i)} />)}</div>
+            <div className={s.ddots}>{photos.map((_, i) => <button key={i} type="button" aria-label={`Photo ${i + 1} of ${n}`} aria-current={i === k} className={i === k ? s.on : ''} onClick={() => setPic(i)} />)}</div>
           </>
         ) : null}
         {story ? (
