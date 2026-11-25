@@ -1,0 +1,95 @@
+# Discover v3 + the new rules (decided by Matas, 2026-11-25)
+
+**Read this first before touching Discover, any photo screen, any button, icon or nav.** It replaces the old Discover in `HANDOFF-07.md` (3 sideways panels with the big glass card). Everything here is also in `docs/ai/FIXES.md` (P6.10, P7, P8, P9) as tasks, and in `docs/ai/QUALITY.md` as standing rules. If something here and an older doc disagree, this file wins.
+
+Trumpai (LT): telefone vienas kūrinys per visą ekraną ir siaura juosta apačioje. Šonu brauki giliau į kūrėją (kūriniai → istorija → viskas apie ją), žemyn rodo kitą kūrėją. Kompe vienas kūrinys didelėje nuotraukoje, viskas kita kortelėje dešinėje. Produktas visada saugioje zonoje, viskas tiksliai centre, ikonos tik SVG.
+
+---
+
+## 1. Phone Discover (390×844)
+
+| Pieces | Details (tap title) | Her story (swipe ←) | All about her (swipe ←) |
+|---|---|---|---|
+| ![](screens/png/03-discover-v3-pieces.jpg) | ![](screens/png/03-discover-v3-details.jpg) | ![](screens/png/03-discover-v3-story.jpg) | ![](screens/png/03-discover-v3-about.jpg) |
+
+Spec (clickable): `screens/03-discover-v3.dc.html`. References use the real Rock Salt font.
+
+### 1.1 The logic: the more interested you are, the deeper you go
+
+1. **Pieces** (what you land on): one piece full screen, sticker, the bar (title, price, Add to bag), 4 more of her pieces, "↓ Next: Mara · 1 of 1 pottery".
+2. **Details** (tap the title): photo, title + price, Add to bag + save, facts (materials, size, ships, returns), "Made by Inez". Product only, nothing about her story here.
+3. **Her story** (swipe ← from Pieces): her video, one quote.
+4. **All about her** (swipe ← again): avatar, Follow + Message, 3 stats, all pieces grid, a review, "Up next" card.
+
+### 1.2 Gestures (every gesture always means the same thing)
+
+| Gesture | Does |
+|---|---|
+| Swipe **up / down** | next / previous maker. Snap, one maker per swipe (`scroll-snap-stop: always`). |
+| Swipe **sideways** | deeper into the same maker: Pieces → Her story → All about her. Snap per panel. Discover is a root tab, so there is no clash with iOS edge-swipe-back. |
+| **Tap** a small piece | it becomes the big piece (photo, title, price, sticker, details switch; 250ms cross-fade). You stay on Pieces. |
+| **Tap** the title | Details slides up full height. ✕, Back, edge-swipe and swipe-down close it and return to the exact same piece and photo. |
+| **Tap** avatar / name | jump to All about her. |
+| **Add to bag** | never moves you anywhere. Button → "In your bag ✓", bag count pops. (Flip, a closed "TikTok for shopping" app, lost users by auto-scrolling after taps. Don't.) |
+
+Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories / Tinder (tap to browse), Depop/Vinted ("more from this seller" right next to the item), NN/g bottom-sheet guidance (sheets short, ✕ + back close them, never stack).
+
+### 1.3 No hint texts, use motion
+
+- No "Swipe ← …" labels anywhere.
+- First visit only: 1.2s after Discover opens, the panels bounce left (−64px, back, −18px, back, 1.6s total) so the next panel peeks out. Reduced motion: no bounce.
+- Tabs at the top ("Pieces · Her story · All about her", **centred** like TikTok, active = 600 weight + 2px butter underline) show where you are.
+
+### 1.4 Layout (one 16px grid; nothing may be off it)
+
+- Side margin **16px** for every element: tabs, maker row, sticker, bar, thumbs, next line, details page, profile panel.
+- Top: tabs at top 16 (centred) → 12 → maker row (avatar 40, name Rock Salt 17, meta 12, Follow pill 40 high).
+- Bottom, from the bottom: nav 12–66 → 12 → "Next" line 16 high → 12 → thumbs row 72 high → 10 → bar 64 high.
+- **Thumbs:** 4 exactly equal tiles, 8px gaps, row edges = bar edges. Selected = 2px butter ring drawn **inside** the tile (image scales to 90%), so no tile looks bigger or shifted.
+- **Bar ("the bubble"):** glass (`.g`), radius 22, height 64, padding 8 8 8 16. Line 1: title in Rock Salt 16, **always the full title, never an ellipsis**. Line 2: "68€ · Details ›" (price 600 14px, rest 12px). Right: Add to bag, 46px, cream with the hard bottom edge.
+- **Title length:** Studio "Add piece" title field has a hard limit of **20 characters** with a live counter ("19/20"). Shorten longer titles in the data.
+- Sticker: right 16, top 128, 104px wide, rotated 6°.
+- Details page: photo 420px, padding 16, title Rock Salt 22 + price 20/600, Add to bag 48 + save 48, fact rows 14px with a 1px line.
+
+### 1.5 Product safe zone
+
+![](screens/png/03-discover-v3-safe-zone.jpg)
+
+- The product must never sit under the bar/thumbs (bottom) or the tabs/maker row (top).
+- Tokens in `app/globals.css`: `--u-safe-top:104px`, `--u-safe-bottom:262px`, 16px sides → zone x 16–374, y 104–582.
+- Photo full width, `object-fit:cover`, shifted up by `(--u-safe-top − --u-safe-bottom) / 2` (−79px) so its centre (or `images[].focusY`) sits in the centre of the zone. The strip uncovered at the bottom shows the same photo blurred (28px, brightness .7); the sharp photo fades into it over its last 18% (`mask-image`). Never shrink the photo into a box with empty bars.
+- Studio "Add piece": dashed safe-zone frame over the preview, the maker drags the photo to set `images[].focusY` (0–1). Copy: "Keep your piece inside the frame."
+- Any future screen with UI over a product photo follows the same rule. If you move an overlay, recompute the tokens so the zone ends 8px before it.
+
+---
+
+## 2. Desktop Discover (≥ 820px)
+
+![](screens/png/desktop-Discover.jpg)
+
+Spec: `screens/desktop/03-discover.dc.html`.
+
+- Left: **one big photo of the current piece only**, cover, radius `--u-r-card`. Nothing over it except one sticker, ← → buttons and dots for **this piece's photos**.
+- Right: 400px glass card: maker row (avatar 52, name Rock Salt 22, city · category · rating, Follow) → title (Rock Salt 26) + price → meta → Add to bag + save → "Watch Inez at work" video row → "More from Inez" (4 thumbs; click = becomes the big piece) + "Her profile →" → "Next maker · Ceramics / Mara · Scroll ↓" pinned at the bottom.
+- Wheel / ↓ = next maker. ← → keys = this piece's photos.
+- **Removed on desktop:** the 3-panel sideways strip (piece → video → profile) and the glass card floating over the photo. Note: commit 567a6bd (11:37) sped up the old 3-step arrows; that strip goes away with P7.
+
+---
+
+## 3. Rules for the whole site (also in `docs/ai/QUALITY.md` 2.1)
+
+### 3.1 Everything optically centred (±1px, `node scripts/qa.mjs` checks it)
+- Icons are SVG from one `components/u/Icon.tsx` (24×24 viewBox, drawn centred). Never text characters as icons: no `✕ × › ‹ → ← ↓ ↑ ▲ ▶ ★ ☆ ✓ +` as the content of a button, chip or circle. Arrows inside running text ("Her profile →") may stay text.
+- Indicators (active dot, badge, count) are `position:absolute`, so they never push a label off centre. Bottom nav dot sits at `bottom:9px`; the label stays at the exact vertical centre of the pill.
+- Rows of labels in a pill (bottom nav, tabs, segmented controls) use `justify-content:space-evenly` on the labels' own widths: same space before the first label, between labels and after the last. Tap area grows with `::after`, not `min-width`.
+- Single-line labels in fixed-height controls use `line-height:1`.
+
+### 3.2 Photos
+- Every product photo ≥ 1200px wide, 4:5, the product itself first. New Higgsfield set: branch `matas/new-photos`, FIXES P8.
+- One badge per frame (one sticker; no chip repeating it).
+
+### 3.3 Before you say "done"
+Follow `docs/ai/QUALITY.md`: `node scripts/qa.mjs` with 0 FAIL, your screenshots next to the references above, use it by hand at 390×844 **and in iPhone Safari** (toolbar shown and hidden) and at 1440×900, fix and repeat.
+
+## 4. Order of work
+P6 (incl. 6.10 centring) → P8 (photos) → P7 (desktop Discover) → P9 (phone Discover v3). One PR per part, QUALITY loop each time, tick the boxes in FIXES.md.

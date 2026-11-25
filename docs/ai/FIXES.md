@@ -1,5 +1,7 @@
 # Fixes: what is still wrong on the live site (2026-11-24)
 
+> **All new rules in one place (with pictures): `docs/design/DISCOVER.md`.** P6.10, P7, P8 and P9 below are the tasks for it.
+
 Matas tested https://younglift-delta.vercel.app on phone and desktop. His words: "cheap, laggy, clunky, half of it slides around, colours change". Below is every concrete cause found in the code and in the live site, with where it is, how to fix it and how to prove it is fixed. Checked against `main` at 94585d3.
 
 How to work through it: one group per PR, highest first. After each fix run the loop in `docs/ai/QUALITY.md` (qa script + look at screenshots + use it by hand). Tick the box only when the "Proof" line is true. Visual choices marked **(Matas)** need his OK before you change the token.
