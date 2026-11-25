@@ -89,6 +89,10 @@ Screenshots were taken on an iPhone in Safari with the toolbar at the bottom. Te
 - [ ] **6.8 Thin strip of the next panel** shows on the right edge of Discover on phone (~2px). Panels must be exactly 100% wide with no gap/rounding (`width:100%` of the scroller, not `100vw`).
 - [ ] **6.9 Low-resolution photos look soft** (`public/img/pink-necklace.jpg` 335px, `morning-cup.jpg` 406, `twist-vase.jpg` 440, `flower-hood.jpg` 472, `crochet-detail(s).jpg` ~380). Matas's side will replace them with ≥1200px versions; do not upscale in code. Keep the same file names.
 
+- [ ] **6.10 Off-centre icons and labels everywhere** (Matas: "very often things are not in the middle"). 128 text-glyph icons in `app/` and `components/` (`✕ › ↓ ▲ ★ ✓ …` used as button content) sit off-centre because font glyphs have uneven side bearings. Bottom nav labels sit 4px above centre because the active dot is in the flow under the text.
+  Fix: one `components/u/Icon.tsx` with SVG icons (close, back, chevron, arrow-down, play, star, check, plus, bag, save, search, message); replace every glyph inside buttons/chips/circles; nav dot absolute; nav labels `space-evenly` (see QUALITY 2.1 "optically centred"). Reference for the nav: `docs/design/screens/png/03-discover-v3-pieces.jpg`.
+  Proof: `node scripts/qa.mjs` reports 0 "off-centre" on every route at 390 and 1440.
+
 ## P7. Desktop Discover v2 (Matas decided 2026-11-25)
 
 - [ ] **7.1 Rebuild desktop Discover (≥ 820px) as "one piece".** Spec: `docs/design/screens/desktop/03-discover.dc.html`, reference `docs/design/screens/png/desktop-Discover.jpg` (rendered with real Rock Salt).

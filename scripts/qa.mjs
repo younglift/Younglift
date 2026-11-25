@@ -122,6 +122,25 @@ function inPageChecks({ budget, vw, vh }) {
   // 9. interactive things need a pressed/hover state (CSS rules are checked in Node, here only cursor)
   document.querySelectorAll('button,a[href]').forEach((el) => { if (visible(el) && getComputedStyle(el).cursor !== 'pointer' && !el.disabled) out.warn.push(`no pointer cursor: ${label(el)}`); });
 
+
+  // 10. optical centring: content of icon buttons, chips, pills and nav items must sit in the middle (±1px)
+  document.querySelectorAll('.ic, .chip, .cta, .sec, nav a, [role=tab], button').forEach((el) => {
+    if (!visible(el)) return;
+    const r = el.getBoundingClientRect(); if (r.width > 260 || r.height > 72) return;
+    const kids = [...el.childNodes].filter((n) => (n.nodeType === 3 && n.textContent.trim()) || (n.nodeType === 1 && getComputedStyle(n).position !== 'absolute' && n.getBoundingClientRect().width > 0));
+    const textKid = kids.find((n) => n.nodeType === 3);
+    if (!textKid && kids.length !== 1) return;
+    if (textKid) kids.splice(0, kids.length, textKid);
+    const range = document.createRange(); range.selectNodeContents(el);
+    const k = kids[0].nodeType === 3 ? (() => { const rr = document.createRange(); rr.selectNode(kids[0]); return rr.getBoundingClientRect(); })() : kids[0].getBoundingClientRect();
+    const cs = getComputedStyle(el); const pl = parseFloat(cs.paddingLeft), pr = parseFloat(cs.paddingRight), pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom);
+    const cx = r.left + pl + (r.width - pl - pr) / 2, cy = r.top + pt + (r.height - pt - pb) / 2;
+    const dx = Math.abs((k.left + k.right) / 2 - cx), dy = Math.abs((k.top + k.bottom) / 2 - cy);
+    if ((cs.justifyContent === 'center' || cs.textAlign === 'center') && dx > 1.5) out.fail.push(`off-centre ${dx.toFixed(1)}px horizontally: ${label(el)}`);
+    if ((cs.alignItems === 'center' || cs.display.includes('flex')) && dy > 1.5) out.fail.push(`off-centre ${dy.toFixed(1)}px vertically: ${label(el)}`);
+    if (kids[0].nodeType === 3 && /^[✕×›‹→←↓↑▲▶★☆✓+]$/.test(kids[0].textContent.trim())) out.fail.push(`text glyph used as icon "${kids[0].textContent.trim()}" (use Icon.tsx SVG): ${label(el)}`);
+  });
+
   out.fail = [...new Set(out.fail)].slice(0, 40); out.warn = [...new Set(out.warn)].slice(0, 40);
   return out;
 }

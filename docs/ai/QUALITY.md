@@ -44,6 +44,12 @@ Each item says how to check it. "qa" means `scripts/qa.mjs` already checks it au
 - [ ] **Long text does not break the layout.** Test with a 40-character piece title, a 20-character maker name, a price of €1 250. Titles may wrap to 2 lines at most, then ellipsis. Prices never wrap.
 - [ ] **Bottom bars never cover content.** The last item on a scrolling page can scroll fully above the nav/CTA bar (bottom padding = bar height + 12px + safe area).
 
+- [ ] **Everything inside a pill, circle or button is optically centred** (qa checks it, ±1px):
+  - Icons are SVG from one `components/u/Icon.tsx` (24×24 viewBox, drawn centred), never text characters. No `✕ × › ‹ → ← ↓ ↑ ▲ ▶ ★ ☆ ✓ +` as the content of a button, chip or circle. (Arrows inside running text, like "Her profile →", may stay text.)
+  - Indicators (active dot, badge, count) are `position:absolute` so they never push the label off centre. Example: bottom nav dot sits at `bottom:9px`, the label stays at the exact vertical centre of the pill.
+  - Rows of labels in a pill (bottom nav, segmented controls, tabs) use `justify-content:space-evenly` on the labels' own widths, so the space before the first label, between labels and after the last label is the same. Tap area is extended with `::after`, not with min-width (min-width makes short words like "Bag" look off-centre).
+  - Single-line labels use `line-height:1` inside fixed-height controls so the text box is centred, not the line box.
+
 ### 2.2 Type
 - [ ] Rock Salt (`var(--u-hand)`) **only** for maker names, piece titles and screen titles. Everything else Inter (`var(--u-ui)`). qa fails if a font is not loaded.
 - [ ] Sizes from the reference, not invented. Body 15, small 13, meta 12, labels 12/600, titles 22–26 phone, 28–40 desktop.
