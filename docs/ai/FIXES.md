@@ -98,13 +98,14 @@ Screenshots were taken on an iPhone in Safari with the toolbar at the bottom. Te
   - Removed on desktop: the 3-panel sideways strip (piece → video → profile) and the floating glass card over the photo. Phone stays as it is until the phone navigation decision.
   - Proof: qa at 1440×900 and 1280×800 next to the reference; nothing covers the product photo; title and maker name in Rock Salt.
 
-## P8. New photos (Matas, 2026-11-25) — branch `matas/new-photos`, NOT merged yet
+## P8. New photos (Matas, 2026-11-25) — merged 2026-11-25
 
 19 new photos made with Higgsfield (all 1792×2240, saved at 1200px). They replace every soft/low-res photo (FIXES 6.9), give Ula and Ona their own portraits (Ona was using Inez's bench photo), and give most pieces 2–3 photos so the gallery arrows/dots on desktop Discover (P7) and product pages have something to show. The branch already has `lib/data/mock-data.ts` pointing at the new files, but the files themselves are not in the repo yet (Matas's machine can't download them).
 
-- [ ] **8.1** `git checkout matas/new-photos && git merge main`, then `npm i -D sharp` (if missing), `node scripts/fetch-photos.mjs`, `node scripts/optimize-images.cjs`. Commit the new `public/img/*.jpg`, `public/img/t/`, `public/img/w/`.
-- [ ] **8.2** Check every photo once: open `/p/necklace`, `/p/flow`, `/p/fold`, `/p/soft`, `/p/earrings`, `/p/bracelet`, `/p/plates`, `/p/cup`, `/p/hood`, `/p/cardigan`, `/p/wallet`, `/p/lake`, `/m/ula`, `/m/ona` at 390 and 1440. Every photo sharp, no 404, galleries show 2–3 photos, the first photo is always the product itself.
-- [ ] **8.3** `node scripts/qa.mjs` clean, then merge the branch into main.
+- [x] **8.1** `git checkout matas/new-photos && git merge main`, then `npm i -D sharp` (if missing), `node scripts/fetch-photos.mjs`, `node scripts/optimize-images.cjs`. Commit the new `public/img/*.jpg`, `public/img/t/`, `public/img/w/`.
+- [x] **8.2** Check every photo once: open `/p/necklace`, `/p/flow`, `/p/fold`, `/p/soft`, `/p/earrings`, `/p/bracelet`, `/p/plates`, `/p/cup`, `/p/hood`, `/p/cardigan`, `/p/wallet`, `/p/lake`, `/m/ula`, `/m/ona` at 390 and 1440. Every photo sharp, no 404, galleries show 2–3 photos, the first photo is always the product itself.
+- [x] **8.3** `node scripts/qa.mjs` clean, then merge the branch into main.
+- Done 2026-11-25: 19 photos downloaded (1200px), /t/ and /w/ copies made, 14 routes checked at 390 and 1440 (no 404, product first, 2–4 photos per piece except stack, dish, candle, table with 1). Still under 1000px and not replaced: flow-ring 670, soft-loop 660, fold-ring 740, ripple-bowl 725/780, the rest 880–960.
 - Note: `vase` is a draft piece; its new photo replaces the old file name, nothing else changes.
 
 ---
