@@ -109,6 +109,31 @@ Screenshots were taken on an iPhone in Safari with the toolbar at the bottom. Te
 - Done 2026-11-25: 19 photos downloaded (1200px), /t/ and /w/ copies made, 14 routes checked at 390 and 1440 (no 404, product first, 2–4 photos per piece except stack, dish, candle, table with 1). Still under 1000px and not replaced: flow-ring 670, soft-loop 660, fold-ring 740, ripple-bowl 725/780, the rest 880–960.
 - Note: `vase` is a draft piece; its new photo replaces the old file name, nothing else changes.
 
+## P9. Phone Discover v3 (Matas decided 2026-11-25) — replaces the current phone Discover
+
+Spec: `docs/design/screens/03-discover-v3.dc.html`. References (real Rock Salt): `docs/design/screens/png/03-discover-v3-pieces.jpg`, `-details.jpg`, `-story.jpg`, `-about.jpg`. Built from proven patterns (TikTok feed, Instagram/Tinder tap-to-browse, Depop/Vinted "more from this seller", NN/g sheet rules). Do not add anything that is not in the reference. Copy stays exactly as in the reference.
+
+**Gestures (the whole logic, nothing else):**
+- Swipe **up/down** = next/previous maker (snap, one maker per swipe, `scroll-snap-stop: always`).
+- Swipe **sideways** = deeper into the same maker: 1 Pieces → 2 Her story → 3 All about her (snap per panel). Discover is a root tab, so there is no edge-swipe-back conflict here.
+- **Tap** a small piece = it becomes the big piece (photo, title, price, sticker, details all switch; 250ms cross-fade). Stays on panel 1.
+- **Tap** the title in the bar = piece details open (full-height page sliding up, ✕ top-right, Back/edge-swipe and swipe-down close it, returns to the exact same state).
+- **Tap** avatar/name = jump to panel 3.
+- "Add to bag" never moves the user anywhere (no auto-scroll, no navigation): button → "In your bag ✓", bag count pops.
+
+**Layout, phone 390×844 (all from the page edge, one 16px grid, nothing else may be off it):**
+- Side margin **16px** for every element: tabs, maker row, sticker, bar, thumbs, next line, profile panel, details page.
+- Top: tabs row "Pieces · Her story · All about her" at top 16, active = 600 weight + 2px butter underline; maker row 12px below (avatar 40, name Rock Salt 17, meta 12, Follow pill 40px high).
+- Bottom stack (from the bottom): nav 12–66 → **12** → next line 16px high ("↓ Next: *Mara* · 1 of 1 pottery", name in Rock Salt) → **12** → thumbs row 72px high (**4 equal columns**, 8px gaps, exactly as wide as the bar, radius 14, selected = 2px butter outline offset 2) → **10** → bar 64px high (glass, radius 22, title Rock Salt 16 one line + ellipsis, "price · details" 12px, Add to bag 46px).
+- Sticker: right 16, top 128, 104px wide, rotate 6°.
+- Hint "Swipe ← to meet her" only for first-time users, once, right 16.
+- Details page: photo 420px, padding 16, title Rock Salt 22 + price 20/600, Add to bag 48 + save 48, facts rows 14px with 1px line, "Made by …" row.
+- Story panel: full-bleed video poster, play 76px centre, quote 18px at bottom 96, "Swipe ← all about her".
+- About panel: avatar 72, name Rock Salt 24, Follow + Message 44px, 3 stat tiles, "All pieces" 2-column grid, review, "Up next" card at the end.
+
+- [ ] **9.1** Build it. Data from `@/lib/data` (pieces of the maker, first = the one Discover picked). Replaces the phone feed in `app/(site)/page.tsx`; desktop stays P7.
+- [ ] **9.2** Proof: screenshots at 390×844 and iPhone Safari next to the four references; every left edge at x=16 and right edge at x=374 (qa: no element between 0–15 or 375–390 except full-bleed photos); thumbs row and bar the same width; tap a thumb → everything switches; details open/close returns to the same piece and photo; sideways snaps per panel; up/down snaps per maker.
+
 ---
 
 ## Why it ended up like this (so it doesn't happen again)

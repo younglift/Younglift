@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Uplift · Discover v3 (telefonas)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Rock+Salt&amp;display=swap">
+<style>
+body{margin:0}
+a,button{position:relative}
+a::after,button::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.g{background:linear-gradient(135deg,rgba(28,18,12,.42),rgba(28,18,12,.28));-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35)}
+.gs{background:rgba(28,18,12,.35);-webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.hand{font-family:'Rock Salt',cursive;font-weight:400}
+.ui{font-family:Inter,system-ui,sans-serif}
+.sc{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.m{color:rgba(255,250,237,.78)}
+.cta{height:44px;border-radius:999px;border:0;background:#fffaed;color:#2a1a10;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 #b8912f}
+.sec{height:44px;border-radius:999px;color:#fffaed;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fffaed;cursor:pointer;padding:0}
+.lbl{font:600 12px Inter,sans-serif;letter-spacing:.2px}
+.cta:active{transform:translateY(3px);box-shadow:none}
+.chk{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 13px Inter,sans-serif}
+.fld{display:flex;flex-direction:column;gap:6px}
+.inp{height:48px;border-radius:14px;border:1px solid rgba(255,250,237,.22);background:rgba(22,16,11,.28);color:#fffaed;padding:0 14px;font:400 15px Inter,sans-serif;outline:none;box-sizing:border-box;width:100%}
+textarea.inp{height:auto;padding:12px 14px;line-height:1.5;resize:none}
+.inp:focus{border-color:#f3d27a;box-shadow:0 0 0 3px rgba(243,210,122,.25)}
+.chip{height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,250,237,.22);background:transparent;color:#fffaed;font:500 13px Inter,sans-serif;cursor:pointer;flex-shrink:0}
+.chip.on{background:#f3d27a;border-color:#f3d27a;color:#2a1a10;font-weight:600}
+.tg{width:48px;height:28px;border-radius:999px;background:rgba(255,250,237,.2);position:relative;flex-shrink:0;border:0;padding:0;cursor:pointer}
+.tg i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fffaed;transition:left .15s ease}
+.tg.on{background:#f3d27a}.tg.on i{left:23px;background:#2a1a10}
+@media (prefers-reduced-motion:reduce){.tg i{transition:none}}
+button.sec:not(.gs){background:transparent;border:0}
+</style>
+</helmet>
+<div class="ui" style="width:390px;height:844px;position:relative;overflow:hidden;background:#665e58;color:#fffaed">
+  <img src="/img/earrings.jpg" alt="" style="position:absolute;left:-60px;top:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;opacity:.3;filter:blur(60px) saturate(.9)">
+<style>
+.feed{position:absolute;inset:0;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.feed::-webkit-scrollbar,.lay::-webkit-scrollbar,.prof::-webkit-scrollbar{display:none}
+.mk{position:relative;height:844px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lay{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.pan{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;overflow:hidden}
+.prof{position:absolute;inset:0;overflow-y:auto;padding:0 16px;scrollbar-width:none}
+.hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .25s}
+.bar{position:absolute;left:16px;right:16px;bottom:188px;z-index:8;border-radius:22px;padding:8px 8px 8px 16px;height:64px;box-sizing:border-box;display:flex;align-items:center;gap:10px}
+.more{position:absolute;left:16px;right:16px;bottom:106px;z-index:8;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tb{width:100%;height:72px;border-radius:14px;overflow:hidden;border:0;padding:0;background:none;cursor:pointer;flex-shrink:0;position:relative}
+.tb img{width:100%;height:100%;object-fit:cover;display:block}
+.tb.sel{outline:2px solid #f3d27a;outline-offset:2px}
+.nxt{position:absolute;left:16px;right:16px;bottom:78px;height:16px;line-height:16px;z-index:7;display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,250,237,.9);white-space:nowrap;overflow:hidden}
+.page{position:absolute;inset:0;z-index:12;background:#30231a;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);overflow-y:auto;scrollbar-width:none}
+.page::-webkit-scrollbar{display:none}
+.page.on{transform:none}
+.fact{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,250,237,.1);font-size:14px}
+.ghint{position:absolute;right:14px;top:150px;z-index:7;font:600 12px Inter,sans-serif;background:rgba(22,16,11,.6);border-radius:999px;padding:6px 12px}
+@media (prefers-reduced-motion:reduce){.page,.hero{transition:none}}
+</style>  <div class="feed"><section class="mk" aria-label="Inez">
+ <div class="lay">
+  <div class="pan">
+    <img class="hero" src="{{hero0}}" alt="{{t0}}">
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:160px;z-index:5;pointer-events:none;background:linear-gradient(rgba(22,16,11,.6),rgba(22,16,11,.25) 55%,rgba(22,16,11,0))"></div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(rgba(22,16,11,0),rgba(22,16,11,.55))"></div>
+    <div style="position:absolute;left:16px;right:16px;top:16px;z-index:7;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:16px"><span style="font:600 12px Inter,sans-serif;color:#fffaed;padding-bottom:4px;border-bottom:2px solid #f3d27a">Pieces</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Her story</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">All about her</span></div>
+      <div style="display:flex;align-items:center;gap:10px"><img src="/img/inez.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1;min-width:0"><span class="hand" style="display:block;font-size:17px;line-height:1.3">Inez</span><span style="display:block;font-size:12px;color:rgba(255,250,237,.86)">Vilnius · Jewellery</span></span><button type="button" class="sec gs" style="padding:0 16px;height:40px">Follow</button></div>
+    </div>
+    <img src="{{stk0}}" alt="" style="position:absolute;right:16px;top:128px;z-index:6;width:104px;height:auto;transform:rotate(6deg);filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))">
+    <span class="ghint" style="top:auto;bottom:264px;right:16px">Swipe ← to meet her</span>
+    <div class="bar g">
+      <button type="button" onClick="{{open0}}" style="flex:1;min-width:0;background:none;border:0;padding:0;color:#fffaed;text-align:left;cursor:pointer">
+        <span class="hand" style="display:block;font-size:16px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{t0}} ›</span>
+        <span style="display:block;font-size:12px;color:rgba(255,250,237,.82);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><b style="color:#fffaed;font-size:14px">{{p0}}</b> · {{s0}}</span>
+      </button>
+      <button type="button" class="cta" style="height:46px;padding:0 16px;flex-shrink:0">Add to bag</button>
+    </div>
+    <div class="more"><sc-for list="{{th0}}" as="x" hint-placeholder-count="4"><button type="button" class="tb{{x.sel}}" aria-label="{{x.t}}" onClick="{{x.go}}"><img src="{{x.img}}" alt=""></button></sc-for></div>
+    <div class="nxt">↓ Next: <span class="hand" style="font-size:13px">Mara</span> · 1 of 1 pottery</div>
+  </div>
+  <div class="pan">
+    <img src="/img/inez-bench.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:160px;z-index:5;pointer-events:none;background:linear-gradient(rgba(22,16,11,.6),rgba(22,16,11,.25) 55%,rgba(22,16,11,0))"></div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:380px;background:linear-gradient(rgba(22,16,11,0),rgba(22,16,11,.88))"></div>
+    <div style="position:absolute;left:16px;right:16px;top:16px;z-index:7;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:16px"><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Pieces</span><span style="font:600 12px Inter,sans-serif;color:#fffaed;padding-bottom:4px;border-bottom:2px solid #f3d27a">Her story</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">All about her</span></div>
+      <div style="display:flex;align-items:center;gap:10px"><img src="/img/inez.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1;min-width:0"><span class="hand" style="display:block;font-size:17px;line-height:1.3">Inez</span><span style="display:block;font-size:12px;color:rgba(255,250,237,.86)">Vilnius · Jewellery</span></span><button type="button" class="sec gs" style="padding:0 16px;height:40px">Follow</button></div>
+    </div>
+    <span style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:rgba(22,16,11,.6);display:flex;align-items:center;justify-content:center;z-index:6"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fffaed"><path d="M7 4l13 8-13 8z"/></svg></span>
+    <div style="position:absolute;left:16px;right:16px;bottom:96px;z-index:6"><span class="m" style="font-size:12px">Her story · 0:24</span><p style="margin:6px 0 0;font-size:18px;line-height:1.45">“I carve every ring in wax first, then cast it in silver here in Užupis.”</p><span class="m" style="display:block;font-size:12px;margin-top:14px">Swipe ← all about her</span></div>
+  </div>
+  <div class="pan" style="background:#30231a">
+    <div class="prof">
+      <div style="padding-top:16px"><div style="display:flex;gap:16px"><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Pieces</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Her story</span><span style="font:600 12px Inter,sans-serif;color:#fffaed;padding-bottom:4px;border-bottom:2px solid #f3d27a">All about her</span></div></div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:18px"><img src="/img/inez.jpg" alt="" style="width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1"><span class="hand" style="display:block;font-size:24px;line-height:1.3">Inez</span><span class="m" style="font-size:13px">Vilnius · Jewellery</span></span></div>
+      <div style="display:flex;gap:10px;margin-top:14px"><button type="button" class="cta" style="flex:1;height:44px">Follow</button><button type="button" class="sec gs" style="flex:1;height:44px">Message</button></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px"><div class="gs" style="border-radius:14px;padding:10px;text-align:center"><span style="display:block;font:600 16px Inter,sans-serif">4.9 ★</span><span class="m" style="font-size:11px">38 reviews</span></div><div class="gs" style="border-radius:14px;padding:10px;text-align:center"><span style="display:block;font:600 16px Inter,sans-serif">120</span><span class="m" style="font-size:11px">sold</span></div><div class="gs" style="border-radius:14px;padding:10px;text-align:center"><span style="display:block;font:600 16px Inter,sans-serif">2 yrs</span><span class="m" style="font-size:11px">on Uplift</span></div></div>
+      <div class="lbl" style="margin-top:22px">All pieces</div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px"><span style="display:block"><img src="/img/earrings.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Pearl drop earrings</span><b>68€</b></span></span><span style="display:block"><img src="/img/bracelet.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Chain bracelet</span><b>110€</b></span></span><span style="display:block"><img src="/img/rings-set.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Stacking set</span><b>160€</b></span></span><span style="display:block"><img src="/img/flow-ring.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Flow ring</span><b>145€</b></span></span></div>
+      <div class="lbl" style="margin-top:22px">Reviews</div>
+      <div class="gs" style="margin-top:10px;border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.5"><b>Rūta</b> <span style="color:#f3d27a">★★★★★</span><br><span class="m">Even prettier in person. Wrapped like a gift.</span></div>
+      <div style="margin:22px 0 96px;padding:14px;border-radius:18px;background:rgba(255,250,237,.06);display:flex;align-items:center;gap:12px"><img src="/img/mara.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1;min-width:0"><span class="m" style="display:block;font-size:12px">Up next ↓</span><span style="display:block;font-size:14px"><span class="hand" style="font-size:16px">Mara</span> · 1 of 1 pottery</span></span></div>
+    </div>
+  </div>
+ </div>
+ <div class="page{{on0}}" role="dialog" aria-label="Piece details">
+    <div style="position:relative;height:420px"><img src="{{hero0}}" alt="" style="width:100%;height:100%;object-fit:cover"><button type="button" aria-label="Close" onClick="{{close}}" class="ic gs" style="position:absolute;right:16px;top:16px">✕</button></div>
+    <div style="padding:16px 16px 110px">
+      <div style="display:flex;align-items:baseline;gap:10px"><span class="hand" style="flex:1;font-size:22px;line-height:1.35">{{t0}}</span><span style="font:600 20px Inter,sans-serif">{{p0}}</span></div>
+      <span class="m" style="display:block;font-size:13px;margin-top:4px">{{s0}}</span>
+      <div style="display:flex;gap:10px;margin-top:16px"><button type="button" class="cta" style="flex:1;height:48px">Add to bag</button><button type="button" aria-label="Save" class="ic gs" style="width:48px;height:48px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fffaed" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button></div>
+      <div style="margin-top:10px"><sc-for list="{{facts0}}" as="f" hint-placeholder-count="4"><div class="fact"><span class="m">{{f.k}}</span><span>{{f.v}}</span></div></sc-for></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:18px"><img src="/img/inez.jpg" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span class="m" style="font-size:13px">Made by <span class="hand" style="color:#fffaed">Inez</span> · Vilnius · Jewellery</span></div>
+    </div>
+ </div>
+</section><section class="mk" aria-label="Mara">
+ <div class="lay">
+  <div class="pan">
+    <img class="hero" src="{{hero1}}" alt="{{t1}}">
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:160px;z-index:5;pointer-events:none;background:linear-gradient(rgba(22,16,11,.6),rgba(22,16,11,.25) 55%,rgba(22,16,11,0))"></div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(rgba(22,16,11,0),rgba(22,16,11,.55))"></div>
+    <div style="position:absolute;left:16px;right:16px;top:16px;z-index:7;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:16px"><span style="font:600 12px Inter,sans-serif;color:#fffaed;padding-bottom:4px;border-bottom:2px solid #f3d27a">Pieces</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Her story</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">All about her</span></div>
+      <div style="display:flex;align-items:center;gap:10px"><img src="/img/mara.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1;min-width:0"><span class="hand" style="display:block;font-size:17px;line-height:1.3">Mara</span><span style="display:block;font-size:12px;color:rgba(255,250,237,.86)">Berlin · Ceramics</span></span><button type="button" class="sec gs" style="padding:0 16px;height:40px">Follow</button></div>
+    </div>
+    <img src="{{stk1}}" alt="" style="position:absolute;right:16px;top:128px;z-index:6;width:104px;height:auto;transform:rotate(6deg);filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))">
+    
+    <div class="bar g">
+      <button type="button" onClick="{{open1}}" style="flex:1;min-width:0;background:none;border:0;padding:0;color:#fffaed;text-align:left;cursor:pointer">
+        <span class="hand" style="display:block;font-size:16px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{t1}} ›</span>
+        <span style="display:block;font-size:12px;color:rgba(255,250,237,.82);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><b style="color:#fffaed;font-size:14px">{{p1}}</b> · {{s1}}</span>
+      </button>
+      <button type="button" class="cta" style="height:46px;padding:0 16px;flex-shrink:0">Add to bag</button>
+    </div>
+    <div class="more"><sc-for list="{{th1}}" as="x" hint-placeholder-count="4"><button type="button" class="tb{{x.sel}}" aria-label="{{x.t}}" onClick="{{x.go}}"><img src="{{x.img}}" alt=""></button></sc-for></div>
+    <div class="nxt">↓ Next: <span class="hand" style="font-size:13px">Inez</span> · pearl earrings, silver rings</div>
+  </div>
+  <div class="pan">
+    <img src="/img/mara-wheel.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:160px;z-index:5;pointer-events:none;background:linear-gradient(rgba(22,16,11,.6),rgba(22,16,11,.25) 55%,rgba(22,16,11,0))"></div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:380px;background:linear-gradient(rgba(22,16,11,0),rgba(22,16,11,.88))"></div>
+    <div style="position:absolute;left:16px;right:16px;top:16px;z-index:7;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:16px"><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Pieces</span><span style="font:600 12px Inter,sans-serif;color:#fffaed;padding-bottom:4px;border-bottom:2px solid #f3d27a">Her story</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">All about her</span></div>
+      <div style="display:flex;align-items:center;gap:10px"><img src="/img/mara.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1;min-width:0"><span class="hand" style="display:block;font-size:17px;line-height:1.3">Mara</span><span style="display:block;font-size:12px;color:rgba(255,250,237,.86)">Berlin · Ceramics</span></span><button type="button" class="sec gs" style="padding:0 16px;height:40px">Follow</button></div>
+    </div>
+    <span style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:rgba(22,16,11,.6);display:flex;align-items:center;justify-content:center;z-index:6"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fffaed"><path d="M7 4l13 8-13 8z"/></svg></span>
+    <div style="position:absolute;left:16px;right:16px;bottom:96px;z-index:6"><span class="m" style="font-size:12px">Her story · 0:24</span><p style="margin:6px 0 0;font-size:18px;line-height:1.45">“Every plate gets two coats of glaze, and no two speckle the same.”</p><span class="m" style="display:block;font-size:12px;margin-top:14px">Swipe ← all about her</span></div>
+  </div>
+  <div class="pan" style="background:#30231a">
+    <div class="prof">
+      <div style="padding-top:16px"><div style="display:flex;gap:16px"><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Pieces</span><span style="font:500 12px Inter,sans-serif;color:rgba(255,250,237,.62);padding-bottom:4px;border-bottom:2px solid transparent">Her story</span><span style="font:600 12px Inter,sans-serif;color:#fffaed;padding-bottom:4px;border-bottom:2px solid #f3d27a">All about her</span></div></div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:18px"><img src="/img/mara.jpg" alt="" style="width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1"><span class="hand" style="display:block;font-size:24px;line-height:1.3">Mara</span><span class="m" style="font-size:13px">Berlin · Ceramics</span></span></div>
+      <div style="display:flex;gap:10px;margin-top:14px"><button type="button" class="cta" style="flex:1;height:44px">Follow</button><button type="button" class="sec gs" style="flex:1;height:44px">Message</button></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px"><div class="gs" style="border-radius:14px;padding:10px;text-align:center"><span style="display:block;font:600 16px Inter,sans-serif">5.0 ★</span><span class="m" style="font-size:11px">21 reviews</span></div><div class="gs" style="border-radius:14px;padding:10px;text-align:center"><span style="display:block;font:600 16px Inter,sans-serif">64</span><span class="m" style="font-size:11px">sold</span></div><div class="gs" style="border-radius:14px;padding:10px;text-align:center"><span style="display:block;font:600 16px Inter,sans-serif">1 yr</span><span class="m" style="font-size:11px">on Uplift</span></div></div>
+      <div class="lbl" style="margin-top:22px">All pieces</div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px"><span style="display:block"><img src="/img/plates.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Speckled plates</span><b>96€</b></span></span><span style="display:block"><img src="/img/dish.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Incense dish</span><b>38€</b></span></span><span style="display:block"><img src="/img/candle.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Candle cup</span><b>42€</b></span></span><span style="display:block"><img src="/img/ripple-bowl.jpg" alt="" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;display:block"><span style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Ripple bowl</span><b>78€</b></span></span></div>
+      <div class="lbl" style="margin-top:22px">Reviews</div>
+      <div class="gs" style="margin-top:10px;border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.5"><b>Jonas</b> <span style="color:#f3d27a">★★★★★</span><br><span class="m">Heavy, warm, perfect. We use them every day.</span></div>
+      <div style="margin:22px 0 96px;padding:14px;border-radius:18px;background:rgba(255,250,237,.06);display:flex;align-items:center;gap:12px"><img src="/img/inez.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span style="flex:1;min-width:0"><span class="m" style="display:block;font-size:12px">Up next ↓</span><span style="display:block;font-size:14px"><span class="hand" style="font-size:16px">Inez</span> · pearl earrings, silver rings</span></span></div>
+    </div>
+  </div>
+ </div>
+ <div class="page{{on1}}" role="dialog" aria-label="Piece details">
+    <div style="position:relative;height:420px"><img src="{{hero1}}" alt="" style="width:100%;height:100%;object-fit:cover"><button type="button" aria-label="Close" onClick="{{close}}" class="ic gs" style="position:absolute;right:16px;top:16px">✕</button></div>
+    <div style="padding:16px 16px 110px">
+      <div style="display:flex;align-items:baseline;gap:10px"><span class="hand" style="flex:1;font-size:22px;line-height:1.35">{{t1}}</span><span style="font:600 20px Inter,sans-serif">{{p1}}</span></div>
+      <span class="m" style="display:block;font-size:13px;margin-top:4px">{{s1}}</span>
+      <div style="display:flex;gap:10px;margin-top:16px"><button type="button" class="cta" style="flex:1;height:48px">Add to bag</button><button type="button" aria-label="Save" class="ic gs" style="width:48px;height:48px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fffaed" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button></div>
+      <div style="margin-top:10px"><sc-for list="{{facts1}}" as="f" hint-placeholder-count="4"><div class="fact"><span class="m">{{f.k}}</span><span>{{f.v}}</span></div></sc-for></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:18px"><img src="/img/mara.jpg" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:center 20%;display:block;flex-shrink:0"><span class="m" style="font-size:13px">Made by <span class="hand" style="color:#fffaed">Mara</span> · Berlin · Ceramics</span></div>
+    </div>
+ </div>
+</section></div>
+  <nav aria-label="Main" class="gs" style="position:absolute;left:12px;right:12px;bottom:12px;height:54px;border-radius:999px;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;z-index:9"><a href="#" aria-current=page style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:#fffaed;text-decoration:none;font:600 12px Inter,sans-serif">Discover<span style="width:4px;height:4px;border-radius:50%;background:#f3d27a"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Explore<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Following<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Saved<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:44px;color:rgba(255,250,237,.78);text-decoration:none;font:400 12px Inter,sans-serif">Bag<span style="width:4px;height:4px;border-radius:50%;background:transparent"></span></a></nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startOn":{"editor":"enum","options":["closed","open"],"default":"closed"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { open: this.props.startOn === 'open' ? 0 : -1, s0: 0, s1: 0 }; }
+  renderVals() {
+    const D = [[{"img": "/img/earrings.jpg", "t": "Pearl drop earrings", "p": "68€", "s": "Silver, freshwater pearls · Ships tomorrow", "stk": "/stickers/handmade.png", "facts": [{"k": "Materials", "v": "Sterling silver, pearls"}, {"k": "Size", "v": "Drop 4 cm"}, {"k": "Ships", "v": "Tomorrow · 4,90€"}, {"k": "Returns", "v": "14 days, free"}]}, {"img": "/img/bracelet.jpg", "t": "Chain bracelet", "p": "110€", "s": "1 of 1 · Silver, gold-plated", "stk": "/stickers/1of1.png", "facts": [{"k": "Materials", "v": "Gold-plated silver"}, {"k": "Size", "v": "18 cm, toggle clasp"}, {"k": "Ships", "v": "Tomorrow · 4,90€"}, {"k": "Returns", "v": "14 days, free"}]}, {"img": "/img/rings-set.jpg", "t": "Stacking set", "p": "160€", "s": "3 of 5 left · Silver and gold", "stk": "/stickers/small-batch.png", "facts": [{"k": "Materials", "v": "Silver, gold vermeil"}, {"k": "Size", "v": "EU 52–56"}, {"k": "Ships", "v": "In 2 days · 4,90€"}, {"k": "Returns", "v": "14 days, free"}]}, {"img": "/img/flow-ring.jpg", "t": "Flow ring", "p": "145€", "s": "Made to your size · 2 weeks", "stk": "/stickers/made-to-order.png", "facts": [{"k": "Materials", "v": "Silver"}, {"k": "Size", "v": "Pick EU 50–60"}, {"k": "Ships", "v": "In 14 days · 4,90€"}, {"k": "Returns", "v": "Made for you, no returns"}]}], [{"img": "/img/plates.jpg", "t": "Speckled plates", "p": "96€", "s": "Set of 3 · 2 left · Ships in 3 days", "stk": "/stickers/small-batch.png", "facts": [{"k": "Materials", "v": "Stoneware, oat glaze"}, {"k": "Size", "v": "Ø 19 cm, set of 3"}, {"k": "Ships", "v": "In 3 days · 4,90€"}, {"k": "Care", "v": "Dishwasher safe"}]}, {"img": "/img/dish.jpg", "t": "Incense dish", "p": "38€", "s": "Stoneware · Ships in 3 days", "stk": "/stickers/made-in-berlin.png", "facts": [{"k": "Materials", "v": "Stoneware"}, {"k": "Size", "v": "Ø 12 cm"}, {"k": "Ships", "v": "In 3 days · 4,90€"}, {"k": "Returns", "v": "14 days, free"}]}, {"img": "/img/candle.jpg", "t": "Candle cup", "p": "42€", "s": "Soy wax in a stoneware cup", "stk": "/stickers/handmade.png", "facts": [{"k": "Materials", "v": "Stoneware, soy wax"}, {"k": "Burn time", "v": "30 hours"}, {"k": "Ships", "v": "In 3 days · 4,90€"}, {"k": "Returns", "v": "14 days, free"}]}, {"img": "/img/ripple-bowl.jpg", "t": "Ripple bowl", "p": "78€", "s": "1 of 1 · Ø 24 cm", "stk": "/stickers/1of1.png", "facts": [{"k": "Materials", "v": "Speckled stoneware"}, {"k": "Size", "v": "Ø 24 cm"}, {"k": "Ships", "v": "In 3 days · 4,90€"}, {"k": "Returns", "v": "14 days, free"}]}]];
+    const o = this.state.open;
+    const v = { close: () => this.setState({ open: -1 }) };
+    [0, 1].forEach(i => {
+      const sel = this.state['s' + i], p = D[i][sel];
+      v['hero' + i] = p.img; v['t' + i] = p.t; v['p' + i] = p.p; v['s' + i] = p.s; v['stk' + i] = p.stk; v['facts' + i] = p.facts;
+      v['on' + i] = o === i ? ' on' : '';
+      v['open' + i] = () => this.setState({ open: i });
+      v['th' + i] = D[i].map((x, j) => ({ img: x.img, t: x.t, sel: j === sel ? ' sel' : '', go: () => this.setState({ ['s' + i]: j }) }));
+    });
+    return v;
+  }
+}
+</script>
+</body>
+</html>
