@@ -175,14 +175,9 @@ Matas tested P9 on his iPhone (Safari, toolbar shown). Everything else is fixed;
 - [ ] **10.3 Cut-off dark rectangles under stickers.** Cause (checked live): `filter: drop-shadow(0 6px 10px rgba(0,0,0,.35))` is on the sticker `<img>`; iPhone Safari clips the filter to the img box (`overflow: clip` on replaced elements), leaving a hard-edged dark rectangle.
   Fix: move the shadow to the wrapper span and make it smaller: `filter: drop-shadow(0 2px 6px rgb(0 0 0 / .25))`. Same for every sticker on the site (Discover, product page, cards, desktop).
   Proof: zoom on iPhone Safari around "1 of 1" and "New maker": soft shadow follows the sticker shape, no straight edges.
-- [ ] **10.4 End screen "You've met everyone for now" sits too low and the title breaks badly** ("…FOR" / far below "NOW"). Cause: block centred on the whole screen, Rock Salt default line-height is huge.
-  Fix, top to bottom:
-  - Block centred between the top of the screen and the top of the nav, at 45% of that height (optical centre).
-  - Row of the makers you just met: avatars 40px, overlap −8px, 2px cream ring, max 6 + "+N".
-  - 16px → title Rock Salt 26px, line-height 1.3, `text-wrap: balance` → "You've met everyone / for now".
-  - 8px → "New makers join every week." Inter 14px, cream 70%.
-  - 24px → Explore all pieces (primary 48px) → 12px → Back to the top (secondary 48px).
-  Proof: 390×844 and iPhone Safari screenshot: two balanced title lines with normal spacing, block visibly a bit above the middle of the free area.
+- [ ] **10.4 End screen: gap between the title lines is too big.** Matas (20:50): position, size, line break ("…for" / "now") and everything else stay exactly as they are. Only the space between the title lines is too big. Cause: Rock Salt's default line-height is huge.
+  Fix: title `line-height: 1.15` (nothing else changes; no new elements, no moving the block).
+  Proof: iPhone Safari screenshot: "now" sits right under the first line, the gap between the lines looks like normal text spacing.
 
 Order: 10.3 (quick) → 10.2 → 10.4 → 10.1. One PR, QUALITY loop, then ask Matas to test on his iPhone again.
 
