@@ -27,9 +27,10 @@ export default function Sticker({ k, city, width = 110, tilt = -8, className, st
   if (broken) return null;
   const label = k === 'made_in_city' ? `Made in ${city}` : STICKER_LABEL[k];
   return (
-    <span className={className} style={{ display: 'block', lineHeight: 0, transform: `rotate(${tilt}deg)`, pointerEvents: 'none', ...style }}>
+    // Shadow on the wrapper, never on the <img>: iPhone Safari clips an img's filter to its box (hard dark rectangle, FIXES 10.3).
+    <span className={className} style={{ display: 'block', lineHeight: 0, transform: `rotate(${tilt}deg)`, filter: 'var(--u-sticker-shadow)', pointerEvents: 'none', ...style }}>
       <img src={stickerSrc(k, city)} alt={label} loading="lazy" decoding="async" onError={() => setBroken(true)}
-        style={{ width, height: 'auto', display: 'block', objectFit: 'contain', filter: 'var(--u-sticker-shadow)' }} />
+        style={{ width, height: 'auto', display: 'block', objectFit: 'contain' }} />
     </span>
   );
 }

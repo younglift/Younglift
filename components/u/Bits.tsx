@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import type { Product } from '@/lib/types';
-import { addToBag, addToBoard, createBoard, getBoards, toggleSave, type AddResult } from '@/lib/data';
+import { useEffect, useState } from 'react';
+import type { Maker, Product } from '@/lib/types';
+import { addToBag, addToBoard, createBoard, getBoards, toggleFollow, toggleSave, type AddResult } from '@/lib/data';
 import { formatEUR } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { Back, Bookmark, Close } from './Icons';
@@ -102,5 +102,18 @@ export function Stars({ value, onPick, size = 22 }: { value: number; onPick?: (n
         ? <button key={n} type="button" aria-label={`${n} star${n > 1 ? 's' : ''}`} onClick={() => onPick(n)} className="star-btn"><span className="flex"><Icon name="star" size={size} filled={n <= value} /></span></button>
         : <span key={n} aria-hidden="true" className="flex"><Icon name="star" size={size} filled={n <= value} /></span>)}
     </span>
+  );
+}
+
+/** Follow / Following (FIXES 10.5): optimistic, only the label cross-fades (150ms). Fixed width = the width of
+    "Following" (both labels sit in one grid cell), so nothing next to it moves. Never reorders or reloads a screen. */
+export function FollowButton({ m, className }: { m: Maker; className: string }) {
+  const [on, setOn] = useState(!!m.isFollowing);
+  useEffect(() => { setOn(!!m.isFollowing); }, [m.isFollowing]);
+  return (
+    <button type="button" className={`${className} u-follow`} aria-pressed={on} aria-label={on ? `Following ${m.name}` : `Follow ${m.name}`}
+      onClick={() => { setOn(!on); toggleFollow(m.id); }}>
+      <span className="u-follow-l" aria-hidden={on}>Follow</span><span className="u-follow-l" aria-hidden={!on}>Following</span>
+    </button>
   );
 }

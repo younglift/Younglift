@@ -157,14 +157,14 @@ Spec: `docs/design/screens/03-discover-v3.dc.html`. References (real Rock Salt):
 
 Matas tested P9 on his iPhone (Safari, toolbar shown). Everything else is fixed; these four are left. Full values are also in `docs/design/DISCOVER.md` (1.2, 1.4, 1.5).
 
-- [ ] **10.1 Sideways swipe feels like jumping to another page.** Cause: each panel (Pieces / Her story / All about her) is its own full screen with its own photo, its own tabs and its own maker row (`phone_pan` inside `phone_lay`), so mid-swipe you see two different screens with a hard seam and the tabs + Follow pill slide away and duplicate.
+- [x] **10.1 Sideways swipe feels like jumping to another page.** Cause: each panel (Pieces / Her story / All about her) is its own full screen with its own photo, its own tabs and its own maker row (`phone_pan` inside `phone_lay`), so mid-swipe you see two different screens with a hard seam and the tabs + Follow pill slide away and duplicate.
   Fix:
   - Tabs, maker row and nav = one fixed layer per maker above the panels. Only the panel content moves.
   - Tab underline x/width interpolated from `scrollLeft / panelWidth` on every frame.
   - Parallax: leaving panel at 0.3× speed + black overlay 0 → .4; incoming panel has `box-shadow: -12px 0 24px rgb(0 0 0 / .35)` on its leading edge.
   - Keep native snap (`x mandatory`, `snap-stop: always`). `transform`/`opacity` only. Reduced motion: plain snap.
   Proof: screen-record a slow swipe on iPhone Safari; tabs, avatar, name and Follow do not move at any frame; underline glides with the finger; no hard vertical edge between two photos.
-- [ ] **10.2 Product still outside the safe zone** (granny bag and flower hood go under the bar; necklace beads touch it). Cause: the photo is `cover` over the full screen height, so a 4:5 photo is scaled ~1.7× and big pieces fill the whole screen.
+- [x] **10.2 Product still outside the safe zone** (granny bag and flower hood go under the bar; necklace beads touch it). Cause: the photo is `cover` over the full screen height, so a 4:5 photo is scaled ~1.7× and big pieces fill the whole screen.
   Fix (replaces the −79px shift and `focusY`):
   - Zone box: `position:absolute; top:var(--u-safe-top); bottom:var(--u-safe-bottom); left:0; right:0; display:grid; place-items:center`.
   - Sharp photo inside it: `width: min(100%, (zoneHeight) * .8); aspect-ratio: 4/5; object-fit: cover`, where zoneHeight = panel height − safe-top − safe-bottom (390×844 → 390×488 at y 100–588).
@@ -172,14 +172,14 @@ Matas tested P9 on his iPhone (Safari, toolbar shown). Everything else is fixed;
   - Sharp photo fades into the blur over 24px on edges that do not touch the screen edge (`mask-image`).
   - Remove the drag-to-frame / `focusY` step from Studio; keep the copy "Keep your piece inside the frame." over a plain 4:5 crop.
   Proof: iPhone Safari with toolbar shown and hidden, every maker: the whole piece is visible between the maker row and the bar; nothing of it under the bar, thumbs or nav.
-- [ ] **10.3 Cut-off dark rectangles under stickers.** Cause (checked live): `filter: drop-shadow(0 6px 10px rgba(0,0,0,.35))` is on the sticker `<img>`; iPhone Safari clips the filter to the img box (`overflow: clip` on replaced elements), leaving a hard-edged dark rectangle.
+- [x] **10.3 Cut-off dark rectangles under stickers.** Cause (checked live): `filter: drop-shadow(0 6px 10px rgba(0,0,0,.35))` is on the sticker `<img>`; iPhone Safari clips the filter to the img box (`overflow: clip` on replaced elements), leaving a hard-edged dark rectangle.
   Fix: move the shadow to the wrapper span and make it smaller: `filter: drop-shadow(0 2px 6px rgb(0 0 0 / .25))`. Same for every sticker on the site (Discover, product page, cards, desktop).
   Proof: zoom on iPhone Safari around "1 of 1" and "New maker": soft shadow follows the sticker shape, no straight edges.
-- [ ] **10.4 End screen: gap between the title lines is too big.** Matas (20:50): position, size, line break ("…for" / "now") and everything else stay exactly as they are. Only the space between the title lines is too big. Cause: Rock Salt's default line-height is huge.
+- [x] **10.4 End screen: gap between the title lines is too big.** Matas (20:50): position, size, line break ("…for" / "now") and everything else stay exactly as they are. Only the space between the title lines is too big. Cause: Rock Salt's default line-height is huge.
   Fix: title `line-height: 1.15` (nothing else changes; no new elements, no moving the block).
   Proof: iPhone Safari screenshot: "now" sits right under the first line, the gap between the lines looks like normal text spacing.
 
-- [ ] **10.5 Tapping Follow / Following changes the screen.** Matas: "tap Following and the screens change". Follow must only switch the button and update who she follows; it must not touch Discover or anything else.
+- [x] **10.5 Tapping Follow / Following changes the screen.** Matas: "tap Following and the screens change". Follow must only switch the button and update who she follows; it must not touch Discover or anything else.
   Cause (in the code): `getFeed()` in `lib/data/mock.ts` sorts makers with followed ones first (`score = follows.includes(id)`), and `useData` reloads the feed on every data change. So `toggleFollow` → feed reloads → order changes → a different maker sits under your finger, panels and photos remount.
   Fix:
   - Discover order is decided **once** when Discover opens and stays frozen until the page is reloaded. Follow/unfollow, save, add to bag never reorder or remount the feed. (Keep a ref with the first list of maker ids; later updates are mapped onto that order by id.) Same in `getFeed` for Supabase later: following only affects the order of the *next* session.
@@ -189,6 +189,8 @@ Matas tested P9 on his iPhone (Safari, toolbar shown). Everything else is fixed;
   Proof: on iPhone Safari, scroll to the 3rd maker, open Her story, tap Following → Follow → Following: nothing on screen moves except the button text; you are still on the same maker and panel. `/following` shows the change.
 
 Order: 10.5 + 10.3 (quick) → 10.2 → 10.4 → 10.1. One PR, QUALITY loop, then ask Matas to test on his iPhone again.
+
+Done 2026-11-25 (Justinas + Claude, PR "P10"): checked in iPhone 15 Pro emulation with the Safari toolbar shown (393×659) and hidden (393×746). Every mounted maker's photo sits inside the safe zone (y 104 → height − 262); sticker shadow on the wrapper, no box edge; end title line-height 1.15; Follow → Following → Follow on the 3rd maker in Her story keeps the order, the panel, the scroll and the button size, and `/following` updates; slow swipe: tabs + maker row stay fixed, underline glides between tabs, leaving panel at 0.3× with a 0→.4 dark overlay, incoming panel with an edge shadow; reduced motion = no parallax. qa.mjs 0 FAIL. Matas: please re-test on your iPhone.
 
 ---
 

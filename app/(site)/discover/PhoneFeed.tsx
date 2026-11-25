@@ -7,10 +7,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { FeedItem, Maker, Product } from '@/lib/types';
-import { CATEGORY_LABEL, getReviews, markHintsSeen, toggleFollow } from '@/lib/data';
+import { CATEGORY_LABEL, getReviews, markHintsSeen } from '@/lib/data';
 import { formatEUR, formatEURExact, shipsLine } from '@/lib/format';
 import { useData } from '@/lib/useData';
-import { SaveButton, useAddToBag } from '@/components/u/Bits';
+import { FollowButton, SaveButton, useAddToBag } from '@/components/u/Bits';
 import Sticker from '@/components/u/Sticker';
 import Img from '@/components/u/Img';
 import Icon from '@/components/u/Icon';
@@ -20,7 +20,6 @@ const TABS = ['Pieces', 'Her story', 'All about her'];
 const firstAvailable = (ps: Product[]) => Math.max(0, ps.findIndex((p) => !p.sold));
 /** "pearl drop earrings, chain bracelet": what she makes, for the next-maker line. */
 const makes = (it: FeedItem) => it.products.slice(0, 2).map((p) => p.title.toLowerCase()).join(', ');
-const focus = (p: Product, i = 0) => `50% ${Math.round((p.imageFocus?.[i] ?? 0.5) * 100)}%`;
 const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function PhoneFeed({ items, inBag, firstVisit }: { items: FeedItem[]; inBag: Set<string>; firstVisit: boolean }) {
@@ -47,10 +46,12 @@ export default function PhoneFeed({ items, inBag, firstVisit }: { items: FeedIte
   );
 }
 
-function Tabs({ on, go }: { on: number; go: (i: number) => void }) {
+/** One tab row per maker (FIXES 10.1). The underline is moved by the panel scroll every frame (see Maker3). */
+function Tabs({ on, go, line, tabRefs }: { on: number; go: (i: number) => void; line: React.Ref<HTMLSpanElement>; tabRefs: React.MutableRefObject<(HTMLButtonElement | null)[]> }) {
   return (
     <div className={s.tabs} role="tablist">
-      {TABS.map((t, i) => <button key={t} type="button" role="tab" aria-selected={i === on} className={i === on ? s.tabOn : ''} onClick={() => go(i)}>{t}</button>)}
+      {TABS.map((t, i) => <button key={t} ref={(el) => { tabRefs.current[i] = el; }} type="button" role="tab" aria-selected={i === on} className={i === on ? s.tabOn : ''} onClick={() => go(i)}>{t}</button>)}
+      <span ref={line} className={s.tabLine} aria-hidden="true" />
     </div>
   );
 }
@@ -62,7 +63,7 @@ function MakerRow({ m, onAbout }: { m: Maker; onAbout: () => void }) {
         <Img small src={m.portraitUrl} alt="" className={s.av40} />
         <span className="grow minw0"><span className={`hand ${s.name17}`}>{m.name}</span><span className={s.meta12}>{m.city} · {CATEGORY_LABEL[m.categories[0]]}</span></span>
       </button>
-      <button type="button" className={`sec gs ${s.follow}`} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
+      <FollowButton m={m} className={`sec gs ${s.follow}`} />
     </div>
   );
 }
@@ -81,7 +82,38 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
   const up = p.stickers?.uplift;
   const added = inBag.has(p.id);
   const go = (i: number) => { const l = lay.current; if (l) l.scrollTo({ left: i * l.clientWidth, behavior: reduced() ? 'auto' : 'smooth' }); };
-  const onLay = () => { const l = lay.current; if (!l) return; const i = Math.round(l.scrollLeft / l.clientWidth); if (i !== panel) { setPanel(i); if (i !== 1) setPlaying(false); } };
+  // FIXES 10.1: one continuous screen. Tabs + maker row are one fixed layer (they never move); on every scroll
+  // frame the underline glides between tabs, the panel being left moves at 0.3× and darkens to 60%, the incoming
+  // panel slides over it with a shadow on its leading edge, and the small maker row fades out over All about her.
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const line = useRef<HTMLSpanElement>(null);
+  const whoRef = useRef<HTMLDivElement>(null);
+  const panRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const dimRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const frame = useRef(0);
+  const paint = () => {
+    const l = lay.current; if (!l) return;
+    const w = l.clientWidth || 1; const pr = Math.max(0, Math.min(2, l.scrollLeft / w));
+    const i = Math.min(1, Math.floor(pr)), f = pr - i;
+    const a = tabRefs.current[i], b = tabRefs.current[Math.min(2, i + 1)];
+    if (a && b && line.current) {
+      const x = a.offsetLeft + (b.offsetLeft - a.offsetLeft) * f, lw = a.offsetWidth + (b.offsetWidth - a.offsetWidth) * f;
+      line.current.style.transform = `translateX(${x}px)`; line.current.style.width = `${lw}px`;
+    }
+    if (whoRef.current) { const o = Math.max(0, Math.min(1, 2 - pr)); whoRef.current.style.opacity = String(o); whoRef.current.style.visibility = o < 0.02 ? 'hidden' : 'visible'; }
+    if (reduced()) return;
+    panRefs.current.forEach((el, j) => {
+      if (!el) return; const d = pr - j;
+      el.style.transform = d > 0 && d < 1 ? `translateX(${d * w * 0.7}px)` : '';
+      el.style.boxShadow = d < 0 && d > -1 ? 'var(--u-pan-shadow)' : '';
+      const dim = dimRefs.current[j]; if (dim) dim.style.opacity = d > 0 && d < 1 ? String(0.4 * d) : '0';
+    });
+  };
+  const onLay = () => {
+    cancelAnimationFrame(frame.current); frame.current = requestAnimationFrame(paint);
+    const l = lay.current; if (!l) return; const i = Math.round(l.scrollLeft / l.clientWidth); if (i !== panel) { setPanel(i); if (i !== 1) setPlaying(false); }
+  };
+  useEffect(() => { paint(); const r = () => paint(); window.addEventListener('resize', r); return () => window.removeEventListener('resize', r); });
 
   // First visit only: 1.2s after Discover opens the panels bounce left so the next one peeks out. No hint text.
   useEffect(() => {
@@ -101,11 +133,11 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
     <>
       <div className={s.lay} ref={lay} onScroll={onLay}>
         {/* 1 · Pieces */}
-        <div className={s.pan}>
+        <div className={s.pan} ref={(el) => { panRefs.current[0] = el; }} style={{ zIndex: 1 }}>
+          {/* FIXES 10.2: the whole 4:5 photo sits inside the safe zone; around it the same photo, blurred */}
           <Img key={`b${p.id}`} src={p.images[0]} small alt="" aria-hidden="true" className={s.under} />
-          <Img key={`h${p.id}`} src={p.images[0]} eager={active} alt={`${p.title} by ${m.name}`} className={`${s.hero} ${s.swap}`} style={{ objectPosition: focus(p) }} />
+          <div className={s.zone}><Img key={`h${p.id}`} src={p.images[0]} eager={active} alt={`${p.title} by ${m.name}`} className={`${s.hero} ${s.swap}`} /></div>
           <div className={s.shadeTop} /><div className={s.shadeBottom} />
-          <div className={s.top}><Tabs on={0} go={go} /><MakerRow m={m} onAbout={() => go(2)} /></div>
           {mk ? <span key={`k${p.id}`} className={`${s.stk} ${s.swap}`}><Sticker k={mk} city={m.city} width={104} tilt={6} /></span>
             : up ? <span key={`u${p.id}`} className={`${s.stk} ${s.swap}`}><Sticker k={up} width={104} tilt={6} /></span> : null}
           <div className={`g ${s.bar}`}>
@@ -129,25 +161,31 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
               <Icon name="arrow-down" size={14} /><span>Next:</span><span className={`hand ${s.nxtName}`}>{next.maker.name}</span><span className="m">· {makes(next)}</span>
             </button>
           ) : null}
+          <div className={s.dim} ref={(el) => { dimRefs.current[0] = el; }} />
         </div>
 
         {/* 2 · Her story */}
-        <div className={s.pan}>
+        <div className={s.pan} ref={(el) => { panRefs.current[1] = el; }} style={{ zIndex: 2 }}>
           <Img src={poster} alt={`${m.name} at work`} className={s.fill} />
           <div className={s.shadeTop} /><div className={s.shadeStory} />
-          <div className={s.top}><Tabs on={1} go={go} /><MakerRow m={m} onAbout={() => go(2)} /></div>
           <button type="button" className={s.play} aria-label={playing ? 'Pause her story' : 'Play her story'} onClick={() => setPlaying(!playing)}><Icon name={playing ? 'pause' : 'play'} size={28} /></button>
           <div className={s.quote}>
             <span className="m t-meta">{m.video ? `Her story · ${Math.floor(m.video.seconds / 60)}:${String(m.video.seconds % 60).padStart(2, '0')}` : 'Her story'}</span>
             <p>“{m.video?.caption ?? m.tagline}”</p>
           </div>
           {m.video ? <div className={s.prog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing && panel === 1 && active ? 'running' : 'paused' }} /></div> : null}
+          <div className={s.dim} ref={(el) => { dimRefs.current[1] = el; }} />
         </div>
 
         {/* 3 · All about her */}
-        <div className={`${s.pan} ${s.panDark}`}>
-          {panel === 2 || active ? <About item={item} next={next} go={go} onNext={onNext} /> : null}
+        <div className={`${s.pan} ${s.panDark}`} ref={(el) => { panRefs.current[2] = el; }} style={{ zIndex: 3 }}>
+          {panel === 2 || active ? <About item={item} next={next} onNext={onNext} /> : null}
         </div>
+      </div>
+      {/* one fixed layer per maker: tabs + maker row never move during a sideways swipe */}
+      <div className={s.top}>
+        <Tabs on={panel} go={go} line={line} tabRefs={tabRefs} />
+        <div ref={whoRef}><MakerRow m={m} onAbout={() => go(2)} /></div>
       </div>
       {/* in <body>, above the bottom nav (the feed is its own stacking layer) */}
       {details ? createPortal(<Details p={p} m={m} added={added} label={label} action={action} onClose={() => setDetails(false)} />, document.body) : null}
@@ -155,7 +193,7 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
   );
 }
 
-function About({ item, next, go, onNext }: { item: FeedItem; next?: FeedItem; go: (i: number) => void; onNext: () => void }) {
+function About({ item, next, onNext }: { item: FeedItem; next?: FeedItem; onNext: () => void }) {
   const m = item.maker;
   const [reviews] = useData(() => getReviews(m.id), [m.id]);
   const sold = useMemo(() => item.products.reduce((a, p) => a + (p.madeToOrder ? 0 : Math.max(0, p.madeCount - p.stock)), 0), [item.products]);
@@ -164,13 +202,13 @@ function About({ item, next, go, onNext }: { item: FeedItem; next?: FeedItem; go
   const r = reviews?.[0];
   return (
     <div className={s.prof} data-own-scroll>
-      <div className={s.profTop}><Tabs on={2} go={go} /></div>
+      <div className={s.profTop} />
       <div className={s.aboutHead}>
         <Img small src={m.portraitUrl} alt="" className={s.av72} />
         <span className="grow minw0"><span className={`hand ${s.name24}`}>{m.name}</span><span className="m t-small">{m.city} · {CATEGORY_LABEL[m.categories[0]]}</span></span>
       </div>
       <div className={s.aboutActs}>
-        <button type="button" className="cta" aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
+        <FollowButton m={m} className="cta" />
         <Link href={`/messages/${m.slug}`} className="sec gs">Message</Link>
       </div>
       <div className={s.stats}>
@@ -233,7 +271,7 @@ function Details({ p, m, added, label, action, onClose }: { p: Product; m: Maker
       onTouchStart={(e) => { start.current = page.current && page.current.scrollTop <= 0 ? e.touches[0].clientY : null; }}
       onTouchEnd={(e) => { if (start.current != null && e.changedTouches[0].clientY - start.current > 90) window.history.back(); start.current = null; }}>
       <div className={s.detPhoto}>
-        <Img src={p.images[0]} alt={p.title} style={{ objectPosition: focus(p) }} />
+        <Img src={p.images[0]} alt={p.title} />
         <button type="button" className={`ic gs ${s.detClose}`} aria-label="Close details" onClick={() => window.history.back()}><Icon name="close" /></button>
       </div>
       <div className={s.detBody}>

@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FeedItem, Maker, Product } from '@/lib/types';
-import { CATEGORY_LABEL, getBag, getFeed, getMe, hideMaker, markHintsSeen, toggleFollow } from '@/lib/data';
+import { CATEGORY_LABEL, getBag, getFeed, getMe, hideMaker, markHintsSeen } from '@/lib/data';
 import { formatEUR, shipsLine } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { useIsDesktop } from '@/lib/useIsDesktop';
-import { SaveButton, useAddToBag } from '@/components/u/Bits';
+import { FollowButton, SaveButton, useAddToBag } from '@/components/u/Bits';
 import { openBag } from '@/components/u/Nav';
 import { Back, Chevron } from '@/components/u/Icons';
 import MakerProfile, { makerMeta } from '@/components/u/MakerProfile';
@@ -139,7 +139,7 @@ function DeskSlide({ item, next, active, inBag, sel, setSel, pic, setPic, onNext
             <Img small src={m.portraitUrl} alt="" className={`u-avatar ${s.dav}`} />
             <span className="grow minw0"><span className={`hand ${s.dname}`}>{m.name}</span><span className="m t-small">{item.reason === 'surprise' ? 'Picked for you · new to you' : makerMeta(m)}</span></span>
           </Link>
-          <button type="button" className={`sec gs ${s.dfollow}`} aria-pressed={!!m.isFollowing} onClick={() => toggleFollow(m.id)}>{m.isFollowing ? 'Following' : 'Follow'}</button>
+          <FollowButton m={m} className={`sec gs ${s.dfollow}`} />
         </div>
         <div className={s.ddiv} />
         <Link href={`/p/${p.id}`} className={s.dtitleRow}><h2 className={`hand ${s.dtitle}`}>{p.title}</h2><span className={s.dprice}>{formatEUR(p.priceCents)}</span></Link>
@@ -187,8 +187,18 @@ export default function Discover() {
   useEffect(() => { if (me && !me.onboarded) router.replace('/welcome'); }, [me, router]);
   const inBag = useMemo(() => new Set((bag?.groups ?? []).flatMap((g) => g.lines.map((l) => l.productId))), [bag]);
   const [firstVisit] = useState(() => true);
-  if (!me || !me.onboarded || !items || desktop === undefined) return <Loading />;
-  if (!items.length) return <Loading />;
-  if (desktop) return <DeskStage items={items} inBag={inBag} />;
-  return <PhoneFeed items={items} inBag={inBag} firstVisit={firstVisit && !me.hintsSeen} />;
+  // FIXES 10.5: the order of makers is decided once, when Discover opens, and stays frozen until a reload.
+  // Follow / unfollow, save and add to bag only update the data of the makers already on screen (mapped by id),
+  // so nothing reorders or remounts. Only "Not for me" (hideMaker) removes a maker.
+  const order = useRef<string[] | null>(null);
+  const feed = useMemo(() => {
+    if (!items) return items;
+    if (!order.current) order.current = items.map((x) => x.maker.id);
+    const byId = new Map(items.map((x) => [x.maker.id, x]));
+    return order.current.map((id) => byId.get(id)).filter(Boolean) as FeedItem[];
+  }, [items]);
+  if (!me || !me.onboarded || !feed || desktop === undefined) return <Loading />;
+  if (!feed.length) return <Loading />;
+  if (desktop) return <DeskStage items={feed} inBag={inBag} />;
+  return <PhoneFeed items={feed} inBag={inBag} firstVisit={firstVisit && !me.hintsSeen} />;
 }

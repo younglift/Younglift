@@ -36,9 +36,11 @@
   --u-scrim-bottom:linear-gradient(rgba(22,16,11,0),rgba(22,16,11,.85));
   --u-online:#4fe061;                               /* "Active now" dot */
   --u-accent-soft:rgba(243,210,122,.16);            /* selected sticker tile */
-  --u-sticker-shadow:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+  --u-sticker-shadow:drop-shadow(0 2px 6px rgb(0 0 0 / .25));  /* on the sticker's wrapper only (FIXES 10.3) */
+  --u-scrim:#000;                                   /* swipe overlay under the leaving panel (FIXES 10.1) */
+  --u-pan-shadow:-12px 0 24px rgb(0 0 0 / .35);     /* leading edge of the incoming panel */
   /* Discover v3 product safe zone (Matas 2026-11-25, DISCOVER.md 1.5): the piece stays between these */
-  --u-safe-top:104px; --u-safe-bottom:262px; --u-safe-shift:calc((var(--u-safe-top) - var(--u-safe-bottom)) / 2);
+  --u-safe-top:104px; --u-safe-bottom:262px;
   --u-panel:#30231a;                                /* solid dark panel: All about her, piece details (03-discover-v3) */
   /* motion (Matas FIXES 3.1): use only these */
   --u-dur-press:120ms; --u-dur-hover:150ms; --u-dur-ui:180ms; --u-dur-panel:260ms; --u-dur-step:300ms;
