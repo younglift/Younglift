@@ -32,6 +32,12 @@ Spec (clickable): `screens/03-discover-v3.dc.html`. References use the real Rock
 | **Tap** avatar / name | jump to All about her. |
 | **Add to bag** | never moves you anywhere. Button → "In your bag ✓", bag count pops. (Flip, a closed "TikTok for shopping" app, lost users by auto-scrolling after taps. Don't.) |
 
+**Sideways must feel like one continuous screen, not a new page (2026-11-25 17:00, FIXES P10.1):**
+- Tabs, the maker row (avatar, name, Follow) and the nav are **one fixed layer** above the panels. They never move during a sideways swipe; only the content under them moves. One copy of them per maker, not one per panel.
+- The tab underline follows the finger live: its x and width are interpolated from `scrollLeft / panelWidth` on every scroll frame, not set when the snap ends.
+- Parallax: the panel being left moves at 0.3× the finger and darkens to 60% (black overlay 0 → .4). The incoming panel slides over it with a shadow on its leading edge (`-12px 0 24px rgb(0 0 0 / .35)`). No hard seam between two different photos.
+- Snap stays native CSS (`scroll-snap-type: x mandatory`, `scroll-snap-stop: always`) so momentum feels like iOS. Parallax only with `transform`/`opacity`, driven by scroll (scroll-driven animations or one rAF reading `scrollLeft`). Reduced motion: no parallax, no darkening, same snap.
+
 Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories / Tinder (tap to browse), Depop/Vinted ("more from this seller" right next to the item), NN/g bottom-sheet guidance (sheets short, ✕ + back close them, never stack).
 
 ### 1.3 No hint texts, use motion
@@ -48,7 +54,8 @@ Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories
 - **Thumbs:** 4 exactly equal tiles, 8px gaps, row edges = bar edges. Selected = 2px butter ring drawn **inside** the tile (image scales to 90%), so no tile looks bigger or shifted.
 - **Bar ("the bubble"):** glass (`.g`), radius 22, height 64, padding 8 8 8 16. Line 1: title in Rock Salt 16, **always the full title, never an ellipsis**. Line 2: "68€ · Details ›" (price 600 14px, rest 12px). Right: Add to bag, 46px, cream with the hard bottom edge.
 - **Title length:** Studio "Add piece" title field has a hard limit of **20 characters** with a live counter ("19/20"). Shorten longer titles in the data.
-- Sticker: right 16, top 128, 104px wide, rotated 6°.
+- Sticker: right 16, top 128, 104px wide, rotated 6°. Shadow `drop-shadow(0 2px 6px rgb(0 0 0 / .25))` on the **wrapper**, never on the `<img>` (iPhone Safari clips a filter on an img to the img's box, which made the cut-off dark rectangles). Same rule for every sticker on the site.
+- **End of the feed** ("You've met everyone for now", P10.4): block centred between the top of the screen and the top of the nav, at the optical centre (45% of that height). Row of the makers you met (avatars 40px, overlapping −8px, white 2px ring) → 16 → title Rock Salt 26px, line-height 1.3, `text-wrap: balance` (breaks as "You've met everyone / for now") → 8 → "New makers join every week." 14px → 24 → Explore all pieces (primary 48) → 12 → Back to the top (secondary 48).
 - Details page: photo 420px, padding 16, title Rock Salt 22 + price 20/600, Add to bag 48 + save 48, fact rows 14px with a 1px line.
 
 ### 1.5 Product safe zone
@@ -57,8 +64,8 @@ Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories
 
 - The product must never sit under the bar/thumbs (bottom) or the tabs/maker row (top).
 - Tokens in `app/globals.css`: `--u-safe-top:104px`, `--u-safe-bottom:262px`, 16px sides → zone x 16–374, y 104–582.
-- Photo full width, `object-fit:cover`, shifted up by `(--u-safe-top − --u-safe-bottom) / 2` (−79px) so its centre (or `images[].focusY`) sits in the centre of the zone. The strip uncovered at the bottom shows the same photo blurred (28px, brightness .7); the sharp photo fades into it over its last 18% (`mask-image`). Never shrink the photo into a box with empty bars.
-- Studio "Add piece": dashed safe-zone frame over the preview, the maker drags the photo to set `images[].focusY` (0–1). Copy: "Keep your piece inside the frame."
+- **Changed 2026-11-25 17:00 (Matas, after the iPhone test, FIXES P10.2):** the whole 4:5 photo always sits inside the zone, never cropped by `cover`. Sharp photo = the largest 4:5 box that fits in the zone (`width: min(100%, zoneHeight × 0.8)`, `aspect-ratio: 4/5`), centred in it. On a 390×844 screen that is 390×488 at y 100–588, so it looks full width. Everything around it (top, bottom, and the sides when Safari's toolbar makes the zone shorter) is the same photo, `cover`, blurred 28px, brightness .7. The sharp photo fades into it over 24px on every edge that does not touch the screen edge (`mask-image`).
+- `focusY` and the drag-to-frame step in Studio are no longer needed. Studio "Add piece" just shows the 4:5 crop with the copy "Keep your piece inside the frame."
 - Any future screen with UI over a product photo follows the same rule. If you move an overlay, recompute the tokens so the zone ends 8px before it.
 
 ---
@@ -93,4 +100,4 @@ Spec: `screens/desktop/03-discover.dc.html`.
 Follow `docs/ai/QUALITY.md`: `node scripts/qa.mjs` with 0 FAIL, your screenshots next to the references above, use it by hand at 390×844 **and in iPhone Safari** (toolbar shown and hidden) and at 1440×900, fix and repeat.
 
 ## 4. Order of work
-P6 (incl. 6.10 centring) → P8 (photos) → P7 (desktop Discover) → P9 (phone Discover v3). One PR per part, QUALITY loop each time, tick the boxes in FIXES.md.
+P6, P7, P8, P9 are done. Now: **P10** (Matas's iPhone test of v3: continuous sideways swipe, whole photo inside the safe zone, sticker shadows, end screen). One PR per part, QUALITY loop each time, tick the boxes in FIXES.md.
