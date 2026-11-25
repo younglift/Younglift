@@ -10,6 +10,7 @@ import { toast } from '@/components/u/Toast';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 /** B9 Order → pack, print the label, mark as shipped (+ tracking). */
 export default function Order() {
@@ -25,7 +26,7 @@ export default function Order() {
   const step = (n: number, done: boolean, t: string, d: string, extra?: React.ReactNode, onTick?: () => void) => (
     <div className="row" style={{ alignItems: 'flex-start', minHeight: 52 }}>
       {onTick ? <button type="button" className="ic" aria-label={`Mark “${t}” done`} onClick={onTick} style={{ margin: -8 }}><span className="chk" style={{ width: 28, height: 28 }}>{n}</span></button>
-        : <span className={`chk ${done ? 'on' : ''}`} style={{ width: 28, height: 28 }} aria-label={done ? `${t}: done` : undefined}>{done ? '✓' : n}</span>}
+        : <span className={`chk ${done ? 'on' : ''}`} style={{ width: 28, height: 28 }} aria-label={done ? `${t}: done` : undefined}>{done ? <Icon name="check" size={14} /> : n}</span>}
       <span className="grow flex col gap-4 t-small"><span className="fw600">{t}</span><span className="m">{d}</span></span>{extra}
     </div>
   );

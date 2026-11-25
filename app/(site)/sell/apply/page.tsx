@@ -8,6 +8,7 @@ import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
 import Logo from '@/components/u/Logo';
 import ap from './apply.module.css';
+import Icon from '@/components/u/Icon';
 
 const CATS: Category[] = ['jewelry', 'ceramics', 'crochet', 'clothing', 'home', 'prints', 'other'];
 
@@ -67,7 +68,7 @@ export default function Apply() {
               {photos.map((u, i) => (
                 <span key={i} className={ap.photo}><Img small src={u} alt="" className="u-cover" /><button type="button" aria-label="Remove photo" className={`gs ${ap.remove}`} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>✕</button></span>
               ))}
-              {photos.length < 10 ? <button type="button" aria-label="Add photos" className={`gs ${ap.add}`} onClick={() => file.current?.click()}>+</button> : null}
+              {photos.length < 10 ? <button type="button" aria-label="Add photos" className={`gs ${ap.add}`} onClick={() => file.current?.click()}><Icon name="plus" size={24} /></button> : null}
               <input ref={file} type="file" accept="image/*" multiple hidden onChange={async (e) => { const fs = Array.from(e.target.files ?? []).slice(0, 10 - photos.length); setPhotos([...photos, ...(await Promise.all(fs.map(uploadImage)))]); e.target.value = ''; }} />
             </div>
           </div>
@@ -75,7 +76,7 @@ export default function Apply() {
         </div>
         <label className="g u-card row pointer ai-start">
           <input type="checkbox" className="sr" checked={self} onChange={() => setSelf(!self)} />
-          <span className={`chk ${self ? 'on' : ''}${tried && !self ? ' ' + ap.chkBad : ''}`} aria-hidden="true">{self ? '✓' : ''}</span>
+          <span className={`chk ${self ? 'on' : ''}${tried && !self ? ' ' + ap.chkBad : ''}`} aria-hidden="true">{self ? <Icon name="check" size={14} /> : null}</span>
           <span className="t-small lh-15">I make everything I’ll sell myself (alone or in my own small studio).</span>
         </label>
         <div className="g u-bar"><button type="button" className="cta" onClick={send}>Send application</button></div>

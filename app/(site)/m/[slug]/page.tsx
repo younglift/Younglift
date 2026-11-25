@@ -12,6 +12,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
 import mk from './maker.module.css';
+import Icon from '@/components/u/Icon';
 
 /** Her profile on its own page (links from pieces, Following, Home). Story opens as a full-screen photo + caption. */
 export default function MakerPage() {
@@ -36,7 +37,7 @@ export default function MakerPage() {
         <div className={mk.story} role="dialog" aria-modal="true" aria-label={`${m.name}’s story`}>
           <Img src={m.video?.posterUrl ?? m.portraitUrl} alt={`${m.name} at work`} className={`u-cover ${'fill'}`} />
           {m.video?.hasCaptions ? <p className={mk.storyCap}><span className={'u-cap ' + mk.capBig}>“{m.video.caption}”</span></p> : null}
-          <button type="button" className={`ic gs ${mk.storyClose}`} aria-label="Close story" onClick={() => setStory(false)}>✕</button>
+          <button type="button" className={`ic gs ${mk.storyClose}`} aria-label="Close story" onClick={() => setStory(false)}><Icon name="close" /></button>
           <button type="button" className="cta" style={{ position: 'absolute', left: 16, right: 16, bottom: 'calc(24px + env(safe-area-inset-bottom))' }} onClick={() => { setStory(false); router.push(`/messages/${m.slug}`); }}>Message {m.name}</button>
         </div>
       ) : null}

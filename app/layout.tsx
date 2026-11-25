@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="u-body">{children}<Toaster /></body>
+      <body className="u-body"><div id="u-wash-root" />{children}<Toaster /></body>
     </html>
   );
 }

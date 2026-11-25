@@ -9,6 +9,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 /** B3 You're in: four steps to Go live. Profile stays hidden until she presses Go live. */
 export default function Checklist() {
@@ -39,7 +40,7 @@ export default function Checklist() {
           <div className={s.steps}>{[0, 1, 2, 3].map((i) => <span key={i} className={i < c.done ? s.on : ''} />)}</div>
           {rows.map((r) => (
             <Link key={r.t} href={r.href} className="row" style={{ minHeight: 56 }}>
-              <span className={`chk ${r.done ? 'on' : ''}`}>{r.done ? '✓' : ''}</span>
+              <span className={`chk ${r.done ? 'on' : ''}`}>{r.done ? <Icon name="check" size={14} /> : null}</span>
               <span className={s.grow}><span>{r.t}</span><span className="m">{r.d}</span></span>
               {next === r ? <span className="t-meta fw600 accent">Next</span> : null}<span className="m">›</span>
             </Link>

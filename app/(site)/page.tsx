@@ -17,6 +17,7 @@ import Wash from '@/components/u/Wash';
 import s from './discover/discover.module.css';
 import Img from '@/components/u/Img';
 import { washSrc } from '@/lib/img';
+import Icon from '@/components/u/Icon';
 
 const STEP_LABEL = ['The piece', 'Her story', 'Her profile'];
 
@@ -122,7 +123,7 @@ function MakerCard({ item, next, hints, inBag, onNext, index, active }: { item: 
           <div className={s.shade} />
           {m.video ? (
             <>
-              <button type="button" className={`ic gs ${s.playBtn}`} aria-label={playing ? 'Pause video' : 'Play video'} onClick={() => setPlaying(!playing)}>{playing ? '❚❚' : '▶'}</button>
+              <button type="button" className={`ic gs ${s.playBtn}`} aria-label={playing ? 'Pause video' : 'Play video'} onClick={() => setPlaying(!playing)}><Icon name={playing ? 'pause' : 'play'} size={16} /></button>
               {m.video.hasCaptions ? <p className={s.caption}><span>“{m.video.caption}”</span></p> : null}
               <div className={s.prog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing && step === 1 ? 'running' : 'paused' }} /></div>
             </>
@@ -283,7 +284,7 @@ function DeskSlide({ item, active, step, setStep, sel, setSel, inBag }: { item: 
           <>
             <p className={s.dcaption}><span>“{m.video.caption}”</span></p>
             <div className={s.dprog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing && active ? 'running' : 'paused' }} /></div>
-            <button type="button" className={`ic gs ${s.dplay}`} aria-label={playing ? 'Pause video' : 'Play video'} onClick={() => setPlaying(!playing)}>{playing ? '❚❚' : '▶'}</button>
+            <button type="button" className={`ic gs ${s.dplay}`} aria-label={playing ? 'Pause video' : 'Play video'} onClick={() => setPlaying(!playing)}><Icon name={playing ? 'pause' : 'play'} size={16} /></button>
           </>
         ) : <span className={`gs ${s.dnoVideo}`}>Photo · no video yet</span>
       ) : null}

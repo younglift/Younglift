@@ -11,6 +11,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 const STEPS = [
   ['About you', 'This is how buyers meet you first.'],
@@ -68,7 +69,7 @@ export default function StudioProfile() {
           <button type="button" className="cta" onClick={next}>{step < 5 ? 'Continue' : 'Save profile'}</button>
         </div>
         <div className={`u-head ${s.mTop}`}>
-          <Link href="/studio" aria-label="Close" className="ic gs">✕</Link>
+          <Link href="/studio" aria-label="Close" className="ic gs"><Icon name="close" /></Link>
           <span className="grow tc fw600">Your profile</span>
           <button type="button" className="sec gs" onClick={async () => { await save(); router.push(`/m/${d.slug}`); }}>Preview</button>
         </div>

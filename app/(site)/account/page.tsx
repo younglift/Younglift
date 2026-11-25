@@ -10,6 +10,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
 import ac from './account.module.css';
+import Icon from '@/components/u/Icon';
 
 const STEPS = ['Paid', 'Packing', 'On the way', 'Delivered'];
 const stepOf = (s: string) => (s === 'paid' ? 0 : s === 'packing' ? 1 : s === 'shipped' ? 2 : 3);
@@ -35,7 +36,7 @@ export default function Account() {
   const panel = (k: string, body: React.ReactNode) => (open === k ? <div className={`m ${ac.panel}`}>{body}</div> : null);
   const row = (k: string, label: string, right: string) => (
     <button className={ac.navRow + ' ' + ac.navBtn} type="button" onClick={() => setOpen(open === k ? null : k)} aria-expanded={open === k}>
-      <span>{label}</span><span className="m t-small">{right} {open === k ? '⌃' : '›'}</span>
+      <span>{label}</span><span className="m t-small row gap-4">{right}<Icon name={open === k ? 'chevron-down' : 'chevron'} size={14} /></span>
     </button>
   );
   return (
