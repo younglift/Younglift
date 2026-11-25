@@ -23,7 +23,7 @@ export default function Orders() {
       <Wash src={orders[0]?.lines[0].product.images[0]} />
       <main className="u-page">
         <div className="u-head"><span><h1 className="hand">Orders</h1><span className="m sub">{open.length} to ship</span></span></div>
-        <div className="chips"><button type="button" className="chip" aria-pressed={f === 'open'} onClick={() => setF('open')}>To ship · {open.length}</button><button type="button" className="chip" aria-pressed={f === 'done'} onClick={() => setF('done')}>Shipped</button></div>
+        <div className="chips"><button type="button" className="chip" aria-pressed={f === 'open'} onClick={() => setF('open')}>{`To ship · ${open.length}`}</button><button type="button" className="chip" aria-pressed={f === 'done'} onClick={() => setF('done')}>Shipped</button></div>
         <div className={`g ${s.list}`}>
           {shown.map((o) => (
             <Link key={o.id} href={`/studio/orders/${o.id}`}>

@@ -26,8 +26,10 @@
 .review{border-radius:20px;padding:14px 16px}
 .review .top{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
 .review p{margin:6px 0 0;font-size:14px;line-height:1.5}
-.next{margin-top:8px;border-radius:22px;padding:12px 14px;display:flex;align-items:center;gap:12px;width:100%;color:var(--u-ink);cursor:pointer;text-align:left}
-.next img{width:40px;height:40px}
+.next{margin-top:8px;border-radius:22px;padding:12px 16px;display:flex;align-items:center;gap:12px;width:100%;min-height:72px;color:var(--u-ink);cursor:pointer;text-align:left}
+.next img{width:44px;height:44px;flex-shrink:0}
+.nextText{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.nextName{font-size:18px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}  /* FIXES 6.4: one line */
 .filters{display:flex;gap:8px;flex-wrap:wrap}
 @media (min-width:820px){
   .cover{height:300px;border-radius:32px;overflow:hidden}

@@ -115,8 +115,8 @@ export default function MakerProfile({ maker: m, products, onStory, next, deskto
           {next ? (
             <button type="button" className={`gs ${s.next}`} onClick={next.go}>
               <Img small src={next.maker.portraitUrl} alt="" className="u-avatar" />
-              <span className="grow"><span className="m t-meta">Next maker</span><span className="hand t-body">{next.maker.name} · {CATEGORY_LABEL[next.maker.categories[0]]}</span></span>
-              <span className="t-small">Scroll ↓</span>
+              <span className={s.nextText}><span className="m t-meta">Next maker · {CATEGORY_LABEL[next.maker.categories[0]]}</span><span className={`hand ${s.nextName}`}>{next.maker.name}</span></span>
+              <span className="t-small nowrap">Scroll ↓</span>
             </button>
           ) : null}
         </div>

@@ -1,6 +1,7 @@
 'use client';
 import type { Product } from '@/lib/types';
 import s from './explore.module.css';
+import Icon from '@/components/u/Icon';
 
 export type F = { materials: string[]; price: string[]; avail: string[]; country: string[] };
 export const EMPTY: F = { materials: [], price: [], avail: [], country: [] };
@@ -32,7 +33,7 @@ export default function Filters({ list, f, set, countryOf }: { list: Product[]; 
           return (
             <label key={v} className={s.opt}>
               <input type="checkbox" className="sr" checked={on} onChange={() => set({ ...f, [key]: on ? f[key].filter((x) => x !== v) : [...f[key], v] })} />
-              <span className={`chk ${on ? 'on' : ''}`} aria-hidden="true">{on ? '✓' : ''}</span><span>{o.label}</span><span className="m">{o.count}</span>
+              <span className={`chk ${on ? 'on' : ''}`} aria-hidden="true">{on ? <Icon name="check" size={14} /> : null}</span><span>{o.label}</span><span className="m">{o.count}</span>
             </label>
           );
         })}

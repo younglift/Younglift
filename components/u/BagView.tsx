@@ -7,6 +7,7 @@ import { Clock, Trash } from './Icons';
 import { toast } from './Toast';
 import s from './BagView.module.css';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 /** The bag: one box per maker (her own parcel and button), free-shipping helper, real 15-minute holds. */
 export default function BagView({ compact = false, onNavigate }: { compact?: boolean; onNavigate?: () => void }) {
@@ -79,13 +80,13 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
                     {!p.madeToOrder && h && holdLeft > 0 ? <span className={`${s.sub} ${s.held} num`}>Held for you · {mmss(holdLeft)}</span> : null}
                     {!p.madeToOrder && (!h || holdLeft <= 0) ? (
                       p.heldByOther ? <span className={`${s.sub} ${s.held}`}>In someone’s bag right now</span>
-                        : <span className={s.sub}><span className="m">Hold ended, still available · </span><button type="button" className="link" onClick={() => holdAgain(p.id)}>Hold again</button></span>
+                        : <span className={`${s.sub} row gap-8 wrap`}><span className="m">Hold ended · still available</span><button type="button" className="link" onClick={() => holdAgain(p.id)}>Hold again</button></span>
                     ) : null}
                     {!p.oneOfAKind ? (
                       <span className={s.qty}>
-                        <button type="button" aria-label={`One less ${p.title}`} onClick={() => (l.qty > 1 ? setBagQty(p.id, l.variant, l.qty - 1) : remove(p.id, p.title, l.variant))}>−</button>
+                        <button type="button" aria-label={`One less ${p.title}`} onClick={() => (l.qty > 1 ? setBagQty(p.id, l.variant, l.qty - 1) : remove(p.id, p.title, l.variant))}><Icon name="minus" size={16} /></button>
                         <span aria-label="Quantity">{l.qty}</span>
-                        <button type="button" aria-label={`One more ${p.title}`} disabled={!p.madeToOrder && l.qty >= (p.freeStock ?? p.stock)} onClick={() => setBagQty(p.id, l.variant, l.qty + 1)}>+</button>
+                        <button type="button" aria-label={`One more ${p.title}`} disabled={!p.madeToOrder && l.qty >= (p.freeStock ?? p.stock)} onClick={() => setBagQty(p.id, l.variant, l.qty + 1)}><Icon name="plus" size={16} /></button>
                       </span>
                     ) : null}
                   </span>
@@ -104,7 +105,7 @@ export default function BagView({ compact = false, onNavigate }: { compact?: boo
                     <div className={s.ups}>
                       {g.upsell.map((u) => (
                         <button key={u.id} type="button" aria-label={`Add ${u.title}`} onClick={async () => { const r = await addToBag({ productId: u.id, qty: 1 }); toast(r.ok ? `Added ${u.title}` : 'Could not add it right now'); }}>
-                          <span className={s.ph}><Img small src={u.images[0]} alt="" className="u-cover" /><span className={`gs ${s.plus}`}>+</span></span>
+                          <span className={s.ph}><Img small src={u.images[0]} alt="" className="u-cover" /><span className={`gs ${s.plus}`}><Icon name="plus" size={14} /></span></span>
                           <span className={s.nm}>{u.title}</span><span className="m">{formatEUR(u.priceCents)}</span>
                         </button>
                       ))}

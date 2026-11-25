@@ -13,3 +13,12 @@ export const Trash = ({ size }: P) => <svg {...s(size)}><path d="M5 7h14M10 7V4h
 export const Camera = ({ size }: P) => <svg {...s(size)}><path d="M4 8h4l2-3h4l2 3h4v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>;
 export const Clock = ({ size }: P) => <svg {...s(size)}><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg>;
 export const Lock = ({ size }: P) => <svg {...s(size)}><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 018 0v3" /></svg>;
+export const Plus = ({ size }: P) => <svg {...s(size)}><path d="M12 5v14M5 12h14" /></svg>;
+export const Minus = ({ size }: P) => <svg {...s(size)}><path d="M5 12h14" /></svg>;
+export const Check = ({ size }: P) => <svg {...s(size)}><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>;
+export const ArrowDown = ({ size }: P) => <svg {...s(size)}><path d="M12 5v14M6 13l6 6 6-6" /></svg>;
+export const ArrowUp = ({ size }: P) => <svg {...s(size)}><path d="M12 19V5M6 11l6-6 6 6" /></svg>;
+export const Play = ({ size }: P) => <svg {...s(size)} fill="currentColor" stroke="none"><path d="M8 5.5v13l11-6.5z" /></svg>;
+export const Pause = ({ size }: P) => <svg {...s(size)} fill="currentColor" stroke="none"><rect x="6.5" y="5" width="4" height="14" rx="1" /><rect x="13.5" y="5" width="4" height="14" rx="1" /></svg>;
+export const Star = ({ size, filled }: P) => <svg {...s(size)} fill={filled ? 'currentColor' : 'none'}><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" /></svg>;
+export const ChevronDown = ({ size }: P) => <svg {...s(size)}><path d="M6 9l6 6 6-6" /></svg>;

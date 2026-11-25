@@ -10,6 +10,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
 import s from '../studio.module.css';
+import Icon from '@/components/u/Icon';
 
 /** B6 Share something: video, journal post, or "in progress" (adds the In progress sticker to that piece). */
 export default function Post() {
@@ -42,7 +43,7 @@ export default function Post() {
         <div className={`gs ${s.media + (kind === 'video' ? ' ' + s.mediaTall : '')}`}>
           {img ? <Img src={img} alt="Preview" className="u-cover" /> : (
             <button className={s.fillBtnCol} type="button" onClick={() => file.current?.click()}>
-              <span className={s.plus}>+</span>{kind === 'video' ? 'Add a video (15–60 s)' : 'Add a photo (optional)'}
+              <span className={s.plus}><Icon name="plus" size={20} /></span>{kind === 'video' ? 'Add a video (15–60 s)' : 'Add a photo (optional)'}
             </button>
           )}
           {img && kind === 'video' && captions && caption ? <p className={s.capLine}><span className={s.capSpan}>“{caption}”</span></p> : null}

@@ -13,6 +13,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import s from '../studio.module.css';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 const CATS: Category[] = ['jewelry', 'ceramics', 'crochet', 'clothing', 'accessories', 'home', 'prints', 'other'];
 const STICKERS: (MakerSticker | 'none')[] = ['none', 'one_of_one', 'handmade', 'small_batch', 'made_in_city', 'made_in_collab', 'made_to_order'];
@@ -75,7 +76,7 @@ export default function Editor({ initial }: { initial?: Product }) {
               <button type="button" className={s.photo} aria-label={i ? 'Make this the cover photo' : 'Cover photo'} onClick={() => setImages([u, ...images.filter((_, j) => j !== i)])}>
                 <Img small src={u} alt="" className="u-cover" />{i === 0 ? <span className={`u-badge ${s.coverTag}`}>Cover</span> : null}
               </button>
-              <button type="button" className={`gs ${s.x}`} aria-label="Remove photo" onClick={() => setImages(images.filter((_, j) => j !== i))}>✕</button>
+              <button type="button" className={`gs ${s.x}`} aria-label="Remove photo" onClick={() => setImages(images.filter((_, j) => j !== i))}><Icon name="close" size={14} /></button>
               {images.length > 1 ? (
                 <span className="flex gap-4">
                   <button type="button" className={`ic ${s.moveBtn}`} aria-label="Move photo left" disabled={!i} onClick={() => { const a = [...images]; [a[i - 1], a[i]] = [a[i], a[i - 1]]; setImages(a); }}>←</button>
@@ -84,7 +85,7 @@ export default function Editor({ initial }: { initial?: Product }) {
               ) : null}
             </span>
           ))}
-          {images.length < 8 ? <button type="button" className={`gs ${s.add}`} aria-label="Add photos" onClick={() => file.current?.click()}>+</button> : null}
+          {images.length < 8 ? <button type="button" className={`gs ${s.add}`} aria-label="Add photos" onClick={() => file.current?.click()}><Icon name="plus" size={24} /></button> : null}
           <input ref={file} type="file" accept="image/*" multiple hidden onChange={async (e) => { const fs = Array.from(e.target.files ?? []).slice(0, 8 - images.length); const urls = await Promise.all(fs.map(uploadImage)); setImages([...images, ...urls]); e.target.value = ''; }} />
         </div>
         <span className="m t-meta">Daylight, plain background. The first photo is what people see in Discover.</span>

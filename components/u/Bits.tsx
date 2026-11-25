@@ -11,6 +11,7 @@ import Sheet from './Sheet';
 import { toast } from './Toast';
 import { openBag } from './Nav';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 const isDesktop = () => typeof window !== 'undefined' && window.matchMedia('(min-width: 820px)').matches;
 
@@ -98,8 +99,8 @@ export function Stars({ value, onPick, size = 22 }: { value: number; onPick?: (n
   return (
     <span style={{ display: 'inline-flex', gap: 2, color: 'var(--u-accent)', fontSize: size }}>
       {[1, 2, 3, 4, 5].map((n) => onPick
-        ? <button key={n} type="button" aria-label={`${n} star${n > 1 ? 's' : ''}`} onClick={() => onPick(n)} style={{ background: 'none', border: 0, color: 'inherit', fontSize: 'inherit', cursor: 'pointer', width: 40, height: 44, padding: 0 }}>{n <= value ? '★' : '☆'}</button>
-        : <span key={n} aria-hidden="true">{n <= value ? '★' : '☆'}</span>)}
+        ? <button key={n} type="button" aria-label={`${n} star${n > 1 ? 's' : ''}`} onClick={() => onPick(n)} className="star-btn"><span className="flex"><Icon name="star" size={size} filled={n <= value} /></span></button>
+        : <span key={n} aria-hidden="true" className="flex"><Icon name="star" size={size} filled={n <= value} /></span>)}
     </span>
   );
 }

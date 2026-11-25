@@ -32,9 +32,9 @@ export default function StudioMessages() {
       <main className="u-page narrow">
         <div className="u-head"><span><h1 className="hand">Messages</h1><span className="m sub">{threads.filter((t) => t.waiting).length} waiting for you · {newReq} open requests</span></span></div>
         <div className="chips">
-          <button type="button" className="chip" aria-pressed={tab === 'chats'} onClick={() => setTab('chats')}>Chats · {threads.length}</button>
-          <button type="button" className="chip" aria-pressed={tab === 'requests'} onClick={() => setTab('requests')}>Custom requests · {reqs.length}</button>
-          <button type="button" className="chip" aria-pressed={tab === 'reviews'} onClick={() => setTab('reviews')}>Reviews · {reviews.length}</button>
+          <button type="button" className="chip" aria-pressed={tab === 'chats'} onClick={() => setTab('chats')}>{`Chats · ${threads.length}`}</button>
+          <button type="button" className="chip" aria-pressed={tab === 'requests'} onClick={() => setTab('requests')}>{`Custom requests · ${reqs.length}`}</button>
+          <button type="button" className="chip" aria-pressed={tab === 'reviews'} onClick={() => setTab('reviews')}>{`Reviews · ${reviews.length}`}</button>
         </div>
         {tab === 'chats' ? (
           open ? <Thread buyer={open} name={threads.find((t) => t.buyer === open)?.name ?? 'Buyer'} onBack={() => setOpen(null)} /> : (

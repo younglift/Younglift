@@ -9,6 +9,7 @@ import { BackButton } from '@/components/u/Bits';
 import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 const KINDS: Partial<Record<Category, string[]>> = {
   jewelry: ['Ring', 'Necklace', 'Earrings', 'Bracelet'],
@@ -78,7 +79,7 @@ export default function CustomRequest() {
               {photos.map((u, i) => (
                 <span key={u + i} style={{ position: 'relative', width: 72, height: 72, borderRadius: 14, overflow: 'hidden' }}>
                   <Img small src={u} alt="" className="u-cover" />
-                  <button type="button" aria-label="Remove photo" className="gs" style={{ position: 'absolute', right: 2, top: 2, width: 26, height: 26, borderRadius: '50%', color: 'var(--u-ink)', cursor: 'pointer', fontSize: 12 }} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>✕</button>
+                  <button type="button" aria-label="Remove photo" className="gs" style={{ position: 'absolute', right: 2, top: 2, width: 26, height: 26, borderRadius: '50%', color: 'var(--u-ink)', cursor: 'pointer', fontSize: 12 }} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}><Icon name="close" size={14} /></button>
                 </span>
               ))}
               {photos.length < 4 ? <button type="button" aria-label="Add a photo" className="gs" style={{ width: 72, height: 72, borderRadius: 14, color: 'var(--u-ink)', fontSize: 24, cursor: 'pointer' }} onClick={() => file.current?.click()}>+</button> : null}

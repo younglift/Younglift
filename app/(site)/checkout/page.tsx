@@ -12,6 +12,7 @@ import Loading from '@/components/u/Loading';
 import Wash from '@/components/u/Wash';
 import Img from '@/components/u/Img';
 import co from './checkout.module.css';
+import Icon from '@/components/u/Icon';
 
 /** Next cut-off for "ships today if you order in …": 15:00 local time on weekdays. */
 function cutoff(now: number) {
@@ -81,7 +82,7 @@ function Checkout() {
 
         <section className="g u-card u-stack">
           <label className="fld"><span className="lbl">Email for your receipt</span><input className="inp" type="email" autoComplete="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={tried && !emailOk} />{tried && !emailOk ? <span className="t-meta accent">Please check your email</span> : null}</label>
-          <label className="row t-small pointer minh44"><input type="checkbox" className="sr" checked={news} onChange={() => setNews(!news)} /><span className={`chk ${news ? 'on' : ''}`} aria-hidden="true">{news ? '✓' : ''}</span><span className="m">Send me news from my makers (optional)</span></label>
+          <label className="row t-small pointer minh44"><input type="checkbox" className="sr" checked={news} onChange={() => setNews(!news)} /><span className={`chk ${news ? 'on' : ''}`} aria-hidden="true">{news ? <Icon name="check" size={14} /> : null}</span><span className="m">Send me news from my makers (optional)</span></label>
         </section>
 
         <section className="g u-card u-stack">
@@ -89,7 +90,7 @@ function Checkout() {
           {(['locker', 'door'] as const).map((d) => (
             <label key={d} className="row minh44 pointer">
               <input type="radio" name="delivery" checked={delivery === d} onChange={() => setDelivery(d)} className="sr" />
-              <span className={`chk ${delivery === d ? 'on' : ''} ${'circle'}`} aria-hidden="true">{delivery === d ? '●' : ''}</span>
+              <span className={`chk ${delivery === d ? 'on' : ''} ${'circle'}`} aria-hidden="true">{delivery === d ? <span className="chk-dot" /> : null}</span>
               <span className="grow">{d === 'locker' ? 'Parcel locker' : 'To your door'}</span><span className="m">{d === 'locker' ? '4,90€' : '6,90€'} / maker</span>
             </label>
           ))}
@@ -114,7 +115,7 @@ function Checkout() {
                 return (
                   <label key={r.maker.id} className={`gs row ${co.wrap}`}>
                     <input type="checkbox" className="sr" checked={on} onChange={() => setWrap(on ? wrap.filter((x) => x !== r.maker.id) : [...wrap, r.maker.id])} />
-                    <span className={`chk ${on ? 'on' : ''}`} aria-hidden="true">{on ? '✓' : ''}</span>
+                    <span className={`chk ${on ? 'on' : ''}`} aria-hidden="true">{on ? <Icon name="check" size={14} /> : null}</span>
                     <span className="grow flex col gap-4 t-small"><span>Gift wrap by {r.maker.name} · <b>{formatEURExact(r.maker.giftWrap!.priceCents)}</b></span><span className="m t-small">{r.maker.giftWrap!.description}</span></span>
                   </label>
                 );

@@ -12,6 +12,7 @@ import Wash from '@/components/u/Wash';
 import Filters, { EMPTY, activeCount, applyFilters, type F } from './Filters';
 import s from './explore.module.css';
 import Img from '@/components/u/Img';
+import Icon from '@/components/u/Icon';
 
 const SORTS = [['new', 'Newest'], ['low', 'Price: low to high'], ['high', 'Price: high to low']] as const;
 
@@ -54,7 +55,7 @@ export default function Results({ title, category, q }: { title: string; categor
             <div className={s.tools}>
               <button type="button" className={`sec gs ${s.filterBtn}`} onClick={() => setSheet(true)}>Filter{n ? ` (${n})` : ''}</button>
               <span className="rel flex">
-                <button type="button" className="sec gs grow" aria-expanded={sortOpen} onClick={() => setSortOpen(!sortOpen)}>{SORTS.find((x) => x[0] === sort)![1].replace('Price: ', '')} ▾</button>
+                <button type="button" className="sec gs grow" aria-expanded={sortOpen} onClick={() => setSortOpen(!sortOpen)}><span className="row gap-4">{SORTS.find((x) => x[0] === sort)![1].replace('Price: ', '')}<Icon name="chevron-down" size={14} /></span></button>
                 {sortOpen ? <div className={`g ${s.sortMenu}`} role="menu">{SORTS.map(([k, l]) => <button key={k} type="button" role="menuitemradio" aria-checked={sort === k} aria-pressed={sort === k} onClick={() => { setSort(k); setSortOpen(false); }}>{l}</button>)}</div> : null}
               </span>
             </div>
