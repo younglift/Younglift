@@ -95,6 +95,7 @@ Screenshots were taken on an iPhone in Safari with the toolbar at the bottom. Te
   - Left: one big photo of the current piece only, `object-fit:cover`, radius `--u-r-card`, no glass over it except the sticker (one), ← → buttons and dots for **this piece's photos only**.
   - Right: 400px `.g` card: maker row (avatar 52, name Rock Salt 22, city · category · rating, Follow) → divider → title (Rock Salt 26) + price → meta → Add to bag + save → "Watch Inez at work" video row (92×60 thumb, opens her story) → "More from Inez" 4 thumbs (click = that piece becomes the big one) + "Her profile →" → spacer → "Next maker · Ceramics / Mara · Scroll ↓" pinned at the bottom.
   - Wheel / ↓ / swipe = next maker (as now). ← → keys = this piece's photos.
+  - **Changed 2026-11-25 (Justinas):** desktop Discover now scrolls freely like a normal shop (no snap, no one-gesture-one-maker). Keep that in v2 unless both founders decide otherwise.
   - Removed on desktop: the 3-panel sideways strip (piece → video → profile) and the floating glass card over the photo. Phone stays as it is until the phone navigation decision.
   - Proof: qa at 1440×900 and 1280×800 next to the reference; nothing covers the product photo; title and maker name in Rock Salt.
 
