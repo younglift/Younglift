@@ -142,11 +142,11 @@ Spec: `docs/design/screens/03-discover-v3.dc.html`. References (real Rock Salt):
   - **No ellipsis on titles, ever.** The full title always shows on one line in the bar (Rock Salt 16). Studio "Add piece" title field gets a hard limit of **20 characters** with a live counter ("19/20"); existing longer titles must be shortened in the data. Second line in the bar is only "68€ · Details ›".
   - Bottom nav: 5 equal columns inside the pill with 6px inner padding, every label centred in its column; the pill uses the same 16px side margin as everything else.
 
-- **Product safe zone (Matas, 2026-11-25 11:50).** The piece must never sit under the glass bar/thumbs at the bottom or the tabs/maker row at the top. Reference with the zone drawn: .
-  - Tokens in :  (below the maker row) and  (above the bar). Safe zone = x 16–374, y 104–582 on 390×844.
-  - The photo is full width, , and shifted up by  (−79px) so its centre sits in the centre of the safe zone. The strip this uncovers at the bottom (behind the bar, thumbs and nav) shows the same photo blurred (28px, brightness .7), and the sharp photo fades into it over its last 18% (mask), so there is no hard edge.
-  - Studio "Add piece" photo step: show this dashed safe-zone frame over the preview and let the maker drag the photo to set a focal point (, 0–1, default .5). Discover uses  instead of the plain centre when present. Copy under the preview: "Keep your piece inside the frame."
-  - Same rule for any future overlay screen: nothing important of the product outside .
+- **Product safe zone (Matas, 2026-11-25 11:50).** The piece must never sit under the glass bar/thumbs at the bottom or the tabs/maker row at the top. Reference with the zone drawn: `docs/design/screens/png/03-discover-v3-safe-zone.jpg`.
+  - Tokens in `app/globals.css`: `--u-safe-top:104px` (below the maker row) and `--u-safe-bottom:262px` (above the bar). Safe zone = x 16–374, y 104–582 on 390×844.
+  - The photo is full width, `object-fit:cover`, and shifted up by `(--u-safe-top − --u-safe-bottom) / 2` (−79px) so its centre sits in the centre of the safe zone. The strip this uncovers at the bottom (behind the bar, thumbs and nav) shows the same photo blurred (28px, brightness .7), and the sharp photo fades into it over its last 18% (`mask-image`), so there is no hard edge.
+  - Studio "Add piece" photo step: show this dashed safe-zone frame over the preview and let the maker drag the photo to set a focal point (`images[].focusY`, 0–1, default .5). Discover uses `focusY` instead of the plain centre when present. Copy under the preview: "Keep your piece inside the frame."
+  - Same rule for any future screen that puts UI over a product photo: nothing important of the product outside `--u-safe-*`.
 
 - [ ] **9.1** Build it. Data from `@/lib/data` (pieces of the maker, first = the one Discover picked). Replaces the phone feed in `app/(site)/page.tsx`; desktop stays P7.
 - [ ] **9.2** Proof: screenshots at 390×844 and iPhone Safari next to the four references; every left edge at x=16 and right edge at x=374 (qa: no element between 0–15 or 375–390 except full-bleed photos); thumbs row and bar the same width; tap a thumb → everything switches; details open/close returns to the same piece and photo; sideways snaps per panel; up/down snaps per maker.
