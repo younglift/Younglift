@@ -131,6 +131,13 @@ Spec: `docs/design/screens/03-discover-v3.dc.html`. References (real Rock Salt):
 - Story panel: full-bleed video poster, play 76px centre, quote 18px at bottom 96, "Swipe ← all about her".
 - About panel: avatar 72, name Rock Salt 24, Follow + Message 44px, 3 stat tiles, "All pieces" 2-column grid, review, "Up next" card at the end.
 
+- **Update 2026-11-25 11:45 (Matas):**
+  - Tabs "Pieces · Her story · All about her" are **centred** at the top, like TikTok.
+  - Thumbs: 4 tiles exactly equal, equal 8px gaps, row edges = bar edges. Selected = 2px butter ring drawn **inside** the tile (image scales to 90%), so no tile looks bigger or shifted.
+  - **No hint texts** ("Swipe ← …" removed everywhere). Instead, first visit only: 1.2s after Discover opens, the panels do a small bounce to the left (−64px, back, −18px, back, 1.6s) so the next panel peeks out. Reduced motion: no bounce.
+  - **No ellipsis on titles, ever.** The full title always shows on one line in the bar (Rock Salt 16). Studio "Add piece" title field gets a hard limit of **20 characters** with a live counter ("19/20"); existing longer titles must be shortened in the data. Second line in the bar is only "68€ · Details ›".
+  - Bottom nav: 5 equal columns inside the pill with 6px inner padding, every label centred in its column; the pill uses the same 16px side margin as everything else.
+
 - [ ] **9.1** Build it. Data from `@/lib/data` (pieces of the maker, first = the one Discover picked). Replaces the phone feed in `app/(site)/page.tsx`; desktop stays P7.
 - [ ] **9.2** Proof: screenshots at 390×844 and iPhone Safari next to the four references; every left edge at x=16 and right edge at x=374 (qa: no element between 0–15 or 375–390 except full-bleed photos); thumbs row and bar the same width; tap a thumb → everything switches; details open/close returns to the same piece and photo; sideways snaps per panel; up/down snaps per maker.
 
