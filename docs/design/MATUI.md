@@ -13,7 +13,7 @@ Visas 07 dizainas jau įdėtas į app'ą ir veikia `main` šakoje (https://young
 - **Nauji tokenai** `app/globals.css` (laukai, perjungikliai, šešėliai): `--u-field`, `--u-field-border`, `--u-focus`, `--u-track`, `--u-shade`, `--u-scrim-bottom`, `--u-online`, `--u-accent-soft`, `--u-sticker-shadow`. Reikšmės paimtos iš tavo ekranų, keisk laisvai.
 - **Ekranai, kurių nebuvo:** dydžių gidas, privatus listingas po individualaus užsakymo, Studio žinutės (pokalbiai / užklausos / atsiliepimai), adresai, pranešimai, grąžinimas, `/admin`, 404 ir klaidos puslapis, krovimo taškelis. Visi pagal tavo stilių, bet nepiešti.
 
-- **Kompo Discover (Justino prašymu):** slenka kaip telefone (pelė/touchpad = kitas kūrėjas). Nebėra „Next maker“ mygtuko ir kūrėjų eilės apačioje, kaip `desktop-Discover.jpg`.
+- **Kompo Discover (Justino prašymu, 2026-11-25):** puslapis slenka laisvai kaip įprastoje parduotuvėje (pelė, touchpad, klavišai), be prisitraukimo prie kūrėjo; vienas kūrėjas = vieno ekrano aukštis. Nebėra „Next maker“ mygtuko ir kūrėjų eilės apačioje. P7 sako „Wheel = next maker (as now)“: daryk P7 su laisvu slinkimu arba susitark su Justinu.
 
 ## 3. Ko reikia iš tavęs (nupiešti)
 - **C1–C4:** prisijungimas, tušti ekranai ir klaidos, teisiniai puslapiai (taisyklės, privatumas, grąžinimas, slapukai).

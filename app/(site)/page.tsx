@@ -174,32 +174,22 @@ function MiniAdd({ p, inBag }: { p: Product; inBag: Set<string> }) {
 /** Desktop: the same vertical feed as phone. Scroll (wheel / trackpad / ↓) snaps to the next maker;
     ← → through her steps: piece → her story → her profile. */
 function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) {
-  const feed = useRef<HTMLDivElement>(null);
+  // Desktop: the page scrolls freely like any shop (wheel, touchpad, keys, scrollbar), no snapping (Justinas 2026-11-25).
+  // One maker per screen height; ← → go through her steps: piece → her story → her profile.
   const [cur, setCur] = useState(0);
   const [steps, setSteps] = useState<Record<string, number>>({});
   const [sels, setSels] = useState<Record<string, number>>({});
   const stepOf = (id: string) => steps[id] ?? 0;
   const setStep = useCallback((id: string, n: number) => setSteps((x) => ({ ...x, [id]: Math.max(0, Math.min(2, n)) })), []);
-  // Own animation instead of the browser's slow 'smooth' scroll: 320ms, fast start, soft stop (--u-ease feel).
-  const anim = useRef(0);
-  const sliding = useRef(false);
   const scrollTo = useCallback((i: number, smooth = true) => {
-    const f = feed.current; if (!f) return;
-    const to = Math.max(0, Math.min(items.length, i)) * f.clientHeight;
-    cancelAnimationFrame(anim.current);
-    if (!smooth || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { f.scrollTop = to; return; }
-    const from = f.scrollTop, t0 = performance.now(), dur = 280;
-    f.style.scrollSnapType = 'none'; sliding.current = true;
-    const tick = (now: number) => {
-      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
-      f.scrollTop = from + (to - from) * e;
-      if (k < 1) anim.current = requestAnimationFrame(tick);
-      // React work (mounting the next maker, photo change) waits until the slide has landed, so the motion never stutters.
-      else { f.style.scrollSnapType = ''; sliding.current = false; setCur(Math.round(to / f.clientHeight)); }
-    };
-    anim.current = requestAnimationFrame(tick);
+    window.scrollTo({ top: Math.max(0, Math.min(items.length, i)) * window.innerHeight, behavior: smooth ? 'smooth' : 'auto' });
   }, [items.length]);
-  const onScroll = () => { const f = feed.current; if (!f || sliding.current) return; const i = Math.round(f.scrollTop / f.clientHeight); if (i !== cur) setCur(i); };
+  // Which maker is mostly on screen (only for the background photo and ← →). Read once per frame.
+  useEffect(() => {
+    let raf = 0;
+    const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => setCur(Math.round(window.scrollY / window.innerHeight))); };
+    window.addEventListener('scroll', on, { passive: true }); return () => { window.removeEventListener('scroll', on); cancelAnimationFrame(raf); };
+  }, []);
   const curId = items[Math.min(cur, items.length - 1)]?.maker.id;
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
@@ -207,45 +197,9 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
       const st = steps[curId] ?? 0;
       if (e.key === 'ArrowRight') setStep(curId, st + 1);
       else if (e.key === 'ArrowLeft') setStep(curId, st - 1);
-      else if ((e.key === 'ArrowDown' || e.key === 'PageDown') && st !== 2) { e.preventDefault(); scrollTo(cur + 1); }
-      else if ((e.key === 'ArrowUp' || e.key === 'PageUp') && st !== 2) { e.preventDefault(); scrollTo(cur - 1); }
     };
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
-  }, [cur, curId, steps, setStep, scrollTo]);
-  // Mouse wheel / touchpad anywhere on the page (also over the top bar): one gesture = one maker, up or down.
-  // A new swipe always counts: a pause, a change of direction or a speed-up. A swipe that starts while the
-  // previous slide is still moving is queued and runs the moment it lands. The fading tail of the same swipe
-  // (touchpad momentum) is ignored, so one swipe never skips two makers. Her profile (step 3) scrolls inside.
-  useEffect(() => {
-    let acc = 0, busyUntil = 0, last = 0, lastSign = 0, peak = 0, trough = 0, needFresh = false, queued = 0, timer = 0;
-    const go = (dir: number) => {
-      const f = feed.current; if (!f) return;
-      acc = 0; needFresh = true; busyUntil = performance.now() + 280;
-      scrollTo(Math.round(f.scrollTop / f.clientHeight) + dir);
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => { if (queued) { const d = queued; queued = 0; go(d); } }, 290);
-    };
-    const w = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) < Math.abs(e.deltaX) || e.ctrlKey) return;
-      const t = e.target as HTMLElement | null;
-      if (t?.closest('[data-own-scroll],.u-drawer,.u-sheet,.u-scrim,[role="dialog"],input,textarea,select')) return;
-      e.preventDefault();
-      const now = performance.now(), abs = Math.abs(e.deltaY), sign = Math.sign(e.deltaY);
-      // new swipe = a pause, the other direction, or speeding up again after this swipe had slowed down
-      const fresh = now - last > 80 || sign !== lastSign || (trough < peak * 0.6 && abs > trough * 1.5 + 4);
-      if (fresh) { peak = abs; trough = abs; } else { if (abs > peak) { peak = abs; trough = abs; } else if (abs < trough) trough = abs; }
-      last = now; lastSign = sign;
-      if (fresh) {
-        needFresh = false;
-        if (now < busyUntil) { queued = sign; needFresh = true; return; }
-      }
-      if (now < busyUntil || needFresh) return;
-      acc += e.deltaY;
-      if (Math.abs(acc) >= 15) go(sign);
-    };
-    window.addEventListener('wheel', w, { passive: false });
-    return () => { window.removeEventListener('wheel', w); window.clearTimeout(timer); };
-  }, [scrollTo]);
+  }, [curId, steps, setStep]);
   // Logo / Discover tapped while already here: back to the very start of the feed.
   useEffect(() => {
     const home = () => { setSteps({}); scrollTo(0, false); setCur(0); };
@@ -256,13 +210,13 @@ function DeskStage({ items, inBag }: { items: FeedItem[]; inBag: Set<string> }) 
   return (
     <>
       <Wash src={washItem?.products[firstAvailable(washItem.products)]?.images[0]} />
-      <div className={s.desk} ref={feed} onScroll={onScroll}>
+      <div className={s.desk}>
         {items.map((it, i) => (
           <section key={it.maker.id} className={s.dslide} aria-label={it.maker.name}>
-            {Math.abs(i - cur) <= 2 ? (
+            {(
               <DeskSlide item={it} active={i === cur} step={stepOf(it.maker.id)} setStep={(n) => setStep(it.maker.id, n)}
                 sel={sels[it.maker.id] ?? firstAvailable(it.products)} setSel={(n) => setSels((x) => ({ ...x, [it.maker.id]: n }))} inBag={inBag} />
-            ) : <div className={s.stage} />}
+            )}
           </section>
         ))}
         <section className={`${s.dslide} ${s.end}`}>
