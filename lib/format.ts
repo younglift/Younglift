@@ -34,3 +34,8 @@ export function shipsLine(p: { madeToOrder: boolean; shipsWithinDays: number }) 
 }
 export const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 export const mmss = (ms: number) => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+
+/** FIXES 12.4: never hard-code she/her. Use the maker's name; this is for the rare sentence that needs a pronoun.
+    pronoun(m) → she / he / they; pronoun(m, 'obj') → her / him / them; pronoun(m, 'pos') → her / his / their. */
+const PRONOUNS = { she: { subj: 'she', obj: 'her', pos: 'her' }, he: { subj: 'he', obj: 'him', pos: 'his' }, they: { subj: 'they', obj: 'them', pos: 'their' } } as const;
+export const pronoun = (m: { pronouns?: 'she' | 'he' | 'they' }, form: 'subj' | 'obj' | 'pos' = 'subj') => PRONOUNS[m.pronouns ?? 'they'][form];

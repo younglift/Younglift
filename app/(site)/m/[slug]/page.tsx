@@ -14,7 +14,7 @@ import Img from '@/components/u/Img';
 import mk from './maker.module.css';
 import Icon from '@/components/u/Icon';
 
-/** Her profile on its own page (links from pieces, Following, Home). Story opens as a full-screen photo + caption. */
+/** The maker's profile on its own page (links from pieces, Following, Home). Story opens as a full-screen photo + caption. */
 export default function MakerPage() {
   const { slug } = useParams<{ slug: string }>();
   const q = useSearchParams();

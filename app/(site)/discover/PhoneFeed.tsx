@@ -1,6 +1,6 @@
 'use client';
 // Phone Discover v3 (FIXES P9, docs/design/DISCOVER.md §1, spec screens/03-discover-v3.dc.html).
-// Up/down = next maker (snap, one per swipe). Sideways = deeper into her: Pieces → Her story → All about her.
+// Up/down = next maker (snap, one per swipe). Sideways = deeper into the same maker: Pieces → Story → About.
 // Tap a small piece = it becomes the big piece. Tap the title = details page. Add to bag never moves you.
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -16,9 +16,9 @@ import Img from '@/components/u/Img';
 import Icon from '@/components/u/Icon';
 import s from './phone.module.css';
 
-const TABS = ['Pieces', 'Her story', 'All about her'];
+const TABS = ['Pieces', 'Story', 'About'];  // FIXES 12.4: neutral, not every maker is a woman
 const firstAvailable = (ps: Product[]) => Math.max(0, ps.findIndex((p) => !p.sold));
-/** "pearl drop earrings, chain bracelet": what she makes, for the next-maker line. */
+/** "pearl drop earrings, chain bracelet": what the maker makes, for the next-maker line. */
 const makes = (it: FeedItem) => it.products.slice(0, 2).map((p) => p.title.toLowerCase()).join(', ');
 const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -27,6 +27,13 @@ export default function PhoneFeed({ items, inBag, firstVisit }: { items: FeedIte
   const [cur, setCur] = useState(0);
   const onScroll = () => { const f = feed.current; if (!f) return; const i = Math.round(f.scrollTop / f.clientHeight); if (i !== cur) setCur(i); };
   const toMaker = (i: number) => { const f = feed.current; if (f) f.scrollTo({ top: i * f.clientHeight, behavior: reduced() ? 'auto' : 'smooth' }); };
+  // FIXES 12.2: Discover tapped in the bottom nav while already on Discover = back to the first maker, on Pieces
+  // (every mounted maker puts its panels back on Pieces, see Maker3). Reduced motion: jump without animation.
+  useEffect(() => {
+    const top = () => toMaker(0);
+    window.addEventListener('u:discover-top', top);
+    return () => window.removeEventListener('u:discover-top', top);
+  }, []);
   return (
     <div className={s.feed} ref={feed} onScroll={onScroll}>
       {items.map((it, i) => (
@@ -59,7 +66,7 @@ function Tabs({ on, go, line, tabRefs }: { on: number; go: (i: number) => void; 
 function MakerRow({ m, onAbout }: { m: Maker; onAbout: () => void }) {
   return (
     <div className={s.who}>
-      <button type="button" className={s.whoBtn} onClick={onAbout} aria-label={`All about ${m.name}`}>
+      <button type="button" className={s.whoBtn} onClick={onAbout} aria-label={`About ${m.name}`}>
         <Img small src={m.portraitUrl} alt="" className={s.av40} />
         <span className="grow minw0"><span className={`hand ${s.name17}`}>{m.name}</span><span className={s.meta12}>{m.city} · {CATEGORY_LABEL[m.categories[0]]}</span></span>
       </button>
@@ -82,17 +89,12 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
   const up = p.stickers?.uplift;
   const added = inBag.has(p.id);
   const go = (i: number) => { const l = lay.current; if (l) l.scrollTo({ left: i * l.clientWidth, behavior: reduced() ? 'auto' : 'smooth' }); };
-  // FIXES 10.1: one continuous screen. Tabs + maker row are one fixed layer (they never move); on every scroll
-  // frame the underline glides between tabs, the panel being left moves at 0.3× and darkens to 60%, the incoming
-  // panel slides over it with a shadow on its leading edge, and the small maker row fades out over All about her.
-  // FIXES 11.2: the scroll itself is native snap only. Nothing here writes scrollLeft or moves the scroller or a
-  // panel; the parallax moves only the layer inside the leaving panel (.panIn), read from scrollLeft in one rAF.
+  // FIXES 10.1: one continuous screen. Tabs + maker row are one fixed layer (they never move, also on About,
+  // FIXES 12.3); on every scroll frame only the tab underline glides between the tabs.
+  // FIXES 11.2 / 12.1: the scroll itself is native snap only, and nothing touches the panels or their photos while
+  // you swipe (no JS parallax, no dark overlay, no shadow): each photo moves exactly with its panel, as one sheet.
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const line = useRef<HTMLSpanElement>(null);
-  const whoRef = useRef<HTMLDivElement>(null);
-  const panRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const inRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const dimRefs = useRef<(HTMLDivElement | null)[]>([]);
   const frame = useRef(0);
   const bounceAnim = useRef<Animation | undefined>(undefined);
   const paint = () => {
@@ -104,20 +106,19 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
       const x = a.offsetLeft + (b.offsetLeft - a.offsetLeft) * f, lw = a.offsetWidth + (b.offsetWidth - a.offsetWidth) * f;
       line.current.style.transform = `translateX(${x}px)`; line.current.style.width = `${lw}px`;
     }
-    if (whoRef.current) { const o = Math.max(0, Math.min(1, 2 - pr)); whoRef.current.style.opacity = String(o); whoRef.current.style.visibility = o < 0.02 ? 'hidden' : 'visible'; }
-    if (reduced()) return;
-    panRefs.current.forEach((el, j) => {
-      if (!el) return; const d = pr - j;
-      const inner = inRefs.current[j]; if (inner) inner.style.transform = d > 0 && d < 1 ? `translateX(${d * w * 0.7}px)` : '';
-      el.style.boxShadow = d < 0 && d > -1 ? 'var(--u-pan-shadow)' : '';
-      const dim = dimRefs.current[j]; if (dim) dim.style.opacity = d > 0 && d < 1 ? String(0.4 * d) : '0';
-    });
   };
   const onLay = () => {
     cancelAnimationFrame(frame.current); frame.current = requestAnimationFrame(paint);
     const l = lay.current; if (!l) return; const i = Math.round(l.scrollLeft / l.clientWidth); if (i !== panel) { setPanel(i); if (i !== 1) setPlaying(false); }
   };
   useEffect(() => { paint(); const r = () => paint(); window.addEventListener('resize', r); return () => window.removeEventListener('resize', r); });
+
+  // FIXES 12.2: back to the top also puts this maker back on Pieces (instant: it is moving out of view anyway)
+  useEffect(() => {
+    const top = () => { const l = lay.current; if (l && l.scrollLeft) l.scrollTo({ left: 0, behavior: 'auto' }); };
+    window.addEventListener('u:discover-top', top);
+    return () => window.removeEventListener('u:discover-top', top);
+  }, []);
 
   // First visit only: 1.2s after Discover opens the panels bounce left so the next one peeks out. No hint text.
   useEffect(() => {
@@ -138,8 +139,7 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
       {/* a finger on the panels stops the first-visit bounce at once, so it never fights the swipe */}
       <div className={s.lay} ref={lay} onScroll={onLay} onPointerDown={() => bounceAnim.current?.cancel()} onTouchStart={() => bounceAnim.current?.cancel()}>
         {/* 1 · Pieces */}
-        <div className={s.pan} ref={(el) => { panRefs.current[0] = el; }} style={{ zIndex: 1 }}>
-          <div className={s.panIn} ref={(el) => { inRefs.current[0] = el; }}>
+        <div className={s.pan}>
           {/* FIXES 11.1: one full-screen photo (the tall hero), its centre at the centre of the safe zone */}
           <Img key={`h${p.id}`} src={p.hero?.tall ?? p.images[0]} eager={active} alt={`${p.title} by ${m.name}`} className={`${s.hero} ${s.swap}`} />
           <div className={s.shadeTop} /><div className={s.shadeBottom} />
@@ -166,34 +166,30 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
               <Icon name="arrow-down" size={14} /><span>Next:</span><span className={`hand ${s.nxtName}`}>{next.maker.name}</span><span className="m">· {makes(next)}</span>
             </button>
           ) : null}
-          </div>
-          <div className={s.dim} ref={(el) => { dimRefs.current[0] = el; }} />
         </div>
 
-        {/* 2 · Her story */}
-        <div className={s.pan} ref={(el) => { panRefs.current[1] = el; }} style={{ zIndex: 2 }}>
-          <div className={s.panIn} ref={(el) => { inRefs.current[1] = el; }}>
-          <Img src={poster} alt={`${m.name} at work`} className={s.fill} />
+        {/* 2 · Story. The photo loads as soon as this maker is current, so it is decoded before the swipe (FIXES 12.1). */}
+        <div className={s.pan}>
+          <Img src={poster} eager={active} alt={`${m.name} at work`} className={s.fill} />
           <div className={s.shadeTop} /><div className={s.shadeStory} />
-          <button type="button" className={s.play} aria-label={playing ? 'Pause her story' : 'Play her story'} onClick={() => setPlaying(!playing)}><Icon name={playing ? 'pause' : 'play'} size={28} /></button>
+          <button type="button" className={s.play} aria-label={playing ? 'Pause story' : 'Play story'} onClick={() => setPlaying(!playing)}><Icon name={playing ? 'pause' : 'play'} size={28} /></button>
           <div className={s.quote}>
-            <span className="m t-meta">{m.video ? `Her story · ${Math.floor(m.video.seconds / 60)}:${String(m.video.seconds % 60).padStart(2, '0')}` : 'Her story'}</span>
+            <span className="m t-meta">{m.video ? `Story · ${Math.floor(m.video.seconds / 60)}:${String(m.video.seconds % 60).padStart(2, '0')}` : 'Story'}</span>
             <p>“{m.video?.caption ?? m.tagline}”</p>
           </div>
           {m.video ? <div className={s.prog}><span style={{ animationDuration: `${m.video.seconds}s`, animationPlayState: playing && panel === 1 && active ? 'running' : 'paused' }} /></div> : null}
-          </div>
-          <div className={s.dim} ref={(el) => { dimRefs.current[1] = el; }} />
         </div>
 
-        {/* 3 · All about her */}
-        <div className={`${s.pan} ${s.panDark}`} ref={(el) => { panRefs.current[2] = el; }} style={{ zIndex: 3 }}>
+        {/* 3 · About: starts under the fixed maker row (FIXES 12.3: one header, no second name or Follow) */}
+        <div className={`${s.pan} ${s.panDark}`}>
           {panel === 2 || active ? <About item={item} next={next} onNext={onNext} /> : null}
+          <div className={s.aboutShade} />
         </div>
       </div>
       {/* one fixed layer per maker: tabs + maker row never move during a sideways swipe */}
       <div className={s.top}>
         <Tabs on={panel} go={go} line={line} tabRefs={tabRefs} />
-        <div ref={whoRef}><MakerRow m={m} onAbout={() => go(2)} /></div>
+        <MakerRow m={m} onAbout={() => go(2)} />
       </div>
       {/* in <body>, above the bottom nav (the feed is its own stacking layer) */}
       {details ? createPortal(<Details p={p} m={m} added={added} label={label} action={action} onClose={() => setDetails(false)} />, document.body) : null}
@@ -211,12 +207,7 @@ function About({ item, next, onNext }: { item: FeedItem; next?: FeedItem; onNext
   return (
     <div className={s.prof} data-own-scroll>
       <div className={s.profTop} />
-      <div className={s.aboutHead}>
-        <Img small src={m.portraitUrl} alt="" className={s.av72} />
-        <span className="grow minw0"><span className={`hand ${s.name24}`}>{m.name}</span><span className="m t-small">{m.city} · {CATEGORY_LABEL[m.categories[0]]}</span></span>
-      </div>
       <div className={s.aboutActs}>
-        <FollowButton m={m} className="cta" />
         <Link href={`/messages/${m.slug}`} className="sec gs">Message</Link>
       </div>
       <div className={s.stats}>

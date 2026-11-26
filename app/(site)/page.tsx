@@ -37,7 +37,7 @@ function stickerPair(item: FeedItem, p: Product) {
 const deskStep = () => window.innerHeight - 100;
 
 /** Desktop Discover v2 (FIXES P7, Matas 2026-11-25): one piece per maker. Left: the piece's photos (← →, dots).
-    Right: one card with the maker, the piece, Add to bag, her story, more from her, next maker.
+    Right: one card with the maker, the piece, Add to bag, the story, more from the maker, next maker.
     FIXES 11.3 (Matas 2026-11-25 22:34, replaces P7's free scrolling): one maker per scroll. The page snaps
     (html.u-snap-y, every maker scroll-snap-stop: always); one wheel flick / trackpad swipe, ↓ PageDown Space or
     ↑ PageUp moves exactly one maker, then input is locked until the move and the trackpad momentum are over. */
@@ -181,7 +181,7 @@ function DeskSlide({ item, next, active, inBag, sel, setSel, pic, setPic, onNext
           <div className={`${s.dstory} u-fade-in`} role="dialog" aria-label={`${m.name} at work`}>
             <Img src={poster} alt={`${m.name} at work`} className={s.dstoryImg} />
             {m.video ? <><p className={s.dcaption}><span>“{m.video.caption}”</span></p><div className={s.dprog}><span style={{ animationDuration: `${m.video.seconds}s` }} /></div></> : null}
-            <button type="button" className={`ic gs ${s.dstoryClose}`} aria-label="Close her story" onClick={() => setStory(false)}><Icon name="close" /></button>
+            <button type="button" className={`ic gs ${s.dstoryClose}`} aria-label="Close story" onClick={() => setStory(false)}><Icon name="close" /></button>
           </div>
         ) : null}
       </div>
@@ -204,11 +204,11 @@ function DeskSlide({ item, next, active, inBag, sel, setSel, pic, setPic, onNext
         </div>
         <button type="button" className={`gs ${s.dvideo}`} onClick={() => setStory(true)}>
           <span className={s.dvthumb}><Img small src={poster} alt="" className="u-cover" /><span className={s.dvplay}><Icon name="play" size={14} /></span></span>
-          <span className="grow minw0 flex col"><span className="fw600 t-small">Watch {m.name} at work</span><span className="m t-meta">{m.video ? `Her story · ${Math.floor(m.video.seconds / 60)}:${String(m.video.seconds % 60).padStart(2, '0')}` : 'Her story · photo'}</span></span>
+          <span className="grow minw0 flex col"><span className="fw600 t-small">Watch {m.name} at work</span><span className="m t-meta">{m.video ? `Story · ${Math.floor(m.video.seconds / 60)}:${String(m.video.seconds % 60).padStart(2, '0')}` : 'Story · photo'}</span></span>
         </button>
         <div className={s.dmoreHead}>
           <span className="lbl">More from {m.name}</span>
-          {item.reason === 'surprise' ? <button type="button" className="link m t-small" onClick={() => hideMaker(m.id)}>Not for me</button> : <Link href={`/m/${m.slug}`} className="link m t-small">Her profile →</Link>}
+          {item.reason === 'surprise' ? <button type="button" className="link m t-small" onClick={() => hideMaker(m.id)}>Not for me</button> : <Link href={`/m/${m.slug}`} className="link m t-small">Profile →</Link>}
         </div>
         <div className={s.dthumbs}>
           {item.products.slice(0, 4).map((x, i) => (

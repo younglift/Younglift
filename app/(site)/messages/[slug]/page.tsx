@@ -69,7 +69,7 @@ function Chat() {
           <div className={s.msgs} aria-live="polite">
             {piece ? <Link href={`/p/${piece.id}`} className={`gs ${s.piece}`}><Img small src={piece.images[0]} alt="" /><span>{piece.title} · <b>{formatEUR(piece.priceCents)}</b></span></Link> : null}
             {!msgs.length ? (
-              <div className={`g ${s.empty}`}><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand t-18">Ask {m.name} anything</span>{reply ? <span className="m t-small">{reply}. You’ll get a notification when she does.</span> : null}</div>
+              <div className={`g ${s.empty}`}><Img small src={m.portraitUrl} alt="" className="u-avatar" /><span className="hand t-18">Ask {m.name} anything</span>{reply ? <span className="m t-small">{reply}. You’ll get a notification when {m.name} replies.</span> : null}</div>
             ) : null}
             {msgs.map((x) => {
               const day = shortDate(x.at); const show = day !== lastDay; lastDay = day;

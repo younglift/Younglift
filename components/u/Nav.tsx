@@ -44,7 +44,8 @@ export default function AppNav() {
   const showBottom = WITH_BOTTOM.some((p) => (p === '/' ? path === '/' : path === p || (p === '/explore' && path.startsWith('/explore'))));
   const hideCorner = path === '/' || path === '/account';
   // Logo / Discover tapped while already on Discover: go back to the first maker (a Link to the same page does nothing).
-  const goHome = () => { if (path === '/' && desktop) window.dispatchEvent(new Event('u:home')); };
+  // Phone (FIXES 12.2): first maker, back on Pieces. From another page it just opens Discover where you left it.
+  const goHome = () => { if (path === '/') window.dispatchEvent(new Event(desktop ? 'u:home' : 'u:discover-top')); };
 
   return (
     <>

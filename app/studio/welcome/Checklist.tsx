@@ -11,7 +11,7 @@ import s from '../studio.module.css';
 import Img from '@/components/u/Img';
 import Icon from '@/components/u/Icon';
 
-/** B3 You're in: four steps to Go live. Profile stays hidden until she presses Go live. */
+/** B3 You're in: four steps to Go live. Profile stays hidden until the maker presses Go live. */
 export default function Checklist() {
   const router = useRouter();
   const [me] = useData(getMyMaker);

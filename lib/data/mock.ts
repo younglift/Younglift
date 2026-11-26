@@ -484,13 +484,13 @@ export async function submitApplication(a: Omit<MakerApplication, 'id' | 'status
   state.applications.unshift(app); save(); return clone(app);
 }
 export async function getApplications() { load(); return clone(state.applications); }
-/** Approve: creates her maker account (status approved, hidden until Go live) and, in the demo, makes it yours. */
+/** Approve: creates the maker account (status approved, hidden until Go live) and, in the demo, makes it yours. */
 export async function approveApplication(id: string) {
   load(); const a = state.applications.find((x) => x.id === id); if (!a || a.status !== 'pending') return;
   const slugBase = a.name.split(' ')[0].toLowerCase().normalize('NFD').replace(/[^a-z]/g, '') || 'maker';
   let slug = slugBase; let i = 2; while (state.makers.some((m) => m.slug === slug)) slug = `${slugBase}${i++}`;
   const maker: Maker = {
-    id: slug, slug, name: a.name.split(' ')[0], studio: '', city: a.city, country: 'LT', categories: a.categories,
+    id: slug, slug, name: a.name.split(' ')[0], studio: '', city: a.city, country: 'LT', categories: a.categories, pronouns: a.pronouns ?? 'they',
     tagline: '', bio: a.about, portraitUrl: a.photos[0] ?? '/img/studio-table.jpg', coverUrl: a.photos[1] ?? a.photos[0] ?? '/img/studio-table.jpg',
     status: 'approved', followers: 0, shipsInDays: [2, 3], customRequestsOpen: true,
     collage: [], slideOrder: ['work', 'meet', 'process', 'piece'], lastActiveAt: new Date().toISOString(),

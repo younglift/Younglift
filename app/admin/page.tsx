@@ -25,10 +25,10 @@ export default function Admin() {
             <span className="m t-small">{a.email}{a.link ? ` · ${a.link}` : ''} · {a.categories.map((c) => CATEGORY_LABEL[c]).join(', ')}</span>
             <div className="snap-x gap-8">{a.photos.map((u, i) => <Img className="ph ph-96" small key={i} src={u} alt="" />)}</div>
             <p className="m0 t-small lh-15">{a.about}</p>
-            <span className="m t-small">{a.makesItself ? '✓ Makes everything herself' : '✗ Did not confirm she makes it herself'}</span>
+            <span className="m t-small">{a.makesItself ? '✓ Makes everything they sell' : '✗ Did not confirm making everything they sell'}</span>
             <div className="row gap-8">
               <button type="button" className="sec gs" style={{ flex: 1 }} onClick={async () => { await rejectApplication(a.id); toast(`Rejected ${a.name.split(' ')[0]}`); }}>Reject</button>
-              <button type="button" className="cta" style={{ flex: 1 }} onClick={async () => { await approveApplication(a.id); toast(`${a.name.split(' ')[0]} is in. Her studio is open (demo: it’s now yours).`); }}>Approve</button>
+              <button type="button" className="cta" style={{ flex: 1 }} onClick={async () => { await approveApplication(a.id); toast(`${a.name.split(' ')[0]} is in. The studio is open (demo: it’s now yours).`); }}>Approve</button>
             </div>
           </article>
         ))}

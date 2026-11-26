@@ -58,7 +58,7 @@ export default function Following() {
           const m = byId.get(x.makerId)!;
           return (
             <article key={x.kind + x.makerId + x.at} className="g u-card u-stack">
-              <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-36" /><span className="grow"><Link href={`/m/${m.slug}`} className="hand tap">{m.name}</Link> <span className="m t-small">{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in her journal'}</span></span><span className="m t-meta phone-only">{ago(x.at)}</span><span className="desk-only"><Link href={`/messages/${m.slug}`} className="sec gs">Message</Link></span></div>
+              <div className="row"><Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-36" /><span className="grow"><Link href={`/m/${m.slug}`} className="hand tap">{m.name}</Link> <span className="m t-small">{x.kind === 'pieces' ? `added ${plural(x.products.length, 'piece')}` : x.post.kind === 'in_progress' ? 'is making something' : 'wrote in the journal'}</span></span><span className="m t-meta phone-only">{ago(x.at)}</span><span className="desk-only"><Link href={`/messages/${m.slug}`} className="sec gs">Message</Link></span></div>
               {x.kind === 'pieces' ? (
                 <>
                   <div className={'grid3'}>{x.products.slice(0, 3).map((p) => <Link key={p.id} href={`/p/${p.id}`} aria-label={p.title}><Img className={'u-sq'} small src={p.images[0]} alt="" /></Link>)}</div>
@@ -68,7 +68,7 @@ export default function Following() {
                 <>
                   {x.post.imageUrl ? <Img className={'u-photo-wide ' + fo.postImg} src={x.post.imageUrl} alt="" /> : null}
                   <p className="m0 t-small lh-15">{x.post.caption}</p>
-                  <Link href={`/m/${m.slug}?tab=journal`} className="sec gs">Open her journal</Link>
+                  <Link href={`/m/${m.slug}?tab=journal`} className="sec gs">Open {m.name}’s journal</Link>
                 </>
               )}
             </article>
