@@ -8,10 +8,13 @@ export type Country = 'LT' | 'LV' | 'EE' | 'PL' | 'DE'
 export type MakerStatus = 'applied' | 'approved' | 'live'
 /** Slides buyers swipe through on her profile (profile editor step 4). */
 export type Slide = 'work' | 'meet' | 'process' | 'piece'
+/** How the maker wants to be called (FIXES 12.4). Missing = 'they'. Copy uses the maker's name; pronoun() only for the rare sentence that needs one. */
+export type Pronouns = 'she' | 'he' | 'they'
 
 export type Maker = {
   id: string; slug: string; name: string; studio: string; city: string; country: Country
   categories: Category[]
+  pronouns?: Pronouns        // default 'they'
   tagline: string            // "One line about your work" (≤140)
   bio: string
   portraitUrl: string
@@ -103,6 +106,7 @@ export type CustomRequest = {
 export type MakerApplication = {
   id: string; name: string; email: string; city: string; country: string; link?: string
   categories: Category[]; photos: string[]; about: string; makesItself: boolean
+  pronouns?: Pronouns
   status: 'pending' | 'approved' | 'rejected'; createdAt: string; makerId?: string
 }
 

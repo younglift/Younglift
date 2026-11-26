@@ -9,7 +9,7 @@ import s from './BagView.module.css';
 import Img from '@/components/u/Img';
 import Icon from '@/components/u/Icon';
 
-/** The bag: one box per maker (her own parcel and button), free-shipping helper, real 15-minute holds. */
+/** The bag: one box per maker (their own parcel and button), free-shipping helper, real 15-minute holds. */
 export default function BagView({ compact = false, onNavigate }: { compact?: boolean; onNavigate?: () => void }) {
   const [bag] = useData(getBag);
   const [saved] = useData(getSaved);

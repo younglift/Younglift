@@ -9,7 +9,7 @@ import Img from '@/components/u/Img';
 export default function Inbox({ current }: { current?: string }) {
   const [threads] = useData(getThreads);
   if (!threads) return null;
-  if (!threads.length) return <div className="g u-card m">No messages yet. Ask a maker anything from her profile or a piece.</div>;
+  if (!threads.length) return <div className="g u-card m">No messages yet. Ask a maker anything from their profile or a piece.</div>;
   return (
     <div className={`g ${s.list}`}>
       {threads.map((t) => (

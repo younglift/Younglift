@@ -114,7 +114,7 @@ function Request({ r }: { r: CustomRequest }) {
         <form className="u-stack" style={{ gap: 10 }} onSubmit={async (e) => {
           e.preventDefault(); if (!euros(price)) { toast('Add a price'); return; }
           await sendPrivateListing(r.id, { title, priceCents: euros(price), shipsWithinDays: parseInt(days, 10) || 14, description: desc, imageUrl: img });
-          toast(`Sent to ${r.buyerName}. Only she can see it.`); setMaking(false);
+          toast(`Sent to ${r.buyerName}. Only ${r.buyerName} can see it.`); setMaking(false);
         }}>
           <span className="m t-small">Agree on the details in chat first. {r.buyerName} sees this listing in your conversation and can buy it. Nobody else can.</span>
           <label className="fld"><span className="lbl">Name</span><input className="inp" value={title} onChange={(e) => setTitle(e.target.value)} /></label>

@@ -16,14 +16,14 @@ import Wash from '@/components/u/Wash';
 import s from './product.module.css';
 import Img from '@/components/u/Img';
 
-/** 04 Piece: ready to ship / made to order / sold. Desktop: a window over her profile. */
+/** 04 Piece: ready to ship / made to order / sold. Desktop: a window over the maker's profile. */
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const add = useAddToBag();
   const [data] = useData(() => getProduct(id), [id]);
   const [more] = useData(() => getSimilar(id), [id]);
-  // her profile behind the window is drawn only on desktop (FIXES 1.1)
+  // the maker's profile behind the window is drawn only on desktop (FIXES 1.1)
   const [all] = useData(async () => { const d = await getProduct(id); return d && window.matchMedia('(min-width: 820px)').matches ? getMakerProducts(d.maker.id) : []; }, [id]);
   const [reviews] = useData(async () => { const d = await getProduct(id); return d ? getReviews(d.maker.id) : []; }, [id]);
   const [bag] = useData(getBag);

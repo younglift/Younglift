@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import type { Maker, Slide } from '@/lib/types';
+import type { Maker, Pronouns, Slide } from '@/lib/types';
 import { getMyMaker, getStudioProducts, updateMyMaker, uploadImage } from '@/lib/data';
 import { formatEUR } from '@/lib/format';
 import { useData } from '@/lib/useData';
@@ -22,6 +22,7 @@ const STEPS = [
 ] as const;
 const SHORT = ['About you', 'Your collage', 'Your video', 'Slide order', 'Pieces and requests'];
 const SLIDE_LABEL = (name: string): Record<Slide, string> => ({ work: 'Your work', meet: `Meet ${name}`, process: 'Your process', piece: 'A piece' });
+const PRONOUNS: Pronouns[] = ['she', 'he', 'they'];
 const euros = (v: string) => Math.round(parseFloat(v.replace(',', '.').replace(/[^0-9.]/g, '')) * 100) || 0;
 
 /** B4 Profile editor: 5 steps, live preview on desktop. */
@@ -84,6 +85,7 @@ export default function StudioProfile() {
                   <input ref={photo} type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) set({ portraitUrl: await uploadImage(f) }); e.target.value = ''; }} /></div>
                 <label className="fld"><span className="lbl">Your name</span><input className="inp" value={d.name} onChange={(e) => set({ name: e.target.value })} /></label>
                 <label className="fld"><span className="lbl">Studio name</span><input className="inp" value={d.studio} onChange={(e) => set({ studio: e.target.value })} /><span className="m t-meta">Optional</span></label>
+                <div className="fld"><span className="lbl">How should buyers refer to you?</span><div className="chips">{PRONOUNS.map((x) => <button key={x} type="button" className="chip" aria-pressed={(d.pronouns ?? 'they') === x} onClick={() => set({ pronouns: x })}>{x}</button>)}</div></div>
                 <label className="fld"><span className="lbl">One line about your work</span><textarea className="inp" rows={2} maxLength={140} value={d.tagline} onChange={(e) => set({ tagline: e.target.value })} /><span className="m t-meta">{d.tagline.length} / 140</span></label>
                 <label className="fld"><span className="lbl">About you</span><textarea className="inp" rows={3} value={d.bio} onChange={(e) => set({ bio: e.target.value })} /></label>
                 <label className="fld"><span className="lbl">City</span><input className="inp" value={d.city} onChange={(e) => set({ city: e.target.value })} /><span className="m t-meta">Shown on your profile and on “Made in” stickers.</span></label>

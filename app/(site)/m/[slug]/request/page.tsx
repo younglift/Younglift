@@ -51,11 +51,11 @@ export default function CustomRequest() {
         <div className="g u-card tc flex col ai-center gap-8">
           <Img small src={m.portraitUrl} alt="" className="u-avatar ph ph-64" />
           <span className="hand t-20">{m.name} has your idea</span>
-          <p className="m m0 lh-15">{reply ? `${reply.replace(`${m.name} u`, 'She u')} with questions or a first sketch.` : 'She’ll reply with questions or a first sketch.'} Nothing is ordered or paid yet.</p>
+          <p className="m m0 lh-15">{reply ? `${reply} with questions or a first sketch.` : `${m.name} will reply with questions or a first sketch.`} Nothing is ordered or paid yet.</p>
         </div>
         <div className="g u-card u-stack">
           <span className="lbl">What happens next</span>
-          {[`${m.name} replies in Messages`, 'You agree on the piece, price and date', 'She sends you a private listing to buy', 'She makes it and ships it'].map((t, i) => (
+          {[`${m.name} replies in Messages`, 'You agree on the piece, price and date', `${m.name} sends you a private listing to buy`, `${m.name} makes it and ships it`].map((t, i) => (
             <div key={t} className="row"><span className="chk" style={{ borderRadius: '50%' }}>{i + 1}</span><span>{t}</span></div>
           ))}
         </div>
@@ -69,7 +69,7 @@ export default function CustomRequest() {
       <Wash src={photos[0] ?? m.coverUrl} />
       <main className="u-page narrow has-bar">
         <div className="u-head ai-start"><BackButton href={`/m/${m.slug}`} /><span><h1 className="hand">Ask {m.name} to make it</h1><span className="m sub lh-15">Describe what you’d love. {m.name} replies with questions or a first idea. Nothing is ordered or paid yet.</span></span></div>
-        {!m.customRequestsOpen ? <div className="gs u-card">{m.name} isn’t taking custom requests right now. You can still <Link className="underline" href={`/messages/${m.slug}`}>send her a message</Link>.</div> : null}
+        {!m.customRequestsOpen ? <div className="gs u-card">{m.name} isn’t taking custom requests right now. You can still <Link className="underline" href={`/messages/${m.slug}`}>send {m.name} a message</Link>.</div> : null}
         <div className="g u-card u-stack gap-16">
           <div className="fld"><span className="lbl">What kind of piece?</span><div className="chips">{kinds.map((k) => <button key={k} type="button" className="chip" aria-pressed={kind === k} onClick={() => setKind(k)}>{k}</button>)}</div>{tried && !kind ? <span className="m t-meta">Pick one</span> : null}</div>
           <label className="fld"><span className="lbl">Tell {m.name} about it</span><textarea className="inp" rows={4} value={text} onChange={(e) => setText(e.target.value)} aria-invalid={tried && text.trim().length <= 5} placeholder="Size, colours, who it’s for, anything that matters." /><span className="m t-meta">The more you share, the better the first idea.</span></label>
@@ -93,7 +93,7 @@ export default function CustomRequest() {
             {when === 'by_date' ? <input className="inp" type="text" value={date} onChange={(e) => setDate(e.target.value)} placeholder="e.g. 14 December" aria-label="Date" aria-invalid={tried && !date.trim()} /> : null}
           </div>
         </div>
-        <span className="m t-small lh-15">{m.name} takes custom orders.{reply ? ` ${reply.replace(`${m.name} u`, 'She u')}.` : ''} You only pay if you both agree on a piece and a price.</span>
+        <span className="m t-small lh-15">{m.name} takes custom orders.{reply ? ` ${reply}.` : ''} You only pay if you both agree on a piece and a price.</span>
         <div className="g u-bar"><button type="button" className="cta" onClick={send} disabled={!m.customRequestsOpen}>Send to {m.name}</button></div>
       </main>
     </>

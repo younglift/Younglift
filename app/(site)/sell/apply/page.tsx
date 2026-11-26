@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import type { Category } from '@/lib/types';
+import type { Category, Pronouns } from '@/lib/types';
 import { CATEGORY_LABEL, submitApplication, uploadImage } from '@/lib/data';
 import { BackButton } from '@/components/u/Bits';
 import Wash from '@/components/u/Wash';
@@ -11,12 +11,14 @@ import ap from './apply.module.css';
 import Icon from '@/components/u/Icon';
 
 const CATS: Category[] = ['jewelry', 'ceramics', 'crochet', 'clothing', 'home', 'prints', 'other'];
+const PRONOUNS: Pronouns[] = ['she', 'he', 'they'];
 
 /** B2 Show us your work (application, 3–10 photos). */
 export default function Apply() {
   const [f, setF] = useState({ name: '', email: '', city: '', country: '', link: '', about: '' });
   const [cats, setCats] = useState<Category[]>([]);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [pronouns, setPronouns] = useState<Pronouns>('they');
   const [self, setSelf] = useState(false);
   const [tried, setTried] = useState(false);
   const [sent, setSent] = useState(false);
@@ -27,7 +29,7 @@ export default function Apply() {
   const bad = (c: boolean) => (tried && !c ? true : undefined);
   const send = async () => {
     setTried(true); if (!ok) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-    await submitApplication({ ...f, link: f.link || undefined, categories: cats, photos, makesItself: self });
+    await submitApplication({ ...f, link: f.link || undefined, categories: cats, photos, makesItself: self, pronouns });
     setSent(true); window.scrollTo(0, 0);
   };
   if (sent) return (
@@ -56,6 +58,7 @@ export default function Apply() {
             <label className="fld"><span className="lbl">City</span><input className="inp" value={f.city} onChange={set('city')} aria-invalid={bad(!!f.city.trim())} /></label>
             <label className="fld"><span className="lbl">Country</span><input className="inp" value={f.country} onChange={set('country')} aria-invalid={bad(!!f.country.trim())} /></label>
           </div>
+          <div className={`fld ${ap.wide}`}><span className="lbl">How should buyers refer to you?</span><div className="chips">{PRONOUNS.map((x) => <button key={x} type="button" className="chip" aria-pressed={pronouns === x} onClick={() => setPronouns(x)}>{x}</button>)}</div></div>
           <label className={`fld ${ap.wide}`}><span className="lbl">Instagram or website</span><input className="inp" value={f.link} onChange={set('link')} placeholder="@yourstudio" /><span className="m t-meta">Optional, but it helps us get to know you.</span></label>
         </div>
         <div className="g u-card u-stack">

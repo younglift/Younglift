@@ -22,7 +22,7 @@ export function makerInfo(m: Maker) {
 
 type Tab = 'works' | 'journal' | 'reviews';
 type Props = { maker: Maker; products: Product[]; onStory?: () => void; next?: { maker: Maker; go: () => void }; desktop?: boolean; initialTab?: Tab };
-/** Her full profile: Works · Journal · Reviews (Discover step 3, and /m/[slug]). */
+/** The maker's full profile: Works · Journal · Reviews (Discover step 3, and /m/[slug]). */
 export default function MakerProfile({ maker: m, products, onStory, next, desktop, initialTab = 'works' }: Props) {
   const [tab, setTab] = useState<Tab>(initialTab);
   const [filter, setFilter] = useState<'all' | 'ready' | 'order' | 'sold'>('all');
