@@ -243,6 +243,36 @@ Done 2026-11-26 (Claude, branch `claude/p12`): 12.1 JS parallax, dark overlay an
 
 Done 2026-11-25 (Justinas + Claude, PR "P10"): checked in iPhone 15 Pro emulation with the Safari toolbar shown (393×659) and hidden (393×746). Every mounted maker's photo sits inside the safe zone (y 104 → height − 262); sticker shadow on the wrapper, no box edge; end title line-height 1.15; Follow → Following → Follow on the 3rd maker in Her story keeps the order, the panel, the scroll and the button size, and `/following` updates; slow swipe: tabs + maker row stay fixed, underline glides between tabs, leaving panel at 0.3× with a 0→.4 dark overlay, incoming panel with an edge shadow; reduced motion = no parallax. qa.mjs 0 FAIL. Matas: please re-test on your iPhone.
 
+## P13. For you: one piece per screen (Matas + testers, 2026-11-27)
+
+People who tried it: too much on screen, the sideways maker panels feel odd, "Pieces / Story / About" is unclear, the piece title in Rock Salt is hard to read. They want it product-focused. Reference (Matas picked it): `docs/design/screens/png/p13-for-you.jpg`; nav options he compared: `p13-nav-options.jpg` (he chose **A**).
+
+**This changes a LOCKED flow** (Discover = one maker per screen). Matas decided it on 2026-11-27; before building 13.2–13.4, check that Justinas has OK'd it (ask him in one line if you have not seen his OK). 13.1 and 13.5 do not change a flow and can go first.
+
+- [ ] **13.1 Bottom nav = 3 icons with small labels: For you · Search · Profile.**
+  - Icons from `components/u/Icon.tsx` (add `home`, `user`; `search` exists), 24px, label Inter 600 10px under each, gap 3px. Active = cream + filled icon; others cream 60%. Pill `left/right: 80px` on 390 (centred, ~230 wide), height 58, `justify-content: space-evenly`.
+  - "Discover" is renamed **For you** everywhere (nav, titles, tap-again-to-top from 12.2 stays).
+  - **Search** opens what Explore is today, with a search field at the top.
+  - **Profile** opens `/account`, which now also holds **Following** (makers you follow), **Saved** (boards) and orders. Remove Explore/Following/Saved/Bag from the nav; their pages stay reachable from Search/Profile.
+  - **Bag** moves to the top right of For you (and the header of other pages): 40px glass circle, bag icon 22px, butter count badge 16px at top-right. Hidden count when 0.
+  - Desktop header: same three + bag icon on the right.
+- [ ] **13.2 For you feed = one piece per screen, not one maker.** Swipe up/down = next/previous piece (snap, one per swipe, as now). Makers are mixed: never the same maker twice in a row, at most 2 pieces of one maker in any 8. Order from `getFeed` as today (taste first, followed boosted), frozen per session (10.5 stays).
+- [ ] **13.3 Screen layout (top to bottom), see the reference:**
+  - Tabs at top, centred: **Product · All works · Story** (Inter 13, active 600 + 2px butter underline). Bag icon top right.
+  - Sticker top right under the bag (top 60, 96px wide).
+  - Photo full screen as in P11 (`hero.tall` for the first photo).
+  - Maker row above the photo squares: avatar 36 (2px cream ring), name in **Rock Salt 16**, "City · Category" 12px, Follow pill 34 high on the right. Tap avatar/name = All works.
+  - **Photo squares**: 48×48, radius 10, gap 6, left 16, one per photo of **this piece** (2–4). Selected = 2px butter ring, others 85% opacity. Tap = the big photo cross-fades to that photo (250ms). No swiping between photos.
+  - Bar: title in **Inter 600 16** (not Rock Salt), "95€ · Details ›" under it, Add to bag on the right. Rock Salt stays only for maker names (and screen titles).
+  - No "Next: …" line. First visit only: 1.2s after opening, the feed nudges up 48px and back (shows the edge of the next piece). Reduced motion: none.
+  - Safe zone: the product sits between the tabs (top 48) and the maker row; recompute `--u-safe-top` / `--u-safe-bottom` for this layout so the piece is never under the maker row, squares or bar.
+- [ ] **13.4 Sideways = deeper into the maker of this piece:** Product → **All works** (her profile: big avatar, name Rock Salt 26, city · category · rating, Follow + Message, grid of all pieces; tap a piece = it opens as Product) → **Story** (her video + quote). Same snap rules as P11/P12 (always lands, no stutter, one header).
+- [ ] **13.5 Piece titles in Inter everywhere** (bar, details page, cards, grids, bag, desktop). Rock Salt only for maker names and screen titles. Update the "Fonts" line in `CLAUDE.md` current look and `docs/design/DISCOVER.md`.
+
+Proof: 390×844 and iPhone Safari next to `p13-for-you.jpg`; swipe up = a different piece (makers alternate); tap squares = photos change; sideways lands on All works then Story; nav has 3 items; bag count shows at the top.
+
+Order: 13.5 → 13.1 → (Justinas's OK) → 13.2 → 13.3 → 13.4. One PR per step is fine; QUALITY loop each time.
+
 ---
 
 ## Why it ended up like this (so it doesn't happen again)
