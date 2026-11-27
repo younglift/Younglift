@@ -268,11 +268,18 @@ People who tried it: too much on screen, the sideways maker panels feel odd, "Pi
   - No "Next: …" line. First visit only: 1.2s after opening, the feed nudges up 48px and back (shows the edge of the next piece). Reduced motion: none.
   - Safe zone: the product sits between the tabs (top 48) and the maker row; recompute `--u-safe-top` / `--u-safe-bottom` for this layout so the piece is never under the maker row, squares or bar.
 - [ ] **13.4 Sideways = deeper into the maker of this piece:** Product → **All works** (her profile: big avatar, name Rock Salt 26, city · category · rating, Follow + Message, grid of all pieces; tap a piece = it opens as Product) → **Story** (her video + quote). Same snap rules as P11/P12 (always lands, no stutter, one header).
+- [ ] **13.6 All works page = "Studio" layout** (Matas picked option C, 2026-11-27 13:35). Reference: `docs/design/screens/png/p13-all-works.jpg`.
+  - Top: a background photo of her studio/work (`maker.coverPhoto`, fallback: her story video poster), full width, 170px high, darkened (brightness .6) and fading into the page background at the bottom. Tabs and bag sit on it as on Product.
+  - Avatar 76px with a 3px ring in the page background colour, overlapping the photo (centre at y≈156). Under it: name Rock Salt 22, "City · Category" 12px, one sentence about the maker (`maker.tagline`, max 80 characters, Studio field), all centred.
+  - Follow (primary 44) + Message (secondary 44) side by side, 16px margins, 10px gap.
+  - Filter chips by kind ("All 6 · Rings 3 · Necklaces 1 · …", 32px pills, active = cream) — only when she has more than 8 works; otherwise no chips.
+  - Works: 2 columns, 10px gap, photo 4:5 radius 14, under it one line: title (Inter 13, left) and price (Inter 600 13, right), 6px from the photo, 12px to the next row. No price chip on the photo. Tap = opens that piece as Product.
+  - Page background: the usual `--u-*` base, nav floats over the grid as everywhere.
 - [ ] **13.5 Piece titles in Inter everywhere** (bar, details page, cards, grids, bag, desktop). Rock Salt only for maker names and screen titles. Update the "Fonts" line in `CLAUDE.md` current look and `docs/design/DISCOVER.md`.
 
 Proof: 390×844 and iPhone Safari next to `p13-for-you.jpg`; swipe up = a different piece (makers alternate); tap squares = photos change; sideways lands on All works then Story; nav has 3 items; bag count shows at the top.
 
-Order: 13.5 → 13.1 → (Justinas's OK) → 13.2 → 13.3 → 13.4. One PR per step is fine; QUALITY loop each time.
+Order: 13.5 → 13.1 → (Justinas's OK) → 13.2 → 13.3 → 13.4 → 13.6. One PR per step is fine; QUALITY loop each time.
 
 ---
 
