@@ -273,7 +273,7 @@ People who tried it: too much on screen, the sideways maker panels feel odd, "Pi
   - Captions over the video from her own words (`maker.storyQuote`, line by line in time with the video): Inter 600 17, left 16, 58px above the video's bottom edge, soft text shadow; a 3px progress line under them.
   - "Tap for sound" pill top right under the bag (30 high, speaker icon). Tapping the pill or the video opens it **full screen with sound**: name in Rock Salt + the full quote at the bottom, progress bar, ✕ top left (back to All works at the same scroll), sound toggle top right.
   - No video: the same area shows her studio photo (`maker.coverPhoto`), no pill, no captions.
-  - Under the video, one row: avatar 56 with the story ring (13.7), name Rock Salt 22, "City · Category · ★ 4.7" Inter 12 on **one line** (never wrap; drop the rating if it does not fit), Message as a 40px round icon button, Follow (primary, 40 high) on the right.
+  - Under the video, one row: avatar 56 with the story ring (13.7), name Rock Salt 22, "City · Category" Inter 12 on one line, and **the rating on its own line under it** ("★ 4.7 · 3 reviews", Inter 12, star and number together, never split across lines), Message as a 40px round icon button, Follow (primary, 40 high) on the right.
   - One sentence about her (`maker.tagline`, Studio field, max 80 characters), Inter 14.
   - Works: 2 columns, 10px gap, photo 4:5 radius 14, under it title (Inter 13, left) and price (Inter 600 13, right) on one line. Tap = opens as Product. Filter chips only when she has more than 8 works.
   - Reduced motion or data saver: no autoplay; first frame with a play button.
