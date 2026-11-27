@@ -245,7 +245,7 @@ Done 2026-11-25 (Justinas + Claude, PR "P10"): checked in iPhone 15 Pro emulatio
 
 ## P13. For you: one piece per screen (Matas + testers, 2026-11-27)
 
-People who tried it: too much on screen, the sideways maker panels feel odd, "Pieces / Story / About" is unclear, the piece title in Rock Salt is hard to read. They want it product-focused. Reference (Matas picked it): `docs/design/screens/png/p13-for-you.jpg`; nav options he compared: `p13-nav-options.jpg` (he chose **A**).
+People who tried it: too much on screen, the sideways maker panels feel odd, "Pieces / Story / About" is unclear, the piece title in Rock Salt is hard to read. They want it product-focused. Reference (Matas picked it): `docs/design/screens/png/p13-for-you.jpg`, the same screen with four other pieces: `p13-for-you-products.jpg`; nav options he compared: `p13-nav-options.jpg` (he chose **A**).
 
 **This changes a LOCKED flow** (Discover = one maker per screen). Matas decided it on 2026-11-27; before building 13.2–13.4, check that Justinas has OK'd it (ask him in one line if you have not seen his OK). 13.1 and 13.5 do not change a flow and can go first.
 
@@ -259,7 +259,8 @@ People who tried it: too much on screen, the sideways maker panels feel odd, "Pi
 - [ ] **13.2 For you feed = one piece per screen, not one maker.** Swipe up/down = next/previous piece (snap, one per swipe, as now). Makers are mixed: never the same maker twice in a row, at most 2 pieces of one maker in any 8. Order from `getFeed` as today (taste first, followed boosted), frozen per session (10.5 stays).
 - [ ] **13.3 Screen layout (top to bottom), see the reference:**
   - Tabs at top, centred: **Product · All works · Story** (Inter 13, active 600 + 2px butter underline). Bag icon top right.
-  - Sticker top right under the bag (top 60, 96px wide).
+  - **No stickers on For you for now** (Matas, 2026-11-27 13:19): remove the sticker from the phone and desktop For you screens. Keep the sticker code and data; it may come back.
+  - Readability: a soft shade behind the text on any photo. Top: `linear-gradient(rgba(28,22,18,.45), transparent)` 96px high behind the tabs. Bottom: 46% of the screen, `linear-gradient(transparent, rgba(28,22,18,.55) 55%, rgba(28,22,18,.7))` behind the maker row, squares, bar and nav. Use tokens, not hard-coded colours.
   - Photo full screen as in P11 (`hero.tall` for the first photo).
   - Maker row above the photo squares: avatar 36 (2px cream ring), name in **Rock Salt 16**, "City · Category" 12px, Follow pill 34 high on the right. Tap avatar/name = All works.
   - **Photo squares**: 48×48, radius 10, gap 6, left 16, one per photo of **this piece** (2–4). Selected = 2px butter ring, others 85% opacity. Tap = the big photo cross-fades to that photo (250ms). No swiping between photos.
