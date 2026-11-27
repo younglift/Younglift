@@ -245,6 +245,8 @@ Done 2026-11-25 (Justinas + Claude, PR "P10"): checked in iPhone 15 Pro emulatio
 
 ## P13. For you: one piece per screen (Matas + testers, 2026-11-27)
 
+**All P13 decisions in one picture: `docs/design/screens/png/p13-final.jpg`** (For you piece with dots and "Inez · Follow", Inez's shop with the video on top, the video full screen). If an older P13 reference disagrees, this one wins.
+
 People who tried it: too much on screen, the sideways maker panels feel odd, "Pieces / Story / About" is unclear, the piece title in Rock Salt is hard to read. They want it product-focused. Reference (Matas picked it): `docs/design/screens/png/p13-for-you.jpg`, the same screen with four other pieces: `p13-for-you-products.jpg`; nav options he compared: `p13-nav-options.jpg` (he chose **A**).
 
 **This changes a LOCKED flow** (Discover = one maker per screen). Matas decided it on 2026-11-27; before building 13.2–13.4, check that Justinas has OK'd it (ask him in one line if you have not seen his OK). 13.1 and 13.5 do not change a flow and can go first.
