@@ -5,7 +5,10 @@ export const Back = ({ size }: P) => <svg {...s(size)}><path d="M15 5l-7 7 7 7" 
 export const Chevron = ({ size }: P) => <svg {...s(size)}><path d="M9 5l7 7-7 7" /></svg>;
 export const Close = ({ size }: P) => <svg {...s(size)}><path d="M6 6l12 12M18 6L6 18" /></svg>;
 export const Bookmark = ({ size, filled }: P) => <svg {...s(size)} fill={filled ? 'currentColor' : 'none'}><path d="M6 3h12v18l-6-4.5L6 21z" /></svg>;
-export const Search = ({ size }: P) => <svg {...s(size)}><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>;
+export const Search = ({ size, filled }: P) => <svg {...s(size)} strokeWidth={filled ? 2.6 : 1.8}><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>;
+// bottom nav (FIXES 13.1): filled = the active tab
+export const Home = ({ size, filled }: P) => <svg {...s(size)} fill={filled ? 'currentColor' : 'none'}><path d="M4 10.5L12 4l8 6.5V20h-5.5v-5.5h-5V20H4z" /></svg>;
+export const User = ({ size, filled }: P) => <svg {...s(size)} fill={filled ? 'currentColor' : 'none'}><circle cx="12" cy="8" r="4" /><path d="M4.5 20c.8-4 3.8-6 7.5-6s6.7 2 7.5 6z" /></svg>;
 export const Send = ({ size }: P) => <svg {...s(size)}><path d="M4 12l16-8-6 16-2.5-6.5z" /></svg>;
 export const Bag = ({ size }: P) => <svg {...s(size)}><path d="M5 8h14l-1 12H6z" /><path d="M9 8a3 3 0 016 0" /></svg>;
 export const Chat = ({ size }: P) => <svg {...s(size)}><path d="M4 5h16v11H9l-5 4z" /></svg>;

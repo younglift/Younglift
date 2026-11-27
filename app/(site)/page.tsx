@@ -195,7 +195,7 @@ function DeskSlide({ item, next, active, inBag, sel, setSel, pic, setPic, onNext
           <FollowButton m={m} className={`sec gs ${s.dfollow}`} />
         </div>
         <div className={s.ddiv} />
-        <Link href={`/p/${p.id}`} className={s.dtitleRow}><h2 className={`hand ${s.dtitle}`}>{p.title}</h2><span className={s.dprice}>{formatEUR(p.priceCents)}</span></Link>
+        <Link href={`/p/${p.id}`} className={s.dtitleRow}><h2 className={`ptitle ${s.dtitle}`}>{p.title}</h2><span className={s.dprice}>{formatEUR(p.priceCents)}</span></Link>
         <span className={`m ${s.dmeta}`}>{pieceMeta(p)}</span>
         {item.reason === 'surprise' ? <span className={`m t-small ${s.dwhy}`}>Outside what you picked. Something new we think you might like.</span> : null}
         <div className={s.dacts}>

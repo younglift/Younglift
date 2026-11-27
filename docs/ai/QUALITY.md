@@ -56,7 +56,7 @@ Each item says how to check it. "qa" means `scripts/qa.mjs` already checks it au
   - How to check: screenshot at 390×844 with `.showsafe` (dashed frame) on, for every piece in the mock data: the whole product is inside the frame. Compare with `docs/design/screens/png/03-discover-v3-safe-zone.jpg`.
 
 ### 2.2 Type
-- [ ] Rock Salt (`var(--u-hand)`) **only** for maker names, piece titles and screen titles. Everything else Inter (`var(--u-ui)`). qa fails if a font is not loaded.
+- [ ] Rock Salt (`var(--u-hand)`) **only** for maker names and screen titles. Everything else Inter (`var(--u-ui)`); piece titles are Inter 600 (class `.ptitle`, FIXES 13.5). qa fails if a font is not loaded.
 - [ ] Sizes from the reference, not invented. Body 15, small 13, meta 12, labels 12/600, titles 22–26 phone, 28–40 desktop.
 - [ ] Prices and timers use `.num` (tabular numbers) so they don't jiggle when they change.
 - [ ] Inputs use 16px text on phone (smaller makes iOS zoom in).

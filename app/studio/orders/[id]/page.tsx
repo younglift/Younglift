@@ -37,7 +37,7 @@ export default function Order() {
         <div className="u-head"><BackButton href="/studio/orders" /><span><h1 className="hand">Order #{o.number}</h1><span className="m sub">Paid {shortDate(o.createdAt)} · {shipped ? `shipped ${o.shippedAt ? shortDate(o.shippedAt) : ''}` : `ship by ${longDate(o.shipBy)}`}</span></span></div>
         <div className="g u-card u-stack">
           {o.lines.map((x) => (
-            <div key={x.productId} className="row"><Img className="ph ph-56" small src={x.product.images[0]} alt="" /><span className="grow flex col gap-4"><span className="hand">{x.product.title}</span><span className="m t-small">{[x.product.subtitle, x.variant ? Object.entries(x.variant).map(([k, v]) => `${k} ${v}`).join(' ') : '', `${x.qty} piece${x.qty > 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span></span><b className="num">{formatEUR(x.product.priceCents * x.qty)}</b></div>
+            <div key={x.productId} className="row"><Img className="ph ph-56" small src={x.product.images[0]} alt="" /><span className="grow flex col gap-4"><span className="ptitle">{x.product.title}</span><span className="m t-small">{[x.product.subtitle, x.variant ? Object.entries(x.variant).map(([k, v]) => `${k} ${v}`).join(' ') : '', `${x.qty} piece${x.qty > 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span></span><b className="num">{formatEUR(x.product.priceCents * x.qty)}</b></div>
           ))}
           <hr className="hr" />
           <div className="u-stack gap-8 t-small">

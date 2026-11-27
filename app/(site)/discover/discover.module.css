@@ -154,7 +154,7 @@
   .dfollow[aria-pressed="true"]{color:var(--u-mute)}
   .ddiv{height:1px;background:var(--u-line);margin:20px 0}
   .dtitleRow{display:flex;align-items:baseline;gap:12px}
-  .dtitle{margin:0;font-size:26px;line-height:1.35;flex:1;min-width:0}
+  .dtitle{margin:0;font-size:26px;line-height:1.25;flex:1;min-width:0}
   .dprice{font:600 24px var(--u-ui);white-space:nowrap}
   .dmeta{display:block;font-size:13px;margin-top:6px}
   .dwhy{display:block;margin-top:8px}

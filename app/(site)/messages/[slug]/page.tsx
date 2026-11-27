@@ -26,7 +26,7 @@ function Listing({ id }: { id: string }) {
   return (
     <Link href={`/p/${p.id}`} className="g" style={{ display: 'flex', gap: 10, alignItems: 'center', borderRadius: 14, padding: 8, marginTop: 4, color: 'var(--u-ink)' }}>
       <Img className="ph ph-52" small src={p.images[0]} alt="" />
-      <span className="grow flex col"><span className="hand t-small">{p.title}</span><span className="m t-meta">{p.sold ? 'Bought ✓' : `${formatEUR(p.priceCents)} · only for you`}</span></span>
+      <span className="grow flex col"><span className="ptitle t-small">{p.title}</span><span className="m t-meta">{p.sold ? 'Bought ✓' : `${formatEUR(p.priceCents)} · only for you`}</span></span>
       {!p.sold ? <span className="cta" style={{ minHeight: 36, padding: '0 12px', fontSize: 13 }}>View</span> : null}
     </Link>
   );

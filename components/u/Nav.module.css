@@ -1,17 +1,22 @@
 /* phone: glass pill at the bottom */
-.bottom{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom));height:54px;padding:0 6px;border-radius:var(--u-r-pill);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;z-index:40;max-width:536px;margin:0 auto}  /* 16px sides, 5 equal columns, 6px inside (P9) */
-.bottom a{position:relative;display:flex;align-items:center;justify-content:center;min-height:44px;color:var(--u-mute);font:400 12px var(--u-ui)}
-.bottom a[aria-current="page"]{color:var(--u-ink);font-weight:600}
-.dot{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:transparent}  /* out of the flow: labels sit in the exact middle (FIXES 6.10) */
+.bottom{position:fixed;left:80px;right:80px;bottom:calc(12px + env(safe-area-inset-bottom));height:58px;max-width:230px;margin:0 auto;border-radius:var(--u-r-pill);display:flex;justify-content:space-evenly;align-items:center;z-index:40}  /* FIXES 13.1: centred, ~230 wide on 390, 3 items */
+.bottom a{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--u-ink-60);font:600 10px/1 var(--u-ui);transition:color var(--u-dur-ui) var(--u-ease)}
+.bottom a::after{content:'';position:absolute;left:50%;top:50%;width:64px;height:58px;transform:translate(-50%,-50%)}  /* hit area, not min-width (QUALITY 2.1) */
+.bottom a:active{transform:scale(.97)}
+.bottom a[aria-current="page"]{color:var(--u-ink)}
+.dot{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:transparent}  /* desktop header only (FIXES 6.10) */
 [aria-current="page"] > .dot{background:var(--u-accent)}
 /* desktop: glass bar at the top */
 .top{display:none}
-.me{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:400 16px var(--u-hand);flex-shrink:0}
-.meCorner{position:absolute;right:16px;top:calc(18px + env(safe-area-inset-top));z-index:40}  /* in the header row, scrolls with the page, never floats over content (FIXES 6.5) */
+.bagCorner{position:absolute;right:16px;top:calc(20px + env(safe-area-inset-top));z-index:40;width:40px;height:40px;border-radius:var(--u-r-pill);display:flex;align-items:center;justify-content:center;color:var(--u-ink)}  /* FIXES 13.1: bag top right, in the header row (FIXES 6.5) */
+.bagCorner::after{content:'';position:absolute;inset:-2px}
+.bagCorner:active{transform:scale(.97)}
+.bagFeed{position:fixed;top:calc(4px + env(safe-area-inset-top))}  /* For you: on the tab row, above the feed */
+.bagBadge{position:absolute;right:-3px;top:-3px;min-width:16px;height:16px;border-radius:var(--u-r-pill);background:var(--u-accent);color:var(--u-on-accent);font:700 10px/1 var(--u-ui);display:flex;align-items:center;justify-content:center;padding:0 4px}
 .badge{position:absolute;right:2px;top:2px;min-width:18px;height:18px;border-radius:9px;background:var(--u-accent);color:var(--u-on-accent);font:700 11px var(--u-ui);display:flex;align-items:center;justify-content:center;padding:0 5px}
 .pip{position:absolute;right:9px;top:9px;width:8px;height:8px;border-radius:50%;background:var(--u-accent)}
 @media (min-width:820px){
-  .bottom,.meCorner{display:none}
+  .bottom,.bagCorner{display:none}
   .top{display:flex;position:fixed;left:24px;right:24px;top:16px;height:64px;border-radius:var(--u-r-pill);z-index:50;align-items:center;gap:12px;padding:0 10px 0 26px;max-width:1392px;margin:0 auto}
   .top nav{display:flex;gap:2px;margin-left:18px}
   .top nav a{position:relative;height:44px;padding:0 16px;border-radius:var(--u-r-pill);display:flex;align-items:center;justify-content:center;color:var(--u-mute);font:500 14px var(--u-ui)}
@@ -28,3 +33,4 @@
 .drawerHead{display:flex;align-items:center;justify-content:space-between;padding:18px 18px 8px 22px}
 .drawerHead h2{margin:0;font-size:20px}
 .drawerBody{flex:1;overflow-y:auto;padding:0 16px 16px}
+@media (prefers-reduced-motion:reduce){.bottom a{transition:none}.bottom a:active,.bagCorner:active{transform:none}}

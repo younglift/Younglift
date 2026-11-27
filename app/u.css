@@ -15,6 +15,8 @@
 
 /* type */
 .hand{font-family:var(--u-hand);font-weight:400;letter-spacing:0}
+/* piece titles: Inter 600 everywhere; Rock Salt only for maker names and screen titles (FIXES 13.5) */
+.ptitle{font-family:var(--u-ui);font-weight:600;letter-spacing:0}
 .m{color:var(--u-mute)}
 .lbl{font:600 12px var(--u-ui);letter-spacing:.2px}
 .num{font-variant-numeric:tabular-nums}

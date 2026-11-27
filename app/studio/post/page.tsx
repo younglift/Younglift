@@ -73,7 +73,7 @@ export default function Post() {
           </div>
         </div>
         {kind === 'video' ? (
-          <div className="g u-card row"><span className="grow flex col gap-4"><span>Show as my story in Discover</span><span className="m t-meta">Replaces your current video on the second slide</span></span><button type="button" role="switch" aria-checked={story} aria-label="Show as my story in Discover" className="tg" onClick={() => setStory(!story)}><i /></button></div>
+          <div className="g u-card row"><span className="grow flex col gap-4"><span>Show as my story in For you</span><span className="m t-meta">Replaces your current video on the second slide</span></span><button type="button" role="switch" aria-checked={story} aria-label="Show as my story in For you" className="tg" onClick={() => setStory(!story)}><i /></button></div>
         ) : null}
         <div className="g u-bar"><button type="button" className="cta" onClick={post}>Post</button></div>
       </main>

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { CATEGORY_LABEL, addReview, canReturn, getFollowing, getMe, getMyMaker, getOrders, getSaved, getUnreadCount, markDelivered, requestReturn, resetDemo, saveAddress, saveNotify } from '@/lib/data';
-import { longDate, monthName, shortDate } from '@/lib/format';
+import { longDate, monthName, plural, shortDate } from '@/lib/format';
 import { useData } from '@/lib/useData';
 import { Stars } from '@/components/u/Bits';
 import { toast } from '@/components/u/Toast';
@@ -56,6 +56,11 @@ export default function Account() {
           <div className="chips">{me.taste.categories.map((c) => <Link key={c} href="/welcome/taste" className="chip" aria-pressed="true">{CATEGORY_LABEL[c]}</Link>)}<Link href="/welcome/taste" className="chip">+ Add</Link></div>
         </div>
         <nav className={`g u-card ${ac.nav}`}>
+          {/* FIXES 13.1: Following and Saved left the bottom nav and live here (desktop has them in the stats) */}
+          <Link className={`${ac.navRow} ${ac.phoneRow}`} href="/following"><span>Following</span><span className="m t-small">{plural(following?.length ?? 0, 'maker')} ›</span></Link>
+          <hr className={`hr ${ac.phoneRow}`} />
+          <Link className={`${ac.navRow} ${ac.phoneRow}`} href="/saved"><span>Saved</span><span className="m t-small">{plural(saved?.length ?? 0, 'piece')} ›</span></Link>
+          <hr className={`hr ${ac.phoneRow}`} />
           <Link className={ac.navRow} href="/messages"><span>Messages</span><span className="m t-small">{unread ? `${unread} new ` : ''}›</span></Link>
           <hr className="hr" />
           <Link className={ac.navRow} href="/welcome/taste"><span>Your taste</span><span className="m t-small">{me.taste.categories.map((c) => CATEGORY_LABEL[c]).join(' · ') || 'Not set'} ›</span></Link>

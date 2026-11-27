@@ -147,7 +147,7 @@ function Maker3({ item, next, inBag, active, bounce, onNext }: { item: FeedItem;
             : up ? <span key={`u${p.id}`} className={`${s.stk} ${s.swap}`}><Sticker k={up} width={104} tilt={6} /></span> : null}
           <div className={`g ${s.bar}`}>
             <button type="button" className={s.barText} onClick={() => setDetails(true)} aria-label={`${p.title}, ${formatEUR(p.priceCents)}. Details`}>
-              <span key={`t${p.id}`} className={`hand ${s.barTitle} ${s.swap}`}>{p.title}</span>
+              <span key={`t${p.id}`} className={`ptitle ${s.barTitle} ${s.swap}`}>{p.title}</span>
               <span className={s.barSub}><b>{formatEUR(p.priceCents)}</b> · Details ›</span>
             </button>
             <button type="button" className={`cta ${s.add}`} onClick={action} disabled={!!p.heldByOther && !p.sold && !added}>
@@ -274,7 +274,7 @@ function Details({ p, m, added, label, action, onClose }: { p: Product; m: Maker
         <button type="button" className={`ic gs ${s.detClose}`} aria-label="Close details" onClick={() => window.history.back()}><Icon name="close" /></button>
       </div>
       <div className={s.detBody}>
-        <div className={s.detTitle}><span className={`hand ${s.name22}`}>{p.title}</span><span className={s.detPrice}>{formatEUR(p.priceCents)}</span></div>
+        <div className={s.detTitle}><span className={`ptitle ${s.name22}`}>{p.title}</span><span className={s.detPrice}>{formatEUR(p.priceCents)}</span></div>
         <span className={`m ${s.detMeta}`}>{[p.materials.join(', '), p.sold ? 'Sold' : shipsLine(p)].filter(Boolean).join(' · ')}</span>
         <div className={s.detActs}>
           <button type="button" className="cta" onClick={action}><span className="row gap-4">{label}{added ? <Icon name="check" size={16} /> : null}</span></button>

@@ -15,7 +15,7 @@ import Icon from '@/components/u/Icon';
 
 const STEPS = [
   ['About you', 'This is how buyers meet you first.'],
-  ['Your collage', 'Three pieces that show what you do best. They open your profile in Discover.'],
+  ['Your collage', 'Three pieces that show what you do best. They open your profile in For you.'],
   ['Your video', 'Optional. 15–60 seconds of you at work. Buyers love seeing hands and tools.'],
   ['Order of your slides', 'What buyers see when they swipe across your profile.'],
   ['Pieces and requests', 'Last step. You can change all of this later in Studio.'],
@@ -65,7 +65,7 @@ export default function StudioProfile() {
       <Wash src={cover[0] ?? d.portraitUrl} />
       <main className={`u-page has-bar ${s.prof}`}>
         <div className={s.dTop}>
-          <span className="grow"><h1 className="hand m0">Your profile</h1><span className="m t-small">This is how buyers meet you in Discover</span></span>
+          <span className="grow"><h1 className="hand m0">Your profile</h1><span className="m t-small">This is how buyers meet you in For you</span></span>
           <button type="button" className="sec gs" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1}>Back</button>
           <button type="button" className="cta" onClick={next}>{step < 5 ? 'Continue' : 'Save profile'}</button>
         </div>
