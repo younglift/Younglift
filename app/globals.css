@@ -19,12 +19,13 @@
   --u-glass-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.35);
   --u-ink:#fffaed;                                  /* text on glass */
   --u-mute:rgba(255,250,237,.78);                   /* secondary text */
+  --u-ink-60:rgba(255,250,237,.6);                  /* inactive bottom-nav items: cream 60% (Matas, FIXES 13.1) */
   --u-line:rgba(255,250,237,.16);                   /* dividers */
   --u-accent:#f3d27a;                               /* butter: the only accent (selected, active dot, progress) */
   --u-on-accent:#2a1a10;                            /* text on butter / cream */
   --u-cta:#fffaed; --u-cta-edge:#b8912f;            /* primary pill: cream with hard 3px bottom edge */
   --u-scrim-top:linear-gradient(rgba(22,16,11,.6),rgba(22,16,11,.25) 55%,rgba(22,16,11,0));  /* keeps top bar readable on white photos */
-  --u-hand:"Rock Salt", cursive;                    /* maker names, piece titles, screen titles */
+  --u-hand:"Rock Salt", cursive;                    /* maker names, screen titles (piece titles are Inter, FIXES 13.5) */
   --u-ui:Inter, system-ui, sans-serif;              /* everything else */
   --u-r-pill:999px; --u-r-card:28px; --u-r-tile:20px; --u-r-chip:14px;
   --u-h-cta:48px; --u-h-btn:44px;                   /* min tap size 44px */
@@ -40,7 +41,7 @@
   --u-scrim:#000;                                   /* swipe overlay under the leaving panel (FIXES 10.1) */
   --u-pan-shadow:-12px 0 24px rgb(0 0 0 / .35);     /* leading edge of the incoming panel */
   /* Discover v3 product safe zone (Matas 2026-11-25, DISCOVER.md 1.5): the piece stays between these */
-  --u-safe-top:104px; --u-safe-bottom:262px;
+  --u-safe-top:104px; --u-safe-bottom:266px;
   --u-panel:#30231a;                                /* solid dark panel: About, piece details (03-discover-v3) */
   /* motion (Matas FIXES 3.1): use only these */
   --u-dur-press:120ms; --u-dur-hover:150ms; --u-dur-ui:180ms; --u-dur-panel:260ms; --u-dur-step:300ms;

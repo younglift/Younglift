@@ -74,7 +74,7 @@ export default function Following() {
             </article>
           );
         })}
-        {!items.length ? <div className="g u-card m">Nothing new yet. Follow makers in Discover to see their new pieces here.</div> : null}
+        {!items.length ? <div className="g u-card m">Nothing new yet. Follow makers in For you to see their new pieces here.</div> : null}
         <span className="lbl m phone-only">Your makers</span>
         <div className="g u-card u-stack phone-only">
           {makers.map((m) => (

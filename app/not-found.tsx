@@ -9,7 +9,7 @@ export default function NotFound() {
       <Logo height={80} />
       <h1 className="hand t-26 m0">This page wandered off</h1>
       <p className="m m0">The link may be old, or the piece found a home.</p>
-      <div className="row gap-8"><Link href="/" className="cta">Discover makers</Link><Link href="/explore" className="sec gs">Explore</Link></div>
+      <div className="row gap-8"><Link href="/" className="cta">Discover makers</Link><Link href="/explore" className="sec gs">Search</Link></div>
     </main>
   );
 }

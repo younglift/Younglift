@@ -88,7 +88,7 @@ export default function Editor({ initial }: { initial?: Product }) {
           {images.length < 8 ? <button type="button" className={`gs ${s.add}`} aria-label="Add photos" onClick={() => file.current?.click()}><Icon name="plus" size={24} /></button> : null}
           <input ref={file} type="file" accept="image/*" multiple hidden onChange={async (e) => { const fs = Array.from(e.target.files ?? []).slice(0, 8 - images.length); const urls = await Promise.all(fs.map(uploadImage)); setImages([...images, ...urls]); e.target.value = ''; }} />
         </div>
-        <span className="m t-meta">Daylight, plain background. The first photo is what people see in Discover.</span>
+        <span className="m t-meta">Daylight, plain background. The first photo is what people see in For you.</span>
         {tried && !images.length ? <span className="t-meta accent" role="alert">Add at least one photo</span> : null}
       </div>
       <div className="g u-card u-stack">
@@ -112,7 +112,7 @@ export default function Editor({ initial }: { initial?: Product }) {
       </div>
       <div className="g u-card u-stack">
         <div className="row between"><span className="lbl">Add a sticker</span><span className="m t-meta">optional · one per piece</span></div>
-        <span className="m t-small">Shown on your photo in Discover. Pick one that’s true for this piece.</span>
+        <span className="m t-small">Shown on your photo in For you. Pick one that’s true for this piece.</span>
         <div className={s.stickers}>
           {STICKERS.map((k) => (
             <button key={k} type="button" className={s.st} aria-pressed={chosen === k} disabled={!allowed(k)} onClick={() => setSticker(k)} title={!allowed(k) ? (k === 'one_of_one' ? 'Only when quantity is 1' : 'Only for made-to-order pieces') : undefined}>
@@ -142,12 +142,12 @@ export default function Editor({ initial }: { initial?: Product }) {
         <div className={s.editor}>
           {form}
           <aside className={s.preview} aria-label="Preview">
-            <span className="lbl m">How it looks in Discover</span>
+            <span className="lbl m">How it looks in For you</span>
             <div className={`g ${s.phone}`}>
               {images[0] ? <Img src={images[0]} alt="" className={`u-cover ${'fill'}`} /> : null}
               {stickerShown ? <span className={s.prevStk}><Sticker k={stickerShown} city={me.city} width={92} /></span> : null}
               <div className={`g ${s.prevCard}`}>
-                <div className="row between"><span className="hand t-16">{title || 'Your piece'}</span><b>{euros(price) ? formatEUR(euros(price)) : '–'}</b></div>
+                <div className="row between"><span className="ptitle t-16">{title || 'Your piece'}</span><b>{euros(price) ? formatEUR(euros(price)) : '–'}</b></div>
                 <span className="m t-meta">{[one ? '1 of 1' : mto ? 'Made to order' : '', materials.split(',')[0]].filter(Boolean).join(' · ')}</span>
               </div>
             </div>

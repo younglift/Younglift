@@ -18,7 +18,7 @@ Marketplace for handmade makers (jewellery, ceramics, crochet and more). Two fou
 - Only Matas (or Justinas with Matas's OK) decides visual changes. Don't restyle on your own initiative.
 
 Current look: **direction 07 "Tamsus stiklas" (decided 2026-11-23, buyer journey).** Full spec: `docs/design/HANDOFF-07.md`, screens in `docs/design/screens/`, tokens `--u-*` in `app/globals.css`.
-- Fonts: Rock Salt (maker names, piece titles, screen titles), Inter (everything else).
+- Fonts: Rock Salt (maker names, screen titles), Inter (everything else, piece titles included: Inter 600, FIXES 13.5, 2026-11-27).
 - Colours: base #665e58 under a blurred product photo, dark glass cards, cream text #fffaed, one accent butter #f3d27a.
 - Buttons: pills 999px, primary 48px cream with a hard 3px #b8912f bottom edge; min tap 44px.
 - Logo (2026-11-16): **uplift community**, files in `public/brand/`. Use the files, never redraw it. On dark backgrounds use the white version.

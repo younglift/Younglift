@@ -32,7 +32,7 @@ export default function ProductPage() {
   const [guide, setGuide] = useState(false);
   const desktop = useIsDesktop();
   useLockBody(!!desktop && !guide, () => { if (window.history.length > 1) router.back(); });
-  if (data === null) return (<main className="u-page"><Wash /><BackButton /><span className="hand t-22">This piece is gone</span><Link href="/explore" className="cta">Explore</Link></main>);
+  if (data === null) return (<main className="u-page"><Wash /><BackButton /><span className="hand t-22">This piece is gone</span><Link href="/explore" className="cta">Search</Link></main>);
   if (!data) return <Loading />;
   const { product: p, maker: m } = data;
   const inBag = (bag?.groups ?? []).some((g) => g.lines.some((l) => l.productId === p.id));
@@ -64,7 +64,7 @@ export default function ProductPage() {
         </div>
         <div className={`g ${s.card}`}>
           {desktop ? <button type="button" className={`ic gs ${s.close} ${s.deskOnly}`} aria-label="Close" onClick={close}><Close /></button> : null}
-          <div className={s.title}><h1 className="hand">{p.title}</h1><span>{formatEUR(p.priceCents)}</span></div>
+          <div className={s.title}><h1 className="ptitle">{p.title}</h1><span>{formatEUR(p.priceCents)}</span></div>
           <div className={s.tags}>{tags.map((t) => <span key={t} className="gs">{t}</span>)}</div>
           {p.sold ? (
             <>

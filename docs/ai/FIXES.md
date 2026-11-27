@@ -249,7 +249,7 @@ People who tried it: too much on screen, the sideways maker panels feel odd, "Pi
 
 **This changes a LOCKED flow** (Discover = one maker per screen). Matas decided it on 2026-11-27; before building 13.2–13.4, check that Justinas has OK'd it (ask him in one line if you have not seen his OK). 13.1 and 13.5 do not change a flow and can go first.
 
-- [ ] **13.1 Bottom nav = 3 icons with small labels: For you · Search · Profile.**
+- [x] **13.1 Bottom nav = 3 icons with small labels: For you · Search · Profile.**
   - Icons from `components/u/Icon.tsx` (add `home`, `user`; `search` exists), 24px, label Inter 600 10px under each, gap 3px. Active = cream + filled icon; others cream 60%. Pill `left/right: 80px` on 390 (centred, ~230 wide), height 58, `justify-content: space-evenly`.
   - "Discover" is renamed **For you** everywhere (nav, titles, tap-again-to-top from 12.2 stays).
   - **Search** opens what Explore is today, with a search field at the top.
@@ -275,11 +275,15 @@ People who tried it: too much on screen, the sideways maker panels feel odd, "Pi
   - Filter chips by kind ("All 6 · Rings 3 · Necklaces 1 · …", 32px pills, active = cream) — only when she has more than 8 works; otherwise no chips.
   - Works: 2 columns, 10px gap, photo 4:5 radius 14, under it one line: title (Inter 13, left) and price (Inter 600 13, right), 6px from the photo, 12px to the next row. No price chip on the photo. Tap = opens that piece as Product.
   - Page background: the usual `--u-*` base, nav floats over the grid as everywhere.
-- [ ] **13.5 Piece titles in Inter everywhere** (bar, details page, cards, grids, bag, desktop). Rock Salt only for maker names and screen titles. Update the "Fonts" line in `CLAUDE.md` current look and `docs/design/DISCOVER.md`.
+- [x] **13.5 Piece titles in Inter everywhere** (bar, details page, cards, grids, bag, desktop). Rock Salt only for maker names and screen titles. Update the "Fonts" line in `CLAUDE.md` current look and `docs/design/DISCOVER.md`.
 
 Proof: 390×844 and iPhone Safari next to `p13-for-you.jpg`; swipe up = a different piece (makers alternate); tap squares = photos change; sideways lands on All works then Story; nav has 3 items; bag count shows at the top.
 
 Order: 13.5 → 13.1 → (Justinas's OK) → 13.2 → 13.3 → 13.4 → 13.6. One PR per step is fine; QUALITY loop each time.
+
+Done 2026-11-27 (Claude, branch `claude/p13`): **13.5** piece titles use the new `.ptitle` class (Inter 600) on the phone bar, phone details, desktop For you card, product page, chat piece card, Studio order lines and the Studio piece preview; maker names and screen titles stay Rock Salt. "Fonts" line updated in `CLAUDE.md`, `DISCOVER.md`, `QUALITY.md` 2.2 and the `--u-hand` comment. **13.1** phone nav = For you · Search · Profile (icons `home`/`search`/`user` 24px, filled when active, label Inter 600 10px, gap 3, pill 58 high, `left/right:80px` → 230 wide on 390, `space-evenly`, inactive `--u-ink-60` = cream 60%, new token). Bag = 40px glass circle top right (icon 22, butter badge 16, hidden at 0): on For you it sits on the tab row (centre y 24, tabs centre 25), on other pages in the header row where the old "L" profile circle was; hidden on `/bag`. Profile tab is active on `/account`, `/following`, `/saved`, `/messages`; `/account` on phone got Following and Saved rows (desktop already has them in the stats); Explore's title is now "Search". "Discover" → "For you" in the nav, desktop header and Studio copy; tap For you on For you still goes back to the top (12.2). Because the pill grew 54 → 58, the For you bottom stack moved up 4px and `--u-safe-bottom` is 266 (keeps the 12px gap; 13.3 recomputes it anyway). Desktop header: For you · Search · Profile + search field, Sell, Messages, bag (the "L" circle is gone, Profile replaces it). Checked: `npm run build`, `qa.mjs` 0 FAIL (warns are the old ones), Playwright at iPhone 15 Pro 393×659 and 393×746, 390×844 and 1440×900: nav items, active state, badge after Add to bag ("Bag, 1 item"), Search → /explore, Profile → /account → Following (Profile stays active), bag → /bag, For you back; no console errors; screenshots compared with `p13-nav-options.jpg` (A).
+Not in the design, decided by default (Matas can change): Messages stays an icon on the desktop header and a row in Profile on phone; the Following/Saved rows on phone Profile are links to the existing pages (not embedded lists).
+**Waiting: 13.2–13.4 and 13.6 change the LOCKED For you flow. Not started until Justinas OKs Matas's P13 decision (asked 2026-11-27).**
 
 ---
 

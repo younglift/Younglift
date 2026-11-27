@@ -24,7 +24,7 @@ function Explore() {
     <>
       <Wash src="/img/earrings.jpg" />
       <main className="u-page">
-        <div className="u-head"><h1 className="hand">Explore</h1></div>
+        <div className="u-head"><h1 className="hand">Search</h1></div>
         <form role="search" className={`gs ${s.search}`} onSubmit={(e) => { e.preventDefault(); if (text.trim()) router.push(`/explore?q=${encodeURIComponent(text.trim())}`); }}>
           <span><Search /></span>
           <input type="search" aria-label="Search pieces" placeholder="Silver ring, bowl, wool bag…" value={text} onChange={(e) => setText(e.target.value)} />

@@ -33,7 +33,7 @@ export default function Checklist() {
           <Img small src={me.portraitUrl} alt="" className="u-avatar" style={{ width: 96, height: 96, margin: '0 auto', border: '3px solid var(--u-ink)' }} />
           <span style={{ position: 'absolute', left: 'calc(50% + 30px)', top: 0 }}><Sticker k="new_maker" width={110} /></span>
           <h1 className="hand" style={{ fontSize: 26, margin: '16px 0 6px' }}>{live ? `You’re live, ${me.name}!` : `You’re in, ${me.name}!`}</h1>
-          <p className="m m0">{live ? 'Buyers can find you in Discover now.' : 'Four short steps and buyers can find you.'}</p>
+          <p className="m m0">{live ? 'Buyers can find you in For you now.' : 'Four short steps and buyers can find you.'}</p>
         </div>
         <div className="g u-card u-stack">
           <div className="row between"><span className="lbl">Get ready to go live</span><span className="m t-small">{c.done} of 4</span></div>
