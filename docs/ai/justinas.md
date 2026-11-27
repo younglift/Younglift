@@ -4,6 +4,9 @@ You are working with **Justinas** on Uplift. Read `CLAUDE.md` and `docs/ai/SHARE
 
 Talk to Justinas in Lithuanian, short and plain. Write code, comments and commits in English.
 
+## ⏱ Hourly routine (2026-11-26)
+When you run as Justinas's hourly scheduled task, follow `docs/ai/HOURLY.md`: pull `main`, do the next open group in `docs/ai/FIXES.md`, QUALITY loop, merge, tick, one `Done` line.
+
 ## 🎨 Buyer journey look DECIDED (2026-11-23): build it
 Read `docs/design/HANDOFF-07.md` first: screens, tokens `--u-*`, assets, routes, backend needs (cart_holds 15 min, stickers, reviews, cover photo) and the two flow changes that need Justinas's OK. This replaces the older note below.
 
