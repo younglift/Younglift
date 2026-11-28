@@ -34,5 +34,5 @@
 .total .sum{display:flex;flex-direction:column;flex:1;font-size:12px}
 .total .sum b{font:600 18px var(--u-ui);font-variant-numeric:tabular-nums}
 .foot{display:flex;flex-direction:column;gap:8px;padding-top:4px}
-:global(.u-bar).totalBar{bottom:calc(80px + env(safe-area-inset-bottom))}
+:global(.u-bar).totalBar{bottom:calc(62px + env(safe-area-inset-bottom))}
 @media (min-width:820px){:global(.u-bar).totalBar{bottom:24px}}

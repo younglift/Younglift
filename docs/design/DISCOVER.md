@@ -54,7 +54,7 @@ Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories
 
 - Side margin **16px** for every element: tabs, maker row, sticker, bar, thumbs, next line, details page, profile panel.
 - Top: tabs at top 16 (centred) → 12 → maker row (avatar 40, name Rock Salt 17, meta 12, Follow pill 40 high).
-- Bottom, from the bottom: nav 12–70 (58 high, FIXES 13.1) → 12 → "Next" line 16 high → 12 → thumbs row 72 high → 10 → bar 64 high.
+- Bottom, from the bottom: nav 0–50 (full-width bar, FIXES 13.10) → 12 → "Next" line 16 high → 12 → thumbs row 72 high → 10 → bar 64 high.
 - **Thumbs:** 4 exactly equal tiles, 8px gaps, row edges = bar edges. Selected = 2px butter ring drawn **inside** the tile (image scales to 90%), so no tile looks bigger or shifted.
 - **Bar ("the bubble"):** glass (`.g`), radius 22, height 64, padding 8 8 8 16. Line 1: title in Inter 600 16 (FIXES 13.5: piece titles are never Rock Salt), **always the full title, never an ellipsis**. Line 2: "68€ · Details ›" (price 600 14px, rest 12px). Right: Add to bag, 46px, cream with the hard bottom edge.
 - **Title length:** Studio "Add piece" title field has a hard limit of **20 characters** with a live counter ("19/20"). Shorten longer titles in the data.
@@ -67,7 +67,7 @@ Patterns are borrowed, not invented: TikTok/Reels (up = next), Instagram Stories
 ![](screens/png/03-discover-v3-safe-zone.jpg)
 
 - The product must never sit under the bar/thumbs (bottom) or the tabs/maker row (top).
-- Tokens in `app/globals.css`: `--u-safe-top:104px`, `--u-safe-bottom:266px`, 16px sides → zone x 16–374, y 104–578 (nav 58 high since FIXES 13.1).
+- Tokens in `app/globals.css`: `--u-safe-top:104px`, `--u-safe-bottom:246px`, 16px sides → zone x 16–374, y 104–598 (full-width nav 50 high since FIXES 13.10).
 - **Changed again 2026-11-25 22:30 (Matas, FIXES P11.1). This is the rule now; P10.2 is cancelled.** The photo is **full screen, never shrunk, never framed by a blur**, exactly like the reference above. The product lands in the safe zone because the photo itself is made for the screen: every piece has a **tall 9:16 hero** (`public/img/tall/<name>.jpg`, same photo with more background above and below) for the phone and a **wide 4:3 hero** (`public/img/wide/<name>.jpg`) for the desktop.
 - Phone placement (no blur layer at all): `object-fit: cover; position:absolute; left:0; width:100%; top: calc(var(--u-safe-top) - var(--u-safe-bottom)); height: calc(100% + var(--u-safe-bottom) - var(--u-safe-top))`. That puts the photo centre at the centre of the safe zone (y 343 on 390×844) on every screen height, with photo above and below to fill the whole screen.
 - Studio later (Supabase): when a maker uploads a photo, the server makes the tall and wide versions (AI outpaint, same as these) and shows them for approval with the safe-zone frame. Until then the mock uses the files from `scripts/fetch-hero-photos.mjs`. Pieces without a tall/wide hero use the normal photo with the same placement.
@@ -95,7 +95,7 @@ Spec: `screens/desktop/03-discover.dc.html`.
 ### 3.1 Everything optically centred (±1px, `node scripts/qa.mjs` checks it)
 - Icons are SVG from one `components/u/Icon.tsx` (24×24 viewBox, drawn centred). Never text characters as icons: no `✕ × › ‹ → ← ↓ ↑ ▲ ▶ ★ ☆ ✓ +` as the content of a button, chip or circle. Arrows inside running text ("Profile →") may stay text.
 - Indicators (active dot, badge, count) are `position:absolute`, so they never push a label off centre. The bag count badge sits at the circle's top-right corner.
-- **Bottom nav (FIXES 13.1, Matas option A):** pill 58 high, ~230 wide on 390 (`left/right:80px`, centred), three items **For you · Search · Profile**: icon 24 + label Inter 600 10px, gap 3, `space-evenly`. Active = cream + filled icon, others cream 60% (`--u-ink-60`). No dot. **Bag** is a 40px glass circle top right (bag icon 22, butter count badge 16, hidden at 0); on For you it sits on the tab row. Following, Saved and orders live in Profile (`/account`); Search = the old Explore page. Desktop header: For you · Search · Profile + search field, Sell, Messages and the bag on the right.
+- **Bottom nav (FIXES 13.10, Matas option A, replaces the 13.1 pill):** full-width bar flush to the bottom edge like TikTok, no radius, 50 high + `env(safe-area-inset-bottom)`, solid dark `--u-nav-bg` (~96%) with a 1px `--u-nav-line` top hairline (cream 8%). Three items **For you · Search · Profile** spread across the width (`space-around`): icon 24 + label Inter 600 10px, gap 3. Same bar on every phone page. Active = cream + filled icon, others cream 60% (`--u-ink-60`). No dot. **Bag** is a 40px glass circle top right (bag icon 22, butter count badge 16, hidden at 0); on For you it sits on the tab row. Following, Saved and orders live in Profile (`/account`); Search = the old Explore page. Desktop header: For you · Search · Profile + search field, Sell, Messages and the bag on the right.
 - Rows of labels in a pill (bottom nav, tabs, segmented controls) use `justify-content:space-evenly` on the labels' own widths: same space before the first label, between labels and after the last. Tap area grows with `::after`, not `min-width`.
 - Single-line labels in fixed-height controls use `line-height:1`.
 

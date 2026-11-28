@@ -20,6 +20,7 @@
   --u-ink:#fffaed;                                  /* text on glass */
   --u-mute:rgba(255,250,237,.78);                   /* secondary text */
   --u-ink-60:rgba(255,250,237,.6);                  /* inactive bottom-nav items: cream 60% (Matas, FIXES 13.1) */
+  --u-nav-bg:rgba(22,16,11,.96); --u-nav-line:rgba(255,250,237,.08);  /* phone bottom bar: solid dark ~96%, cream 8% top hairline (FIXES 13.10) */
   --u-line:rgba(255,250,237,.16);                   /* dividers */
   --u-accent:#f3d27a;                               /* butter: the only accent (selected, active dot, progress) */
   --u-on-accent:#2a1a10;                            /* text on butter / cream */
@@ -41,7 +42,7 @@
   --u-scrim:#000;                                   /* swipe overlay under the leaving panel (FIXES 10.1) */
   --u-pan-shadow:-12px 0 24px rgb(0 0 0 / .35);     /* leading edge of the incoming panel */
   /* Discover v3 product safe zone (Matas 2026-11-25, DISCOVER.md 1.5): the piece stays between these */
-  --u-safe-top:104px; --u-safe-bottom:266px;
+  --u-safe-top:104px; --u-safe-bottom:246px;  /* 13.10: full-width nav 50 high freed 20px */
   --u-panel:#30231a;                                /* solid dark panel: About, piece details (03-discover-v3) */
   /* motion (Matas FIXES 3.1): use only these */
   --u-dur-press:120ms; --u-dur-hover:150ms; --u-dur-ui:180ms; --u-dur-panel:260ms; --u-dur-step:300ms;
