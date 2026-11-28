@@ -51,7 +51,7 @@ Each item says how to check it. "qa" means `scripts/qa.mjs` already checks it au
   - Single-line labels use `line-height:1` inside fixed-height controls so the text box is centred, not the line box.
 
 - [ ] **Product safe zone, on every screen that puts UI over a product photo** (Discover, product page header, story, any future overlay). The product must never sit under a bar, card, chip row, maker row or tab row.
-  - Tokens `--u-safe-top` / `--u-safe-bottom` in `app/globals.css` (phone Discover: 104px / 262px; 16px sides). If you add or move any overlay, recompute them so the zone ends 8px before the overlay starts.
+  - Tokens `--u-safe-top` / `--u-safe-bottom` in `app/globals.css` (phone Discover: 104px / 246px since FIXES 13.10; 16px sides). If you add or move any overlay, recompute them so the zone ends 8px before the overlay starts.
   - Photo `object-fit:cover`, shifted so its focal point (`images[].focusY`, default .5) lands in the centre of the zone; the uncovered strip is filled with the same photo blurred, with a soft mask fade. Never shrink the photo into a box with empty bars.
   - How to check: screenshot at 390×844 with `.showsafe` (dashed frame) on, for every piece in the mock data: the whole product is inside the frame. Compare with `docs/design/screens/png/03-discover-v3-safe-zone.jpg`.
 

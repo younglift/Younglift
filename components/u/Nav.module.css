@@ -1,7 +1,7 @@
-/* phone: glass pill at the bottom */
-.bottom{position:fixed;left:80px;right:80px;bottom:calc(12px + env(safe-area-inset-bottom));height:58px;max-width:230px;margin:0 auto;border-radius:var(--u-r-pill);display:flex;justify-content:space-evenly;align-items:center;z-index:40}  /* FIXES 13.1: centred, ~230 wide on 390, 3 items */
+/* phone: full-width bar flush to the bottom edge, like TikTok (FIXES 13.10, Matas option A). Replaces the 13.1 pill. */
+.bottom{position:fixed;left:0;right:0;bottom:0;height:calc(50px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);border-radius:0;background:var(--u-nav-bg);border-top:1px solid var(--u-nav-line);display:flex;justify-content:space-around;align-items:stretch;z-index:40}
 .bottom a{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--u-ink-60);font:600 10px/1 var(--u-ui);transition:color var(--u-dur-ui) var(--u-ease)}
-.bottom a::after{content:'';position:absolute;left:50%;top:50%;width:64px;height:58px;transform:translate(-50%,-50%)}  /* hit area, not min-width (QUALITY 2.1) */
+.bottom a::after{content:'';position:absolute;left:50%;top:50%;width:64px;height:50px;transform:translate(-50%,-50%)}  /* hit area, not min-width (QUALITY 2.1) */
 .bottom a:active{transform:scale(.97)}
 .bottom a[aria-current="page"]{color:var(--u-ink)}
 .dot{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:transparent}  /* desktop header only (FIXES 6.10) */

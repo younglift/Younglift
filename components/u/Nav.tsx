@@ -48,7 +48,7 @@ export default function AppNav() {
   return (
     <>
       {desktop === false && showBottom ? (
-        <nav aria-label="Main" className={`gs ${s.bottom}`}>
+        <nav aria-label="Main" className={s.bottom}>
           {TABS.map((t) => {
             const on = tabOn(path, t);
             return <Link key={t.href} href={t.href} onClick={t.href === '/' ? goHome : undefined} aria-current={on ? 'page' : undefined}><Icon name={t.icon} size={24} filled={on} /><span>{t.label}</span></Link>;
